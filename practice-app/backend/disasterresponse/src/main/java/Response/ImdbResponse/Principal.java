@@ -1,4 +1,4 @@
-package com.a1.disasterresponse.Response.ImdbResponse;
+package Response.ImdbResponse;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
