@@ -8,12 +8,13 @@ import okhttp3.Response;
 import org.springframework.stereotype.Service;
 import com.a1.disasterresponse.model.*;
 import java.io.IOException;
-
+import org.springframework.beans.factory.annotation.Value;
 @Service
 public class WeatherService {
 
     private static final String BASE_URL = "https://weatherapi-com.p.rapidapi.com/current.json";
-    private static final String API_KEY = "811892a1cemsh1d40de74e54470cp1f27cejsnf7ea1c46bab4";
+    @Value("${weather.api.key}")
+    private String apiKey;
     private static final OkHttpClient client = new OkHttpClient();
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -22,7 +23,7 @@ public class WeatherService {
         Request request = new Request.Builder()
                 .url(url)
                 .get()
-                .addHeader("X-RapidAPI-Key", API_KEY)
+                .addHeader("X-RapidAPI-Key", apiKey)
                 .addHeader("X-RapidAPI-Host", "weatherapi-com.p.rapidapi.com")
                 .build();
 
