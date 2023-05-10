@@ -1,4 +1,13 @@
 .directionsDiv {
     margin-top: 20px;
-    text-align: center;
+}
+
+.formDiv {
+    width: 40vw;
+    margin: 10px auto;
+}
+
+.directionsDiv {
+    width: 40vw;
+    margin: 10px auto;
 }
