@@ -1,15 +1,27 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./WeatherPage.css";
 
-const WeatherApiPage = () => {
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
+const WeatherPage = () => {
+  const [address, setAddress] = useState("");
   const [temperature, setTemperature] = useState("");
   const [conditionText, setConditionText] = useState("");
   const [conditionIcon, setConditionIcon] = useState("");
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const getLatLon = () => {
+    axios
+      .get(`/geocode?address=${encodeURIComponent(address)}`)
+      .then((res) => {
+        const latitude = res.data.latitude;
+        const longitude = res.data.longitude;
+        getWeatherData(latitude, longitude);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getWeatherData = async (latitude, longitude) => {
     try {
       const response = await axios.get("/weather", {
         params: {
@@ -25,40 +37,36 @@ const WeatherApiPage = () => {
     }
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    getLatLon();
+  };
+
   return (
-    <div>
-      <h1>Weather API Page</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="weather-page">
+      <h1>Weather Page</h1>
+      <form className="weather-form" onSubmit={handleSubmit}>
         <label>
-          Latitude:
+          Address:
           <input
             type="text"
-            value={latitude}
-            onChange={(event) => setLatitude(event.target.value)}
+            value={address}
+            onChange={(event) => setAddress(event.target.value)}
           />
         </label>
-        <br />
-        <label>
-          Longitude:
-          <input
-            type="text"
-            value={longitude}
-            onChange={(event) => setLongitude(event.target.value)}
-          />
-        </label>
-        <button type="submit">Get Temperature</button>
+        <button type="submit">Get Weather</button>
       </form>
       {temperature && (
-        <div>
+        <div className="weather-info">
           <h2>Temperature:</h2>
           <p>{temperature}</p>
           <h2>Condition:</h2>
           <p>{conditionText}</p>
-          <img src={conditionIcon} alt="weather icon" />
+          <img className="weather-icon" src={conditionIcon} alt="weather icon" />
         </div>
       )}
     </div>
   );
 };
 
-export default WeatherApiPage;
+export default WeatherPage;
