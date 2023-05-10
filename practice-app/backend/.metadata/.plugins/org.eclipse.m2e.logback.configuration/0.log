@@ -1,0 +1,19 @@
+2023-05-10 14:23:50,605 [Worker-4: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2023-05-10 14:24:15,924 [Worker-12: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: com.a1:disasterresponse:0.0.1-SNAPSHOT @ C:\Users\alitp\OneDrive\Masaüstü\CMPE352SUBMIT\backend\disasterresponse\pom.xml.
+2023-05-10 14:24:17,193 [Worker-12: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /disasterresponse/src/main/java
+2023-05-10 14:24:17,194 [Worker-12: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /disasterresponse/src/main/resources
+2023-05-10 14:24:17,200 [Worker-12: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /disasterresponse/src/main/resources
+2023-05-10 14:24:17,212 [Worker-12: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /disasterresponse/src/test/java
+2023-05-10 14:24:17,804 [Worker-12: Importing Maven projects] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Imported and configured 1 project(s) in 3 sec
+2023-05-10 14:24:18,629 [Worker-18: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2023-05-10 14:24:18,651 [Worker-18: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2023-05-10 14:24:18,654 [Worker-18: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\alitp\OneDrive\Masaüstü\CMPE352SUBMIT\backend\disasterresponse\src\test\resources
+2023-05-10 14:24:48,415 [Worker-28: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2023-05-10 14:24:48,417 [Worker-28: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2023-05-10 14:24:48,419 [Worker-28: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\alitp\OneDrive\Masaüstü\CMPE352SUBMIT\backend\disasterresponse\src\test\resources
+2023-05-10 14:24:50,950 [Worker-19: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2023-05-10 14:24:50,954 [Worker-19: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2023-05-10 14:24:50,957 [Worker-19: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\alitp\OneDrive\Masaüstü\CMPE352SUBMIT\backend\disasterresponse\src\test\resources
+2023-05-10 14:25:48,430 [Worker-15: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2023-05-10 14:25:48,811 [Worker-15: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2023-05-10 14:25:48,818 [Worker-15: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\alitp\OneDrive\Masaüstü\CMPE352SUBMIT\backend\disasterresponse\src\test\resources
