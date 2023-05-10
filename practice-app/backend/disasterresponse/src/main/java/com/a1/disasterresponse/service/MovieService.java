@@ -1,7 +1,7 @@
 package com.a1.disasterresponse.service;
 
-import Response.ImdbResponse.ImdbResponse;
-import Response.ImdbResponse.Movie;
+import com.a1.disasterresponse.model.ImdbResponse;
+import com.a1.disasterresponse.model.Movie;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @Service
-public class FilmService {
+public class MovieService {
     String BASE_URL = "https://imdb8.p.rapidapi.com/title/v2/find?title=";
 
     String API_KEY = "8720851bd4msh5b9408dcf528f49p16c2cfjsna4066bc59d74";

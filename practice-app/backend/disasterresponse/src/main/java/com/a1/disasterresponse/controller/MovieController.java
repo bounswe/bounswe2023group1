@@ -1,7 +1,7 @@
 package com.a1.disasterresponse.controller;
 
-import Response.ImdbResponse.Movie;
-import com.a1.disasterresponse.service.FilmService;
+import com.a1.disasterresponse.model.Movie;
+import com.a1.disasterresponse.service.MovieService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,20 +12,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.IOException;
 import java.util.List;
 
+
 @Controller
-@RequestMapping("/film")
-public class FilmController {
+@RequestMapping("/movie")
+public class MovieController {
 
-    private final FilmService filmService;
+    private final MovieService movieService;
 
-    public FilmController(FilmService filmService) {
-        this.filmService = filmService;
+    public MovieController(MovieService filmService) {
+        this.movieService = filmService;
     }
 
-    @GetMapping("/id")
+    @GetMapping("/getMovies")
     public ResponseEntity<List<Movie>> getFilmId(@RequestParam String query, @RequestParam int limit) {
         try {
-            List<Movie> movies = filmService.getFilmId(query, limit);
+            List<Movie> movies = movieService.getFilmId(query, limit);
             return new ResponseEntity<>(movies, HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();
