@@ -4,10 +4,12 @@ import { Navbar, Container, Nav } from 'react-bootstrap';
 import { FaHome, FaMap, FaDirections, FaCloud } from 'react-icons/fa';
 import DirectionsPage from "./pages/DirectionsApi/DirectionsPage";
 import WeatherApiPage from './pages/WeatherApi/WeatherPage';
-const navLinks = [
-    { path: '/googleDirectionsPage', label: 'Google Directions Api', component: DirectionsPage, icon: <FaDirections /> },
-    { path: '/weatherApiPage', label: 'Weather Api', component: WeatherApiPage, icon: <FaCloud /> },
+import GoogleGeocodePage from './pages/GoogleGeocodeApi/GoogleGeocodePage';
 
+const navLinks = [
+    { path: '/googleDirectionsPage', label: ' Google Directions API', component: DirectionsPage, icon: <FaDirections /> },
+    { path: '/weatherApiPage', label: ' Weather API', component: WeatherApiPage, icon: <FaCloud /> },
+    { path: '/googleGeocodePage', label: ' Google Geocode API', component: GoogleGeocodePage, icon: <FaMap /> },
     // add the rest of APIs
 ];
 
