@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import './DirectionsPage.css';
+import { Button, Form } from 'react-bootstrap';
 
 export default function DirectionsPage() {
 
@@ -23,10 +24,21 @@ export default function DirectionsPage() {
 
     return (
         <div className='directionsDiv'>
-            <input type="text" value={from} onChange={(e) => setFrom(e.target.value)} />
-            <input type="text" value={to} onChange={(e) => setTo(e.target.value)} />
-            <button onClick={getDirections}>Get Directions</button>
-            <div>
+            <Form className="formDiv">
+                <Form.Group className="mb-3" controlId="from">
+                    <Form.Label>From</Form.Label>
+                    <Form.Control type="text" placeholder="Enter address" onChange={(e) => setFrom(e.target.value)} />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="destination">
+                    <Form.Label>Destination</Form.Label>
+                    <Form.Control type="text" placeholder="Enter destination" onChange={(e) => setTo(e.target.value)} />
+                </Form.Group>
+                <Button variant="primary" onClick={getDirections}>
+                    Get Directions
+                </Button>
+            </Form>
+            <div className='directionsDiv'>
                 {
                     directions &&
                     directions?.routes[0]?.legs[0].steps.map((step, i) => {
