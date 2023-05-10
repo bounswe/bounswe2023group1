@@ -1,15 +1,15 @@
 package com.a1.disasterresponse.controller;
+
+import com.a1.disasterresponse.model.GeocodeData;
 import com.a1.disasterresponse.service.GeocodeService;
-
-import com.google.maps.model.LatLng;
-
-import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 public class GeocodeController {
@@ -23,9 +23,9 @@ public class GeocodeController {
     @GetMapping("/geocode")
     public ResponseEntity<Map<String, Object>> geocode(@RequestParam("address") String address) {
         try {
-            LatLng coordinates = geocodeService.geocodeAddress(address);
-            if (coordinates != null) {
-                return ResponseEntity.ok(Map.of("latitude", coordinates.lat, "longitude", coordinates.lng));
+            GeocodeData geocodeData = geocodeService.geocodeAddress(address);
+            if (geocodeData != null) {
+                return ResponseEntity.ok(Map.of("latitude", geocodeData.getLatitude(), "longitude", geocodeData.getLongitude(), "address", geocodeData.getAddress()));
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Unable to geocode address"));
             }
@@ -37,9 +37,9 @@ public class GeocodeController {
     @GetMapping("/reverse_geocode")
     public ResponseEntity<Map<String, Object>> reverseGeocode(@RequestParam("latitude") Double lat, @RequestParam("longitude") Double lng) {
         try {
-            String address = geocodeService.reverseGeocodeCoordinates(lat, lng);
-            if (address != null) {
-                return ResponseEntity.ok(Map.of("address", address));
+            GeocodeData geocodeData = geocodeService.reverseGeocodeCoordinates(lat, lng);
+            if (geocodeData != null) {
+                return ResponseEntity.ok(Map.of("latitude", geocodeData.getLatitude(), "longitude", geocodeData.getLongitude(), "address", geocodeData.getAddress()));
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Unable to reverse geocode coordinates"));
             }
@@ -48,4 +48,3 @@ public class GeocodeController {
         }
     }
 }
-
