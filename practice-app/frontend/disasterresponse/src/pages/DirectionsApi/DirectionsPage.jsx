@@ -12,7 +12,7 @@ export default function DirectionsPage() {
     const [directions, setDirections] = useState(null);
 
     const getDirections = () => {
-        axios.get(`/getDirection?from=${from}&to=${to}`)
+        axios.get(`/api/getDirection?from=${from}&to=${to}`)
             .then((res) => {
                 console.log(res.data)
                 setDirections(res.data);
