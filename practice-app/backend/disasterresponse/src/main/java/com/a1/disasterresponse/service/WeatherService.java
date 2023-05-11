@@ -1,13 +1,16 @@
 package com.a1.disasterresponse.service;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.a1.disasterresponse.model.*;
+import com.a1.disasterresponse.repository.FeedbackRepository;
+
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class WeatherService {
@@ -16,6 +19,12 @@ public class WeatherService {
     private static final OkHttpClient client = new OkHttpClient();
     private static final ObjectMapper mapper = new ObjectMapper();
 
+    @Autowired
+    private final FeedbackRepository feedbackRepository;
+
+    public WeatherService(FeedbackRepository feedbackRepository) {
+        this.feedbackRepository = feedbackRepository;
+    }
     public WeatherData getWeather(double lat, double lon) throws IOException {
         String url = BASE_URL + "?latitude=" + lat + "&longitude=" + lon + "&current_weather=true";
         Request request = new Request.Builder()
@@ -41,5 +50,13 @@ public class WeatherService {
 
             return new WeatherData(temperature, windSpeed, windDirection);
         }
+    }
+
+    public void saveFeedback(Feedback feedback) {
+        feedbackRepository.save(feedback);
+    }
+
+    public List<Feedback> getAllFeedbacks() {
+        return feedbackRepository.findAll();
     }
 }
