@@ -1,19 +1,17 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from 'axios'
+import './ImdbPage.css'
 
 export default function ImdbPage() {
     const [query , setQuery] = useState("");
-    const [limit , setLimit] = useState("");
     const [movies, setMovies] = useState([]);
 
     
 
     const getMovies = () => {
-        axios.get(`/movie/getMovies?query=${encodeURIComponent(query)}&limit=5}`).then(res => {
+        axios.get(`/movie/getMovies?query=${encodeURIComponent(query)}&limit=5`).then(res => {
             setMovies(res.data)
-            console.log(res)
-            console.log(res.data)
         }).catch(error =>{
             console.log(error)
         })
@@ -30,6 +28,7 @@ export default function ImdbPage() {
             {movies.map(movie => (
                 <div className="movieCard" key={movie.id}>
                 <h3>{movie.title}</h3>
+                <img src={movie.image.url} alt={movie.title} />
                 </div>
             ))}
             </div>

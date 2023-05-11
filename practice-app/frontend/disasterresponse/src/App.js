@@ -6,14 +6,8 @@ import DirectionsPage from "./pages/DirectionsApi/DirectionsPage";
 import WeatherApiPage from './pages/WeatherApi/WeatherPage';
 import GoogleGeocodePage from './pages/GoogleGeocodeApi/GoogleGeocodePage';
 import ImdbPage from './pages/ImdbApi/ImdbPage';
-
-
-import { FaHome, FaMap, FaDirections, FaCloud, FaWifi} from 'react-icons/fa';
-import DirectionsPage from "./pages/DirectionsApi/DirectionsPage";
-import WeatherApiPage from './pages/WeatherApi/WeatherPage';
-import GoogleGeocodePage from './pages/GoogleGeocodeApi/GoogleGeocodePage';
 import GeoJsPage from './pages/GeoJsApi/GeoJsPage';
-import ImdbPage from './pages/ImdbApi/ImdbPage';
+
 
 
 const navLinks = [
@@ -21,7 +15,7 @@ const navLinks = [
     { path: '/weatherApiPage', label: ' Weather API', component: WeatherApiPage, icon: <FaCloud /> },
     { path: '/googleGeocodePage', label: ' Google Geocode API', component: GoogleGeocodePage, icon: <FaMap /> },
     { path: '/ImdbPage', label: ' IMDB API', component: ImdbPage, icon: <FaImdb /> },
-    { path: '/geoJsPage', label: ' GeoJs API', component: GeoJsPage, icon: <FaWifi /> },
+    //{ path: '/geoJsPage', label: ' GeoJs API', component: GeoJsPage, icon: <FaWifi /> },
     // add the rest of APIs
 ];
 
