@@ -12,6 +12,8 @@ import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.util.Map;
+import com.a1.disasterresponse.model.GeoJsData;
+import java.util.HashMap;
 
 @RestController
 public class GeoJsController {
@@ -33,8 +35,17 @@ public class GeoJsController {
             }
 
 
-            Map<String, Object> response = geoJsService.getLocationData(ipAddress);
-            return ResponseEntity.ok(response);
+            GeoJsData geoJsData = geoJsService.getLocationData(ipAddress);
+            Map<String, Object> responseMap = new HashMap<>();
+            responseMap.put("latitude", geoJsData.getLatitude());
+            responseMap.put("longitude", geoJsData.getLongitude());
+            responseMap.put("ipAddress", geoJsData.getIpAddress());
+            responseMap.put("country", geoJsData.getCountry());
+            responseMap.put("region", geoJsData.getRegion());
+            responseMap.put("city", geoJsData.getCity());
+            responseMap.put("timezone", geoJsData.getTimezone());
+            responseMap.put("organization", geoJsData.getOrganization());
+            return ResponseEntity.ok(responseMap);
         } catch (Exception e) {
             e.printStackTrace();
             // status 500 is Internal Server Error
