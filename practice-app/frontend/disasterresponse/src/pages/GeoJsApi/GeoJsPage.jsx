@@ -12,7 +12,7 @@ function Geolocation() {
     setSubmitted(true);
     setLocationData(null); // clear locationData
     try {
-      const response = await fetch(`/get_info_from_ip?ip=${ipAddress}`);
+      const response = await fetch(`/api/get_info_from_ip?ip=${ipAddress}`);
       const data = await response.json()
       if (response.ok) {
         setLocationData(data);

@@ -23,7 +23,7 @@ const WeatherPage = () => {
 
   const getWeatherData = async (latitude, longitude) => {
     try {
-      const response = await axios.get("/weather", {
+      const response = await axios.get("/api/weather", {
         params: {
           lat: latitude,
           lon: longitude,

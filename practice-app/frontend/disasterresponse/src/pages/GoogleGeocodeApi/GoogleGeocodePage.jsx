@@ -12,7 +12,7 @@ export default function GoogleGeocodePage() {
     const [inputLon, setInputLon] = useState("");
 
     const getLatLon = () => {
-      axios.get(`/geocode?address=${encodeURIComponent(inputAddress)}`).then(res => {
+      axios.get(`/api/geocode?address=${encodeURIComponent(inputAddress)}`).then(res => {
         setLat(res.data.latitude)
         setLon(res.data.longitude)
       }).catch(error => {
@@ -21,7 +21,7 @@ export default function GoogleGeocodePage() {
     }
 
     const getAddress = () => {
-      axios.get(`/reverse_geocode?latitude=${inputLat}&longitude=${inputLon}`).then(res => {
+      axios.get(`/api/reverse_geocode?latitude=${inputLat}&longitude=${inputLon}`).then(res => {
         setAddress(res.data.address)
       }).catch(error => {
         console.log(error)
