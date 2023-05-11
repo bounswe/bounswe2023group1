@@ -8,23 +8,19 @@ import okhttp3.Response;
 import org.springframework.stereotype.Service;
 import com.a1.disasterresponse.model.*;
 import java.io.IOException;
-import org.springframework.beans.factory.annotation.Value;
+
 @Service
 public class WeatherService {
 
-    private static final String BASE_URL = "https://weatherapi-com.p.rapidapi.com/current.json";
-    @Value("${weather.api.key}")
-    private String apiKey;
+    private static final String BASE_URL = "https://api.open-meteo.com/v1/forecast";
     private static final OkHttpClient client = new OkHttpClient();
     private static final ObjectMapper mapper = new ObjectMapper();
 
     public WeatherData getWeather(double lat, double lon) throws IOException {
-        String url = String.format("%s?q=%f,%f", BASE_URL, lat, lon);
+        String url = BASE_URL + "?latitude=" + lat + "&longitude=" + lon + "&current_weather=true";
         Request request = new Request.Builder()
                 .url(url)
                 .get()
-                .addHeader("X-RapidAPI-Key", apiKey)
-                .addHeader("X-RapidAPI-Host", "weatherapi-com.p.rapidapi.com")
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
@@ -35,15 +31,15 @@ public class WeatherService {
             String body = response.body().string();
             JsonNode rootNode = mapper.readTree(body);
 
-            JsonNode current = rootNode.get("current");
-            if (current == null) {
-                throw new IOException("No weather data available");
+            JsonNode currentWeather = rootNode.get("current_weather");
+            if (currentWeather == null) {
+                throw new IOException("No current weather data available");
             }
-            double temperature = current.get("temp_c").asDouble();
-            String conditionText = current.get("condition").get("text").asText();
-            String conditionIcon = "https:" + current.get("condition").get("icon").asText();
-    
-            return new WeatherData(temperature, conditionText, conditionIcon);
+            double temperature = currentWeather.get("temperature").asDouble();
+            double windSpeed = currentWeather.get("windspeed").asDouble();
+            double windDirection = currentWeather.get("winddirection").asDouble();
+
+            return new WeatherData(temperature, windSpeed, windDirection);
         }
     }
 }

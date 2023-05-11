@@ -1,27 +1,25 @@
 package com.a1.disasterresponse.model;
 
 public class WeatherData {
+    private double temperature;
+    private double windSpeed;
+    private double windDirection;
 
-    private final double temperature;
-    private final String conditionText;
-    private final String conditionIcon;
-
-    public WeatherData(double temperature, String conditionText, String conditionIcon) {
+    public WeatherData(double temperature, double windSpeed, double windDirection) {
         this.temperature = temperature;
-        this.conditionText = conditionText;
-        this.conditionIcon = conditionIcon;
+        this.windSpeed = windSpeed;
+        this.windDirection = windDirection;
     }
 
     public double getTemperature() {
         return temperature;
     }
 
-    public String getConditionText() {
-        return conditionText;
+    public double getWindSpeed() {
+        return windSpeed;
     }
 
-    public String getConditionIcon() {
-        return conditionIcon;
+    public double getWindDirection() {
+        return windDirection;
     }
 }
-

@@ -5,8 +5,8 @@ import "./WeatherPage.css";
 const WeatherPage = () => {
   const [address, setAddress] = useState("");
   const [temperature, setTemperature] = useState("");
-  const [conditionText, setConditionText] = useState("");
-  const [conditionIcon, setConditionIcon] = useState("");
+  const [windspeed, setWindspeed] = useState("");
+  const [winddirection, setWinddirection] = useState("");
 
   const getLatLon = () => {
     axios
@@ -60,9 +60,10 @@ const WeatherPage = () => {
         <div className="weather-info">
           <h2>Temperature:</h2>
           <p>{temperature}</p>
-          <h2>Condition:</h2>
-          <p>{conditionText}</p>
-          <img className="weather-icon" src={conditionIcon} alt="weather icon" />
+          <h2>Wind Speed:</h2>
+          <p>{windspeed}</p>
+          <h2>Wind Direction:</h2>
+          <p>{winddirection}</p>
         </div>
       )}
     </div>

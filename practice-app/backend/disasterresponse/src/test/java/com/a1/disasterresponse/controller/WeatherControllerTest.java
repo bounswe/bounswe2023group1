@@ -31,7 +31,7 @@ public class WeatherControllerTest {
     @Test
     public void testGetTemperature_Success() throws IOException {
         // Mock weather data
-        WeatherData weatherData = new WeatherData(25.5, "Sunny", "sun.png");
+        WeatherData weatherData = new WeatherData(18.5, 8.7,107.0);
 
         // Mock weather service
         when(weatherService.getWeather(anyDouble(), anyDouble())).thenReturn(weatherData);
