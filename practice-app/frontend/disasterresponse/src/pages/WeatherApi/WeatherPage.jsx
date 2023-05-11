@@ -30,8 +30,8 @@ const WeatherPage = () => {
         },
       });
       setTemperature(response.data.temperature);
-      setWindspeed(response.data.windspeed);
-      setWinddirection(response.data.winddirection);
+      setWindspeed(response.data.windSpeed);
+      setWinddirection(response.data.windDirection);
     } catch (error) {
       console.error(error);
     }
