@@ -26,7 +26,7 @@ public class MovieController {
     @GetMapping("/getMovies")
     public ResponseEntity<List<Movie>> getFilmId(@RequestParam String query, @RequestParam int limit) {
         try {
-            List<Movie> movies = movieService.getFilmId(query, limit);
+            List<Movie> movies = movieService.getMovies(query, limit);
             return new ResponseEntity<>(movies, HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();
