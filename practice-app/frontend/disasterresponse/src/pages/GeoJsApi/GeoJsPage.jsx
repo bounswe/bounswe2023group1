@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import "./GeoJsPage.css"
-
+import axios from 'axios';
 function Geolocation() {
   const [ipAddress, setIpAddress] = useState('');
   const [locationData, setLocationData] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [submitted, setSubmitted] = useState(false);
-
+  const [ipList, setIpList] = useState([]);
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitted(true);
@@ -24,6 +24,27 @@ function Geolocation() {
       setErrorMessage('An error occurred. Please try again later with proper input.');
     }
   };
+
+  const handleSaveIp = async () =>  { 
+    axios.post(`/saveIp?ip=${ipAddress}`)
+        .then((res) => {
+            console.log(res.data)
+        }).catch(e => {
+            console.log(e)
+        })
+}
+  
+
+const getIpList = () => {
+  axios.get(`/getIpList`)
+    .then((res) => {
+      console.log(res.data);
+      setIpList(res.data);
+    }).catch(e => {
+      console.log(e);
+    })
+}
+  
 
   return (
     <div className="GeoJsDiv">
@@ -76,17 +97,18 @@ function Geolocation() {
                 <tr>
                   <td>Timezone</td>
                   <td>{locationData.timezone}</td>
-                </tr>
-                <tr>
-                  <td>Organization</td>
-                  <td>{locationData.organization}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
-  );
-}
+                  </tr>
+                  <tr>
+                  <td>ISP</td>
+                  <td>{locationData.isp}</td>
+                  </tr>
+                  </tbody>
+                  </table>
+                  <button className="saveIp button" onClick={handleSaveIp}>Save IP Address</button>
+                  </div>
+                  )}
+                  </div>
+                  );
+                  }
 
-export default Geolocation;
+                  export default Geolocation;

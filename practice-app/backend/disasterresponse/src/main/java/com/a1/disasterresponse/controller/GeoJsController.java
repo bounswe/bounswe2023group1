@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,8 +13,11 @@ import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.util.Map;
-import com.a1.disasterresponse.model.GeoJsData;
 import java.util.HashMap;
+import java.util.List;
+import com.a1.disasterresponse.model.GeoJsData;
+
+import com.a1.disasterresponse.model.IpList;
 
 @RestController
 public class GeoJsController {
@@ -52,4 +56,15 @@ public class GeoJsController {
             return ResponseEntity.status(500).build();
         }
     }
+    @GetMapping("/getIpList")
+	public ResponseEntity<List<IpList>> getBookmarkedDestinations() {
+		return new ResponseEntity<List<IpList>>(geoJsService.getIpList() ,HttpStatus.OK);
+	}	
+	
+	@PostMapping("/saveIp")
+	public ResponseEntity<String> saveDestination(@RequestParam String ip) {
+		return ResponseEntity.ok(geoJsService.saveIp(ip));
+	}
+
+
 }

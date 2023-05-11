@@ -11,8 +11,18 @@ import java.util.Map;
 
 import com.a1.disasterresponse.model.GeoJsData;
 
+import com.a1.disasterresponse.model.IpList;
+
+import java.util.List;
+
+import com.a1.disasterresponse.repository.IpListRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 @Service
 public class GeoJsService {
+    @Autowired
+    private IpListRepository ipListRepository;
 
     private static final String GEOJS_API_URL = "https://get.geojs.io/v1/ip/geo/%s.json";
     private final OkHttpClient httpClient = new OkHttpClient();
@@ -43,5 +53,17 @@ public class GeoJsService {
         GeoJsData geoJsData = new GeoJsData(ip_address, country, region, city, latitude, longitude, timezone, organization);
     
         return geoJsData;
+    }
+    public List<IpList> getIpList() {
+        return ipListRepository.findAll();
+    }
+    
+    public String saveIp(String ip) {
+        if(ipListRepository.getByIp(ip) == null) {
+            IpList newIp = new IpList(ip);
+            ipListRepository.save(newIp);
+            return "CREATED";
+        }
+        return "ALREADY_EXIST";
     }
 }
