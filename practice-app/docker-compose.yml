@@ -7,19 +7,23 @@ services:
     expose:
       - "4000"
     depends_on:
-      - db
+      - postgresqldb
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
       - SPRING_DATASOURCE_USERNAME=compose-postgres
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    networks:
+      - app_network
       
-  db:
+  postgresqldb:
     image: 'postgres:13.1'
     container_name: db
     environment:
       - POSTGRES_USER=compose-postgres
       - POSTGRES_PASSWORD=compose-postgres
+    networks:
+      - app_network
       
   frontend_build:
     container_name: frontend
@@ -28,6 +32,8 @@ services:
     volumes:
       - ./frontend/disasterresponse/node_modules:/app/node_modules
       - frontend_files:/app/build
+    networks:
+      - app_network
 
   webserver:
     image: nginx
@@ -40,6 +46,11 @@ services:
     volumes:
       - frontend_files:/var/www:r
       - ./nginx/:/etc/nginx/conf.d/
+    networks:
+      - app_network
 
 volumes:
   frontend_files:
+
+networks:
+  app_network:

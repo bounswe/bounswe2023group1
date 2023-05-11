@@ -5,12 +5,12 @@ import "./WeatherPage.css";
 const WeatherPage = () => {
   const [address, setAddress] = useState("");
   const [temperature, setTemperature] = useState("");
-  const [conditionText, setConditionText] = useState("");
-  const [conditionIcon, setConditionIcon] = useState("");
+  const [windspeed, setWindspeed] = useState("");
+  const [winddirection, setWinddirection] = useState("");
 
   const getLatLon = () => {
     axios
-      .get(`/geocode?address=${encodeURIComponent(address)}`)
+      .get(`/api/geocode?address=${encodeURIComponent(address)}`)
       .then((res) => {
         const latitude = res.data.latitude;
         const longitude = res.data.longitude;
@@ -30,8 +30,8 @@ const WeatherPage = () => {
         },
       });
       setTemperature(response.data.temperature);
-      setConditionText(response.data.conditionText);
-      setConditionIcon(response.data.conditionIcon);
+      setWindspeed(response.data.windSpeed);
+      setWinddirection(response.data.windDirection);
     } catch (error) {
       console.error(error);
     }
@@ -60,9 +60,10 @@ const WeatherPage = () => {
         <div className="weather-info">
           <h2>Temperature:</h2>
           <p>{temperature}</p>
-          <h2>Condition:</h2>
-          <p>{conditionText}</p>
-          <img className="weather-icon" src={conditionIcon} alt="weather icon" />
+          <h2>Wind Speed:</h2>
+          <p>{windspeed}</p>
+          <h2>Wind Direction:</h2>
+          <p>{winddirection}</p>
         </div>
       )}
     </div>

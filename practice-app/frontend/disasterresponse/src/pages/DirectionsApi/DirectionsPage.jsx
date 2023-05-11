@@ -23,7 +23,7 @@ export default function DirectionsPage() {
     const [bookmarkedDestinations, setBookmarkedDestinations] = useState([]);
 
     const saveDestination = () => { 
-        axios.post(`/saveDestination?destination=${to}`)
+        axios.post(`/api/saveDestination?destination=${to}`)
             .then((res) => {
                 console.log(res.data)
             }).catch(e => {
@@ -42,7 +42,7 @@ export default function DirectionsPage() {
     }
 
     const getBookmarkedDestinations = () => {
-        axios.get(`/getBookmarkedDestinations`)
+        axios.get(`/api/getBookmarkedDestinations`)
             .then((res) => {
                 console.log(res.data)
                 setBookmarkedDestinations(res.data);
