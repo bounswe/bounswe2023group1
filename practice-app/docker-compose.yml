@@ -1,45 +1,37 @@
 version: '3.1'
 services:
-  app:
+  backend:
     container_name: backend
     image: backend:latest
     build: ./backend/disasterresponse
-    expose:
-      - "4000"
+    ports:
+      - "4000:4000"
+    networks:
+      - app_network
     depends_on:
-      - db
+      - postgresqldb
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
       - SPRING_DATASOURCE_USERNAME=compose-postgres
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       
-  db:
-    image: 'postgres:13.1'
+  postgresqldb:
+    image: 'postgres:13.1-alpine'
     container_name: db
     environment:
       - POSTGRES_USER=compose-postgres
       - POSTGRES_PASSWORD=compose-postgres
-      
-  frontend_build:
+    networks:
+      - app_network
+  frontend:
     container_name: frontend
     build: ./frontend/disasterresponse
     image: frontend:latest
-    volumes:
-      - ./frontend/disasterresponse/node_modules:/app/node_modules
-      - frontend_files:/app/build
-
-  webserver:
-    image: nginx
-    container_name: webserver
-    depends_on:
-      - app
     ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - frontend_files:/var/www:r
-      - ./nginx/:/etc/nginx/conf.d/
-
-volumes:
-  frontend_files:
+      - "3000:3000"
+    networks:
+      - app_network
+      
+networks:
+  app_network:

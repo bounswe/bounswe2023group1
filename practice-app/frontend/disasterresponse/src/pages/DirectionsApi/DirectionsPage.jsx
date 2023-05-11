@@ -32,7 +32,7 @@ export default function DirectionsPage() {
     }
 
     const getDirections = () => {
-        axios.get(`/api/getDirection?from=${from}&to=${to}`)
+        axios.get(`/getDirection?from=${from}&to=${to}`)
             .then((res) => {
                 console.log(res.data)
                 setDirections(res.data);
