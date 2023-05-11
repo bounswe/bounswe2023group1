@@ -10,7 +10,7 @@ const WeatherPage = () => {
 
   const getLatLon = () => {
     axios
-      .get(`/geocode?address=${encodeURIComponent(address)}`)
+      .get(`/api/geocode?address=${encodeURIComponent(address)}`)
       .then((res) => {
         const latitude = res.data.latitude;
         const longitude = res.data.longitude;
