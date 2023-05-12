@@ -1,6 +1,7 @@
 package com.a1.disasterresponse.controller;
 
 import com.a1.disasterresponse.model.EntityData;
+import com.a1.disasterresponse.repository.EntityRepository;
 import com.a1.disasterresponse.service.WikidataService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,14 +20,15 @@ import static org.mockito.Mockito.*;
 class CategoryControllerTest {
 
     private WikidataService wikidataService;
+    private EntityRepository relationRepository;
 
     private CategoryController categoryController;
 
     @BeforeEach
     void setUp() {
         wikidataService = Mockito.mock(WikidataService.class);
-
-        categoryController = new CategoryController(wikidataService);
+        relationRepository = Mockito.mock(EntityRepository.class);
+        categoryController = new CategoryController(wikidataService, relationRepository);
     }
 
     @Test
