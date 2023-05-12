@@ -1,16 +1,17 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Navbar, Container, Nav } from 'react-bootstrap';
-import { FaHome, FaMap, FaDirections, FaCloud, FaLanguage } from 'react-icons/fa';
+import { FaHome, FaMap, FaDirections, FaCloud, FaWifi, FaLanguage} from 'react-icons/fa';
 import DirectionsPage from "./pages/DirectionsApi/DirectionsPage";
 import WeatherApiPage from './pages/WeatherApi/WeatherPage';
 import GoogleGeocodePage from './pages/GoogleGeocodeApi/GoogleGeocodePage';
+import GeoJsPage from './pages/GeoJsApi/GeoJsPage';
 import GoogleTranslationPage from './pages/TranslationApi/GoogleTranslationPage';
-
 const navLinks = [
     { path: '/googleDirectionsPage', label: ' Google Directions API', component: DirectionsPage, icon: <FaDirections /> },
     { path: '/weatherApiPage', label: ' Weather API', component: WeatherApiPage, icon: <FaCloud /> },
     { path: '/googleGeocodePage', label: ' Google Geocode API', component: GoogleGeocodePage, icon: <FaMap /> },
+    { path: '/geoJsPage', label: ' GeoJs API', component: GeoJsPage, icon: <FaWifi /> },
     { path: '/googleTranslationPage', label: ' Google Translation API', component: GoogleTranslationPage, icon: <FaLanguage /> },
     // add the rest of APIs
 ];
