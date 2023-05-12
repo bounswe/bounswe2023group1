@@ -1,8 +1,13 @@
 package com.a1.disasterresponse.service;
 
 import java.io.IOException;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.a1.disasterresponse.model.BookmarkedDestination;
+import com.a1.disasterresponse.repository.BookmarkedDestinationRepository;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -10,6 +15,12 @@ import okhttp3.Response;
 
 @Service
 public class DirectionsService {
+	
+	private final BookmarkedDestinationRepository bookmarkedDestinationRepository;
+	
+	public DirectionsService(BookmarkedDestinationRepository bookmarkedDestinationRepository) {
+		this.bookmarkedDestinationRepository = bookmarkedDestinationRepository;
+	}
 
 	public String getDirectionBetweenAddresses(String from, String to) {
 		OkHttpClient client = new OkHttpClient().newBuilder()
@@ -26,6 +37,19 @@ public class DirectionsService {
 					e.printStackTrace();
 				}
 				throw new RuntimeException();
+	}
+
+	public List<BookmarkedDestination> getBookmarkedDestinations() {
+		return bookmarkedDestinationRepository.findAll();
+	}
+
+	public String saveDestination(String destination) {
+		if(bookmarkedDestinationRepository.getByAddress(destination) == null) {
+			BookmarkedDestination dest = new BookmarkedDestination(destination);
+			bookmarkedDestinationRepository.save(dest);
+			return "CREATED";
+		}
+		return "ALREADY_EXIST";
 	}
 	
 }

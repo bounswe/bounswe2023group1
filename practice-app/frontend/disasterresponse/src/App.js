@@ -1,11 +1,26 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Navbar, Container, Nav } from 'react-bootstrap';
-import { FaHome, FaMap, FaDirections } from 'react-icons/fa';
+import { FaHome, FaMap, FaDirections, FaCloud, FaImdb, FaWifi, FaLanguage, FaSatellite, FaWikipediaW} from 'react-icons/fa';
 import DirectionsPage from "./pages/DirectionsApi/DirectionsPage";
+import WeatherApiPage from './pages/WeatherApi/WeatherPage';
+import GoogleGeocodePage from './pages/GoogleGeocodeApi/GoogleGeocodePage';
+import ImdbPage from './pages/ImdbApi/ImdbPage';
+import GeoJsPage from './pages/GeoJsApi/GeoJsPage';
+import GoogleTranslationPage from './pages/TranslationApi/GoogleTranslationPage';
+import NasaImage from './pages/NASAImageApi/NasaImage';
+import WikidataPage from "./pages/WikidataApi/WikidataPage";
 
 const navLinks = [
-    { path: '/googleDirectionsPage', label: 'Google Directions Api', component: DirectionsPage, icon: <FaDirections /> },
+    { path: '/googleDirectionsPage', label: ' Google Directions API', component: DirectionsPage, icon: <FaDirections /> },
+    { path: '/weatherApiPage', label: ' Weather API', component: WeatherApiPage, icon: <FaCloud /> },
+    { path: '/googleGeocodePage', label: ' Google Geocode API', component: GoogleGeocodePage, icon: <FaMap /> },
+    { path: '/ImdbPage', label: ' IMDB API', component: ImdbPage, icon: <FaImdb /> },
+    { path: '/geoJsPage', label: ' GeoJs API', component: GeoJsPage, icon: <FaWifi /> },
+    { path: '/googleTranslationPage', label: ' Google Translation API', component: GoogleTranslationPage, icon: <FaLanguage /> },
+    { path: '/nasaImage', label: ' NASA Image API', component: NasaImage, icon: <FaSatellite /> },
+    { path: '/wikidataPage', label: ' Wikidata Api', component: WikidataPage, icon: <FaWikipediaW /> },
+
     // add the rest of APIs
 ];
 
