@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Navbar, Container, Nav } from 'react-bootstrap';
-import {FaHome, FaMap, FaDirections, FaCloud, FaImdb, FaWifi, FaLanguage, FaWikipediaW} from 'react-icons/fa';
+import { FaHome, FaMap, FaDirections, FaCloud, FaImdb, FaWifi, FaLanguage, FaSatellite, FaWikipediaW} from 'react-icons/fa';
 import DirectionsPage from "./pages/DirectionsApi/DirectionsPage";
 import WeatherApiPage from './pages/WeatherApi/WeatherPage';
 import GoogleGeocodePage from './pages/GoogleGeocodeApi/GoogleGeocodePage';
@@ -18,7 +18,7 @@ const navLinks = [
     { path: '/ImdbPage', label: ' IMDB API', component: ImdbPage, icon: <FaImdb /> },
     { path: '/geoJsPage', label: ' GeoJs API', component: GeoJsPage, icon: <FaWifi /> },
     { path: '/googleTranslationPage', label: ' Google Translation API', component: GoogleTranslationPage, icon: <FaLanguage /> },
-    { path: '/nasaImage', label: ' NASA Image API', component: NasaImage, icon: <FaHome /> },
+    { path: '/nasaImage', label: ' NASA Image API', component: NasaImage, icon: <FaSatellite /> },
     { path: '/wikidataPage', label: ' Wikidata Api', component: WikidataPage, icon: <FaWikipediaW /> },
 
     // add the rest of APIs
