@@ -119,7 +119,7 @@ function Geolocation() {
         </Button>
         }
           <Button variant="primary" onClick={getIpAddresses}>
-            Stored Ip Addresses
+            Show Stored Ip Addresses
         </Button>
       </div>
   );
