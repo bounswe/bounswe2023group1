@@ -26,11 +26,12 @@ public class CategoryController {
         this.relationRepository = relationRepository;
     }
 
-    @GetMapping("/category/getIdOf")
-    public ResponseEntity<String> idOf(@RequestParam String query) {
+    @GetMapping("/category/findEntity")
+    public ResponseEntity<EntityData.EntityRecord> findEntity(@RequestParam String query) {
         try {
             String id = wikidataService.searchForWikidataEntity(query);
-            return new ResponseEntity<>(id, HttpStatus.OK);
+            EntityData data = wikidataService.getWikidataEntityFromId(id);
+            return new ResponseEntity<>(data.toRecord(), HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -38,12 +39,12 @@ public class CategoryController {
     }
 
     @GetMapping("/category/getCategoriesOf")
-    public ResponseEntity<List<EntityData>> getCategoriesOf(@RequestParam String id) {
+    public ResponseEntity<List<EntityData.EntityRecord>> getCategoriesOf(@RequestParam String id) {
         try {
             EntityData entityData = wikidataService.getWikidataEntityFromId(id);
-            List<EntityData> categories = new ArrayList<>();
+            List<EntityData.EntityRecord> categories = new ArrayList<>();
             for (String category : entityData.categories()) {
-                categories.add(wikidataService.getWikidataEntityFromId(category));
+                categories.add(wikidataService.getWikidataEntityFromId(category).toRecord());
             }
             return new ResponseEntity<>(categories, HttpStatus.OK);
         } catch (IOException e) {

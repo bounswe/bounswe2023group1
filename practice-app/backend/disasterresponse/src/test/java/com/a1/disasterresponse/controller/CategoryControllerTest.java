@@ -37,11 +37,12 @@ class CategoryControllerTest {
         when(wikidataService.searchForWikidataEntity("blanket")).thenReturn("Q5852");
 
         // Call api
-        ResponseEntity<String> resp = categoryController.idOf("blanket");
+        ResponseEntity<EntityData.EntityRecord> resp = categoryController.findEntity("blanket");
 
         // Verify the response
         assertEquals(HttpStatus.OK, resp.getStatusCode());
-        assertEquals("Q5852", resp.getBody());
+        assertNotNull(resp.getBody());
+        assertEquals("Q5852", resp.getBody().id);
 
         verify(wikidataService, times(1)).searchForWikidataEntity("blanket");
     }
@@ -56,7 +57,7 @@ class CategoryControllerTest {
         when(wikidataService.getWikidataEntityFromId("Q5852")).thenReturn(blanketData);
 
 
-        ResponseEntity<List<EntityData>> resp = categoryController.getCategoriesOf("Q5852");
+        ResponseEntity<List<EntityData.EntityRecord>> resp = categoryController.getCategoriesOf("Q5852");
 
         // Verify the response
         assertEquals(HttpStatus.OK, resp.getStatusCode());
@@ -82,12 +83,12 @@ class CategoryControllerTest {
         when(wikidataService.getWikidataEntityFromId("Q31808206")).thenReturn(coveringData);
 
 
-        ResponseEntity<List<EntityData>> resp = categoryController.getCategoriesOf("Q5852");
+        ResponseEntity<List<EntityData.EntityRecord>> resp = categoryController.getCategoriesOf("Q5852");
 
         // Verify the response
         assertEquals(HttpStatus.OK, resp.getStatusCode());
         assertNotNull(resp.getBody());
-        assertEquals(List.of(coveringData), resp.getBody());
+        assertEquals(List.of(coveringData.toRecord()), resp.getBody());
 
         verify(wikidataService, times(2)).getWikidataEntityFromId(anyString());
     }
@@ -115,12 +116,12 @@ class CategoryControllerTest {
         when(wikidataService.getWikidataEntityFromId("Q31808206")).thenReturn(coveringData);
         when(wikidataService.getWikidataEntityFromId("Q31807746")).thenReturn(furnishingData);
 
-        ResponseEntity<List<EntityData>> resp = categoryController.getCategoriesOf("Q5852");
+        ResponseEntity<List<EntityData.EntityRecord>> resp = categoryController.getCategoriesOf("Q5852");
 
         // Verify the response
         assertEquals(HttpStatus.OK, resp.getStatusCode());
         assertNotNull(resp.getBody());
-        assertEquals(List.of(coveringData, furnishingData), resp.getBody());
+        assertEquals(List.of(coveringData.toRecord(), furnishingData.toRecord()), resp.getBody());
 
         verify(wikidataService, times(3)).getWikidataEntityFromId(anyString());
     }
