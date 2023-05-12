@@ -1,0 +1,79 @@
+
+.movieSearch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+  }
+  
+
+  .movieSearch h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+
+  .movieSearch form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .movieSearch input[type="text"] {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    font-size: 1.2rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+  }
+  
+  .movieSearch button[type="submit"] {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    background-color: #00245e;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .movieSearch button[type="submit"]:hover {
+    background-color: #003f96;
+  }
+  
+  
+  .movieResults {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1000px;
+  }
+  
+  
+  .movieCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 300px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    padding: 20px;
+  }
+  
+  .movieCard h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .movieCard img {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+  }
+  
