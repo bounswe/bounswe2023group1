@@ -5,14 +5,13 @@ import com.a1.disasterresponse.model.WatchedItem;
 import com.a1.disasterresponse.service.MovieService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
 
 
-@Controller
+@RestController
 @RequestMapping("/movie")
 public class MovieController {
 
