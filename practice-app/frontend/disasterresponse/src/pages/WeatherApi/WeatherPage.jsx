@@ -15,6 +15,7 @@ const WeatherPage = () => {
         const latitude = res.data.latitude;
         const longitude = res.data.longitude;
         getWeatherData(latitude, longitude);
+        console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
