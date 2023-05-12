@@ -6,7 +6,7 @@ import './ImdbPage.css'
 const ImdbPage =() =>  {
     const [query , setQuery] = useState("");
     const [movies, setMovies] = useState([]);
-
+    const [rating, setRating] = useState(0);
 
 
     
@@ -27,6 +27,19 @@ const ImdbPage =() =>  {
             console.log(error);
           });
         };
+
+        const getOverallRating = (title) => {
+            axios
+              .get(`api/movie/getAverageRating?title=${encodeURIComponent(title)}`)
+              .then((res) => {
+                const rating = res.data;
+                alert(`Overall Rating: ${rating.tofixed(2)}`);
+                setRating(rating);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          };
         
     return (
             <div className="movieSearch">
@@ -55,8 +68,12 @@ const ImdbPage =() =>  {
                     >
                       <input type="number" name="rating" min="1" max="5" />
                       <button type="submit">Submit Rating</button>
+
                     </form>
-            
+                    <button onClick={() => getOverallRating(movie.title)}>
+  See Overall Rating
+</button>
+                        
                   </div>
                 ))}
               </div>
