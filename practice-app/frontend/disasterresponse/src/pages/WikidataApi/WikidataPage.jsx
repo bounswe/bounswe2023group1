@@ -47,7 +47,7 @@ export default function WikidataPage() {
         <Form className="formDiv">
             <Form.Group className="mb-3" controlId="from">
                 <Form.Label>Name of Entity</Form.Label>
-                <Form.Control type="text" placeholder="Enter address" onChange={(e) => setQuery(e.target.value)}/>
+                <Form.Control type="text" placeholder="Enter entity name" onChange={(e) => setQuery(e.target.value)}/>
             </Form.Group>
 
             <Button variant="primary" onClick={findEntity}>
