@@ -33,7 +33,7 @@ const ImdbPage =() =>  {
               .get(`api/movie/getAverageRating?title=${encodeURIComponent(title)}`)
               .then((res) => {
                 const rating = res.data;
-                alert(`Overall Rating: ${rating.tofixed(2)}`);
+                alert(`Overall Rating: ${rating.toFixed(2)}`);
                 setRating(rating);
               })
               .catch((error) => {
