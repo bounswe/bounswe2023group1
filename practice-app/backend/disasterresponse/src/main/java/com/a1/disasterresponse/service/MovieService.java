@@ -2,10 +2,13 @@ package com.a1.disasterresponse.service;
 
 import com.a1.disasterresponse.model.ImdbResponse;
 import com.a1.disasterresponse.model.Movie;
+import com.a1.disasterresponse.model.WatchedItem;
+import com.a1.disasterresponse.repository.WatchedItemRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -23,6 +26,13 @@ public class MovieService {
     private static final OkHttpClient client = new OkHttpClient();
 
     private static final ObjectMapper mapper = new ObjectMapper();
+
+    @Autowired
+    private final WatchedItemRepository watchedItemRepository;
+
+    public MovieService(WatchedItemRepository watchedItemRepository) {
+        this.watchedItemRepository = watchedItemRepository;
+    }
 
 
     public List<Movie> getMovies(String query, int limit) throws IOException {
@@ -45,6 +55,21 @@ public class MovieService {
             return imdbResponse.getMovies();
             }
         }
+    public Long saveWatchedItem(WatchedItem movie) {
+        WatchedItem savedWatchedItem = watchedItemRepository.save(movie);
+        return savedWatchedItem.getId();
+    }
+
+
+
+    public Double getAverageRating(String title){
+        return watchedItemRepository.getAverageRating(title);
+    }
+
+    public List<WatchedItem> getAllWatchedItems() {
+        return watchedItemRepository.findAll();
+    }
+
 
 
 
