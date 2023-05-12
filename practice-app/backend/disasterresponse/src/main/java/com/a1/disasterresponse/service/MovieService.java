@@ -63,7 +63,11 @@ public class MovieService {
 
 
     public Double getAverageRating(String title){
-        return watchedItemRepository.getAverageRating(title);
+        Double averageRating = watchedItemRepository.getAverageRating(title);
+        if (averageRating == null) {
+            return 0.0;
+        }
+        return averageRating;
     }
 
     public List<WatchedItem> getAllWatchedItems() {
