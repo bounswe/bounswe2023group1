@@ -16,8 +16,8 @@ import java.util.List;
 public class WeatherService {
 
     private static final String BASE_URL = "https://api.open-meteo.com/v1/forecast";
-    private final OkHttpClient client = new OkHttpClient();
-    private final ObjectMapper mapper = new ObjectMapper();
+    private static final OkHttpClient client = new OkHttpClient();
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
     private final FeedbackRepository feedbackRepository;
