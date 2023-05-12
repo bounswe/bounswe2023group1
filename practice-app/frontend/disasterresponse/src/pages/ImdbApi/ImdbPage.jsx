@@ -10,7 +10,7 @@ export default function ImdbPage() {
     
 
     const getMovies = () => {
-        axios.get(`/movie/getMovies?query=${encodeURIComponent(query)}&limit=5`).then(res => {
+        axios.get(`api/movie/getMovies?query=${encodeURIComponent(query)}&limit=5`).then(res => {
             setMovies(res.data)
         }).catch(error =>{
             console.log(error)
