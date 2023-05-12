@@ -49,7 +49,7 @@ public class GeocodeController {
         }
     }
 
-    @PostMapping("/geocode")
+    @PostMapping("/save_geocode")
     public ResponseEntity<Map<String, Object>> saveGeocodeData(@RequestBody GeocodeData geocodeData) {
         try {
             GeocodeData savedGeocodeData = geocodeService.saveGeocodeData(geocodeData);
