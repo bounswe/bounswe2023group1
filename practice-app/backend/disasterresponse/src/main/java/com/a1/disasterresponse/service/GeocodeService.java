@@ -38,4 +38,8 @@ public class GeocodeService {
         }
         return null;
     }
+
+    public GeocodeData saveGeocodeData(GeocodeData geocodeData) {
+        return geocodeData;
+    }
 }

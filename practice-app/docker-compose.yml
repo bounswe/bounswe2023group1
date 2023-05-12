@@ -30,7 +30,6 @@ services:
     build: ./frontend/disasterresponse
     image: frontend:latest
     volumes:
-      - ./frontend/disasterresponse/node_modules:/app/node_modules
       - frontend_files:/app/build
     networks:
       - app_network
@@ -44,7 +43,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - frontend_files:/var/www:r
+      - frontend_files:/var/www:ro
       - ./nginx/:/etc/nginx/conf.d/
     networks:
       - app_network
