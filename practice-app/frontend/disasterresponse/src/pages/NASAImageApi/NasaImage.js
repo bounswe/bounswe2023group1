@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { TextField, Button } from '@mui/material';
 
-export default function Nasa() {
+export default function Kubra() {
     const [inputText, setInputText] = useState('moon');
     const [responseText, setResponseText] = useState('');
 
@@ -12,13 +11,14 @@ export default function Nasa() {
     const [text, setText] = useState('moon');
 
     const handleRequest = () => {
-        // Make API call to your Java Spring backend here
-        fetch(`http://localhost:8081/api/nasa/search/${inputText}`, {
+        fetch(`api/nasa/search?text=${inputText}`, {
             method: 'GET',
 
         })
-            .then((response) => {        console.log('Success:', response);
-                return response.json() })
+            .then((response) => {
+                console.log('Success:', response);
+                return response.json();
+            })
             .then((data) => {
                 setResponseText(data);
                 console.log('Success: sadfasd', data);
@@ -30,25 +30,22 @@ export default function Nasa() {
 
     return (
         <div>
-            <TextField
-                label="Input Text"
+            <input
+                type="text"
+                placeholder="Input Text"
                 value={inputText}
                 onChange={handleInputChange}
             />
-            <Button variant="contained" onClick={handleRequest}>
+            <button onClick={handleRequest}>
                 Send Request
-            </Button>
+            </button>
             {
-
                 responseText?.collection?.items?.map((item) => {
-
-
-                        return <div>
-                            <div>{item.data[0].title}</div>
-                            <img src={item.links[0].href}></img></div>
-
-                    }
-                )
+                    return <div key={item.data[0].nasa_id}>
+                        <div>{item.data[0].title}</div>
+                        <img src={item.links[0].href} alt={item.data[0].title}></img>
+                    </div>
+                })
             }
         </div>
     );
