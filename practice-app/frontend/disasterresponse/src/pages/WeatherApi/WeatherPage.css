@@ -33,8 +33,10 @@
   color: #00245e;
 }
 
-.weather-form input[type="text"] {
+.weather-form input[type="text"],
+.weather-form textarea {
   width: 300px;
+  height: 100px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -43,7 +45,7 @@
 
 .weather-form button[type="submit"] {
   padding: 10px;
-  background-color: #007BFF;
+  background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -53,7 +55,7 @@
 }
 
 .weather-form button[type="submit"]:hover {
-  background-color: #0065C5;
+  background-color: #0065c5;
 }
 
 .weather-info {
@@ -83,7 +85,106 @@
   color: #00245e;
 }
 
-.weather-icon {
-  width: 100px;
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.feedback-form h2 {
+  margin-top: 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  color: #00245e;
+}
+
+.feedback-form label {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #00245e;
+}
+
+.feedback-form input[type="text"],
+.feedback-form input[type="email"] {
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1.2rem;
+}
+
+.feedback-form textarea {
+  width: 300px;
   height: 100px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1.2rem;
+}
+
+.feedback-form button[type="submit"] {
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.feedback-form button[type="submit"]:hover {
+  background-color: #0065c5;
+}
+
+.feedback-section {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.feedback-section h2 {
+  margin-top: 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  color: #00245e;
+}
+
+.feedback-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.feedback-section li {
+  font-size: 1.2rem;
+  color: #00245e;
+}
+
+.get-feedbacks-button {
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.get-feedbacks-button:hover {
+  background-color: #0065c5;
 }

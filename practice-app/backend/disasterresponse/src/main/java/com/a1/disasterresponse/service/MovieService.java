@@ -25,7 +25,7 @@ public class MovieService {
     private static final ObjectMapper mapper = new ObjectMapper();
 
 
-    public List<Movie> getFilmId(String query, int limit) throws IOException {
+    public List<Movie> getMovies(String query, int limit) throws IOException {
 
         String encodedQueryParam = URLEncoder.encode(query, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
 
