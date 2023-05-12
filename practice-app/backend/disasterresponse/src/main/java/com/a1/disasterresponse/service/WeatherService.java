@@ -59,4 +59,7 @@ public class WeatherService {
     public List<Feedback> getAllFeedbacks() {
         return feedbackRepository.findAll();
     }
+    public OkHttpClient getClient() {
+        return client;
+    }
 }
