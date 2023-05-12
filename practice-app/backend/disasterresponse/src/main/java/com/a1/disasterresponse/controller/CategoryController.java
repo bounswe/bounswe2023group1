@@ -4,29 +4,43 @@ import com.a1.disasterresponse.model.EntityData;
 import com.a1.disasterresponse.service.WikidataService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@RestController
 public class CategoryController {
 
-    WikidataService wikidataService;
+    private final WikidataService wikidataService;
 
-    @GetMapping("/getEntityFor")
-    public ResponseEntity<EntityData> categoriesOf(@RequestParam String query) {
+    public CategoryController(WikidataService wikidataService) {
+        this.wikidataService = wikidataService;
+    }
+
+    @GetMapping("/getIdOf")
+    public ResponseEntity<String> idOf(@RequestParam String query) {
         try {
             String id = wikidataService.searchForWikidataEntity(query);
+            return new ResponseEntity<>(id, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getCategoriesOf")
+    public ResponseEntity<List<EntityData>> getCategoriesOf(@RequestParam String id) {
+        try {
             EntityData entityData = wikidataService.getWikidataEntityFromId(id);
-            List<String> categories = new ArrayList<>();
+            List<EntityData> categories = new ArrayList<>();
             for (String category : entityData.categories()) {
-                categories.add(wikidataService.getWikidataEntityFromId(category).labels().get("en"));
+                categories.add(wikidataService.getWikidataEntityFromId(category));
             }
-            return new ResponseEntity<>(entityData, HttpStatus.OK);
+            return new ResponseEntity<>(categories, HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

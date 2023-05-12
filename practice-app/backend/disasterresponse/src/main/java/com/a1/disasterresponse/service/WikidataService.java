@@ -43,13 +43,11 @@ public class WikidataService {
                 ));
 
         List<String> supercategories = new ArrayList<>();
-
         if (entity.get("claims").has("P279")) {
             entity.get("claims")
                     .get("P279")
-                    .fields()
+                    .elements()
                     .forEachRemaining(e -> supercategories.add(e
-                            .getValue()
                             .get("mainsnak")
                             .get("datavalue")
                             .get("value")
