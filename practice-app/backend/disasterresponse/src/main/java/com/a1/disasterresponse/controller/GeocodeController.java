@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Map;
 
@@ -42,6 +44,20 @@ public class GeocodeController {
                 return ResponseEntity.ok(Map.of("latitude", geocodeData.getLatitude(), "longitude", geocodeData.getLongitude(), "address", geocodeData.getAddress()));
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Unable to reverse geocode coordinates"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/geocode")
+    public ResponseEntity<Map<String, Object>> saveGeocodeData(@RequestBody GeocodeData geocodeData) {
+        try {
+            GeocodeData savedGeocodeData = geocodeService.saveGeocodeData(geocodeData);
+            if (savedGeocodeData != null) {
+                return ResponseEntity.ok(Map.of("message", "Geocode data saved successfully"));
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Unable to save geocode data"));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
