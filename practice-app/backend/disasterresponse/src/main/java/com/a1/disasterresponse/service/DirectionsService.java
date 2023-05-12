@@ -16,8 +16,11 @@ import okhttp3.Response;
 @Service
 public class DirectionsService {
 	
-	@Autowired
-	private BookmarkedDestinationRepository bookmarkedDestinationRepository;
+	private final BookmarkedDestinationRepository bookmarkedDestinationRepository;
+	
+	public DirectionsService(BookmarkedDestinationRepository bookmarkedDestinationRepository) {
+		this.bookmarkedDestinationRepository = bookmarkedDestinationRepository;
+	}
 
 	public String getDirectionBetweenAddresses(String from, String to) {
 		OkHttpClient client = new OkHttpClient().newBuilder()
