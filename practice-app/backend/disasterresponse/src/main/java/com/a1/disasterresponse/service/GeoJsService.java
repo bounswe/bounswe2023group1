@@ -23,6 +23,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class GeoJsService {
     @Autowired
     private IpListRepository ipListRepository;
+    public GeoJsService(){
+
+    }
+
+    public GeoJsService(IpListRepository  ipListRepository){
+        this.ipListRepository = ipListRepository;
+    }
 
     private static final String GEOJS_API_URL = "https://get.geojs.io/v1/ip/geo/%s.json";
     private final OkHttpClient httpClient = new OkHttpClient();
