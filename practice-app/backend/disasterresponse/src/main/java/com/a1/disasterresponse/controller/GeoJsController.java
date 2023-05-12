@@ -57,12 +57,12 @@ public class GeoJsController {
         }
     }
     @GetMapping("/getIpList")
-	public ResponseEntity<List<IpList>> getBookmarkedDestinations() {
+	public ResponseEntity<List<IpList>> getIpList() {
 		return new ResponseEntity<List<IpList>>(geoJsService.getIpList() ,HttpStatus.OK);
 	}	
 	
 	@PostMapping("/saveIp")
-	public ResponseEntity<String> saveDestination(@RequestParam String ip) {
+	public ResponseEntity<String> saveIp(@RequestParam String ip) {
 		return ResponseEntity.ok(geoJsService.saveIp(ip));
 	}
 
