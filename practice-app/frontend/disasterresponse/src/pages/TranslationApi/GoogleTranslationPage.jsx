@@ -33,7 +33,7 @@ export default function GoogleTranslationPage() {
                             <option value="en">English</option>
                             <option value="tr">Turkish</option>
                             <option value="fr">French</option>
-                            <option value="sp">Spanish</option>
+                            <option value="es">Spanish</option>
                             <option value="zh">Chinese</option>
                             <option value="da">Danish</option>
                             <option value="nl">Dutch</option>

@@ -23,6 +23,8 @@ services:
       - POSTGRES_PASSWORD=compose-postgres
     networks:
       - app_network
+    ports:
+      - "5432:5432"
 
   frontend_dev:
     container_name: frontend_dev
