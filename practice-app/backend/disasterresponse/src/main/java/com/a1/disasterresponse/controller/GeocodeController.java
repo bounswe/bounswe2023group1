@@ -2,7 +2,6 @@ package com.a1.disasterresponse.controller;
 
 import com.a1.disasterresponse.model.GeocodeData;
 import com.a1.disasterresponse.service.GeocodeService;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
