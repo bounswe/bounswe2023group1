@@ -44,10 +44,5 @@ public class MovieController {
         return new ResponseEntity<>(rating, HttpStatus.OK);
     }
 
-//    @GetMapping("/getWatchedItems")
-//    public ResponseEntity<List<WatchedItem>> getWatchedItems() {
-//        List<WatchedItem> watchedItems = movieService.getAllWatchedItems();
-//        return new ResponseEntity<>(watchedItems, HttpStatus.OK);
-//    }
 
 }
