@@ -21,14 +21,14 @@
 ## Your plans for the next week
 | Description | Issue | Assignee | Due | Estimated Duration |
 | --- | --- | --- | --- | --- |
-| Re-verify the requirements | [#1](#) | Team | 10.10.2023 | 1hr | 1.5hr |
-| Decide on what technologies are going to be used for the front-end | [#2](#) | Front-Team | 10.10.2023 | 1hr |
-| Decide on what technologies are going to be used for the back-end | [#3](#) | Backend-Team | 10.10.2023 | 1hr |
-| Decide on what technologies are going to be used for the mobile | [#4](#) | Mobile | 10.10.2023 | 1hr |
-| Decide on project name | [#5](#) | Team | 10.10.2023 | 15mins |
-| Cross-team technology sync - verify that these technologies are compatible | [#6](#) | Team | 10.10.2023 | 1hr | 15mins |
-| Review the class diagram , use case diagram, sequence diagram | [#7](#) | Team | 10.10.2023 | 4hr | 5hr |
-| Reorganize the home page of wiki| [#8](#)| Team | 10.10.2023| 30mins | 
+| Re-verify the requirements | [#251](https://github.com/bounswe/bounswe2023group1/issues/251) | Team | 10.10.2023 | 1hr | 1.5hr |
+| Decide on what technologies are going to be used for the front-end | [#248](https://github.com/bounswe/bounswe2023group1/issues/248) | Front-Team | 10.10.2023 | 1hr |
+| Decide on what technologies are going to be used for the back-end | [#247](https://github.com/bounswe/bounswe2023group1/issues/247) | Backend-Team | 10.10.2023 | 1hr |
+| Decide on what technologies are going to be used for the mobile | [#249](https://github.com/bounswe/bounswe2023group1/issues/249) | Mobile | 10.10.2023 | 1hr |
+| Decide on project name | [#250](https://github.com/bounswe/bounswe2023group1/issues/250) | Team | 10.10.2023 | 15mins |
+| Cross-team technology sync - verify that these technologies are compatible | [#251](https://github.com/bounswe/bounswe2023group1/issues/251) | Team | 10.10.2023 | 1hr | 15mins |
+| Review the class diagram , use case diagram, sequence diagram | [#243](https://github.com/bounswe/bounswe2023group1/issues/243), [#242](https://github.com/bounswe/bounswe2023group1/issues/242), [#244](https://github.com/bounswe/bounswe2023group1/issues/244)| Team | 10.10.2023 | 4hr | 5hr |
+| Reorganize the home page of wiki| [#253](https://github.com/bounswe/bounswe2023group1/issues/253)| Team | 10.10.2023| 30mins | 
 
 ## Risks
 - Extended user roles (e.g., facilitator, responder) may require additional fields that we did not consider in the initial design. We will address these issues as they arise.
