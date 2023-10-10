@@ -78,6 +78,7 @@ We have started revising the planning including the requirements, mock-ups, and 
 - Elif Tokluoğlu
 - Furkan Bülbül
 - Harun Reşid Ergen
+- Ilgaz Er
 - Kübra Aksu
 - Orkan Akıtsu
 - Volkan Öztürk
