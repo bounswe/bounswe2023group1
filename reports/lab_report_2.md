@@ -51,17 +51,17 @@ We have started revising the planning including the requirements, mock-ups, and 
 | Start designing database relations while revising class diagrams| [#259](#259) |Back-end Team | 17.10.2023 | 2 hr |
 | Create a project timeline for back-end | [#260](#260) | Back-end Team | 12.10.2023 | 3 hr |
 | Create a project timeline for front-end | [#261](#261) | Front-end Team | 12.10.2023 | 3 hr |
-| Create a project timeline for mobile | [#262](#262) | Mobile Team | 12.10.2023 | 3 hr |
+| Create a project timeline for mobile | [#262](https://github.com/bounswe/bounswe2023group1/issues/262) | Mobile Team | 12.10.2023 | 3 hr |
 | Continue on the revising diagrams | [#242](#242), [#243](#243), [#244](#244) | Team | 17.10.2023 | 3 hr |
 | Reset the branches that are used for practice app, and create new base branches| [#263](#263)| Team | 17.10.2023 | 1 hr|
 | Reviewing mock-ups to create a base for front-end development| [#271](#271) | Front-end Team | 17.10.2023 | 2 hr |
 | Study react | [#258](#258) | Front-end Team | 17.10.2023 | 3 hr |
 | Initial setup of front-end codebase| [#264](#264) | Front-end Team | 17.10.2023 | 3 hr |
-| Research the MVVM architecture, dependency injection | [#265](#265) | Mobile Team | 17.10.2023 | 3 hr |
-| Adding mobile tags | [#267](#267) | Mobile Team | 17.10.2023 | 15mins |
-| Study on Jetpack Compose sample tutorials| [#266](#266) | Mobile Team | 17.10.2023 | 2 hr |
-| Start creating page design | [#270](#270) | Mobile Team | 17.10.2023| 3 hr |
-| Reviewing mock-ups considering Mobile design| [#269](#269) | Front-end Team | 17.10.2023 | 2 hr |
+| Research the MVVM architecture, dependency injection | [#265](https://github.com/bounswe/bounswe2023group1/issues/265) | Mobile Team | 17.10.2023 | 3 hr |
+| Adding mobile tags | [#267](https://github.com/bounswe/bounswe2023group1/issues/267) | Mobile Team | 17.10.2023 | 15mins |
+| Study on Jetpack Compose sample tutorials| [#266](https://github.com/bounswe/bounswe2023group1/issues/266) | Mobile Team | 17.10.2023 | 2 hr |
+| Start creating page design | [#270](https://github.com/bounswe/bounswe2023group1/issues/270) | Mobile Team | 17.10.2023| 3 hr |
+| Reviewing mock-ups considering Mobile design| [#269](https://github.com/bounswe/bounswe2023group1/issues/269) | Front-end Team | 17.10.2023 | 2 hr |
 | Update RAM | [#268](#268) | Team | 17.10.2023 | 3 hr |
 | Update Sidebar to seperate courses as cmpe352 and cmpe451| [#239](#) | Elif | 17.10.2023 | 1 hr |
 
