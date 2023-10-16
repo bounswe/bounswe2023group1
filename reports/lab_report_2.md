@@ -34,7 +34,7 @@ We have started revising the planning including the requirements, mock-ups, and 
 - We planned to decide on the front-end, back-end, and mobile technologies by this week ([#247](#), [#248](#), [#249](#)). Each team discussed separately and decided the tech stack. Mainly we made decision based on the prior experience. <br>
 - **Back-end team** will be using Java, Spring Boot, and PostgreSQL stack. <br>
 - **Front-end team** will be using JavaScript and React.
-- **Mobile team** will be using Android Studio, Katlin.
+- **Mobile team** will be using Android Studio, Kotlin.
 - We had updates on requirements, diagrams. However, we could not finish to revise all.
 
 
