@@ -21,7 +21,6 @@ Additional figma designes are created for mobile. Frontend team decided to updat
 
 | Description | Issue | Assignee | Due | PR | Estimated Duration | Actual Duration | 
 | -------- | ----- | -------- | --- | --- | --- | --- |
-
 | Initial code setup in Spring Boot | [#255](#) | Ali, Furkan | 17.10.2023 | [#272](#) | 30 mins| 1 hr|
 | Swagger Api documentation integration | [#255](#) | Ali, Furkan |  17.10.2023 | [#272](#) |30 mins| 1 hr|
 | Logger integration| [#255](#) |  Ali, Furkan | 17.10.2023 | [#272](#) |30 mins| 30 mins|
