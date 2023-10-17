@@ -1,4 +1,4 @@
-<div align="center"><img src="https://user-images.githubusercontent.com/83069560/230832649-1788da25-6212-40a5-8eff-40955922ab59.png" alt="" width="150px" height="150px"><h1> CMPE352 Group 1 <br/> Disaster Response Platform </h1></div>
+<div align="center"><img src="https://user-images.githubusercontent.com/83069560/230832649-1788da25-6212-40a5-8eff-40955922ab59.png" alt="" width="150px" height="150px"><h1> CMPE352/451 Group 1 <br/> Disaster Response Platform </h1></div>
 
 ***
 
