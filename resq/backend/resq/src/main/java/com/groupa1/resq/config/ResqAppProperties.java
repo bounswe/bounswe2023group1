@@ -15,4 +15,13 @@ public class ResqAppProperties {
 
     @Value("${server.port}")
     private String serverPort;
+
+    @Value("${server.servlet.context-path}")
+    private String appContextPath;
+
+    @Value("${resq.app.jwtSecret}")
+    private String jwtSecret;
+
+    @Value("${resq.app.jwtExpirationMs}")
+    private int jwtExpirationMs;
 }
