@@ -12,11 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.cmpe451.resq.ui.theme.ResQTheme
 import com.cmpe451.resq.ui.views.screens.LoginScreen
+import com.cmpe451.resq.ui.views.screens.RegistrationScreen
 
 
 @Composable
 fun App() {
-    LoginScreen()
+    RegistrationScreen()
 }
 
 class MainActivity : ComponentActivity() {

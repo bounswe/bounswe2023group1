@@ -26,9 +26,11 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextDecoration
+import com.cmpe451.resq.ui.theme.DeepBlue
+import com.cmpe451.resq.ui.theme.LightGreen
 
 
-val lexendDecaFont = FontFamily(Font(R.font.lexend_deca))
+private val lexendDecaFont = FontFamily(Font(R.font.lexend_deca))
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,35 +47,35 @@ fun LoginScreen() {
         Text(
             text = "Sign in",
             style = MaterialTheme.typography.displayLarge,
-            color = Color(0xff224957),
+            color = DeepBlue,
             fontWeight = FontWeight.Medium,
             fontFamily = lexendDecaFont
         )
 
-        Spacer(modifier = Modifier.height(32.dp)) // Provide space
+        Spacer(modifier = Modifier.height(32.dp))
 
         // Login input
         TextField(
-            value = "", // Bind to a state in a real-world scenario
+            value = "", // TODO: Bind to a state
             onValueChange = {},
             label = { Text("Login", color = Color.White) },
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.textFieldColors(
-                containerColor = Color(	0xff224957)
+                containerColor = DeepBlue
             )        )
 
         Spacer(modifier = Modifier.height(16.dp)) // Provide space
 
         // Password input
         TextField(
-            value = "", // Bind to a state in a real-world scenario
+            value = "", // TODO: Bind to a state
             onValueChange = {},
             label = { Text("Password", color = Color.White) },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             colors = TextFieldDefaults.textFieldColors(
-                containerColor = Color(	0xff224957)
+                containerColor = DeepBlue
             )
         )
 
@@ -90,13 +92,14 @@ fun LoginScreen() {
                 horizontalArrangement = Arrangement.Start
             ) {
                 Checkbox(
-                    checked = false, // Bind to a state in a real-world scenario
+                    checked = false, // TODO: Bind to a state
                     onCheckedChange = {}
                 )
                 Text(
                     text = "Remember me",
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color(0xff224957))
+                    color = DeepBlue
+                )
             }
 
             TextButton(onClick = {}) {
@@ -109,20 +112,20 @@ fun LoginScreen() {
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp)) // Provide space
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Login button
         Button(
             onClick = {},
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xff20df7f)
+                containerColor = LightGreen
             )
         ) {
-            Text("Login", color = Color(0xff224957))
+            Text("Login", color = DeepBlue)
         }
 
-        Spacer(modifier = Modifier.height(16.dp)) // Provide space
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Not Registered Yet? Create an account
         Row(
@@ -135,7 +138,7 @@ fun LoginScreen() {
                 Text(
                     text = "Create an account",
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color(0xff224957),
+                    color = DeepBlue,
                     fontWeight = FontWeight.Medium,
                     textDecoration = TextDecoration.Underline
                 )
