@@ -19,10 +19,7 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "email")
         })
 @Data
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends BaseEntity {
 
     @NotBlank
     @Size(max = 20)
@@ -41,6 +38,34 @@ public class User {
     @CollectionTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<EUserRole> roles = new HashSet<>();
+
+    @OneToOne(mappedBy = "user")
+    private UserProfile userProfile;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="requester")
+    private Set<Request> requests;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="requester")
+    private Set<Need> needs;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="owner")
+    private Set<Resource> resources;
+
+    // Coordinator assigns to responder
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "assigner")
+    private Set<Task> tasksAssigned;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "assignee")
+    private Set<Task> tasksAssignedTo;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "creator")
+    private Set<Feedback> feedbacks;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "verifier")
+    private Set<Action> actions;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<Info> infos;
 
     public User(String username, String email, String password) {
         this.username = username;
