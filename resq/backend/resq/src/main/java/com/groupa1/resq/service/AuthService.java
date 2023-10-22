@@ -7,6 +7,7 @@ import com.groupa1.resq.request.LoginUserRequest;
 import com.groupa1.resq.request.RegisterUserRequest;
 import com.groupa1.resq.response.JwtResponse;
 import com.groupa1.resq.security.jwt.JwtUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +23,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class AuthService {
     @Autowired
     AuthenticationManager authenticationManager;

@@ -4,14 +4,15 @@ import com.groupa1.resq.entity.User;
 import com.groupa1.resq.entity.enums.EUserRole;
 import com.groupa1.resq.exception.EntityNotFoundException;
 import com.groupa1.resq.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class UserService {
 
     @Autowired
@@ -40,5 +41,9 @@ public class UserService {
         roles.add(EUserRole.getEnumByStr(role.toUpperCase()));
         user.setRoles(roles);
         save(user);
+    }
+
+    public User findById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 }
