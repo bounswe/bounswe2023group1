@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import disasterImage from './disaster.png';
 import Container from '@mui/material/Container';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 function Copyright(props) {
@@ -37,11 +36,11 @@ const defaultTheme = createTheme();
 
 export default function SignIn(){
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  //const handleSignUpClick = () => {
-    //navigate('/signup'); 
-  //};
+  const handleSignUpClick = () => {
+    navigate('/signup'); 
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -115,7 +114,7 @@ export default function SignIn(){
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link onClick={handleSignUpClick} variant="body2">v
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
