@@ -1,12 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import './index.css';
-import SignIn from './SignIn';
+import SignUp from './SignUp';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+ReactDOM.render(
   <React.StrictMode>
-    <SignIn />
-  </React.StrictMode>
+    <SignUp /> {/* Render the App component here */}
+  </React.StrictMode>,
+  document.getElementById('root')
 );
