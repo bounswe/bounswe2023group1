@@ -46,4 +46,9 @@ public class UserService {
     public User findById(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
+
+    public void viewRequest(Long userId, Long requestId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        
+    }
 }

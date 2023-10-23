@@ -72,6 +72,9 @@ public class UserController {
         return "Victim Board.";
     }
 
+    @GetMapping("/viewRequest")
+    @PreAuthorize("hasRole('VICTIM') or hasRole('FACILITATOR')")
+
     @GetMapping("/coordinator")
     @PreAuthorize("hasRole('COORDINATOR')")
     public String coordinatorAccess() {
