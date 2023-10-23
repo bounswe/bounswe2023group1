@@ -5,10 +5,10 @@ import com.cmpe451.resq.data.models.User
 
 class AuthApi {
 
-    fun login(username: String, password: String): User? {
+    fun login(email: String, password: String): User? {
         // dummy data
-        if (username == "test" && password == "password") {
-            return User(id = 1, username = "test", password = "password")
+        if (email == "test" && password == "password") {
+            return User(email = "test", password = "password")
         }
         return null
     }

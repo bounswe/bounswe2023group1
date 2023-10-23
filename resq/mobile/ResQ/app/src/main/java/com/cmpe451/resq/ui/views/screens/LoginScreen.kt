@@ -13,28 +13,48 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxColors
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.navigation.NavController
+import com.cmpe451.resq.data.remote.AuthApi
+import com.cmpe451.resq.domain.LoginUseCase
 import com.cmpe451.resq.ui.theme.DeepBlue
 import com.cmpe451.resq.ui.theme.LightGreen
+import com.cmpe451.resq.viewmodels.LoginViewModel
 
 
 private val lexendDecaFont = FontFamily(Font(R.font.lexend_deca))
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController) {
+
+    val authApi = AuthApi()
+    val loginUseCase = LoginUseCase(authApi)
+    val viewModel = LoginViewModel(loginUseCase)
+
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var rememberMe by remember { mutableStateOf(false) }
+
+
+    val user by viewModel.user
+    if (user != null) {
+        // Navigate to another screen
+        navController.navigate("login")
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -56,8 +76,8 @@ fun LoginScreen() {
 
         // Login input
         TextField(
-            value = "", // TODO: Bind to a state
-            onValueChange = {},
+            value = email,
+            onValueChange = { email = it },
             label = { Text("Login", color = Color.White) },
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.textFieldColors(
@@ -68,8 +88,8 @@ fun LoginScreen() {
 
         // Password input
         TextField(
-            value = "", // TODO: Bind to a state
-            onValueChange = {},
+            value = password,
+            onValueChange = { password = it },
             label = { Text("Password", color = Color.White) },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation(),
@@ -92,8 +112,8 @@ fun LoginScreen() {
                 horizontalArrangement = Arrangement.Start
             ) {
                 Checkbox(
-                    checked = false, // TODO: Bind to a state
-                    onCheckedChange = {}
+                    checked = rememberMe,
+                    onCheckedChange = { rememberMe = it }
                 )
                 Text(
                     text = "Remember me",
@@ -116,7 +136,7 @@ fun LoginScreen() {
 
         // Login button
         Button(
-            onClick = {},
+            onClick = { viewModel.login(email, password) },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 containerColor = LightGreen
@@ -134,7 +154,9 @@ fun LoginScreen() {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Not Registered Yet? ", style = MaterialTheme.typography.bodySmall)
-            TextButton(onClick = {}) {
+            TextButton(onClick = {
+                navController.navigate("registration")
+            }) {
                 Text(
                     text = "Create an account",
                     style = MaterialTheme.typography.bodySmall,

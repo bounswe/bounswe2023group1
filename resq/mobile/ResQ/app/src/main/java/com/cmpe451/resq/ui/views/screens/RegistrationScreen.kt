@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.navigation.NavController
 import com.cmpe451.resq.ui.theme.DeepBlue
 import com.cmpe451.resq.ui.theme.LightGreen
 
@@ -32,7 +33,7 @@ private val lexendDecaFont = FontFamily(Font(R.font.lexend_deca))
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegistrationScreen() {
+fun RegistrationScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -137,7 +138,9 @@ fun RegistrationScreen() {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Already have an account? ", style = MaterialTheme.typography.bodySmall.copy(color = DeepBlue))
-            TextButton(onClick = {}) {
+            TextButton(onClick = {
+                navController.navigate("login")
+            }) {
                 Text(
                     text = "Log in",
                     style = MaterialTheme.typography.bodySmall.copy(
