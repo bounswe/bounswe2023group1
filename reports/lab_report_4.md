@@ -19,10 +19,10 @@
 | User profile screen | [#278](https://github.com/bounswe/bounswe2023group1/issues/278) | Çağrı | 24.10.2023| -- | 6hr | 10 hr |
 | Setting and notification page screen | [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Elif | 24.10.2023 | -- | 1hr | 10 hr |
 | Deployment of backend | [#281](https://github.com/bounswe/bounswe2023group1/issues/281) | Back-end Team | 24.10.2023| -- |1hr | 4 hr |
-| Frontend Investigate and Implement Authentication Stack | [#282](https://github.com/bounswe/bounswe2023group1/issues/282) | Front-end Team | 24.10.2023 | -- | 10 hr |
+| Frontend Investigate and Implement Authentication Stack | [#282](https://github.com/bounswe/bounswe2023group1/issues/282) | Front-end Team | 24.10.2023 | 6 | 10 hr |
 | Design API for victim functionalities | [#283](https://github.com/bounswe/bounswe2023group1/issues/283) | Back-end Team | 24.10.2023| -- | 3hr| 4 hr |
-| Frontend Login and Registration Pages | [#279](https://github.com/bounswe/bounswe2023group1/issues/279) | Front-end Team | 24.10.2023| -- |4hr | 4 hr |
-| Frontend Implement Draft Map Page | [#284](https://github.com/bounswe/bounswe2023group1/issues/284) | Front-end Team | 24.10.2023| -- | 2hr| 6 hr |
+| Frontend Login and Registration Pages | [#279](https://github.com/bounswe/bounswe2023group1/issues/279) | Front-end Team | 24.10.2023| -- |6hr | 4 hr |
+| Frontend Implement Draft Map Page | [#284](https://github.com/bounswe/bounswe2023group1/issues/284) | Front-end Team | 24.10.2023| -- | 4hr| 6 hr |
 | Implement location services via keeping location info on database  | [#285](https://github.com/bounswe/bounswe2023group1/issues/285) | Back-end Team | 24.10.2023 | -- |1hr | 3 hr |
 
 
@@ -44,20 +44,21 @@
 | Setting and notification page screen continue| [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Elif | 31.10.2023 | 9 hr |
 | Login screen, registration continue | [#275](https://github.com/bounswe/bounswe2023group1/issues/275) | Harun | 31.10.2023| -- | 2 hr|
 | Deployment of backend continue| [#281](https://github.com/bounswe/bounswe2023group1/issues/281) | Türker | 31.10.2023 | 3 hr |
-| Creat User case scenario | -- | Mobile Team | 31.10.2023|| 3hr|
+| Creat User case scenario | -- | Mobile Team | 31.10.2023|| 8hr|
 | Design API for victim functionalities | [#283](https://github.com/bounswe/bounswe2023group1/issues/283) | Volkan | 24.10.2023 | 3hr|
-| Decide on what technologies are going to be used for the front-end | [#5](#) | Front-Team | 02.10.2023 | 1hr |
-| Disaster reporting mechanism| 1hr
-| Reviewing mock-ups considering web page design continue| [#269](https://github.com/bounswe/bounswe2023group1/issues/269) | Front-end Team | 17.10.2023 | -- |1hr|
-|Design API for responder functionalities| furkan 4hr
-| Creat User case scenario | -- | Front end Team | 31.10.2023|| 3hr|
-|Login in implementation| Front end team 
-|responder page 
+| Reviewing mock-ups considering web page design continue| [#269](https://github.com/bounswe/bounswe2023group1/issues/269) | Front-end Team | 17.10.2023 | -- |4hr|
+| Design API for responder functionalities| furkan 4hr
+| Creat User case scenario | -- | Front end Team | 31.10.2023|| 12hr|
+| Responder page implementation
+| Implement jwt based authentication for login and queries kübra 4hr
+| Frontend Implement Draft Map Page | [#284](https://github.com/bounswe/bounswe2023group1/issues/284) | Front-end Team | 24.10.2023| -- | 10hr|
 
-|finalizing category tree ali 3
+|finalizing category tree ali 3hr
 
 ## Risks
 - Extended user roles (e.g., facilitator, responder) may require additional fields that we did not consider in the initial design. We will address these issues as they arise.
+- It is a great possibility that frontend team can face challenges at jwt bassed authentiction because it requires new technical learning process.
+- The map library we have chosen does not natively integrate with react. It has proven difficult to integrate it with react, which is why the issue is ongoing. These difficulties might persist. 
 ...
 
 ## Participants
