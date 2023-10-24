@@ -30,7 +30,10 @@ function App() {
             <div>
                 <Navbar bg="light" variant="light" expand="lg">
                     <Container>
-                        <Navbar.Brand href="/"><smallRedCircle/> ResQ</Navbar.Brand>
+                        <Navbar.Brand href="/" style={{ color: 'red' }}>
+                            <smallRedCircle/> 
+                            ResQ
+                        </Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="me-auto" style={{width: "100%"}}>

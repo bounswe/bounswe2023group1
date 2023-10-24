@@ -20,7 +20,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://github.com/bounswe/bounswe2023group1">
-        RESQ
+        ResQ
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -75,7 +75,7 @@ export default function SignUp() {
           </Avatar>
 
           <Typography component="h5" variant="h5" sx={{ color: 'red', fontWeight: 'bold' }}>
-            RESQ
+            ResQ
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -104,10 +104,10 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="phoneNumber"
-                  label="Phone Number"
-                  name="phoneNumber"
-                  autoComplete="phone-number"
+                  id="email"
+                  label="Email"
+                  name="email"
+                  autoComplete="email"
                 />
               </Grid>
               <Grid item xs={12}>

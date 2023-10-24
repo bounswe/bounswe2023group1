@@ -22,7 +22,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://github.com/bounswe/bounswe2023group1">
-        RESQ
+        ResQ
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -77,7 +77,7 @@ export default function SignIn(){
           </Avatar>
 
           <Typography component="h5" variant="h5" sx={{ color: 'red', fontWeight: 'bold' }}>
-            RESQ
+            ResQ
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
