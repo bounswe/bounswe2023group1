@@ -4,7 +4,7 @@
 **Date:** 24.10.2023
 
 ## Progress Summary
-**This week** focused on updating the design documents and deciding on the general structure of the project. We set up the initial codebase for the back-end, the front-end, and the mobile. We decided on the technologies that will be used. We made several updates to the class diagram and the use case diagram. **Our objective for the following week** will be to connect the back-end with the front-end and the mobile.
+**This week** focused on updating design documents and establishing the project's core structure. We improved the codebase for the back-end, the front-end, and the mobile in a way that they work consistently . **Our objective for the following week** will be to improve our code to satisfy more requirements and prepare for the milestone presentation.
 
 ## What was planned for the week? How did it go?
 
@@ -34,7 +34,7 @@
 | Implementation of database relations | [#259](https://github.com/bounswe/bounswe2023group1/issues/259)| Ali | 24.10.2023| [#287] |
 
 ## Planned vs. Actual
-- We planned to decide on the front-end technologies by this week ([#5](#)). Even though we made a very fruitful discussion on the technologies that will be used for the front-end, we did not finalize the decision. Options are reduced to React and Vue. We will finalize the decision next week.
+- We planned to finish ([#275](https://github.com/bounswe/bounswe2023group1/issues/275), [#277](https://github.com/bounswe/bounswe2023group1/issues/277), [#278](https://github.com/bounswe/bounswe2023group1/issues/278), [#280](https://github.com/bounswe/bounswe2023group1/issues/280), [#281](https://github.com/bounswe/bounswe2023group1/issues/281))  issues last week, but they are a little more challenging than we anticipated so we will be still working on them even though we didn't plan that way.
 
 ## Your plans for the next week
 | Description | Issue | Assignee | Due | Estimated Duration |
@@ -44,15 +44,14 @@
 | Setting and notification page screen continue| [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Elif | 31.10.2023 | 9 hr |
 | Login screen, registration continue | [#275](https://github.com/bounswe/bounswe2023group1/issues/275) | Harun | 31.10.2023 | 2 hr|
 | Deployment of backend continue| [#281](https://github.com/bounswe/bounswe2023group1/issues/281) | Türker | 31.10.2023 | 3 hr |
-| Creat User case scenario | -- | Mobile Team | 31.10.2023|| 8hr|
+| Creat User case scenario |[#298](https://github.com/bounswe/bounswe2023group1/issues/298) | Mobile Team | 31.10.2023| 8hr|
 | Design API for victim functionalities | [#283](https://github.com/bounswe/bounswe2023group1/issues/283) | Volkan | 31.10.2023 | 3hr|
 | Reviewing mock-ups considering web page design continue| [#269](https://github.com/bounswe/bounswe2023group1/issues/269) | Front-end Team | 31.10.2023  |4hr|
 | Design API for responder functionalities|[#296](https://github.com/bounswe/bounswe2023group1/issues/296) | Furkan | 31.10.2023 | 4 hr |
-| Creat User case scenario | -- | Frontend Team | 31.10.2023| 12hr|
-| Responder page implementation
-| Implement jwt based authentication for login and queries| -- | Kübra | 31.10.2023| 12hr|
-| Frontend Implement Draft Map Page | [#284](https://github.com/bounswe/bounswe2023group1/issues/284) | Ilgaz | 24.10.2023 | 10hr |
-| Finalizing category tree | [#297](https://github.com/bounswe/bounswe2023group1/issues/297) | Ali | 24.10.2023 | 3hr |
+| Creat User case scenario |[#299](https://github.com/bounswe/bounswe2023group1/issues/299)  | Frontend Team | 31.10.2023| 12hr|
+| Implement jwt based authentication for login and queries|[#300](https://github.com/bounswe/bounswe2023group1/issues/300)  | Kübra | 31.10.2023| 12hr|
+| Frontend Implement Draft Map Page | [#284](https://github.com/bounswe/bounswe2023group1/issues/284) | Ilgaz | 31.10.2023 | 10hr |
+| Finalizing category tree | [#297](https://github.com/bounswe/bounswe2023group1/issues/297) | Ali | 31.10.2023 | 3hr |
 
 ## Risks
 - Extended user roles (e.g., facilitator, responder) may require additional fields that we did not consider in the initial design. We will address these issues as they arise.
