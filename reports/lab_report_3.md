@@ -87,5 +87,5 @@ Additional figma designes are created for mobile. Frontend team decided to updat
 - Harun Reşid Ergen
 - Ilgaz Er
 - Kübra Aksu
-- Orkan Akıtsu
+- Orkan Akısu
 - Volkan Öztürk
