@@ -27,7 +27,6 @@ fun AppNavigator() {
             LoginScreen(navController)
         }
         composable("registration") {
-            // Replace with your RegistrationScreen Composable
             RegistrationScreen(navController)
         }
     }
