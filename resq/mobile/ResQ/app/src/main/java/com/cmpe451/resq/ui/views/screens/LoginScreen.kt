@@ -27,9 +27,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.cmpe451.resq.data.remote.AuthApi
-import com.cmpe451.resq.domain.LoginUseCase
 import com.cmpe451.resq.ui.theme.DeepBlue
 import com.cmpe451.resq.ui.theme.LightGreen
 import com.cmpe451.resq.viewmodels.LoginViewModel
@@ -42,21 +42,13 @@ private val lexendDecaFont = FontFamily(Font(R.font.lexend_deca))
 fun LoginScreen(navController: NavController) {
 
     val authApi = AuthApi()
-    val loginUseCase = LoginUseCase(authApi)
-    val viewModel = LoginViewModel(loginUseCase)
+    val viewModel: LoginViewModel = viewModel()
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var rememberMe by remember { mutableStateOf(false) }
 
 
-    val user by viewModel.user
-    if (user != null) {
-        // Navigate to another screen
-        navController.navigate("login")
-    }
-    println("DEBUGGG")
-    println(user?.password)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -80,7 +72,7 @@ fun LoginScreen(navController: NavController) {
         TextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Login", color = Color.White) },
+            label = { Text("E-mail", color = Color.White) },
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = DeepBlue
@@ -167,6 +159,24 @@ fun LoginScreen(navController: NavController) {
                     textDecoration = TextDecoration.Underline
                 )
             }
+        }
+        // Success and Error messages
+        if (viewModel.user.value != null) {
+            Text(
+                text = "Login success",
+                color = Color.Green,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
+
+        if (viewModel.errorMessage.value != null) {
+            Text(
+                text = "Login failed: ${viewModel.errorMessage.value}",
+                color = Color.Red,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 8.dp)
+            )
         }
     }
 }
