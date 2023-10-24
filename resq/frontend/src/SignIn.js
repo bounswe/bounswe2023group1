@@ -30,9 +30,13 @@ function Copyright(props) {
   );
 }
 
-
-
-const defaultTheme = createTheme();
+const customTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#FF0000', 
+    },
+  },
+});
 
 
 export default function SignIn(){
@@ -53,7 +57,7 @@ export default function SignIn(){
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={customTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -80,10 +84,10 @@ export default function SignIn(){
               margin="normal"
               required
               fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
+              id="email"
+              label="Email"
+              name="email"
+              autoComplete="email"
               autoFocus
             />
             <TextField
@@ -97,25 +101,25 @@ export default function SignIn(){
               autoComplete="current-password"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value="remember" color="error" />}
               label="Remember me"
             />
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2}}
             >
               Sign In
             </Button>
             <Grid container> 
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="#" variant="body2" sx={{ color: 'red', textDecoration: 'underline' }}>
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link onClick={handleSignUpClick} variant="body2">v
+                <Link onClick={handleSignUpClick} variant="body2" sx={{ color: 'red', textDecoration: 'underline' }}>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
