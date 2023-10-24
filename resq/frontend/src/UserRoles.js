@@ -15,6 +15,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import disasterImage from './disaster.png';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup'; 
+
 
 
 function Copyright(props) {
@@ -40,25 +43,29 @@ const customTheme = createTheme({
 
 
 export default function SignIn(){
+  const [selectedRole, setSelectedRole] = React.useState(''); 
+
+  const handleRoleChange = (event) => {
+    setSelectedRole(event.target.value); 
+  };
 
   const navigate = useNavigate();
 
-  const handleSignUpClick = () => {
-    navigate('/signup'); 
+  const handleUserRoles = () => {
+    navigate('/userroles'); 
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+      userroles: data.get('userroles'),
     });
   };
 
   return (
     <ThemeProvider theme={customTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" >
         <CssBaseline />
         <Box
           sx={{
@@ -80,51 +87,44 @@ export default function SignIn(){
             RESQ
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="error" />}
-              label="Remember me"
-            />
+          <RadioGroup value={selectedRole} onChange={handleRoleChange}>
+            <Grid item xs={12}>
+                <FormControlLabel
+                label="Responder"
+                value="responder"
+                control={<Radio color="error" />}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FormControlLabel
+                label="Facilitator"
+                value="facilitator"
+                control={<Radio color="error" />}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FormControlLabel
+                label="Coordinator"
+                value="coordinator"
+                control={<Radio color="error" />}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <FormControlLabel
+                label="Admin"
+                value="admin"
+                control={<Radio color="error" />}
+                />
+            </Grid>
+            </RadioGroup>
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2}}
-              onClick={() => navigate('/UserRoles')}
             >
-              Sign In
+              Continue with this user role
             </Button>
-            <Grid container> 
-              <Grid item xs>
-                <Link href="#" variant="body2" sx={{ color: 'red', textDecoration: 'underline' }}>
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link onClick={handleSignUpClick} variant="body2" sx={{ color: 'red', textDecoration: 'underline' }}>
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
