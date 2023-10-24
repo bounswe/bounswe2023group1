@@ -10,10 +10,10 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
 
-    private var _user by mutableStateOf(null)
+    private var _user: MutableState<User?> = mutableStateOf(null)
     val user get() = _user
 
-    private val _errorMessage: MutableState<String?> = mutableStateOf(null)
+    private var _errorMessage: MutableState<String?> = mutableStateOf(null)
     val errorMessage get() = _errorMessage
 
     fun login(email: String, password: String) {
