@@ -15,18 +15,28 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.navigation.NavController
+import com.cmpe451.resq.data.remote.AuthApi
+import com.cmpe451.resq.domain.LoginUseCase
+import com.cmpe451.resq.domain.RegisterUseCase
 import com.cmpe451.resq.ui.theme.DeepBlue
 import com.cmpe451.resq.ui.theme.LightGreen
+import com.cmpe451.resq.viewmodels.LoginViewModel
+import com.cmpe451.resq.viewmodels.RegistrationViewModel
 
 private val lexendDecaFont = FontFamily(Font(R.font.lexend_deca))
 
@@ -34,6 +44,22 @@ private val lexendDecaFont = FontFamily(Font(R.font.lexend_deca))
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrationScreen(navController: NavController) {
+    val authApi = AuthApi()
+    val registerUseCase = RegisterUseCase(authApi)
+    val viewModel = RegistrationViewModel(registerUseCase)
+
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+    var termsAccepted by remember { mutableStateOf(false) }
+
+    var snackbarVisible by remember { mutableStateOf(false) }
+    var snackbarMessage by remember { mutableStateOf("") }
+
+    snackbarMessage = viewModel.registrationMessage.value ?: ""
+    snackbarVisible = viewModel.registrationMessage.value != null
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -58,8 +84,8 @@ fun RegistrationScreen(navController: NavController) {
 
         // E-mail input
         TextField(
-            value = "", // TODO: Bind to a state
-            onValueChange = {},
+            value = email,
+            onValueChange = { email = it },
             label = { Text("E-mail", color = Color.White) },
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.textFieldColors(
@@ -72,8 +98,8 @@ fun RegistrationScreen(navController: NavController) {
 
         // Password input
         TextField(
-            value = "", // TODO: Bind to a state
-            onValueChange = {},
+            value = password,
+            onValueChange = { password = it },
             label = { Text("Password", color = Color.White) },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation(),
@@ -88,8 +114,8 @@ fun RegistrationScreen(navController: NavController) {
 
         // Check password input
         TextField(
-            value = "", // TODO: Bind to a state
-            onValueChange = {},
+            value = confirmPassword,
+            onValueChange = { confirmPassword = it },
             label = { Text("Check password", color = Color.White) },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation(),
@@ -107,8 +133,8 @@ fun RegistrationScreen(navController: NavController) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
-                checked = false, // TODO: Bind to a state
-                onCheckedChange = {}
+                checked = termsAccepted,
+                onCheckedChange = { termsAccepted = it }
             )
             Text(
                 text = "I accept the terms and privacy policy",
@@ -120,7 +146,9 @@ fun RegistrationScreen(navController: NavController) {
 
         // Create account button
         Button(
-            onClick = {},
+            onClick = {
+                viewModel.register(email, password, confirmPassword, termsAccepted)
+            },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 containerColor = LightGreen
@@ -137,7 +165,10 @@ fun RegistrationScreen(navController: NavController) {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Already have an account? ", style = MaterialTheme.typography.bodySmall.copy(color = DeepBlue))
+            Text(
+                "Already have an account? ",
+                style = MaterialTheme.typography.bodySmall.copy(color = DeepBlue)
+            )
             TextButton(onClick = {
                 navController.navigate("login")
             }) {
@@ -151,5 +182,27 @@ fun RegistrationScreen(navController: NavController) {
                 )
             }
         }
+        if (snackbarVisible) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Snackbar(
+                modifier = Modifier.align(Alignment.CenterHorizontally).padding(8.dp),
+                containerColor = DeepBlue,
+                contentColor = Color.White,
+                actionContentColor = LightGreen,
+                dismissActionContentColor = LightGreen,
+                content = {
+                    Text(text = snackbarMessage)
+                },
+                action = {
+                    TextButton(onClick = { snackbarVisible = false }) {
+                        Text(text = "Dismiss")
+                    }
+                },
+                dismissAction = null,
+                actionOnNewLine = false,
+                shape = MaterialTheme.shapes.small
+            )
+        }
+
     }
 }

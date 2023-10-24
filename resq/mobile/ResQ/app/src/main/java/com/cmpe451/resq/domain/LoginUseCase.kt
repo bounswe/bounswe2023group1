@@ -1,8 +1,8 @@
 package com.cmpe451.resq.domain
 
-import com.cmpe451.resq.data.models.User
 import com.cmpe451.resq.data.remote.AuthApi
 import com.cmpe451.resq.data.remote.LoginRequest
+import com.cmpe451.resq.data.models.User
 
 class LoginUseCase(private val authApi: AuthApi) {
 
@@ -13,6 +13,7 @@ class LoginUseCase(private val authApi: AuthApi) {
                 return Result.success(it)
             }
         }
+
         return Result.failure(Throwable(response.message()))
     }
 }

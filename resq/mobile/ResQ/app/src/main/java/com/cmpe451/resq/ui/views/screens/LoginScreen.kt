@@ -55,6 +55,8 @@ fun LoginScreen(navController: NavController) {
         // Navigate to another screen
         navController.navigate("login")
     }
+    println("DEBUGGG")
+    println(user?.password)
     Column(
         modifier = Modifier
             .fillMaxSize()
