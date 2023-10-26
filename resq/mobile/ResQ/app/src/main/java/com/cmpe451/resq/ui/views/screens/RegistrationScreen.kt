@@ -15,7 +15,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -29,13 +28,10 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.cmpe451.resq.data.remote.AuthApi
-import com.cmpe451.resq.domain.LoginUseCase
-import com.cmpe451.resq.domain.RegisterUseCase
 import com.cmpe451.resq.ui.theme.DeepBlue
 import com.cmpe451.resq.ui.theme.LightGreen
-import com.cmpe451.resq.viewmodels.LoginViewModel
 import com.cmpe451.resq.viewmodels.RegistrationViewModel
 
 private val lexendDecaFont = FontFamily(Font(R.font.lexend_deca))
@@ -44,20 +40,13 @@ private val lexendDecaFont = FontFamily(Font(R.font.lexend_deca))
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrationScreen(navController: NavController) {
-    val authApi = AuthApi()
-    val registerUseCase = RegisterUseCase(authApi)
-    val viewModel = RegistrationViewModel(registerUseCase)
+
+    val viewModel: RegistrationViewModel = viewModel()
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     var termsAccepted by remember { mutableStateOf(false) }
-
-    var snackbarVisible by remember { mutableStateOf(false) }
-    var snackbarMessage by remember { mutableStateOf("") }
-
-    snackbarMessage = viewModel.registrationMessage.value ?: ""
-    snackbarVisible = viewModel.registrationMessage.value != null
 
 
     Column(
@@ -182,27 +171,23 @@ fun RegistrationScreen(navController: NavController) {
                 )
             }
         }
-        if (snackbarVisible) {
-            Spacer(modifier = Modifier.height(16.dp))
-            Snackbar(
-                modifier = Modifier.align(Alignment.CenterHorizontally).padding(8.dp),
-                containerColor = DeepBlue,
-                contentColor = Color.White,
-                actionContentColor = LightGreen,
-                dismissActionContentColor = LightGreen,
-                content = {
-                    Text(text = snackbarMessage)
-                },
-                action = {
-                    TextButton(onClick = { snackbarVisible = false }) {
-                        Text(text = "Dismiss")
-                    }
-                },
-                dismissAction = null,
-                actionOnNewLine = false,
-                shape = MaterialTheme.shapes.small
+        // Success and Error messages
+        if (viewModel.user.value != null) {
+            Text(
+                text = "Registration success",
+                color = Color.Green,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 8.dp)
             )
         }
 
+        if (viewModel.errorMessage.value != null) {
+            Text(
+                text = "Registration failed: ${viewModel.errorMessage.value}",
+                color = Color.Red,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
     }
 }

@@ -29,7 +29,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.cmpe451.resq.data.remote.AuthApi
 import com.cmpe451.resq.ui.theme.DeepBlue
 import com.cmpe451.resq.ui.theme.LightGreen
 import com.cmpe451.resq.viewmodels.LoginViewModel
@@ -41,7 +40,6 @@ private val lexendDecaFont = FontFamily(Font(R.font.lexend_deca))
 @Composable
 fun LoginScreen(navController: NavController) {
 
-    val authApi = AuthApi()
     val viewModel: LoginViewModel = viewModel()
 
     var email by remember { mutableStateOf("") }

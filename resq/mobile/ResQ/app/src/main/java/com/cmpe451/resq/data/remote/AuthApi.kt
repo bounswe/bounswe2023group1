@@ -47,8 +47,8 @@ class AuthApi {
     }
 
 
-    suspend fun register(registerRequest: RegisterRequest): Response<RegisterResponse> {
-        return authService.register(registerRequest)
+    fun register(registerRequest: RegisterRequest): Response<User> {
+        return Response.success(User(email = registerRequest.email, password = registerRequest.password))
     }
 }
 
