@@ -29,7 +29,13 @@ function Copyright(props) {
 }
 
 
-const defaultTheme = createTheme();
+const customTheme = createTheme({
+    palette: {
+      primary: {
+        main: '#FF0000', 
+      },
+    },
+  });
 
 export default function SignUp() {
 
@@ -49,7 +55,7 @@ export default function SignUp() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={customTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -117,8 +123,12 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="."
+                  control={<Checkbox value="allowExtraEmails" color="error" />}
+                  label={
+                    <Typography variant="body2" color="text.secondary">
+                        By signing up, you agree to our Terms , Privacy Policy and Cookies Policy .
+                    </Typography>
+                    }
                 />
               </Grid>
             </Grid>

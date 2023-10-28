@@ -28,8 +28,13 @@ function Copyright(props) {
     );
 }
 
-
-const defaultTheme = createTheme();
+const customTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#FF0000', 
+    },
+  },
+});
 
 
 export default function SignIn() {
@@ -49,80 +54,81 @@ export default function SignIn() {
         });
     };
 
-    return (
-        <ThemeProvider theme={defaultTheme}>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline/>
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Avatar sx={{width: 100, height: 100}}>
-                        <img
-                            src={disasterImage}
-                            alt="Disaster"
-                            style={{width: '100%', height: '100%', objectFit: 'cover'}}
-                        />
-                    </Avatar>
+  return (
+    <ThemeProvider theme={customTheme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ width: 100, height: 100 }}>
+            <img 
+            src={disasterImage} 
+            alt="Disaster" 
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          </Avatar>
 
-                    <Typography component="h5" variant="h5" sx={{color: 'red', fontWeight: 'bold'}}>
-                        RESQ
-                    </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="username"
-                            label="Username"
-                            name="username"
-                            autoComplete="username"
-                            autoFocus
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                        />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary"/>}
-                            label="Remember me"
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{mt: 3, mb: 2}}
-                        >
-                            Sign In
-                        </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link onClick={handleSignUpClick} variant="body2">
-                                    Don't have an account? Sign Up
-                                </Link>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                </Box>
-                <Copyright sx={{mt: 8, mb: 4}}/>
-            </Container>
-        </ThemeProvider>
-    );
+          <Typography component="h5" variant="h5" sx={{ color: 'red', fontWeight: 'bold' }}>
+            RESQ
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="error" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2}}
+              onClick={() => navigate('/UserRoles')}
+            >
+              Sign In
+            </Button>
+            <Grid container> 
+              <Grid item xs>
+                <Link href="#" variant="body2" sx={{ color: 'red', textDecoration: 'underline' }}>
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link onClick={handleSignUpClick} variant="body2" sx={{ color: 'red', textDecoration: 'underline' }}>
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+        <Copyright sx={{ mt: 8, mb: 4 }} />
+      </Container>
+    </ThemeProvider>
+  );
 }
 
 
