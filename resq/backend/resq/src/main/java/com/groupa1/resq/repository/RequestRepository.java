@@ -1,15 +1,19 @@
-package main.java.com.groupa1.resq.repository;
+package com.groupa1.resq.repository;
 
 import com.groupa1.resq.entity.Request;
+import com.groupa1.resq.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.math.BigDecimal;
+import java.util.List;
 
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
-    Optional<Request> findById(Long requestId);
+    List<Request> findByRequester(User requester);
 
-    Boolean existsById(Long requestId);
+    List<Request> findByLongitudeAndLatitude(BigDecimal longitude, BigDecimal latitude);
+
+
 
 }
