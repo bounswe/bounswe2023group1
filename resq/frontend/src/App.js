@@ -4,6 +4,8 @@ import {Navbar, Container, Nav} from 'react-bootstrap';
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import UserRoles from "./UserRoles";
+import Account from "./Account";
+
 
 const smallRedCircle = (
     <svg
@@ -20,6 +22,7 @@ const navLinks = [
     { path: '/signin', label: 'Sign In', component: SignIn, icon: smallRedCircle, },
     { path: '/signup', label: 'Sign Up', component: SignUp, icon: smallRedCircle, },
     { path: '/userroles', label: 'User Roles', component: UserRoles, icon: smallRedCircle },
+    { path: '/account', label: 'Account', component: Account, icon: smallRedCircle },
     
 ];
 
