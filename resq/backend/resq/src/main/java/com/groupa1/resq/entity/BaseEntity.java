@@ -3,7 +3,7 @@ package com.groupa1.resq.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @MappedSuperclass
 @Data
@@ -14,9 +14,9 @@ public class BaseEntity {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified_at")
-    private Date modifiedAt;
+    private LocalDateTime modifiedAt;
 }
