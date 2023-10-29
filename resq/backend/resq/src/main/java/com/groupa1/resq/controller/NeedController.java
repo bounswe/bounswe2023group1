@@ -2,7 +2,6 @@ package com.groupa1.resq.controller;
 
 import com.groupa1.resq.config.ResqAppProperties;
 import com.groupa1.resq.entity.Need;
-import com.groupa1.resq.entity.User;
 import com.groupa1.resq.request.CreateNeedRequest;
 import com.groupa1.resq.service.NeedService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -36,18 +34,14 @@ public class NeedController {
         return resqAppProperties.getServerPort();
     }
 
-    @GetMapping("/viewNeedsByUser")
+    @GetMapping("/viewNeedsByFilter")
     @PreAuthorize("hasRole('FACILITATOR')")
-    public List<Need> viewNeedsByUser(@RequestParam Long userId) {
-        log.info("Viewing needs for userId: {}", userId);
-        return needService.viewNeedsByUser(userId);
-    }
-
-    @GetMapping("/viewNeedsByLocation")
-    @PreAuthorize("hasRole('FACILITATOR')")
-    public List<Need> viewNeedsByLocation(@RequestParam BigDecimal longitude, @RequestParam BigDecimal latitude) {
-        log.info("Viewing needs for location: {}, {}", longitude, latitude);
-        return needService.viewNeedsByLocation(longitude, latitude);
+    public List<Need> viewNeedsByFilter(@RequestParam(required = false) BigDecimal longitude,
+                                        @RequestParam(required = false) BigDecimal latitude,
+                                        @RequestParam(required = false) String categoryTreeId,
+                                        @RequestParam(required = false) Long userId) {
+        log.info("Viewing needs for location: {}, {}, category: {}, user: {}", longitude, latitude, categoryTreeId, userId);
+        return needService.viewNeedsByFilter(longitude, latitude, categoryTreeId, userId);
     }
 
     @PostMapping("/createNeed")
@@ -76,12 +70,32 @@ public class NeedController {
     }
 
     @PostMapping("/deleteNeedVictim")
-    @PreAuthorize("hasRole('VICTIM') or hasRole('FACILITATOR')")
-    public String deleteNeed(@RequestParam Long userId, @RequestParam Long needId) {
+    @PreAuthorize("hasRole('VICTIM')")
+    public String deleteNeedVictim(@RequestParam Long userId, @RequestParam Long needId) {
         log.info("Deleting need for user: {}, need: {}", userId, needId);
-        needService.deleteNeed(userId, needId);
+        needService.deleteNeedVictim(userId, needId);
         return "Need successfully deleted.";
     }
+
+    @PostMapping("/deleteNeedFacilitator")
+    @PreAuthorize("hasRole('FACILITATOR')")
+    public String deleteNeedFacilitator(@RequestParam Long needId) {
+        log.info("Deleting need for need: {}", needId);
+        needService.deleteNeedFacilitator(needId);
+        return "Need successfully deleted.";
+    }
+
+    @PostMapping("/updateNeed")
+    @PreAuthorize("hasRole('VICTIM') or hasRole('FACILITATOR')")
+    public String updateNeed(@RequestBody CreateNeedRequest createNeedRequest, @RequestParam Long needId) {
+        log.info("Updating need for user: {}, need: {}", createNeedRequest.getUserId(), needId);
+        needService.update(createNeedRequest, needId);
+        return "Need successfully updated.";
+    }
+
+
+
+
 
 
 

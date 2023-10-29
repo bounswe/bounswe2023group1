@@ -2,6 +2,7 @@ package com.groupa1.resq.repository;
 
 import com.groupa1.resq.entity.Need;
 import com.groupa1.resq.entity.User;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +17,9 @@ public interface NeedRepository extends JpaRepository<Need, Long> {
 
     List<Need> findByIdAndRequester(Long userId, User requester);
 
+    void deleteByIdAndRequester(Long needId, User requester);
+
+    List<Need> findAll(Specification<Need> specification);
 
 
 }

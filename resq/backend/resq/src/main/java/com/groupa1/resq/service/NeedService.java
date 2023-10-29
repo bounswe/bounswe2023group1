@@ -6,9 +6,11 @@ import com.groupa1.resq.exception.EntityNotFoundException;
 import com.groupa1.resq.repository.NeedRepository;
 import com.groupa1.resq.repository.UserRepository;
 import com.groupa1.resq.request.CreateNeedRequest;
+import com.groupa1.resq.specification.NeedSpecifications;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,14 +23,6 @@ public class NeedService {
     NeedRepository needRepository;
     UserRepository userRepository;
 
-    public List<Need> viewNeedsByUser(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
-        return needRepository.findByRequester(user);
-    }
-
-    public List<Need> viewNeedsByLocation(BigDecimal longitude, BigDecimal latitude) {
-        return needRepository.findByLongitudeAndLatitude(longitude, latitude);
-    }
 
     public void save(CreateNeedRequest createNeedRequest) {
         User requester = userRepository.findById(createNeedRequest.getUserId()).orElseThrow(() -> new EntityNotFoundException("User not found"));
@@ -37,6 +31,8 @@ public class NeedService {
         need.setDescription(createNeedRequest.getDescription());
         need.setLongitude(createNeedRequest.getLongitude());
         need.setLatitude(createNeedRequest.getLatitude());
+        need.setQuantity(createNeedRequest.getQuantity());
+        need.setCategoryTreeId(createNeedRequest.getCategoryTreeId());
         needRepository.save(need);
     }
 
@@ -58,11 +54,44 @@ public class NeedService {
         return needs;
     }
 
-    public void delete(Long userId, Long needId) {
+    public void deleteNeedVictim(Long userId, Long needId) {
+        User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        needRepository.deleteByIdAndRequester(needId, requester);
+    }
 
+    public void deleteNeedFacilitator(Long needId) {
         needRepository.deleteById(needId);
     }
 
+    public void update(CreateNeedRequest createNeedRequest, Long needId) {
+        Need need = needRepository.findById(needId).orElseThrow(() -> new EntityNotFoundException("Need not found"));
+        need.setDescription(createNeedRequest.getDescription());
+        need.setLongitude(createNeedRequest.getLongitude());
+        need.setLatitude(createNeedRequest.getLatitude());
+        need.setQuantity(createNeedRequest.getQuantity());
+        need.setCategoryTreeId(createNeedRequest.getCategoryTreeId());
+        needRepository.save(need);
+    }
 
 
+    public List<Need> viewNeedsByFilter(BigDecimal longitude, BigDecimal latitude, String categoryTreeId, Long userId) {
+
+        Specification<Need> spec = Specification.where(null);
+
+        if (longitude != null && latitude != null) {
+            spec = spec.and(NeedSpecifications.hasLongitude(longitude));
+            spec = spec.and(NeedSpecifications.hasLatitude(latitude));
+        }
+        if (categoryTreeId != null) {
+            spec = spec.and(NeedSpecifications.hasCategoryTreeId(categoryTreeId));
+        }
+        if (userId != null) {
+            User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+            spec = spec.and(NeedSpecifications.hasRequester(userId));
+        }
+        return needRepository.findAll(spec);
+
+
+
+    }
 }

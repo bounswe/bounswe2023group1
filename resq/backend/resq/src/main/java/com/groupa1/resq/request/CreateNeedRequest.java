@@ -10,4 +10,6 @@ public class CreateNeedRequest {
     private String description;
     private BigDecimal latitude;
     private BigDecimal longitude;
+    private String categoryTreeId;
+    private Integer quantity;
 }
