@@ -22,7 +22,7 @@ public class ActionController {
 
     //TODO: creat Action endpoint
 
-    @PreAuthorize("hasRole('RESPONDER')")
+    @PreAuthorize("hasRole('RESPONDER') or hasRole('COORDINATOR')")
     @GetMapping("/viewActions")
     public ResponseEntity<List<ActionResponse>> viewActions(@RequestParam Long taskId) {
         return actionService.viewActions( taskId);
