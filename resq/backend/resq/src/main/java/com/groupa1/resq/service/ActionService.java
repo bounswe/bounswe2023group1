@@ -27,7 +27,6 @@ public class ActionService {
     private TaskRepository taskRepository;
 
 
-    @PreAuthorize("hasRole('RESPONDER') or hasRole('COORDINATOR')")
     public ResponseEntity<List<ActionResponse>> viewActions(Long taskId){
         Optional<Task> task = taskRepository.findById(taskId);
         List<ActionResponse> actionResponses = new ArrayList<>();
