@@ -1,5 +1,6 @@
 package com.groupa1.resq.entity;
 
+import com.groupa1.resq.entity.enums.EGender;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -20,6 +21,8 @@ public class Resource extends BaseEntity {
     private User owner;
 
     private String categoryTreeId;
+
+    private EGender gender;
 
     private Integer quantity;
 

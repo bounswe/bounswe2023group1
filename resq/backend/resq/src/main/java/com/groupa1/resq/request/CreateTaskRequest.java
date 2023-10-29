@@ -1,0 +1,54 @@
+package com.groupa1.resq.request;
+
+
+import com.groupa1.resq.entity.enums.EGender;
+import com.groupa1.resq.entity.enums.EStatus;
+import com.groupa1.resq.entity.enums.EUrgency;
+import lombok.Data;
+
+import javax.annotation.Nullable;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+@Data
+public class CreateTaskRequest {
+    private Long assignerId;
+
+    @Nullable
+    private Long assigneeId;
+    private String description;
+
+    @Nullable
+    private List<Action> actions;
+
+    @Nullable
+    private List<Resource> resources;
+    private EUrgency urgency;
+    private EStatus status;
+
+    @Data
+    public static class Action {
+        private Long verifierId;
+        private String description;
+        private BigDecimal startLatitude;
+        private BigDecimal startLongitude;
+        private BigDecimal endLatitude;
+        private BigDecimal endLongitude;
+    }
+
+    @Data
+    public static class Resource {
+        private Long ownerId;
+        private String categoryTreeId;
+        private EGender gender;
+        private Integer quantity;
+        private BigDecimal latitude;
+        private BigDecimal longitude;
+
+
+    }
+
+
+}
+

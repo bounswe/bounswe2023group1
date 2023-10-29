@@ -15,15 +15,18 @@ import java.util.Set;
 @Entity
 @Table( name = "USERS",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
         })
 @Data
 public class User extends BaseEntity {
 
     @NotBlank
-    @Size(max = 20)
-    private String username;
+    @Size(max = 50)
+    private String name;
+
+    @NotBlank
+    @Size(max = 50)
+    private String surname;
 
     @NotBlank
     @Size(max = 50)
@@ -67,8 +70,9 @@ public class User extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<Info> infos;
 
-    public User(String username, String email, String password) {
-        this.username = username;
+    public User(String name, String surname, String email, String password) {
+        this.name  = name;
+        this.surname = surname;
         this.email = email;
         this.password = password;
     }
