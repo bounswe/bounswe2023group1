@@ -1,7 +1,7 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import {useEffect, useRef, useState} from "react";
+import {useState} from 'react';
 import {Map, Marker, ZoomControl} from 'pigeon-maps';
+import {type_colors} from "../Colors";
 
 const TILE_SIZE = 256;
 const HEIGHT_RATIO = 0.75;
@@ -38,75 +38,49 @@ const MarkerIcon = ({color}) => (
     </svg>
 );
 
-const marker_colors = {
-    "Need": "#93C0D0",
-    "Point": "#AA0000"
-}
 
-const mock_markers = [
-    {
-        type: "Need",
-        coordinates: {
-            latitude: 41.08,
-            longitude: 29.05
-        },
-        id: 1
-    },
-    {
-        type: "Need",
-        coordinates: {
-            latitude: 41.09,
-            longitude: 29.04
-        },
-        id: 2
-    },
-    {
-        type: "Point",
-        coordinates: {
-            latitude: 41.1,
-            longitude: 29.04
-        },
-        id: 3
-    }
-]
-
-const renderMarker = (marker) => {
-    if (!marker?.coordinates) {
-        return null;
-    }
-
-    return (
-        <Marker
-            width={33}
-            anchor={[marker.coordinates.latitude, marker.coordinates.longitude]}
-            key={marker.id}>
-            {<MarkerIcon color={marker_colors[marker.type]}/>}
-        </Marker>
-    );
-};
-
-export default function DisasterMap({marks = []}) {
-    const [zoom, setZoom] = useState(5);
+export default function DisasterMap({onPointSelected, markers = []}) {
+    const [zoom, setZoom] = useState(6.5);
     const [center, setCenter] = useState([39, 34.5])
     const [ref, setRef] = useState();
 
+    const renderMarker = (marker) => {
+        return (
+            <Marker
+                width={33}
+                anchor={[marker.latitude, marker.longitude]}
+                key={marker.id}
+                onClick={({event}) => {
+                    onPointSelected(marker);
+                    event.preventDefault()
+                }}
+            >
+                {<MarkerIcon color={type_colors[marker.type]}/>}
+            </Marker>
+        );
+    };
+
+    // noinspection JSValidateTypes
     return (
         <div style={{display: "flex"}}>
-            <div style={{flexGrow: 100, height: "100%"}} ref={newRef => setRef(newRef)}>
+            <div style={{flexGrow: 100, height: "calc(100vh - 56px)"}} ref={newRef => setRef(newRef)}>
                 <Map
                     provider={mapboxProvider}
-                    height={window.innerHeight - (ref?.y || 48)}
-                    width={ref?.offsetWidth || 100}
+                    dprs={[1, 2]}
+                    //height={window.innerHeight - (ref?.y || 48)}
+                    //width={ref?.offsetWidth || 100}
                     center={center}
                     zoom={zoom}
+                    onClick={({event}) => {
+                        onPointSelected(null);
+                        event.preventDefault()
+                    }}
                     onBoundsChanged={({center, zoom}) => {
                         setCenter(center)
                         setZoom(zoom)
                     }}>
-
                     <ZoomControl/>
-                    {mock_markers.map(renderMarker)}
-
+                    {markers.map(renderMarker)}
                 </Map>
             </div>
         </div>
