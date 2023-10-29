@@ -25,7 +25,13 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import styled from "styled-components";
 
 
-const defaultTheme = createTheme();
+const customTheme = createTheme({
+    palette: {
+        primary: {
+            main: '#FF0000',
+        },
+    },
+});
 
 
 const ExpandMore = styled(IconButton)`
@@ -54,10 +60,11 @@ const RequestCard = ({request: {requester, urgency, needs, status}}) => {
             title={needs.map(({name, quantity}) => `${quantity} ${name}`).join(", ")}
         />
         <CardContent>
-            <Typography variant="body1" color="text.primary">
-                Urgency: {urgency} | Status: {status}
+            <Typography variant="body1" sx={{ fontSize: '16px', fontWeight: 'bold' }}>
+                Urgency: <span style={{ color: 'red', fontWeight: 'bold' }}>{urgency}</span> | Status: <span style={{ color: 'red' , fontWeight: 'bold'}}>{status}</span>
             </Typography>
-            <Typography variant="body2" color="text.primary">
+
+            <Typography variant="body2" color="text.primary" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
                 Made by: {requester.name} {requester.surname}
             </Typography>
         </CardContent>
@@ -104,7 +111,7 @@ const ResourceCard = ({request: {owner, name, quantity}}) => {
             title={`${quantity} ${name}`}
         />
         <CardContent>
-            <Typography variant="body2" color="text.primary">
+            <Typography variant="body2" color="text.primary" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
                 Owner: {owner.name} {owner.surname}
             </Typography>
         </CardContent>
@@ -179,7 +186,7 @@ export default function MapDemo() {
     const SelectedCard = selectedPoint && cards[selectedPoint.type]
     // noinspection JSValidateTypes
     return (
-        <ThemeProvider theme={defaultTheme}>
+        <ThemeProvider theme={customTheme}>
             <Container component="main" maxWidth="100%">
                 <CssBaseline/>
                 <Box sx={{display: "flex", flexDirection: "row", flexWrap: 'nowrap', margin: "12px"}}>
