@@ -19,6 +19,8 @@ public class RequestService {
 
     @Autowired
     RequestRepository requestRepository;
+
+    @Autowired
     UserRepository userRepository;
 
     public List<Request> viewRequestsByUser(Long userId) {

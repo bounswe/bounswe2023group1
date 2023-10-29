@@ -23,6 +23,8 @@ public class NeedService {
 
     @Autowired
     NeedRepository needRepository;
+
+    @Autowired
     UserRepository userRepository;
 
 
