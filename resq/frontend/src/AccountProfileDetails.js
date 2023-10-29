@@ -15,20 +15,20 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const states = [
   {
-    value: 'alabama',
-    label: 'Alabama',
+    value: 'istanbul',
+    label: 'Istanbul',
   },
   {
-    value: 'new-york',
-    label: 'New York',
+    value: 'izmir',
+    label: 'Izmir',
   },
   {
-    value: 'san-francisco',
-    label: 'San Francisco',
+    value: 'van',
+    label: 'Van',
   },
   {
-    value: 'los-angeles',
-    label: 'Los Angeles',
+    value: 'ankara',
+    label: 'Ankara',
   },
 ];
 
@@ -42,12 +42,12 @@ const customTheme = createTheme({
 
 function AccountProfileDetails() {
   const [values, setValues] = useState({
-    firstName: 'Anika',
-    lastName: 'Visser',
-    email: 'demo@devias.io',
-    phone: '',
-    state: 'los-angeles',
-    country: 'USA',
+    firstName: 'Sude',
+    lastName: 'Demir',
+    email: 'sude@gmail.com',
+    phone: '05324054856',
+    state: 'Izmir',
+    country: 'Turkey',
   });
 
   const handleChange = useCallback((event) => {
@@ -133,9 +133,6 @@ function AccountProfileDetails() {
             </Box>
           </CardContent>
           <Divider />
-          <CardActions sx={{ justifyContent: 'flex-end' }}>
-            <Button variant="contained">Save details</Button>
-          </CardActions>
         </Card>
       </form>
     </ThemeProvider>

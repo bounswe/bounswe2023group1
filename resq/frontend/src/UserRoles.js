@@ -22,14 +22,16 @@ import RadioGroup from '@mui/material/RadioGroup';
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://github.com/bounswe/bounswe2023group1">
-        ResQ
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
+    <div style={{ position: 'fixed', bottom: 0, width: '100%' }}>
+      <Typography variant="body2" color="text.secondary" align="center" {...props}>
+        {'Copyright © '}
+        <Link color="inherit" href="https://github.com/bounswe/bounswe2023group1">
+          <span style={{ fontWeight: 'bold' }}>ResQ</span>
+        </Link>{' '}
+        {new Date().getFullYear()}
+        {'.'}
+      </Typography>
+    </div>
   );
 }
 
@@ -75,15 +77,14 @@ export default function SignIn(){
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ width: 100, height: 100 }}>
-            <img 
-            src={disasterImage} 
-            alt="Disaster" 
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          <Avatar sx={{ width: 80, height: 80, marginBottom: '10px' }}>
+            <img
+              src={disasterImage}
+              alt="Disaster"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </Avatar>
-
-          <Typography component="h5" variant="h5" sx={{ color: 'red', fontWeight: 'bold' }}>
+          <Typography component="h5" variant="h5" sx={{ color: 'red', fontWeight: 'bold', margin: '0' }}>
             ResQ
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -134,8 +135,8 @@ export default function SignIn(){
             </Button>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
+      <Copyright sx={{ mt: 5 }} />
     </ThemeProvider>
   );
 }

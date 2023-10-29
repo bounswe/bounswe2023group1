@@ -19,10 +19,10 @@ const smallRedCircle = (
   );
 
 const navLinks = [
-    { path: '/signin', label: 'Sign In', component: SignIn, icon: smallRedCircle, },
-    { path: '/signup', label: 'Sign Up', component: SignUp, icon: smallRedCircle, },
-    { path: '/userroles', label: 'User Roles', component: UserRoles, icon: smallRedCircle },
-    { path: '/account', label: 'Account', component: Account, icon: smallRedCircle },
+    { path: '/signin', label: <strong>Sign In</strong>, component: SignIn, icon: smallRedCircle, },
+    { path: '/signup', label: <strong>Sign Up</strong>, component: SignUp, icon: smallRedCircle, },
+    { path: '/userroles', label: <strong>User Roles</strong>, component: UserRoles, icon: smallRedCircle },
+    { path: '/account', label: <strong>Account</strong>, component: Account, icon: smallRedCircle },
     
 ];
 
@@ -33,7 +33,7 @@ function App() {
             <div>
                 <Navbar bg="light" variant="light" expand="lg">
                     <Container>
-                        <Navbar.Brand href="/" style={{ color: 'red' }}>
+                        <Navbar.Brand href="/" style={{ color: 'red', fontWeight: 'bold' }}>
                             <smallRedCircle/> 
                             ResQ
                         </Navbar.Brand>
