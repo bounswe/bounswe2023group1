@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("action")
+@RequestMapping("/action")
 public class ActionController {
 
     @Autowired
@@ -23,7 +23,7 @@ public class ActionController {
     //TODO: creat Action endpoint
 
     @PreAuthorize("hasRole('RESPONDER')")
-    @GetMapping("/viewActions/{taskId}")
+    @GetMapping("/viewActions")
     public ResponseEntity<List<ActionResponse>> viewActions(@RequestParam Long taskId) {
         return actionService.viewActions( taskId);
     }
