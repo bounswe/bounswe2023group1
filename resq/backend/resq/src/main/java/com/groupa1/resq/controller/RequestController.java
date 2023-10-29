@@ -15,7 +15,7 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @Slf4j
-@RequestMapping("/user")
+@RequestMapping("/request")
 public class RequestController {
 
     @Autowired
@@ -23,16 +23,6 @@ public class RequestController {
 
     @Autowired
     private RequestService requestService;
-
-    @GetMapping("/getRequest")
-    public String index() {
-        log.trace("A TRACE Message");
-        log.debug("A DEBUG Message");
-        log.info("An INFO Message");
-        log.warn("A WARN Message");
-        log.error("An ERROR Message");
-        return resqAppProperties.getServerPort();
-    }
 
     @GetMapping("/viewRequestsByUser")
     @PreAuthorize("hasRole('FACILITATOR')")
@@ -50,9 +40,9 @@ public class RequestController {
 
     @PostMapping("/createRequest")
     @PreAuthorize("hasRole('FACILITATOR')")
-    public String createRequest(@RequestBody CreateReqRequest createReqRequest) {
-        log.info("Creating request for user: {}", createReqRequest.getUserId());
-        requestService.save(createReqRequest);
+    public String createRequest(@RequestParam Long userId, @RequestBody CreateReqRequest createReqRequest) {
+        log.info("Creating request for user: {}", userId);
+        requestService.save(userId, createReqRequest);
         return "Request successfully created.";
     }
 

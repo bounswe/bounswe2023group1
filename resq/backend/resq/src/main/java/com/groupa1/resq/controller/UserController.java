@@ -19,16 +19,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/getUser")
-    public String index() {
-        log.trace("A TRACE Message");
-        log.debug("A DEBUG Message");
-        log.info("An INFO Message");
-        log.warn("A WARN Message");
-        log.error("An ERROR Message");
-        return resqAppProperties.getServerPort();
-    }
-
     @PostMapping("/requestRole")
     public String requestRole(@RequestParam Long userId, @RequestParam String role) {
         log.info("Requested role: {} requested for user: {}", role, userId);
@@ -71,9 +61,6 @@ public class UserController {
     public String victimAccess() {
         return "Victim Board.";
     }
-
-    @GetMapping("/viewRequest")
-    @PreAuthorize("hasRole('VICTIM') or hasRole('FACILITATOR')")
 
     @GetMapping("/coordinator")
     @PreAuthorize("hasRole('COORDINATOR')")

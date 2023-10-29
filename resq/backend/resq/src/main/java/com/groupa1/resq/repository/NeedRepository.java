@@ -17,8 +17,6 @@ public interface NeedRepository extends JpaRepository<Need, Long> {
 
     List<Need> findByIdAndRequester(Long userId, User requester);
 
-    void deleteByIdAndRequester(Long needId, User requester);
-
     List<Need> findAll(Specification<Need> specification);
 
 

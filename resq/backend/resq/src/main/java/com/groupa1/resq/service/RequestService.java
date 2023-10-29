@@ -30,8 +30,8 @@ public class RequestService {
         return requestRepository.findByLongitudeAndLatitude(longitude, latitude);
     }
 
-    public void save(CreateReqRequest createReqRequest) {
-        User requester = userRepository.findById(createReqRequest.getUserId()).orElseThrow(() -> new EntityNotFoundException("User not found"));
+    public void save(Long userId, CreateReqRequest createReqRequest) {
+        User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Request request = new Request();
         request.setRequester(requester);
         request.setDescription(createReqRequest.getDescription());

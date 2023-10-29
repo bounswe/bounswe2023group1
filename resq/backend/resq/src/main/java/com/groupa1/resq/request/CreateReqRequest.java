@@ -8,7 +8,6 @@ import java.util.Set;
 
 @Data
 public class CreateReqRequest {
-    private Long userId;
     private String description;
     private BigDecimal latitude;
     private BigDecimal longitude;

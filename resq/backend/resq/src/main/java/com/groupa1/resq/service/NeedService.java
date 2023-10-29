@@ -3,9 +3,11 @@ package com.groupa1.resq.service;
 import com.groupa1.resq.entity.Need;
 import com.groupa1.resq.entity.User;
 import com.groupa1.resq.exception.EntityNotFoundException;
+import com.groupa1.resq.exception.NotOwnerException;
 import com.groupa1.resq.repository.NeedRepository;
 import com.groupa1.resq.repository.UserRepository;
 import com.groupa1.resq.request.CreateNeedRequest;
+import com.groupa1.resq.request.UpdateNeedRequest;
 import com.groupa1.resq.specification.NeedSpecifications;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +26,8 @@ public class NeedService {
     UserRepository userRepository;
 
 
-    public void save(CreateNeedRequest createNeedRequest) {
-        User requester = userRepository.findById(createNeedRequest.getUserId()).orElseThrow(() -> new EntityNotFoundException("User not found"));
+    public void save(Long userId, CreateNeedRequest createNeedRequest) {
+        User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Need need = new Need();
         need.setRequester(requester);
         need.setDescription(createNeedRequest.getDescription());
@@ -40,36 +42,40 @@ public class NeedService {
         return needRepository.findAll();
     }
 
-    public List<Need> viewMyNeeds(Long userId) {
+    public List<Need> viewNeedsByUserId(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         return needRepository.findByRequester(user);
     }
 
-    public List<Need> viewMyNeed(Long userId, Long needId) {
-        User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
-        List<Need> needs = needRepository.findByIdAndRequester(needId, requester);
-        if (needs.isEmpty()) {
-            throw new EntityNotFoundException("Need not found");
+    public Need viewNeed(Long userId, Long needId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Need need = needRepository.findById(needId).orElseThrow(() -> new EntityNotFoundException("Need not found"));
+        if(need.getRequester().getId() != user.getId()) {
+            throw new NotOwnerException("User is not the owner of the need");
         }
-        return needs;
+        return need;
     }
 
-    public void deleteNeedVictim(Long userId, Long needId) {
+    public void deleteNeed(Long userId, Long needId) {
         User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
-        needRepository.deleteByIdAndRequester(needId, requester);
-    }
-
-    public void deleteNeedFacilitator(Long needId) {
+        Need need = needRepository.findById(needId).orElseThrow(() -> new EntityNotFoundException("Need not found"));
+        if(need.getRequester().getId() != requester.getId()) {
+            throw new NotOwnerException("User is not the owner of the need");
+        }
         needRepository.deleteById(needId);
     }
 
-    public void update(CreateNeedRequest createNeedRequest, Long needId) {
+    public void update(UpdateNeedRequest updateNeedRequest, Long userId, Long needId) {
         Need need = needRepository.findById(needId).orElseThrow(() -> new EntityNotFoundException("Need not found"));
-        need.setDescription(createNeedRequest.getDescription());
-        need.setLongitude(createNeedRequest.getLongitude());
-        need.setLatitude(createNeedRequest.getLatitude());
-        need.setQuantity(createNeedRequest.getQuantity());
-        need.setCategoryTreeId(createNeedRequest.getCategoryTreeId());
+        User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        if(need.getRequester().getId() != requester.getId()) {
+            throw new NotOwnerException("User is not the owner of the need");
+        }
+        need.setDescription(updateNeedRequest.getDescription());
+        need.setLongitude(updateNeedRequest.getLongitude());
+        need.setLatitude(updateNeedRequest.getLatitude());
+        need.setQuantity(updateNeedRequest.getQuantity());
+        need.setCategoryTreeId(updateNeedRequest.getCategoryTreeId());
         needRepository.save(need);
     }
 
