@@ -13,6 +13,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.cmpe451.resq.ui.theme.DeepBlue
@@ -73,8 +75,11 @@ fun LoginScreen(navController: NavController) {
             label = { Text("E-mail", color = Color.White) },
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.textFieldColors(
-                containerColor = DeepBlue
-            )        )
+                containerColor = DeepBlue,
+                textColor = Color.White,
+                cursorColor = Color.White
+            )
+        )
 
         Spacer(modifier = Modifier.height(16.dp)) // Provide space
 
@@ -87,7 +92,9 @@ fun LoginScreen(navController: NavController) {
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             colors = TextFieldDefaults.textFieldColors(
-                containerColor = DeepBlue
+                containerColor = DeepBlue,
+                textColor = Color.White,
+                cursorColor = Color.White
             )
         )
 
@@ -105,12 +112,17 @@ fun LoginScreen(navController: NavController) {
             ) {
                 Checkbox(
                     checked = rememberMe,
-                    onCheckedChange = { rememberMe = it }
+                    onCheckedChange = { rememberMe = it },
+                    colors = CheckboxDefaults.colors(
+                        checkmarkColor = Color.White,
+                        checkedColor = DeepBlue
+                    )
                 )
                 Text(
                     text = "Remember me",
                     style = MaterialTheme.typography.bodySmall,
-                    color = DeepBlue
+                    color = DeepBlue,
+                    fontSize = 14.sp
                 )
             }
 
@@ -118,7 +130,7 @@ fun LoginScreen(navController: NavController) {
                 Text(
                     text = "Forgot password?",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Black,
+                    color = DeepBlue,
                     fontWeight = FontWeight.Medium
                 )
             }
@@ -134,7 +146,11 @@ fun LoginScreen(navController: NavController) {
                 containerColor = LightGreen
             )
         ) {
-            Text("Login", color = DeepBlue)
+            Text(
+                "Login",
+                color = DeepBlue,
+                fontSize = 16.sp
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -145,7 +161,11 @@ fun LoginScreen(navController: NavController) {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Not Registered Yet? ", style = MaterialTheme.typography.bodySmall)
+            Text(
+                text = "Not Registered Yet? ",
+                style = MaterialTheme.typography.bodySmall,
+                fontSize = 14.sp
+                )
             TextButton(onClick = {
                 navController.navigate("registration")
             }) {
@@ -154,6 +174,7 @@ fun LoginScreen(navController: NavController) {
                     style = MaterialTheme.typography.bodySmall,
                     color = DeepBlue,
                     fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
                     textDecoration = TextDecoration.Underline
                 )
             }
