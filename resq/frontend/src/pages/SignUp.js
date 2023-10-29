@@ -20,7 +20,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://github.com/bounswe/bounswe2023group1">
-        RESQ
+        ResQ
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -29,7 +29,13 @@ function Copyright(props) {
 }
 
 
-const defaultTheme = createTheme();
+const customTheme = createTheme({
+    palette: {
+      primary: {
+        main: '#FF0000', 
+      },
+    },
+  });
 
 export default function SignUp() {
 
@@ -49,7 +55,7 @@ export default function SignUp() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={customTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -69,7 +75,7 @@ export default function SignUp() {
           </Avatar>
 
           <Typography component="h5" variant="h5" sx={{ color: 'red', fontWeight: 'bold' }}>
-            RESQ
+            ResQ
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -98,10 +104,10 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="phoneNumber"
-                  label="Phone Number"
-                  name="phoneNumber"
-                  autoComplete="phone-number"
+                  id="email"
+                  label="Email"
+                  name="email"
+                  autoComplete="email"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -117,8 +123,12 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="."
+                  control={<Checkbox value="allowExtraEmails" color="error" />}
+                  label={
+                    <Typography variant="body2" color="text.secondary">
+                        By signing up, you agree to our Terms , Privacy Policy and Cookies Policy .
+                    </Typography>
+                    }
                 />
               </Grid>
             </Grid>

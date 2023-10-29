@@ -20,6 +20,7 @@ public class Need extends BaseEntity{
     private User requester;
 
     private String categoryTreeId;
+    private String description;
 
     private Integer quantity;
 
