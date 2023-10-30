@@ -3,6 +3,7 @@ package com.groupa1.resq.controller;
 import com.groupa1.resq.config.ResqAppProperties;
 import com.groupa1.resq.converter.UserConverter;
 import com.groupa1.resq.dto.UserDto;
+import com.groupa1.resq.entity.User;
 import com.groupa1.resq.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -28,8 +29,8 @@ public class UserController {
     @PostMapping("/requestRole")
     public String requestRole(@RequestParam Long userId, @RequestParam String role) {
         log.info("Requested role: {} requested for user: {}", role, userId);
-        userService.requestRole(userId, role);
-        return "Role successfully inserted.";
+        User user = userService.requestRole(userId, role);
+        return "Role successfully inserted to " + user.getName() +".";
     }
 
     @GetMapping("/getUserInfo")

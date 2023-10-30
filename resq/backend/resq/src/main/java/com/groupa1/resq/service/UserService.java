@@ -22,21 +22,21 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
-    public void save(User user) {
-        userRepository.save(user);
+    public User save(User user) {
+        return userRepository.save(user);
     }
 
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-    public void requestRole(Long userId, String role) {
+    public User requestRole(Long userId, String role) {
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Set<EUserRole> roles = user.getRoles();
         // In the future, users will be checked if they are allowed to take this role.
         roles.add(EUserRole.getEnumByStr(role.toUpperCase()));
         user.setRoles(roles);
-        save(user);
+        return save(user);
     }
 
     public User findById(Long userId) {
