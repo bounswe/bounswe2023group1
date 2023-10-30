@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import {Navbar, Container, Nav} from 'react-bootstrap';
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
