@@ -55,7 +55,6 @@ function App() {
                         {navLinks.map(({ path, component }) => (
                             <Route key={path} path={path} element={React.createElement(component)}/>
                         ))}
-                        <Route path="/" element={<Navigate to="/signup" />} />
                     </Routes>
                 </main>
             </div>
