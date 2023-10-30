@@ -1,13 +1,13 @@
 import React from 'react';
+import { useState} from 'react';
 import AccountProfileDetails from '../components/AccountProfileDetails';
 import AccountProfile from '../components/AccountProfile';
-import { Grid, Card, Button, CardActions, Divider } from '@mui/material';
+import { Button, CardActions } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import disasterImage from '../disaster.png';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Link from '@mui/material/Link';
 import PropTypes from 'prop-types';
@@ -19,14 +19,9 @@ import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import PersonIcon from '@mui/icons-material/Person';
-import AddIcon from '@mui/icons-material/Add';
 import { grey } from '@mui/material/colors';
 import SendIcon from '@mui/icons-material/Send';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import Slide from '@mui/material/Slide';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -47,6 +42,7 @@ SimpleDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   selectedValue: PropTypes.string.isRequired,
+  requestMade: PropTypes.bool, 
 };
 
 const customTheme = createTheme({
@@ -60,15 +56,20 @@ const customTheme = createTheme({
 const roles = ['Responder', 'Facilitator', 'Coordinator', 'Admin'];
 
 function SimpleDialog(props) {
-  const { onClose, selectedValue, open } = props;
+  const { onClose, selectedValue, open, requestMade } = props;
   const [selectedRole, setSelectedRole] = React.useState(selectedValue);
+  const navigate = useNavigate();
 
   const handleClose = () => {
     onClose(selectedRole);
+    navigate('/rolerequest');
+    // navigate(`/rolerequest?selectedRole=${selectedRole}`);
   };
 
   const handleListItemClick = (role) => {
-    setSelectedRole(role);
+    if (!requestMade) {
+      setSelectedRole(role);
+    }
   };
 
   return (
@@ -80,6 +81,7 @@ function SimpleDialog(props) {
             <ListItemButton 
               onClick={() => handleListItemClick(role)}
               selected={role === selectedRole}
+              disabled={requestMade} 
             >
               <ListItemAvatar>
                 <Avatar sx={{ bgcolor: grey[100], color: grey[600] }}>
@@ -97,6 +99,7 @@ function SimpleDialog(props) {
             onClick={() => handleClose()}
             endIcon={<SendIcon />}
             style={{ margin: '0 auto' }}
+            disabled={requestMade}
           >
           <ListItemText primary="Request" />
           </Button>
@@ -109,7 +112,8 @@ function SimpleDialog(props) {
 
 function Account() {
   const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState(roles[1]);
+  const [selectedValue, setSelectedValue] = React.useState('');
+  const [requestMade, setRequestMade] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -118,7 +122,9 @@ function Account() {
   const handleClose = (value) => {
     setOpen(false);
     setSelectedValue(value);
+    setRequestMade(true);
   };
+
   return (
     <ThemeProvider theme={customTheme}>
       <div style={{ height: '100vh', overflow: 'hidden' }}>
@@ -160,6 +166,7 @@ function Account() {
               selectedValue={selectedValue}
               open={open}
               onClose={handleClose}
+              requestMade={requestMade}
             />
           </div>
         </Box>

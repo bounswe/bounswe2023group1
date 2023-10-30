@@ -6,6 +6,8 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import MapDemo from "./pages/MapDemo";
 import Account from "./pages/Account";
+import RoleRequest from "./pages/RoleRequest"; 
+
 
 const smallRedCircle = (
     <svg
@@ -57,6 +59,7 @@ function App() {
                             <Route key={path} path={path} element={React.createElement(component)}/>
                         ))}
                         <Route path="/" element={<Navigate to="/signup" />} />
+                        <Route path="/rolerequest" element={React.createElement(RoleRequest)} />
                     </Routes>
                 </main>
             </div>
