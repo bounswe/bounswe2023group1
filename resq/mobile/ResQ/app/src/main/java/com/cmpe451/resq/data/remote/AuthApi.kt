@@ -6,6 +6,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.Body
+import retrofit2.http.POST
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
 
 data class LoginRequest(
     val email: String,
@@ -50,8 +56,7 @@ class AuthApi {
 
 
     suspend fun login(loginRequest: LoginRequest): Response<LoginResponse> {
-        val response = authService.login(loginRequest)
-        return response
+        return authService.login(loginRequest)
     }
 
     suspend fun register(registerRequest: RegisterRequest): Response<ResponseBody> {
