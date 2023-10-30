@@ -5,8 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.cmpe451.resq.data.models.User
-import com.cmpe451.resq.data.remote.RegisterResponse
 import com.cmpe451.resq.domain.RegistrationUseCase
 import kotlinx.coroutines.launch
 

@@ -1,9 +1,7 @@
 package com.cmpe451.resq.domain
 
-import com.cmpe451.resq.data.models.User
 import com.cmpe451.resq.data.remote.AuthApi
 import com.cmpe451.resq.data.remote.RegisterRequest
-import com.cmpe451.resq.data.remote.RegisterResponse
 
 class RegistrationUseCase() {
 
