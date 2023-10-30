@@ -114,6 +114,7 @@ function Account() {
   const [open, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState('');
   const [requestMade, setRequestMade] = useState(false);
+  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -158,7 +159,12 @@ function Account() {
             <AccountProfileDetails sx={{ margin: '0 10px' }} />
           </Box>
           <CardActions sx={{ justifyContent: 'space-between' }}>
-            <Button variant="contained" color="primary">Save Details</Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                navigate('/map');
+              }}
+              >Save Details</Button>
             <Button variant="contained" onClick={handleClickOpen}>Request for a Role</Button>
           </CardActions>
           <div>

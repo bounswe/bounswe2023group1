@@ -23,8 +23,8 @@ const smallRedCircle = (
 const navLinks = [
     {path: '/signin', label: <strong>Sign In</strong>, component: SignIn, icon: smallRedCircle,},
     {path: '/signup', label: <strong>Sign Up</strong>, component: SignUp, icon: smallRedCircle,},
-    {path: '/map', label: <strong>Map Demo</strong>, component: MapDemo, icon: smallRedCircle},
     {path: '/userroles', label: <strong>User Roles</strong>, component: UserRoles, icon: smallRedCircle},
+    {path: '/map', label: <strong>Map Demo</strong>, component: MapDemo, icon: smallRedCircle},
     {path: '/account', label: <strong>Account</strong>, component: Account, icon: smallRedCircle},
 
 ];

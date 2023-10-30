@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import disasterImage from '../disaster.png';
 import Container from '@mui/material/Container';
 import { useState } from 'react';
-
+import ImageUploadComponent from '../components/ImageUpload'
 
 function Copyright(props) {
   return (
@@ -32,51 +32,51 @@ function Copyright(props) {
   );
 }
 
+
 function RoleRequest() {
     const [dragging, setDragging] = useState(false);
-    const [droppedImage, setDroppedImage] = useState(null);
+    const [droppedImage, setDroppedImage] = useState('');
     const [uploadedId, setUploadedId] = useState('');
-  
+    
     const handleDragOver = (e) => {
-      e.preventDefault();
-      setDragging(true);
+        e.preventDefault();
+        setDragging(true);
     };
-  
+    
     const handleDragLeave = () => {
-      setDragging(false);
+        setDragging(false);
     };
-  
+    
     const handleDrop = (e) => {
-      e.preventDefault();
-      setDragging(false);
-      const files = e.dataTransfer.files;
-      if (files.length > 0) {
+        e.preventDefault();
+        setDragging(false);
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
         const file = files[0];
         const imageUrl = URL.createObjectURL(file);
         setDroppedImage(imageUrl);
-      }
+        }
     };
-  
+    
     const handleUploadId = (e) => {
         const file = e.target.files[0];
         if (file) {
-            try {
-                const imageUrl = URL.createObjectURL(file);
-                setDroppedImage(imageUrl);
-            } catch (error) {
-                console.error("Failed to create object URL: " + error.message);
-            }
+        try {
+            const imageUrl = URL.createObjectURL(file);
+            setDroppedImage(imageUrl);
+        } catch (error) {
+            console.error("Failed to create object URL: " + error.message);
         }
-    };
-      
-  
+        };
+    }
+
     const customTheme = createTheme({
-      palette: {
-        primary: {
-          main: '#FF0000',
+        palette: {
+          primary: {
+            main: '#FF0000',
+          },
         },
-      },
-    });
+      });
   
     return (
       <ThemeProvider theme={customTheme}>
@@ -100,60 +100,14 @@ function RoleRequest() {
             <Typography component="h5" variant="h5" sx={{ color: 'red', fontWeight: 'bold', margin: '0' }}>
               ResQ
             </Typography>
-          </Box>
-          <Box component="form" noValidate sx={{ mt: 1 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Box
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
-                  sx={{
-                    mt: 2,
-                    border: dragging ? '4px dashed #FF0000' : '2px dashed #E0E0E0',
-                    borderRadius: '8px',
-                    padding: '32px', // Increase the padding for more space
-                    textAlign: 'center',
-                    width: '100%', // Make it as wide as the container
-                    minHeight: '300px', // Increase the height for more space
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center', // Center the content vertically
-                    alignItems: 'center', // Center the content horizontally
-                  }}
-                >
-                  {dragging ? (
-                    <Typography variant="body1" sx={{ textAlign: 'center' }}>
-                      Drop the image here
-                    </Typography>
-                  ) : (
-                    droppedImage ? (
-                      <img
-                        src={droppedImage}
-                        alt="Dropped Image"
-                        style={{ maxWidth: '100%', maxHeight: '100%' }}
-                      />
-                    ) : (
-                      <Typography variant="body1" sx={{ textAlign: 'center' }}>
-                        Drag and drop an image here
-                      </Typography>
-                    )
-                  )}
-                </Box>
-              </Grid>
-              <Grid item xs={12}>
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <Button variant="contained" component="label">
-                    Upload ID
-                    <input
-                      type="file"
-                      hidden
-                      onChange={handleUploadId}
-                    />
-                  </Button>
-                </div>
-              </Grid>
-            </Grid>
+            <ImageUploadComponent
+                dragging={dragging}
+                droppedImage={droppedImage}
+                handleDragOver={handleDragOver}
+                handleDragLeave={handleDragLeave}
+                handleDrop={handleDrop}
+                handleUploadId={handleUploadId}
+                />
           </Box>
         </Container>
         <Copyright sx={{ mt: 5 }} />
