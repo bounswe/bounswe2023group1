@@ -16,8 +16,8 @@ const user = {
     city: 'Izmir',
     country: 'Turkey',
     role: 'victim',
-    name: 'Sude Demir',
-    bloodType: '0 RH +',
+    name: 'Melek Nur Türkoğlu',
+    bloodType: '0 RH -',
     gender: 'Woman',
 };
 
@@ -75,9 +75,9 @@ function AccountProfile() {
     const [values, setValues] = useState({
         bloodType: '0 RH +',
         gender: 'Woman',
-        year: '1999',
-        month: '08',
-        day: '17',
+        year: '1993',
+        month: '05',
+        day: '29',
     });
 
     const handleChange = useCallback((event) => {

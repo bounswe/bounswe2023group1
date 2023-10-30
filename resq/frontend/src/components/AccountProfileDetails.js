@@ -32,9 +32,9 @@ const customTheme = createTheme({
 
 function AccountProfileDetails() {
     const [values, setValues] = useState({
-        firstName: 'Sude',
-        lastName: 'Demir',
-        email: 'sude@gmail.com',
+        firstName: 'Melek Nur',
+        lastName: 'Türkoğlu',
+        email: 'meleknurturkoglu@gmail.com',
         phone: '05324054856',
         state: 'Izmir',
         country: 'Turkey',
