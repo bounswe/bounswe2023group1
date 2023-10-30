@@ -13,14 +13,20 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.2",
+    "next": "^14.0.0",
     "npm": "^10.2.1",
+    "pigeon-maps": "^0.21.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
     "react-router-dom": "^6.11.1",
     "react-scripts": "^5.0.1",
+    "styled-components": "^6.1.0",
     "web-vitals": "^3.5.0"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   },
   "scripts": {
     "start": "react-scripts start",

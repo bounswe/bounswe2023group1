@@ -18,29 +18,25 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public Boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
-    }
-
     public Boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
 
-    public void save(User user) {
-        userRepository.save(user);
+    public User save(User user) {
+        return userRepository.save(user);
     }
 
-    public Optional<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
-    public void requestRole(Long userId, String role) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+    public User requestRole(Long userId, String role) {
+        User user = findById(userId);
         Set<EUserRole> roles = user.getRoles();
         // In the future, users will be checked if they are allowed to take this role.
         roles.add(EUserRole.getEnumByStr(role.toUpperCase()));
         user.setRoles(roles);
-        save(user);
+        return save(user);
     }
 
     public User findById(Long userId) {

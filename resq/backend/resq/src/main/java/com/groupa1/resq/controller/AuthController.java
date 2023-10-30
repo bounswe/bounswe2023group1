@@ -30,7 +30,7 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<JwtResponse> signin(@RequestBody LoginUserRequest loginUserRequest) {
-        log.info("Login user request {}", loginUserRequest.getUsername());
+        log.info("Login user request {}", loginUserRequest.getEmail());
         return authService.signin(loginUserRequest);
     }
 }

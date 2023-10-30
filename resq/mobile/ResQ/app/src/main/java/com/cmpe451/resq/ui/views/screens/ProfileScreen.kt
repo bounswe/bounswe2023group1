@@ -35,7 +35,7 @@ import androidx.navigation.NavController
 import com.cmpe451.resq.viewmodels.ProfileViewModel
 import com.cmpe451.resq.data.models.ProfileData
 @Composable
-fun ProfileScreen(userId: String, navController: NavController) {
+fun ProfileScreen(userId: Int, navController: NavController) {
     val viewModel = ProfileViewModel()
     viewModel.getUserData(userId)
     val profileData by viewModel.profile
@@ -47,7 +47,6 @@ fun ProfileScreen(userId: String, navController: NavController) {
         else{
                 // Handle other roles or unknown roles
             Text("Unknown Role")
-                // Add handling for unknown roles here
             }
     } else {
         // Data is loading or an error occurred
@@ -144,7 +143,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                         append(" $name")
                                     },
                                     style = TextStyle(
-                                        fontSize = 20.sp, // Set your desired font size
+                                        fontSize = 20.sp,
                                         color = Color(0xFF224957) // Set the font color to #224957
                                     )
                                 )
@@ -156,7 +155,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                         append(" $surname")
                                     },
                                     style = TextStyle(
-                                        fontSize = 20.sp, // Set your desired font size
+                                        fontSize = 20.sp,
                                         color = Color(0xFF224957) // Set the font color to #224957
                                     )
                                 )
@@ -168,7 +167,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                         append(" $dateOfBirth")
                                     },
                                     style = TextStyle(
-                                        fontSize = 20.sp, // Set your desired font size
+                                        fontSize = 20.sp,
                                         color = Color(0xFF224957) // Set the font color to #224957
                                     )
                                 )
@@ -180,7 +179,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                         append(" $role")
                                     },
                                     style = TextStyle(
-                                        fontSize = 20.sp, // Set your desired font size
+                                        fontSize = 20.sp,
                                         color = Color(0xFF224957) // Set the font color to #224957
                                     )
                                 )
@@ -216,13 +215,13 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                             // "My Requests" button
                             Button(
                                 onClick = {
-                                    // Add your requests action here
+                                    // Add requests action here
                                 },
                                 colors = ButtonDefaults.buttonColors(Color(0xFFB356AF)),
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .width(200.dp) // Set the desired width for both buttons
-                                    .height(50.dp) // Set the desired height for both buttons
+                                    .width(200.dp)
+                                    .height(50.dp)
                             ) {
                                 Text(text = "My Requests")
                             }
@@ -235,8 +234,8 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                 colors = ButtonDefaults.buttonColors(Color(0xFF397FE7)),
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .width(200.dp) // Set the desired width for both buttons
-                                    .height(50.dp) // Set the desired height for both buttons
+                                    .width(200.dp)
+                                    .height(50.dp)
                             ) {
                                 Text(text = "My Resources")
                             }
@@ -247,8 +246,8 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                 colors = ButtonDefaults.buttonColors(Color(0xFFE7A139)),
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .width(200.dp) //
-                                    .height(50.dp) //
+                                    .width(200.dp)
+                                    .height(50.dp)
                             ) {
                                 Text(text = "My Tasks")
                             }
@@ -256,13 +255,13 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                         // "Edit Profile" button
                         Button(
                             onClick = {
-                                // Add your edit profile action here
+                                // Add profile action here
                             },
                             colors = ButtonDefaults.buttonColors(Color(0xFF224957)),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .width(200.dp) // Set the same width for both buttons
-                                .height(50.dp) // Set the same height for both buttons
+                                .width(200.dp)
+                                .height(50.dp)
                         ) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
@@ -270,7 +269,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                 Text(
                                     "✏️",
                                     fontSize = 20.sp
-                                ) // Use a text character that resembles a pencil
+                                )
                                 Spacer(modifier = Modifier.width(8.dp)) // Add space between the icon and the button text
                                 Text(text = "Edit Profile")
                             }

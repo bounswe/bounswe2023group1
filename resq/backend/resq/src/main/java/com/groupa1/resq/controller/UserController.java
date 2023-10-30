@@ -1,8 +1,12 @@
 package com.groupa1.resq.controller;
 
 import com.groupa1.resq.config.ResqAppProperties;
+import com.groupa1.resq.converter.UserConverter;
+import com.groupa1.resq.dto.UserDto;
+import com.groupa1.resq.entity.User;
 import com.groupa1.resq.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,21 +23,21 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/getUser")
-    public String index() {
-        log.trace("A TRACE Message");
-        log.debug("A DEBUG Message");
-        log.info("An INFO Message");
-        log.warn("A WARN Message");
-        log.error("An ERROR Message");
-        return resqAppProperties.getServerPort();
-    }
+    @Autowired
+    private UserConverter userConverter;
 
     @PostMapping("/requestRole")
     public String requestRole(@RequestParam Long userId, @RequestParam String role) {
         log.info("Requested role: {} requested for user: {}", role, userId);
-        userService.requestRole(userId, role);
-        return "Role successfully inserted.";
+        User user = userService.requestRole(userId, role);
+        return "Role successfully inserted to " + user.getName() + ".";
+    }
+
+    @GetMapping("/getUserInfo")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COORDINATOR') or hasRole('FACILITATOR') or hasRole('RESPONDER') or hasRole('VICTIM')")
+    public UserDto getUserInfo(@RequestParam Long userId) {
+        log.info("Get user info requested for userId : {}", userId);
+        return userConverter.convertToDto(userService.findById(userId));
     }
 
     // Example role-secured methods

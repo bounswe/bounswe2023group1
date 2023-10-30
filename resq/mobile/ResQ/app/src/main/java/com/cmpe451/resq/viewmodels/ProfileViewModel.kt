@@ -15,7 +15,7 @@ class ProfileViewModel() : ViewModel() {
     val profile get() = _profileData
     private val errorMessage = MutableStateFlow<String?>(null)
 
-    fun getUserData(userId: String) {
+    fun getUserData(userId: Int) {
         viewModelScope.launch {
             try {
                 val data = profileRepository.getUserData(userId)

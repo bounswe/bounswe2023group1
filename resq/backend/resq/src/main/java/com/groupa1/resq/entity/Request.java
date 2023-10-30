@@ -31,5 +31,6 @@ public class Request extends BaseEntity{
 
     private BigDecimal latitude;
     private BigDecimal longitude;
+    private String description;
 
 }
