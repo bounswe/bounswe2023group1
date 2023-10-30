@@ -39,16 +39,13 @@ public class AuthService {
 
 
     public ResponseEntity<String> signup(RegisterUserRequest registerUserRequest) {
-        if (userService.existsByUsername(registerUserRequest.getUsername())) {
-            return ResponseEntity.badRequest().body("Error: Username is already taken!");
-        }
 
         if (userService.existsByEmail(registerUserRequest.getEmail())) {
             return ResponseEntity.badRequest().body("Error: Email is already in use!");
         }
 
         // Create new user's account
-        User user = new User(registerUserRequest.getUsername(), registerUserRequest.getEmail(),
+        User user = new User(registerUserRequest.getName(), registerUserRequest.getSurname(), registerUserRequest.getEmail(),
                 encoder.encode(registerUserRequest.getPassword()));
 
         Set<EUserRole> roles = new HashSet<>();
@@ -64,7 +61,7 @@ public class AuthService {
 
     public ResponseEntity<JwtResponse> signin(LoginUserRequest loginUserRequest) {
         Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginUserRequest.getUsername(), loginUserRequest.getPassword()));
+                .authenticate(new UsernamePasswordAuthenticationToken(loginUserRequest.getEmail(), loginUserRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
@@ -74,6 +71,6 @@ public class AuthService {
                 .collect(Collectors.toList());
 
         return ResponseEntity
-                .ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
+                .ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getName(), userDetails.getSurname(), userDetails.getEmail(), roles));
     }
 }

@@ -17,7 +17,7 @@ public class Admin extends BaseEntity{
 
     @NotBlank
     @Size(max = 20)
-    private String username;
+    private String email;
 
     @NotBlank
     @Size(max = 120)

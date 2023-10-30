@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,9 +23,27 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.cmpe451.resq.ui.theme.ResQTheme
+import com.cmpe451.resq.ui.views.screens.DummyScreen
+import com.cmpe451.resq.ui.views.screens.LoginScreen
 import com.cmpe451.resq.ui.views.screens.MapScreen
+import com.cmpe451.resq.ui.views.screens.RegistrationScreen
 import com.cmpe451.resq.utils.BottomNavigationItem
 import com.cmpe451.resq.utils.NavigationItem
+@Composable
+fun AppNavigator() {
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = "login") {
+        composable("login") {
+            LoginScreen(navController)
+        }
+        composable("registration") {
+            RegistrationScreen(navController)
+        }
+        composable("dummy") {
+            DummyScreen(navController)
+        }
+    }
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +56,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
@@ -67,10 +86,10 @@ fun NavGraph(
     ) {
 
         composable(NavigationItem.Login.route) {
-           // LoginScreen(navController)
+            LoginScreen(navController)
         }
         composable(NavigationItem.Register.route) {
-          //  RegistrationScreen(navController)
+            RegistrationScreen(navController)
         }
         composable(NavigationItem.Profile.route) {
           //  ProfileScreen(navController)
@@ -79,10 +98,10 @@ fun NavGraph(
             MapScreen(navController = navController)
         }
         composable(NavigationItem.Notifications.route) {
-        //NotificationsScreen(navController)
+            //NotificationsScreen(navController)
         }
         composable(NavigationItem.Settings.route) {
-        //SettingsScreen(navController)
+            //SettingsScreen(navController)
         }
     }
 }
