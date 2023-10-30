@@ -30,7 +30,7 @@ public class UserController {
     public String requestRole(@RequestParam Long userId, @RequestParam String role) {
         log.info("Requested role: {} requested for user: {}", role, userId);
         User user = userService.requestRole(userId, role);
-        return "Role successfully inserted to " + user.getName() +".";
+        return "Role successfully inserted to " + user.getName() + ".";
     }
 
     @GetMapping("/getUserInfo")

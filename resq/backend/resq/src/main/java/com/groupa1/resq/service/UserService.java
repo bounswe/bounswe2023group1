@@ -31,7 +31,7 @@ public class UserService {
     }
 
     public User requestRole(Long userId, String role) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        User user = findById(userId);
         Set<EUserRole> roles = user.getRoles();
         // In the future, users will be checked if they are allowed to take this role.
         roles.add(EUserRole.getEnumByStr(role.toUpperCase()));
