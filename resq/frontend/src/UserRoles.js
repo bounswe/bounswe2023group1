@@ -16,7 +16,7 @@ import disasterImage from './disaster.png';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup'; 
+import RadioGroup from '@mui/material/RadioGroup';
 
 
 
@@ -38,23 +38,23 @@ function Copyright(props) {
 const customTheme = createTheme({
   palette: {
     primary: {
-      main: '#FF0000', 
+      main: '#FF0000',
     },
   },
 });
 
 
 export default function SignIn(){
-  const [selectedRole, setSelectedRole] = React.useState(''); 
+  const [selectedRole, setSelectedRole] = React.useState('');
 
   const handleRoleChange = (event) => {
-    setSelectedRole(event.target.value); 
+    setSelectedRole(event.target.value);
   };
 
   const navigate = useNavigate();
 
   const handleUserRoles = () => {
-    navigate('/userroles'); 
+    navigate('/userroles');
   };
 
   const handleSubmit = (event) => {
@@ -140,5 +140,4 @@ export default function SignIn(){
     </ThemeProvider>
   );
 }
-
 
