@@ -22,28 +22,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.cmpe451.resq.ui.theme.LightGreen
 import com.cmpe451.resq.ui.theme.ResQTheme
-import com.cmpe451.resq.ui.views.screens.DummyScreen
 import com.cmpe451.resq.ui.views.screens.LoginScreen
 import com.cmpe451.resq.ui.views.screens.MapScreen
 import com.cmpe451.resq.ui.views.screens.RegistrationScreen
 import com.cmpe451.resq.utils.BottomNavigationItem
 import com.cmpe451.resq.utils.NavigationItem
-@Composable
-fun AppNavigator() {
-    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "login") {
-        composable("login") {
-            LoginScreen(navController)
-        }
-        composable("registration") {
-            RegistrationScreen(navController)
-        }
-        composable("dummy") {
-            DummyScreen(navController)
-        }
-    }
-}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,18 +69,17 @@ fun NavGraph(
         navController = navController,
         startDestination = NavigationItem.Login.route
     ) {
-
-        composable(NavigationItem.Login.route) {
-            LoginScreen(navController)
-        }
         composable(NavigationItem.Register.route) {
             RegistrationScreen(navController)
         }
-        composable(NavigationItem.Profile.route) {
-          //  ProfileScreen(navController)
+        composable(NavigationItem.Login.route) {
+            LoginScreen(navController)
         }
         composable(NavigationItem.Map.route) {
             MapScreen(navController = navController)
+        }
+        composable(NavigationItem.Profile.route) {
+          //  ProfileScreen(navController)
         }
         composable(NavigationItem.Notifications.route) {
             //NotificationsScreen(navController)
@@ -105,6 +89,7 @@ fun NavGraph(
         }
     }
 }
+
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -112,7 +97,7 @@ fun BottomNavigationBar(navController: NavController) {
     val currentBottomNavigation = NavigationItem.getBottomNavigationItem(currentRoute) ?: return
 
     BottomNavigation(
-       backgroundColor = Color.White,
+        backgroundColor = Color.White
     ) {
         BottomNavigationItem.values().forEach {
             BottomNavigationItem(
@@ -137,8 +122,7 @@ fun BottomNavigationBar(navController: NavController) {
                     }
                 },
                 alwaysShowLabel = false,
-                selectedContentColor = Color.Green,
-                unselectedContentColor = Color.White
+                selectedContentColor = LightGreen,
             )
         }
     }

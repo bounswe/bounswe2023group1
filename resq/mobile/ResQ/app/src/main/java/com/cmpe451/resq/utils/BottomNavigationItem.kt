@@ -27,7 +27,7 @@ enum class BottomNavigationItem(
 
     Notifications(
         navigation = NavigationItem.Notifications,
-        title = "Notif",
+        title = "Notice",
         icon = Icons.Default.Notifications,
     ),
 
