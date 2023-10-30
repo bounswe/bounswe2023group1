@@ -13,7 +13,6 @@ import {createTheme, ThemeProvider} from '@mui/material/styles';
 import disasterImage from '../disaster.png';
 import Container from '@mui/material/Container';
 import {useNavigate} from 'react-router-dom';
-import {Copyright} from "../components/Copyright";
 import DisasterMap from "../components/DisasterMap";
 import {useState} from "react";
 import {Card, CardActions, CardContent, CardHeader, Collapse, IconButton} from "@mui/material";
@@ -32,6 +31,21 @@ const customTheme = createTheme({
         },
     },
 });
+
+function Copyright(props) {
+    return (
+      <div style={{ position: 'fixed', bottom: 0, width: '100%' }}>
+        <Typography variant="body2" color="text.secondary" align="center" {...props}>
+          {'Copyright © '}
+          <Link color="inherit" href="https://github.com/bounswe/bounswe2023group1">
+            <span style={{ fontWeight: 'bold' }}>ResQ</span>
+          </Link>{' '}
+          {new Date().getFullYear()}
+          {'.'}
+        </Typography>
+      </div>
+    );
+  }
 
 
 const ExpandMore = styled(IconButton)`
@@ -202,7 +216,7 @@ export default function MapDemo() {
                     </Box>
                 </Box>
 
-                <Copyright sx={{mt: 8, mb: 4}}/>
+                <Copyright sx={{ mt: 5 }} />
             </Container>
         </ThemeProvider>
     );
