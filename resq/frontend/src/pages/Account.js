@@ -22,6 +22,11 @@ import PersonIcon from '@mui/icons-material/Person';
 import AddIcon from '@mui/icons-material/Add';
 import { grey } from '@mui/material/colors';
 import SendIcon from '@mui/icons-material/Send';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Slide from '@mui/material/Slide';
 
 function Copyright(props) {
   return (
@@ -38,6 +43,12 @@ function Copyright(props) {
   );
 }
 
+SimpleDialog.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  selectedValue: PropTypes.string.isRequired,
+};
+
 const customTheme = createTheme({
   palette: {
     primary: {
@@ -50,13 +61,14 @@ const roles = ['Responder', 'Facilitator', 'Coordinator', 'Admin'];
 
 function SimpleDialog(props) {
   const { onClose, selectedValue, open } = props;
+  const [selectedRole, setSelectedRole] = React.useState(selectedValue);
 
   const handleClose = () => {
-    onClose(selectedValue);
+    onClose(selectedRole);
   };
 
-  const handleListItemClick = (value) => {
-    onClose(value);
+  const handleListItemClick = (role) => {
+    setSelectedRole(role);
   };
 
   return (
@@ -65,7 +77,10 @@ function SimpleDialog(props) {
       <List sx={{ pt: 0 }}>
         {roles.map((role) => (
           <ListItem disableGutters key={role}>
-            <ListItemButton onClick={() => handleListItemClick(role)}>
+            <ListItemButton 
+              onClick={() => handleListItemClick(role)}
+              selected={role === selectedRole}
+            >
               <ListItemAvatar>
                 <Avatar sx={{ bgcolor: grey[100], color: grey[600] }}>
                   <PersonIcon />
@@ -79,7 +94,7 @@ function SimpleDialog(props) {
           <Button 
             variant="contained" 
             autoFocus
-            onClick={() => handleListItemClick('requestRole')}
+            onClick={() => handleClose()}
             endIcon={<SendIcon />}
             style={{ margin: '0 auto' }}
           >
@@ -90,12 +105,6 @@ function SimpleDialog(props) {
     </Dialog>
   );
 }
-
-SimpleDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-  selectedValue: PropTypes.string.isRequired,
-};
 
 
 function Account() {
@@ -161,6 +170,18 @@ function Account() {
 }
 
 export default Account;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
