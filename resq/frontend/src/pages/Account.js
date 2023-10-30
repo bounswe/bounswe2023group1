@@ -1,9 +1,9 @@
 import React from 'react';
-import AccountProfileDetails from './AccountProfileDetails';
-import AccountProfile from './AccountProfile';
+import AccountProfileDetails from '../components/AccountProfileDetails';
+import AccountProfile from '../components/AccountProfile';
 import { Grid, Card, Button, CardActions, Divider } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import disasterImage from './disaster.png';
+import disasterImage from '../disaster.png';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -20,7 +20,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import PersonIcon from '@mui/icons-material/Person';
 import AddIcon from '@mui/icons-material/Add';
-import { red } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
+import SendIcon from '@mui/icons-material/Send';
 
 function Copyright(props) {
   return (
@@ -45,7 +46,70 @@ const customTheme = createTheme({
   },
 });
 
+const roles = ['Responder', 'Facilitator', 'Coordinator', 'Admin'];
+
+function SimpleDialog(props) {
+  const { onClose, selectedValue, open } = props;
+
+  const handleClose = () => {
+    onClose(selectedValue);
+  };
+
+  const handleListItemClick = (value) => {
+    onClose(value);
+  };
+
+  return (
+    <Dialog onClose={handleClose} open={open}>
+      <DialogTitle style={{ fontWeight: 'bold' }}>Choose desired role</DialogTitle>
+      <List sx={{ pt: 0 }}>
+        {roles.map((role) => (
+          <ListItem disableGutters key={role}>
+            <ListItemButton onClick={() => handleListItemClick(role)}>
+              <ListItemAvatar>
+                <Avatar sx={{ bgcolor: grey[100], color: grey[600] }}>
+                  <PersonIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={role} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+        <ListItem disableGutters>
+          <Button 
+            variant="contained" 
+            autoFocus
+            onClick={() => handleListItemClick('requestRole')}
+            endIcon={<SendIcon />}
+            style={{ margin: '0 auto' }}
+          >
+          <ListItemText primary="Request" />
+          </Button>
+        </ListItem>
+      </List>
+    </Dialog>
+  );
+}
+
+SimpleDialog.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  selectedValue: PropTypes.string.isRequired,
+};
+
+
 function Account() {
+  const [open, setOpen] = React.useState(false);
+  const [selectedValue, setSelectedValue] = React.useState(roles[1]);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (value) => {
+    setOpen(false);
+    setSelectedValue(value);
+  };
   return (
     <ThemeProvider theme={customTheme}>
       <div style={{ height: '100vh', overflow: 'hidden' }}>
@@ -79,9 +143,16 @@ function Account() {
             <AccountProfileDetails sx={{ margin: '0 10px' }} />
           </Box>
           <CardActions sx={{ justifyContent: 'space-between' }}>
-            <Button variant="contained">Request for a Role</Button>
             <Button variant="contained" color="primary">Save Details</Button>
+            <Button variant="contained" onClick={handleClickOpen}>Request for a Role</Button>
           </CardActions>
+          <div>
+            <SimpleDialog
+              selectedValue={selectedValue}
+              open={open}
+              onClose={handleClose}
+            />
+          </div>
         </Box>
       </div>
       <Copyright sx={{ mt: 5 }} />
@@ -90,4 +161,9 @@ function Account() {
 }
 
 export default Account;
+
+
+
+
+
 

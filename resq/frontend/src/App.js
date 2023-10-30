@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 import {Navbar, Container, Nav} from 'react-bootstrap';
 import UserRoles from "./pages/UserRoles";
 import SignIn from "./pages/SignIn";
@@ -56,6 +56,7 @@ function App() {
                         {navLinks.map(({path, component}) => (
                             <Route key={path} path={path} element={React.createElement(component)}/>
                         ))}
+                        <Route path="/" element={<Navigate to="/signup" />} />
                     </Routes>
                 </main>
             </div>
