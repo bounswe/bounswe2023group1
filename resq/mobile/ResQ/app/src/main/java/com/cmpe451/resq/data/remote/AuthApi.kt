@@ -8,17 +8,36 @@ import retrofit2.http.POST
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Header
 
 
-data class LoginRequest(val email: String, val password: String)
-data class RegisterRequest(val email: String, val password: String)
-data class RegisterResponse(val success: Boolean, val message: String)
+data class LoginRequest(
+    val email: String,
+    val password: String
+)
+data class LoginResponse(
+    val jwt: String,
+    val id: Int,
+    val name: String,
+    val surname: String,
+    val email: String,
+    val roles: List<String>
+)
+data class RegisterRequest(
+    val name: String,
+    val surname: String,
+    val email: String,
+    val password: String
+)
+data class RegisterResponse(
+    val message: String
+)
 interface AuthService {
-    @POST("api/login")
-    suspend fun login(@Body request: LoginRequest): Response<User>
+    @POST("auth/signin")
+    suspend fun login(@Body request: LoginRequest):  Response<LoginResponse>
 
-    @POST("api/register")
-    suspend fun register(@Body request: RegisterRequest): Response<RegisterResponse>
+    @POST("auth/signup")
+    suspend fun register(@Body request: RegisterRequest): Response<ResponseBody>
 }
 class AuthApi {
 
@@ -26,29 +45,30 @@ class AuthApi {
 
     init {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://resq.com/") // TODO: Replace with backend URL
+            .baseUrl("http://16.16.63.194/resq/api/v1/") // TODO: Replace with backend URL
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         authService = retrofit.create(AuthService::class.java)
     }
 
-    //  suspend fun login(loginRequest: LoginRequest): Response<User> {
-    //      return authService.login(loginRequest)
-    //  }
 
-    fun login(loginRequest: LoginRequest): Response<User> {
-        // Dummy logic for now:
-        return if (loginRequest.email == "test@email.com" && loginRequest.password == "password123") {
-            Response.success(User(email = loginRequest.email, password = "password123"))
-        } else {
-            Response.error(401, "Invalid credentials".toResponseBody(null))
-        }
+    suspend fun login(loginRequest: LoginRequest): Response<LoginResponse> {
+        return authService.login(loginRequest)
     }
 
+//    fun login(loginRequest: LoginRequest): Response<User> {
+        // Dummy logic for now:
+//        return if (loginRequest.email == "test@email.com" && loginRequest.password == "password123") {
+//            Response.success(User(email = loginRequest.email, password = "password123"))
+//        } else {
+//            Response.error(401, "Invalid credentials".toResponseBody(null))
+//        }
+//    }
 
-    fun register(registerRequest: RegisterRequest): Response<User> {
-        return Response.success(User(email = registerRequest.email, password = registerRequest.password))
+
+    suspend fun register(registerRequest: RegisterRequest): Response<ResponseBody> {
+        return authService.register(registerRequest)
     }
 }
 

@@ -44,7 +44,9 @@
     fun RegistrationScreen(navController: NavController) {
     
         val viewModel: RegistrationViewModel = viewModel()
-    
+
+        var name by remember { mutableStateOf("") }
+        var surname by remember { mutableStateOf("") }
         var email by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
         var confirmPassword by remember { mutableStateOf("") }
@@ -72,7 +74,39 @@
             )
     
             Spacer(modifier = Modifier.height(32.dp))
-    
+
+// Name and Surname inputs in the same horizontal position
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                TextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Name", color = Color.White) },
+                    modifier = Modifier.weight(1f).padding(end = 8.dp), // half width and add some padding
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = DeepBlue,
+                        textColor = Color.White,
+                        cursorColor = Color.White
+                    )
+                )
+
+                TextField(
+                    value = surname,
+                    onValueChange = { surname = it },
+                    label = { Text("Surname", color = Color.White) },
+                    modifier = Modifier.weight(1f).padding(start = 8.dp), // half width and add some padding
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = DeepBlue,
+                        textColor = Color.White,
+                        cursorColor = Color.White
+                    )
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             // E-mail input
             TextField(
                 value = email,
@@ -149,7 +183,15 @@
             // Create account button
             Button(
                 onClick = {
-                    viewModel.register(email, password, confirmPassword, termsAccepted)
+                    viewModel.register(
+                        name,
+                        surname,
+                        email,
+                        password,
+                        confirmPassword,
+                        termsAccepted,
+                        navController
+                    )
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
@@ -191,7 +233,7 @@
                 }
             }
             // Success and Error messages
-            if (viewModel.user.value != null) {
+            if (viewModel.registerMessage.value != null) {
                 Text(
                     text = "Registration success",
                     color = Color.Green,
