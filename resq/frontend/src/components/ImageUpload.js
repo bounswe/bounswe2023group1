@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import Button from '@mui/material/Button';
 
 function ImageUploadComponent({ dragging, droppedImage, handleDragOver, handleDragLeave, handleDrop, handleUploadId }) {
-
   return (
     <Box
       onDragOver={handleDragOver}
@@ -16,15 +16,15 @@ function ImageUploadComponent({ dragging, droppedImage, handleDragOver, handleDr
         mt: 2,
         border: dragging ? '4px dashed #FF0000' : '2px dashed #E0E0E0',
         borderRadius: '8px',
-        padding: '64px',
+        padding: '64px', 
         textAlign: 'center',
         width: '100%',
-        minHeight: '400px',
-        minWidth: '450px',
+        minHeight: '300px', 
+        minWidth: '450px', 
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center', 
       }}
     >
       {dragging ? (
@@ -68,13 +68,13 @@ function ImageUploadComponent({ dragging, droppedImage, handleDragOver, handleDr
       <Button
         variant="contained"
         component="label"
-        style={{
-          backgroundColor: 'rgba(169, 169, 169, 0.7)',
-          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
-          padding: '12px',
-          borderRadius: '8px',
-          marginTop: '12px',
-        }}
+            style={{
+                backgroundColor: 'rgba(169, 169, 169, 0.7)',
+                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
+                padding: '12px',
+                borderRadius: '8px',
+                marginTop: '12px',
+            }}
       >
         Upload a file
         <input type="file" hidden onChange={handleUploadId} />
