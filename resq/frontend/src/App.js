@@ -1,11 +1,13 @@
 import React from 'react';
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 import {Navbar, Container, Nav} from 'react-bootstrap';
 import UserRoles from "./pages/UserRoles";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import MapDemo from "./pages/MapDemo";
 import Account from "./pages/Account";
+import RoleRequest from "./pages/RoleRequest"; 
+
 
 const smallRedCircle = (
     <svg
@@ -56,6 +58,8 @@ function App() {
                         {navLinks.map(({path, component}) => (
                             <Route key={path} path={path} element={React.createElement(component)}/>
                         ))}
+                        <Route path="/" element={<Navigate to="/signup" />} />
+                        <Route path="/rolerequest" element={React.createElement(RoleRequest)} />
                     </Routes>
                 </main>
             </div>
