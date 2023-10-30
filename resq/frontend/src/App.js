@@ -1,9 +1,10 @@
 import React from 'react';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import {Navbar, Container, Nav} from 'react-bootstrap';
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
-import UserRoles from "./UserRoles";
+import UserRoles from "./pages/UserRoles";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import MapDemo from "./pages/MapDemo";
 
 const smallRedCircle = (
     <svg
@@ -17,10 +18,10 @@ const smallRedCircle = (
   );
 
 const navLinks = [
-    { path: '/signin', label: 'Sign In', component: SignIn, icon: smallRedCircle, },
-    { path: '/signup', label: 'Sign Up', component: SignUp, icon: smallRedCircle, },
+    {path: '/signin', label: 'Sign In', component: SignIn, icon: smallRedCircle,},
+    {path: '/signup', label: 'Sign Up', component: SignUp, icon: smallRedCircle,},
+    {path: '/map', label: "Map Demo", component: MapDemo, icon: smallRedCircle},
     { path: '/userroles', label: 'User Roles', component: UserRoles, icon: smallRedCircle },
-    
 ];
 
 
@@ -31,7 +32,7 @@ function App() {
                 <Navbar bg="light" variant="light" expand="lg">
                     <Container>
                         <Navbar.Brand href="/" style={{ color: 'red' }}>
-                            <smallRedCircle/> 
+                            <smallRedCircle/>
                             ResQ
                         </Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
@@ -49,7 +50,7 @@ function App() {
                 </Navbar>
                 <main>
                     <Routes>
-                        {navLinks.map(({ path, component }) => (
+                        {navLinks.map(({path, component}) => (
                             <Route key={path} path={path} element={React.createElement(component)}/>
                         ))}
                     </Routes>
