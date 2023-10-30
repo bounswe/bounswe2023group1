@@ -46,7 +46,7 @@ export default function SignUp() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate('/signin'); 
+    navigate('/userroles'); 
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get('email'),
