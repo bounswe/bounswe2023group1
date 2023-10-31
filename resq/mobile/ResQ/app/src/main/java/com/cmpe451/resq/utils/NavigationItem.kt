@@ -11,7 +11,9 @@ enum class NavigationItem(val route: String) {
 
     Settings(route = "settings"),
 
-    Notifications(route = "notifications");
+    Notifications(route = "notifications"),
+
+    Request(route = "request");
 
     companion object {
         private val routeToBottomNavigationItemMap = mapOf(
