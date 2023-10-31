@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-const USER_API_BASE_URL = "http://16.16.63.194/resq/api/v1/user";
-const AUTH_API_BASE_URL = "http://16.16.63.194/resq/api/v1/auth";
-const ACTION_API_BASE_URL = 'http://16.16.63.194/resq/api/v1/action';
-const CATEGORY_API_BASE_URL = 'http://16.16.63.194/resq/api/v1/categorytreenode';
-const NEED_API_BASE_URL = 'http://16.16.63.194/resq/api/v1/need';
-const REQUEST_API_BASE_URL = 'http://16.16.63.194/resq/api/v1/request';
-const RESOURCE_API_BASE_URL = 'http://16.16.63.194/resq/api/v1/resource';
-const TASK_API_BASE_URL = 'http://16.16.63.194/resq/api/v1/task';
+const USER_API_BASE_URL = "http://api.resq.org.tr/resq/api/v1/user";
+const AUTH_API_BASE_URL = "http://api.resq.org.tr/resq/api/v1/auth";
+const ACTION_API_BASE_URL = 'http://api.resq.org.tr/resq/api/v1/action';
+const CATEGORY_API_BASE_URL = 'http://api.resq.org.tr/resq/api/v1/categorytreenode';
+const NEED_API_BASE_URL = 'http://api.resq.org.tr/resq/api/v1/need';
+const REQUEST_API_BASE_URL = 'http://api.resq.org.tr/resq/api/v1/request';
+const RESOURCE_API_BASE_URL = 'http://api.resq.org.tr/resq/api/v1/resource';
+const TASK_API_BASE_URL = 'http://api.resq.org.tr/resq/api/v1/task';
 
 
 export function postRequestRole(userId, role) {
