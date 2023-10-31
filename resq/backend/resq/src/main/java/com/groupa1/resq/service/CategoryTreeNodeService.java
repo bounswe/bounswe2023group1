@@ -36,6 +36,9 @@ public class CategoryTreeNodeService {
                 return currentNode; // Node found
             }
 
+            if(currentNode.getChildren() == null) {
+                continue;
+            }
             for (CategoryTreeNode child : currentNode.getChildren()) {
                 queue.add(child);
             }
@@ -50,18 +53,23 @@ public class CategoryTreeNodeService {
             return null;
         }
         StringBuilder path = new StringBuilder();
-        while (root.getParent() != null) {
-            path.insert(0, root.getData() + "_");
-            root = root.getParent();
-        }
         path.insert(0, root.getData());
+        while (root.getParent() != null) {
+            root = root.getParent();
+            path.insert(0, root.getData() + "_");
+        }
         return path.toString();
     }
 
     public CategoryTreeNode findNodeByPath(String path) {
+        if(path == null || path.equals("")) return null;
         String[] pathArray = path.split("_");
         CategoryTreeNode currentNode = categoryTreeNodeRepository.findRoot();
-        for (String nodeData : pathArray) {
+        if(pathArray.length == 1) {
+            return currentNode;
+        }
+        for (int i = 1; i<pathArray.length; i++) {
+            String nodeData = pathArray[i];
             boolean found = false;
             for (CategoryTreeNode child : currentNode.getChildren()) {
                 if (child.getData().equals(nodeData)) {
