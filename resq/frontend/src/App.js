@@ -19,17 +19,29 @@ const SmallRedCircle = () =>
         <circle cx="10" cy="10" r="8" fill="red"/>
     </svg>
 
-const navLinks = [
-    {path: '/userroles', label: <strong>User Roles</strong>, component: UserRoles, icon: <SmallRedCircle/>},
-    {path: '/map', label: <strong>Map Demo</strong>, component: MapDemo, icon: <SmallRedCircle/>},
-];
-
 function App() {
     const [token, _setToken] = useState(localStorage.getItem("token"))
+    const [role, setRole] = useState("")
     const setToken = t => {
         localStorage.setItem("token", t || "")
         _setToken(t)
     }
+
+    const navLinks = [
+        {path: '/map', label: <strong>Map Demo</strong>, component: MapDemo, icon: <SmallRedCircle/>},
+        token && {
+            path: '/userroles',
+            label: <strong>User Roles</strong>,
+            component: UserRoles,
+            icon: <SmallRedCircle/>
+        },
+        (role === "responder") && {
+            path: '/responder',
+            label: <strong>Responder Panel</strong>,
+            component: <div>Responder Panel</div>,
+            icon: <SmallRedCircle/>
+        },
+    ].filter(l => !!l);
 
     const signOut = () => {
         setToken(null)
@@ -82,7 +94,8 @@ function App() {
                 <main>
                     <Routes>
                         {navLinks.map(({path, component}) => (
-                            <Route key={path} path={path} element={React.createElement(component, {token, setToken})}/>
+                            <Route key={path} path={path}
+                                   element={React.createElement(component, {token, setToken, role, setRole})}/>
                         ))}
                         <Route path="/" element={<Navigate to="/map"/>}/>
                         <Route path="/rolerequest" state={{token, setToken}}
