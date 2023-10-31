@@ -18,7 +18,7 @@ class ProfileViewModel() : ViewModel() {
     fun getUserData(userId: Int) {
         viewModelScope.launch {
             try {
-                val data = profileRepository.getUserData(userId)
+                val data = profileRepository.getUserData()
                 _profileData.value = data // Update the mutable state
             } catch (e: Exception) {
                 errorMessage.value = e.message
