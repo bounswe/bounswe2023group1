@@ -43,9 +43,12 @@ function RoleRequest() {
     const [confirmation, setConfirmation] = useState(false);
 
     const handleConfirm = () => {
-      alert('APPROVED!');
-      navigate('/signin');
+      if (droppedImage) {
+        alert('APPROVED!');
+        navigate('/signin');
+      }
     };
+    
     
     const handleDragOver = (e) => {
         e.preventDefault();

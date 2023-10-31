@@ -77,19 +77,17 @@ export default function SignUp({appService}) {
             lastName,
         };
 
-        if (password.includes(' ') || password.length < 8) {
-            alert("Password must be at least 8 characters and cannot contain empty characters!");
-        } else {
-            if (signUpClicked) {
-                let user = email + password + firstName + lastName;
-                console.log(user);
 
-                signUp(registerUserRequest);
-                navigate('/signin');
-            } else {
-                alert('Please accept the terms and conditions.');
-            }
+        if (signUpClicked) {
+            let user = email + password + firstName + lastName;
+            console.log(user);
+
+            signUp(registerUserRequest);
+            navigate('/signin');
+        } else {
+            alert('Please accept the terms and conditions.');
         }
+
     };
 
 
