@@ -31,29 +31,37 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.cmpe451.resq.viewmodels.ProfileViewModel
 import com.cmpe451.resq.data.models.ProfileData
+import androidx.compose.runtime.LaunchedEffect
+
 @Composable
 fun ProfileScreen(userId: Int, navController: NavController) {
-    val viewModel = ProfileViewModel()
-    viewModel.getUserData(userId)
-    val profileData by viewModel.profile
-    if (profileData != null) {
+    val viewModel: ProfileViewModel = viewModel()
+    LaunchedEffect(userId) {
 
-        if (profileData!!.role == "Victim" || profileData!!.role == "Responder") {
-            Profile(profileData = profileData!!, navController = navController)
+        viewModel.getUserData(userId)
+    }
+
+    val profileData by viewModel.profile
+    when (profileData) {
+        null -> {
+            // Data is loading
+            Text("Loading...")
         }
-        else{
+        else -> {
+            if (profileData!!.role == "Victim" || profileData!!.role == "Responder") {
+                Profile(profileData = profileData!!, navController = navController)
+            } else {
                 // Handle other roles or unknown roles
-            Text("Unknown Role")
+                Text("Unknown Role")
             }
-    } else {
-        // Data is loading or an error occurred
-        // Handle loading and error states here
-        Text("Data error")
+        }
     }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Profile(profileData:ProfileData, navController: NavController) {
