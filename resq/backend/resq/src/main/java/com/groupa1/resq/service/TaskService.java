@@ -46,6 +46,9 @@ public class TaskService {
 
     @Transactional
     public ResponseEntity<String> createTask(CreateTaskRequest createTaskRequest) {
+        if (createTaskRequest.getAssigneeId() == null || createTaskRequest.getAssignerId() == null) {
+            return ResponseEntity.badRequest().body("Assignee and assigner must be specified");
+        }
         User assignee = userService.findById(createTaskRequest.getAssigneeId());
         User assigner = userService.findById(createTaskRequest.getAssignerId());
         List<Action> actionEntities = new ArrayList<>();
@@ -123,12 +126,12 @@ public class TaskService {
                 return ResponseEntity.ok("Task accepted");
             } else {
                 log.error("No user found with id: {}", userId);
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.badRequest().body("User not found");
             }
 
         } else {
             log.error("No task found with id: {}", taskId);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body("Task not found");
         }
     }
 

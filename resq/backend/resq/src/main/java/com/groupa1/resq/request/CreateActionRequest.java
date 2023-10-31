@@ -1,10 +1,14 @@
 package com.groupa1.resq.request;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreateActionRequest {
     private Long taskId;
     private Long verifierId;
@@ -15,6 +19,7 @@ public class CreateActionRequest {
 
     private BigDecimal endLatitude;
     private BigDecimal endLongitude;
+    private LocalDateTime dueDate;
 
 
 
