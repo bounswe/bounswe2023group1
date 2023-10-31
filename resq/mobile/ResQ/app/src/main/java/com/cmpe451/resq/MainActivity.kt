@@ -26,6 +26,7 @@ import com.cmpe451.resq.ui.theme.LightGreen
 import com.cmpe451.resq.ui.theme.ResQTheme
 import com.cmpe451.resq.ui.views.screens.LoginScreen
 import com.cmpe451.resq.ui.views.screens.MapScreen
+import com.cmpe451.resq.ui.views.screens.ProfileScreen
 import com.cmpe451.resq.ui.views.screens.RegistrationScreen
 import com.cmpe451.resq.utils.BottomNavigationItem
 import com.cmpe451.resq.utils.NavigationItem
@@ -79,7 +80,8 @@ fun NavGraph(
             MapScreen(navController = navController)
         }
         composable(NavigationItem.Profile.route) {
-          //  ProfileScreen(navController)
+            ProfileScreen(1, navController) // 1 for now
+
         }
         composable(NavigationItem.Notifications.route) {
             //NotificationsScreen(navController)
