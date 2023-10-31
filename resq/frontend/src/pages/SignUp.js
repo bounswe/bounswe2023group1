@@ -85,8 +85,8 @@ export default function SignUp() {
                 let user = email + password + firstName + lastName;
                 console.log(user);
 
-                await signUp(registerUserRequest);
-
+            await signUp(registerUserRequest);
+            alert('APPROVED');
                 navigate('/signin');
             } else {
                 alert('Please accept the terms and conditions.');
