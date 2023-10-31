@@ -46,7 +46,7 @@ class RegistrationViewModel() : ViewModel() {
             }
         }
     }
-    private fun validateRegistrationInputs(name: String, surname: String, email: String, password: String, confirmPassword: String, termsAccepted: Boolean): Boolean {
+    fun validateRegistrationInputs(name: String, surname: String, email: String, password: String, confirmPassword: String, termsAccepted: Boolean): Boolean {
         if (name.isBlank()) {
             _errorMessage.value = "Name cannot be empty."
             return false
