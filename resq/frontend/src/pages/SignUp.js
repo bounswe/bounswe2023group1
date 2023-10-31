@@ -13,6 +13,7 @@ import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import disasterImage from "../disaster.png";
 import {useNavigate} from 'react-router-dom';
+import {signup} from "../AppService";
 
 
 function Copyright(props) {
@@ -38,7 +39,7 @@ const customTheme = createTheme({
     },
 });
 
-export default function SignUp({appService}) {
+export default function SignUp() {
     const navigate = useNavigate();
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
@@ -50,7 +51,7 @@ export default function SignUp({appService}) {
         const registerUserRequest = {email, password, name: firstName, surname: lastName};
 
         try {
-            const response = await appService.signup(registerUserRequest);
+            const response = await signup(registerUserRequest);
             if (response.data) {
                 console.log(response.data);
             }
@@ -84,7 +85,8 @@ export default function SignUp({appService}) {
                 let user = email + password + firstName + lastName;
                 console.log(user);
 
-                signUp(registerUserRequest);
+                await signUp(registerUserRequest);
+
                 navigate('/signin');
             } else {
                 alert('Please accept the terms and conditions.');

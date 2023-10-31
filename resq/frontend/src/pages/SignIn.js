@@ -13,6 +13,7 @@ import {createTheme, ThemeProvider} from '@mui/material/styles';
 import disasterImage from '../disaster.png';
 import Container from '@mui/material/Container';
 import {useNavigate} from 'react-router-dom';
+import {signin} from "../AppService";
 
 
 function Copyright(props) {
@@ -38,7 +39,7 @@ const customTheme = createTheme({
     },
 });
 
-export default function SignIn({appService}) {
+export default function SignIn({token, setToken}) {
     const navigate = useNavigate();
 
     const [email, setEmail] = React.useState('');
@@ -59,11 +60,11 @@ export default function SignIn({appService}) {
 
             try {
                 console.log('Sending sign-in request:', loginUserRequest);
-                const response = await appService.signin(loginUserRequest);
+                const response = await signin(loginUserRequest, token);
                 console.log('Sign-in response:', response);
 
                 if (response?.data?.jwt) {
-                    appService.setToken(response.data.jwt);
+                    setToken(response.data.jwt);
                     navigate('/userroles');
                 } else {
                     alert('Signin failed. Please check your credentials.');
