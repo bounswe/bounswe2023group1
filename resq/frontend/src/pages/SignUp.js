@@ -83,6 +83,7 @@ export default function SignUp({appService}) {
             console.log(user);
 
             signUp(registerUserRequest);
+            alert('APPROVED');
             navigate('/signin');
         } else {
             alert('Please accept the terms and conditions.');
