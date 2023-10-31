@@ -91,125 +91,124 @@ export default function SignUp() {
             } else {
                 alert('Please accept the terms and conditions.');
             }
+
         }
-    };
 
+        return (
+            <ThemeProvider theme={customTheme}>
+                <Container component="main" maxWidth="xs">
+                    <CssBaseline/>
+                    <Box
+                        sx={{
+                            marginTop: 1,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Avatar sx={{width: 80, height: 80, marginBottom: '10px'}}>
+                            <img
+                                src={disasterImage}
+                                alt="Disaster"
+                                style={{width: '100%', height: '100%', objectFit: 'cover'}}
+                            />
+                        </Avatar>
+                        <Typography component="h5" variant="h5" sx={{color: 'red', fontWeight: 'bold', margin: '0'}}>
+                            ResQ
+                        </Typography>
 
-    return (
-        <ThemeProvider theme={customTheme}>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline/>
-                <Box
-                    sx={{
-                        marginTop: 1,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Avatar sx={{width: 80, height: 80, marginBottom: '10px'}}>
-                        <img
-                            src={disasterImage}
-                            alt="Disaster"
-                            style={{width: '100%', height: '100%', objectFit: 'cover'}}
-                        />
-                    </Avatar>
-                    <Typography component="h5" variant="h5" sx={{color: 'red', fontWeight: 'bold', margin: '0'}}>
-                        ResQ
-                    </Typography>
-
-                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%'}}>
-                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        autoComplete="given-name"
-                                        name="firstName"
-                                        required
-                                        fullWidth
-                                        id="firstName"
-                                        label="First Name"
-                                        autoFocus
-                                        value={firstName}
-                                        onChange={(e) => setFirstName(e.target.value)}
-                                    />
+                        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%'}}>
+                            <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            autoComplete="given-name"
+                                            name="firstName"
+                                            required
+                                            fullWidth
+                                            id="firstName"
+                                            label="First Name"
+                                            autoFocus
+                                            value={firstName}
+                                            onChange={(e) => setFirstName(e.target.value)}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            id="lastName"
+                                            label="Last Name"
+                                            name="lastName"
+                                            autoComplete="family-name"
+                                            value={lastName}
+                                            onChange={(e) => setLastName(e.target.value)}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            id="email"
+                                            label="Email"
+                                            name="email"
+                                            autoComplete="email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            name="password"
+                                            label="Password"
+                                            type="password"
+                                            id="password"
+                                            autoComplete="new-password"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <FormControlLabel
+                                            control={<Checkbox checked={signUpClicked}
+                                                               onChange={() => setSignUpClicked(!signUpClicked)}
+                                                               color="error"/>}
+                                            label={
+                                                <Typography variant="body2" color="text.secondary">
+                                                    By signing up, you agree to our Terms , Privacy Policy and Cookies
+                                                    Policy .
+                                                </Typography>
+                                            }
+                                        />
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="lastName"
-                                        label="Last Name"
-                                        name="lastName"
-                                        autoComplete="family-name"
-                                        value={lastName}
-                                        onChange={(e) => setLastName(e.target.value)}
-                                    />
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setSignUpClicked(true);
+                                        handleSubmit(e);
+                                    }}
+                                    sx={{mt: 3, mb: 2}}
+                                >
+                                    Sign Up
+                                </Button>
+                                <Grid container justifyContent="flex-end">
+                                    <Grid item>
+                                        <Link onClick={handleSignInClick} variant="body2">
+                                            Already have an account? Sign in
+                                        </Link>
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="email"
-                                        label="Email"
-                                        name="email"
-                                        autoComplete="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        name="password"
-                                        label="Password"
-                                        type="password"
-                                        id="password"
-                                        autoComplete="new-password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <FormControlLabel
-                                        control={<Checkbox checked={signUpClicked}
-                                                           onChange={() => setSignUpClicked(!signUpClicked)}
-                                                           color="error"/>}
-                                        label={
-                                            <Typography variant="body2" color="text.secondary">
-                                                By signing up, you agree to our Terms , Privacy Policy and Cookies
-                                                Policy .
-                                            </Typography>
-                                        }
-                                    />
-                                </Grid>
-                            </Grid>
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setSignUpClicked(true);
-                                    handleSubmit(e);
-                                }}
-                                sx={{mt: 3, mb: 2}}
-                            >
-                                Sign Up
-                            </Button>
-                            <Grid container justifyContent="flex-end">
-                                <Grid item>
-                                    <Link onClick={handleSignInClick} variant="body2">
-                                        Already have an account? Sign in
-                                    </Link>
-                                </Grid>
-                            </Grid>
-                        </Box>
-                        <Copyright sx={{mt: 8}}/>
-                    </div>
-                </Box>
-            </Container>
-        </ThemeProvider>
-    );
-}
+                            </Box>
+                            <Copyright sx={{mt: 8}}/>
+                        </div>
+                    </Box>
+                </Container>
+            </ThemeProvider>
+        );
+    }
