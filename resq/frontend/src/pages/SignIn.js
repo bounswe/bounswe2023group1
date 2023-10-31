@@ -15,7 +15,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import disasterImage from '../disaster.png';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
 import AppService from '../AppService';
 import { setToken } from '../AuthService';
 
@@ -46,17 +45,7 @@ const customTheme = createTheme({
 export default function SignIn() {
   const navigate = useNavigate();
 
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const initialEmail = queryParams.get('email');
-
-  React.useEffect(() => {
-    if (initialEmail) {
-      setEmail(initialEmail);
-    }
-  }, [initialEmail]);
-
-  const [email, setEmail] = React.useState(initialEmail || '');
+  const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [signInClicked, setSignInClicked] = React.useState(false);
   const [rememberMeClicked, setRememberMeClicked] = React.useState(false);
@@ -68,30 +57,38 @@ export default function SignIn() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     if (password.includes(' ') || password.length < 8) {
       alert("Password must be at least 8 characters and cannot contain empty characters!");
     } else {
-      const loginUserRequest = {
-        email,
-        password,
-      };
+        if (signInClicked) {
+        const loginUserRequest = {
+          email,
+        };
 
-      try {
-        const response = await AppService.signin(loginUserRequest);
-        const { token } = response.data;
-        setToken(token);
+        try {
+          console.log('Sending sign-in request:', loginUserRequest);
+          const response = await AppService.signin(loginUserRequest);
+          console.log('Sign-in response:', response);
 
-        navigate('/userroles');
-      } catch (error) {
+          if (response && response.data && response.data.token) {
+            const { token } = response.data;
+            setToken(token);
+            navigate('/userroles');
+          } else {
+            alert('Signin failed. Please check your credentials.');
+          }
+        } catch (error) {
           console.error('Signin error:', error);
           if (error.response) {
             console.error('Response Data:', error.response.data);
           }
           alert('Signin failed. Please check your credentials.');
-        }   
+        }
+      }
     }
   };
+  
 
   return (
     <ThemeProvider theme={customTheme}>
@@ -147,7 +144,7 @@ export default function SignIn() {
                 <Checkbox
                   value={rememberMeClicked}
                   onChange={() => setRememberMeClicked(!rememberMeClicked)}
-                  color="error"
+                  color= "error"
                 />}
                 label="Remember me"
               />

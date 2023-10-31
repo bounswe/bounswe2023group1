@@ -14,6 +14,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import disasterImage from "../disaster.png";
 import { useNavigate } from 'react-router-dom';
 import AppService from '../AppService';
+import { setToken } from '../AuthService';
+
 
 function Copyright(props) {
   return (
@@ -46,25 +48,24 @@ export default function SignUp() {
   const [lastName, setLastName] = React.useState('');
   const [signUpClicked, setSignUpClicked] = React.useState(false);
 
-  async function signUp(newFirstName, newLastName, newEmail, newPassword, token) {
+  async function signUp() {
     const registerUserRequest = {
-      newFirstName,
-      newLastName,
-      newEmail,
-      newPassword,
+      newEmail: email,
     };
   
     try {
-      const response = await AppService.signup(registerUserRequest, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-  
+      const response = await AppService.signup(registerUserRequest);
+      if (response.data) {
+        console.log(response.data);
+      }
+      return response; 
     } catch (error) {
       console.error('Signup error:', error);
+      return error.response; 
     }
   }
+  
+  
   
 
 
