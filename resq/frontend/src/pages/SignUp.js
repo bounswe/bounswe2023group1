@@ -10,149 +10,207 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 import disasterImage from "../disaster.png";
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
+import {signup} from "../AppService";
+
 
 function Copyright(props) {
-  return (
-    <div style={{ position: 'fixed', bottom: 0, width: '100%' }}>
-      <Typography variant="body2" color="text.secondary" align="center" {...props}>
-        {'Copyright © '}
-        <Link color="inherit" href="https://github.com/bounswe/bounswe2023group1">
-          <span style={{ fontWeight: 'bold' }}>ResQ</span>
-        </Link>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
-    </div>
-  );
+    return (
+        <div style={{position: 'fixed', bottom: 0, width: '100%'}}>
+            <Typography variant="body2" color="text.secondary" align="center" {...props}>
+                {'Copyright © '}
+                <Link color="inherit" href="https://github.com/bounswe/bounswe2023group1">
+                    <span style={{fontWeight: 'bold'}}>ResQ</span>
+                </Link>{' '}
+                {new Date().getFullYear()}
+                {'.'}
+            </Typography>
+        </div>
+    );
 }
 
 const customTheme = createTheme({
-  palette: {
-    primary: {
-      main: '#FF0000', 
+    palette: {
+        primary: {
+            main: '#FF0000',
+        },
     },
-  },
 });
 
 export default function SignUp() {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [firstName, setFirstName] = React.useState('');
+    const [lastName, setLastName] = React.useState('');
+    const [signUpClicked, setSignUpClicked] = React.useState(false);
 
-  const handleSignInClick = () => {
-    navigate('/signin'); 
-  };
+    async function signUp() {
+        const registerUserRequest = {email, password, name: firstName, surname: lastName};
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    navigate('/userroles'); 
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+        try {
+            const response = await signup(registerUserRequest);
+            if (response.data) {
+                console.log(response.data);
+            }
+            return response;
+        } catch (error) {
+            console.error('Signup error:', error);
+            return error.response;
+        }
+    }
 
-  return (
-    <ThemeProvider theme={customTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ width: 80, height: 80, marginBottom: '10px' }}>
-            <img
-              src={disasterImage}
-              alt="Disaster"
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-          </Avatar>
-          <Typography component="h5" variant="h5" sx={{ color: 'red', fontWeight: 'bold', margin: '0' }}>
-            ResQ
-          </Typography>
 
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    autoComplete="given-name"
-                    name="firstName"
-                    required
-                    fullWidth
-                    id="firstName"
-                    label="First Name"
-                    autoFocus
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="lastName"
-                    label="Last Name"
-                    name="lastName"
-                    autoComplete="family-name"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email"
-                    name="email"
-                    autoComplete="email"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="new-password"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    control={<Checkbox value="allowExtraEmails" color="error" />}
-                    label={
-                      <Typography variant="body2" color="text.secondary">
-                          By signing up, you agree to our Terms , Privacy Policy and Cookies Policy .
-                      </Typography>
-                    }
-                  />
-                </Grid>
-              </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Sign Up
-              </Button>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link onClick={handleSignInClick} variant="body2">
-                    Already have an account? Sign in
-                  </Link>
-                </Grid>
-              </Grid>
-            </Box>
-            <Copyright sx={{ mt: 8 }} />
-          </div>
-        </Box>
-      </Container>
-    </ThemeProvider>
-  );
+    const handleSignInClick = () => {
+        navigate(`/signin?email=${email}`);
+    };
+
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        const registerUserRequest = {
+            email,
+            password,
+            firstName,
+            lastName,
+        };
+
+        if (password.includes(' ') || password.length < 8) {
+            alert("Password must be at least 8 characters and cannot contain empty characters!");
+        } else {
+            if (signUpClicked) {
+                let user = email + password + firstName + lastName;
+                console.log(user);
+
+                await signUp(registerUserRequest);
+                alert('APPROVED');
+                navigate('/signin');
+            } else {
+                alert('Please accept the terms and conditions.');
+            }
+
+        }
+    }
+
+    return (
+        <ThemeProvider theme={customTheme}>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline/>
+                <Box
+                    sx={{
+                        marginTop: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Avatar sx={{width: 80, height: 80, marginBottom: '10px'}}>
+                        <img
+                            src={disasterImage}
+                            alt="Disaster"
+                            style={{width: '100%', height: '100%', objectFit: 'cover'}}
+                        />
+                    </Avatar>
+                    <Typography component="h5" variant="h5" sx={{color: 'red', fontWeight: 'bold', margin: '0'}}>
+                        ResQ
+                    </Typography>
+
+                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%'}}>
+                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        autoComplete="given-name"
+                                        name="firstName"
+                                        required
+                                        fullWidth
+                                        id="firstName"
+                                        label="First Name"
+                                        autoFocus
+                                        value={firstName}
+                                        onChange={(e) => setFirstName(e.target.value)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id="lastName"
+                                        label="Last Name"
+                                        name="lastName"
+                                        autoComplete="family-name"
+                                        value={lastName}
+                                        onChange={(e) => setLastName(e.target.value)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id="email"
+                                        label="Email"
+                                        name="email"
+                                        autoComplete="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        name="password"
+                                        label="Password"
+                                        type="password"
+                                        id="password"
+                                        autoComplete="new-password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FormControlLabel
+                                        control={<Checkbox checked={signUpClicked}
+                                                           onChange={() => setSignUpClicked(!signUpClicked)}
+                                                           color="error"/>}
+                                        label={
+                                            <Typography variant="body2" color="text.secondary">
+                                                By signing up, you agree to our Terms , Privacy Policy and Cookies
+                                                Policy .
+                                            </Typography>
+                                        }
+                                    />
+                                </Grid>
+                            </Grid>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setSignUpClicked(true);
+                                    handleSubmit(e);
+                                }}
+                                sx={{mt: 3, mb: 2}}
+                            >
+                                Sign Up
+                            </Button>
+                            <Grid container justifyContent="flex-end">
+                                <Grid item>
+                                    <Link onClick={handleSignInClick} variant="body2">
+                                        Already have an account? Sign in
+                                    </Link>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                        <Copyright sx={{mt: 8}}/>
+                    </div>
+                </Box>
+            </Container>
+        </ThemeProvider>
+    );
 }
+
