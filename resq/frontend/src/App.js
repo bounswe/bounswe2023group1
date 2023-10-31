@@ -41,7 +41,7 @@ function App() {
             component: <div>Responder Panel</div>,
             icon: <SmallRedCircle/>
         },
-    ];
+    ].filter(l => !!l);
 
     const signOut = () => {
         setToken(null)
