@@ -16,6 +16,8 @@ import disasterImage from '../disaster.png';
 import Container from '@mui/material/Container';
 import { useState } from 'react';
 import ImageUploadComponent from '../components/ImageUpload'
+import {useNavigate} from 'react-router-dom';
+
 
 function Copyright(props) {
   return (
@@ -37,6 +39,13 @@ function RoleRequest() {
     const [dragging, setDragging] = useState(false);
     const [droppedImage, setDroppedImage] = useState('');
     const [uploadedId, setUploadedId] = useState('');
+    const navigate = useNavigate();
+    const [confirmation, setConfirmation] = useState(false);
+
+    const handleConfirm = () => {
+      alert('APPROVED!');
+      navigate('/signin');
+    };
     
     const handleDragOver = (e) => {
         e.preventDefault();
@@ -78,41 +87,44 @@ function RoleRequest() {
         },
       });
   
-    return (
-      <ThemeProvider theme={customTheme}>
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Avatar sx={{ width: 80, height: 80, marginBottom: '10px' }}>
-              <img
-                src={disasterImage}
-                alt="Disaster"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-            </Avatar>
-            <Typography component="h5" variant="h5" sx={{ color: 'red', fontWeight: 'bold', margin: '0' }}>
-              ResQ
-            </Typography>
-            <ImageUploadComponent
+      return (
+        <ThemeProvider theme={customTheme}>
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '1rem' }}>
+              <Avatar sx={{ width: 80, height: 80, marginBottom: '10px' }}>
+                <img
+                  src={disasterImage}
+                  alt="Disaster"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </Avatar>
+              <Typography component="h5" variant="h5" sx={{ color: 'red', fontWeight: 'bold', margin: '0' }}>
+                ResQ
+              </Typography>
+              <ImageUploadComponent
                 dragging={dragging}
                 droppedImage={droppedImage}
                 handleDragOver={handleDragOver}
                 handleDragLeave={handleDragLeave}
                 handleDrop={handleDrop}
                 handleUploadId={handleUploadId}
-                />
-          </Box>
-        </Container>
-        <Copyright sx={{ mt: 5 }} />
-      </ThemeProvider>
-    );
-  }
-  
+              />
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '12px' }}>
+                <Button
+                  variant="contained"
+                  onClick={handleConfirm}
+                >
+                  Confirm
+                </Button>
+              </div>
+            </div>
+          </Container>
+        </ThemeProvider>
+      );
+    }
+    
   export default RoleRequest;
+    
+
+  
