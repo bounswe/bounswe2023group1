@@ -1,5 +1,6 @@
 package com.cmpe451.resq.viewmodels
 
+import android.util.Patterns
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -46,7 +47,7 @@ class RegistrationViewModel() : ViewModel() {
             }
         }
     }
-    private fun validateRegistrationInputs(name: String, surname: String, email: String, password: String, confirmPassword: String, termsAccepted: Boolean): Boolean {
+    fun validateRegistrationInputs(name: String, surname: String, email: String, password: String, confirmPassword: String, termsAccepted: Boolean): Boolean {
         if (name.isBlank()) {
             _errorMessage.value = "Name cannot be empty."
             return false
@@ -57,6 +58,10 @@ class RegistrationViewModel() : ViewModel() {
         }
         if (email.isBlank()) {
             _errorMessage.value = "Email cannot be empty."
+            return false
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            _errorMessage.value = "Invalid email format."
             return false
         }
         if (password.isBlank()) {

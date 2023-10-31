@@ -3,9 +3,6 @@ import {useState} from 'react';
 import {Map, Marker, ZoomControl} from 'pigeon-maps';
 import {type_colors} from "../Colors";
 
-const TILE_SIZE = 256;
-const HEIGHT_RATIO = 0.75;
-
 const MAPBOX_TOKEN = "pk.eyJ1IjoiaWxnYXplciIsImEiOiJjbG80Nzg4Z3gwMjZ4MmtxcTR3bGI5enR3In0.QdNftxZYpJ79K0M0DfYHUw"
 const MAPBOX_STYLE = "mapbox/streets-v12"
 
@@ -42,7 +39,6 @@ const MarkerIcon = ({color}) => (
 export default function DisasterMap({onPointSelected, markers = []}) {
     const [zoom, setZoom] = useState(6.5);
     const [center, setCenter] = useState([39, 34.5])
-    const [ref, setRef] = useState();
 
     const renderMarker = (marker) => {
         return (
@@ -63,7 +59,7 @@ export default function DisasterMap({onPointSelected, markers = []}) {
     // noinspection JSValidateTypes
     return (
         <div style={{display: "flex"}}>
-            <div style={{flexGrow: 100, height: "calc(100vh - 56px)"}} ref={newRef => setRef(newRef)}>
+            <div style={{flexGrow: 100, height: "calc(100vh - 56px)"}}>
                 <Map
                     provider={mapboxProvider}
                     dprs={[1, 2]}
