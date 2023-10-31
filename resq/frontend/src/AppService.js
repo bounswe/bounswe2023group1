@@ -12,6 +12,14 @@ const TASK_API_BASE_URL = 'http://16.16.63.194/resq/api/v1/task';
 
 class AppService {
 
+    constructor() {
+        this.token = null;
+    }
+    
+    setToken(token) {
+        this.token = token;
+    }
+
     postRequestRole(userId, role) {
         const requestBody = {
             userId: userId,
@@ -57,7 +65,11 @@ class AppService {
     }
     
     signin(loginUserRequest) {
-        return axios.post(`${AUTH_API_BASE_URL}/signin`, loginUserRequest);
+        return axios.post(`${AUTH_API_BASE_URL}/signin`, loginUserRequest, {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
     }
 
     viewActions(taskId) {
