@@ -35,8 +35,8 @@ function RoleRequest() {
 
     const handleConfirm = () => {
         if (droppedImage) {
-            alert('APPROVED!');
-            navigate('/signin');
+            alert('Approved!');
+            navigate('/account');
         }
     };
 
