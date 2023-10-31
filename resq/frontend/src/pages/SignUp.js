@@ -13,6 +13,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import disasterImage from "../disaster.png";
 import { useNavigate } from 'react-router-dom';
+import AppService from '../AppService';
 
 function Copyright(props) {
   return (
@@ -39,20 +40,65 @@ const customTheme = createTheme({
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [firstName, setFirstName] = React.useState('');
+  const [lastName, setLastName] = React.useState('');
+  const [signUpClicked, setSignUpClicked] = React.useState(false);
+
+  async function signUp(newFirstName, newLastName, newEmail, newPassword, token) {
+    const registerUserRequest = {
+      newFirstName,
+      newLastName,
+      newEmail,
+      newPassword,
+    };
+  
+    try {
+      const response = await AppService.signup(registerUserRequest, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+    } catch (error) {
+      console.error('Signup error:', error);
+    }
+  }
+  
+
 
   const handleSignInClick = () => {
-    navigate('/signin'); 
+    navigate(`/signin?email=${email}`);
   };
+  
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    navigate('/userroles'); 
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  
+    const registerUserRequest = {
+      email,
+      password,
+      firstName,
+      lastName,
+    };
+  
+    if (password.includes(' ') || password.length < 8) {
+      alert("Password must be at least 8 characters and cannot contain empty characters!");
+    } else {
+      if (signUpClicked) {
+        let user = email + password + firstName + lastName;
+        console.log(user);
+  
+        signUp(registerUserRequest);
+        navigate('/signin');
+      } else {
+        alert('Please accept the terms and conditions.');
+      }
+    }
   };
+  
+  
 
   return (
     <ThemeProvider theme={customTheme}>
@@ -89,6 +135,8 @@ export default function SignUp() {
                     id="firstName"
                     label="First Name"
                     autoFocus
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -99,6 +147,8 @@ export default function SignUp() {
                     label="Last Name"
                     name="lastName"
                     autoComplete="family-name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -109,6 +159,8 @@ export default function SignUp() {
                     label="Email"
                     name="email"
                     autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -120,11 +172,13 @@ export default function SignUp() {
                     type="password"
                     id="password"
                     autoComplete="new-password"
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <FormControlLabel
-                    control={<Checkbox value="allowExtraEmails" color="error" />}
+                    control={<Checkbox checked={signUpClicked} onChange={() => setSignUpClicked(!signUpClicked)} color="error" />}
                     label={
                       <Typography variant="body2" color="text.secondary">
                           By signing up, you agree to our Terms , Privacy Policy and Cookies Policy .
@@ -137,6 +191,11 @@ export default function SignUp() {
                 type="submit"
                 fullWidth
                 variant="contained"
+                onClick={(e) => {
+                  e.preventDefault(); 
+                  setSignUpClicked(true); 
+                  handleSubmit(e);
+                }}
                 sx={{ mt: 3, mb: 2 }}
               >
                 Sign Up

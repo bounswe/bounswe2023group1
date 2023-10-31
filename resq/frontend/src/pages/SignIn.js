@@ -15,11 +15,15 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import disasterImage from '../disaster.png';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import AppService from '../AppService';
+import { setToken } from '../AuthService';
+
 
 function Copyright(props) {
   return (
     <div style={{ position: 'fixed', bottom: 0, width: '100%' }}>
-      <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      <Typography variant="body2" color="textSecondary" align="center" {...props}>
         {'Copyright © '}
         <Link color="inherit" href="https://github.com/bounswe/bounswe2023group1">
           <span style={{ fontWeight: 'bold' }}>ResQ</span>
@@ -42,17 +46,51 @@ const customTheme = createTheme({
 export default function SignIn() {
   const navigate = useNavigate();
 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const initialEmail = queryParams.get('email');
+
+  React.useEffect(() => {
+    if (initialEmail) {
+      setEmail(initialEmail);
+    }
+  }, [initialEmail]);
+
+  const [email, setEmail] = React.useState(initialEmail || '');
+  const [password, setPassword] = React.useState('');
+  const [signInClicked, setSignInClicked] = React.useState(false);
+  const [rememberMeClicked, setRememberMeClicked] = React.useState(false);
+
+
   const handleSignUpClick = () => {
     navigate('/signup');
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    if (password.includes(' ') || password.length < 8) {
+      alert("Password must be at least 8 characters and cannot contain empty characters!");
+    } else {
+      const loginUserRequest = {
+        email,
+        password,
+      };
+
+      try {
+        const response = await AppService.signin(loginUserRequest);
+        const { token } = response.data;
+        setToken(token);
+
+        navigate('/userroles');
+      } catch (error) {
+          console.error('Signin error:', error);
+          if (error.response) {
+            console.error('Response Data:', error.response.data);
+          }
+          alert('Signin failed. Please check your credentials.');
+        }   
+    }
   };
 
   return (
@@ -89,6 +127,8 @@ export default function SignIn() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
                 margin="normal"
@@ -99,17 +139,25 @@ export default function SignIn() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <FormControlLabel
-                control={<Checkbox value="remember" color="error" />}
+                control={
+                <Checkbox
+                  value={rememberMeClicked}
+                  onChange={() => setRememberMeClicked(!rememberMeClicked)}
+                  color="error"
+                />}
                 label="Remember me"
               />
+
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
+                onClick={() => setSignInClicked(true)} 
                 sx={{ mt: 3, mb: 2 }}
-                onClick={() => navigate('/userroles')}
               >
                 Sign In
               </Button>
@@ -133,3 +181,5 @@ export default function SignIn() {
     </ThemeProvider>
   );
 }
+
+
