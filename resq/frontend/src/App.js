@@ -6,7 +6,8 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import MapDemo from "./pages/MapDemo";
 import Account from "./pages/Account";
-import RoleRequest from "./pages/RoleRequest"; 
+import RoleRequest from "./pages/RoleRequest";
+import AppService from "./AppService";
 
 
 const smallRedCircle = (
@@ -26,11 +27,11 @@ const navLinks = [
     {path: '/userroles', label: <strong>User Roles</strong>, component: UserRoles, icon: smallRedCircle},
     {path: '/map', label: <strong>Map Demo</strong>, component: MapDemo, icon: smallRedCircle},
     {path: '/account', label: <strong>Account</strong>, component: Account, icon: smallRedCircle},
-
 ];
 
-
 function App() {
+    const appService = new AppService()
+
     return (
         <Router>
             <div>
@@ -56,10 +57,11 @@ function App() {
                 <main>
                     <Routes>
                         {navLinks.map(({path, component}) => (
-                            <Route key={path} path={path} element={React.createElement(component)}/>
+                            <Route key={path} path={path} element={React.createElement(component, {appService})}/>
                         ))}
-                        <Route path="/" element={<Navigate to="/signup" />} />
-                        <Route path="/rolerequest" element={React.createElement(RoleRequest)} />
+                        <Route path="/" element={<Navigate to="/signup"/>}/>
+                        <Route path="/rolerequest" state={{appService}}
+                               element={React.createElement(RoleRequest, {appService})}/>
                     </Routes>
                 </main>
             </div>

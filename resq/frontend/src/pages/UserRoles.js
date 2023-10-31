@@ -49,8 +49,8 @@ export default function SignIn() {
 
     const navigate = useNavigate();
     const handleSubmit = (event) => {
+        navigate('/map');
         event.preventDefault();
-        navigate('/map'); 
        // const data = new FormData(event.currentTarget);
     };
 
