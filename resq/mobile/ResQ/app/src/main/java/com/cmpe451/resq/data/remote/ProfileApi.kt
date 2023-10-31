@@ -19,10 +19,12 @@ class ProfileRepository {
 
 
         return ProfileData(
-            name = "Harun",
-            surname = "Ergen",
-            dateOfBirth = "18/10/2000",
+            name = "Ahmet",
+            surname = "Demooğlu",
+            dateOfBirth = "01/10/2000",
             role = "Victim" ,
             //address = "123 Main Street, apt 4B San Diego CA, 91911"
-           address = null)
-    }}
+            address = null
+        )
+    }
+}
