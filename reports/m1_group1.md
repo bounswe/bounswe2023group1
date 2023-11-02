@@ -595,5 +595,9 @@ Additional figma designes are created for mobile. Frontend team decided to updat
 # 8. Milestone Review
 # 9. Individual Contributions
 Çağrı Gülbeycan - [Individual Contribution Report](https://github.com/bounswe/bounswe2023group1/wiki/%C3%87a%C4%9Fr%C4%B1-G%C3%BClbeycan-CMPE-451-Milestone-1-Individual-Contribution-Report)  
+
 Muhammet Ali Topcu - [Individual Contribution Report](https://github.com/bounswe/bounswe2023group1/wiki/Muhammet-Ali-Topcu's-Individual-Contribution-Report)  
-Harun Reşid Ergen - [Individual Contribution Report](https://github.com/bounswe/bounswe2023group1/wiki/Harun-Re%C5%9Fid-Ergen-Milestone-1-Individual-Contribution-Report)
+
+Harun Reşid Ergen - [Individual Contribution Report](https://github.com/bounswe/bounswe2023group1/wiki/Harun-Re%C5%9Fid-Ergen-Milestone-1-Individual-Contribution-Report) 
+
+Alperen Dağı - [Individual Contribution Report](https://github.com/bounswe/bounswe2023group1/wiki/Alperen-Da%C4%9F%C4%B1-CMPE-451-Milestone-1-Individual-Contribution-Report)
