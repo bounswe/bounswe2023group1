@@ -594,3 +594,43 @@ Additional figma designes are created for mobile. Frontend team decided to updat
 
 # 8. Milestone Review
 # 9. Individual Contributions
+#### 9.1 Çağrı Gülbeycan 
+Member: Çağrı Gülbeycan
+
+Responsibilities: I was a member of the mobile team. I was responsible for learning the mobile tech stack and developing user profile pages. Also, of course, I had to come to the labs and take part in issues that concerned the whole group.
+
+**Main contributions:**
+
+Code-related:  
+ * I had no experience in mobile application development before. Since the team lacked people experienced in mobile application development, I took responsibility and volunteered to join the mobile team because I thought somebody had to. In the time leading up to Milestone 1, I tried to learn Kotlin, Jetpack Compose, and MVVM architecture.
+
+Issues:[#265](https://github.com/bounswe/bounswe2023group1/issues/266) [#266](https://github.com/bounswe/bounswe2023group1/issues/278).
+* I coded victim and responder profile pages using the things I learned.
+Issues: [#278](https://github.com/bounswe/bounswe2023group1/issues/278)
+
+Management-related: 
+* I took a role in deciding the tech stack for our mobile application.
+  
+Issue(s): [#249](https://github.com/bounswe/bounswe2023group1/issues/249)
+* I helped the team to plan our project.
+  
+Issue(s): [#262](https://github.com/bounswe/bounswe2023group1/issues/262)
+* I created new tags for the mobile team that we decided during the lab hours.
+  
+Issue(s): [#267](https://github.com/bounswe/bounswe2023group1/issues/267)
+* I review mockups with the mobile team.
+
+Issue(s): [#269](https://github.com/bounswe/bounswe2023group1/issues/269)
+* I helped the mobile team while designing the pages for our application
+
+Issue(s): [#270](https://github.com/bounswe/bounswe2023group1/issues/270)
+* I helped the team prepare deliverables by uploading the first draft of our deliverables file.
+
+Issue(s): [#355](https://github.com/bounswe/bounswe2023group1/issues/355)
+
+**Pull requests:** 
+- My Pull request(s): [#327](https://github.com/bounswe/bounswe2023group1/pull/327) [#335](https://github.com/bounswe/bounswe2023group1/pull/335)
+  - Conflict(s) I have resolved: I resolved conflicts in [#327](https://github.com/bounswe/bounswe2023group1/pull/327). The conflict was about adding profilescreen to the main application file.
+ - Pull request(s) of my teammates that I reviewed: [#331](https://github.com/bounswe/bounswe2023group1/pull/331)
+
+Additional information: I have created a Readme file for our mobile aplication.
