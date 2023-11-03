@@ -385,4 +385,4 @@ Volkan Öztürk - [Individual Contribution Report](https://github.com/bounswe/bo
 
 Ilgaz Er - [Individual Contribution Report](https://github.com/bounswe/bounswe2023group1/wiki/Ilgaz-Er-CMPE-451-Milestone-1-Individual-Contribution-Report)
 
-Kübra Aksu - [Individual Contribution Report]([https://github.com/bounswe/bounswe2023group1/wiki/Ilgaz-Er-CMPE-451-Milestone-1-Individual-Contribution-Report](https://github.com/bounswe/bounswe2023group1/wiki/K%C3%BCbra-Aksu-Milestone-1-Report)https://github.com/bounswe/bounswe2023group1/wiki/K%C3%BCbra-Aksu-Milestone-1-Report)
+Kübra Aksu - [Individual Contribution Report](https://github.com/bounswe/bounswe2023group1/wiki/K%C3%BCbra-Aksu-Milestone-1-Report)
