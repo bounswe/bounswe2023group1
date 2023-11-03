@@ -609,3 +609,5 @@ Furkan Bülbül - [Individual Contribution Report](https://github.com/bounswe/bo
 Orkan Akısu- [Individual Contribution Report](https://github.com/bounswe/bounswe2023group1/wiki/Orkan-Akisu's-Individual-Report-for-Milestone-1)
 
 Volkan Öztürk - [Individual Contribution Report](https://github.com/bounswe/bounswe2023group1/wiki/Volkan-%C3%96zt%C3%BCrk-CMPE-451-Milestone-1-Individual-Contribution-Report)  
+
+Ilgaz Er - [Individual Contribution Report](https://github.com/bounswe/bounswe2023group1/wiki/Ilgaz-Er-CMPE-451-Milestone-1-Individual-Contribution-Report)
