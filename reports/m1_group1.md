@@ -56,6 +56,11 @@ You can find our Sequence Diagrams [here](https://github.com/bounswe/bounswe2023
 1. Determining deadlines for the tasks
 1. As project goes on, additional meetings other than lab became necessary so we usually have meetings with our subgroups and when the problems or confusions arise, we also make meetings with other sub-groups.
 # 6. RAM (Responsibility Assignment Matrix)
+[group1RAM.pdf](https://github.com/bounswe/bounswe2023group1/files/13251090/group1RAM.pdf)  
+
+![group1RAM-1](https://github.com/bounswe/bounswe2023group1/assets/83069560/366459f5-1cfd-4872-9433-ad20a8a2d13a)  
+
+
 
 # 7. Weekly Reports and Any Additional Meeting Notes
 ## 7.1 roject Development Weekly Progress Report 1
