@@ -33,7 +33,8 @@ You can find our Sequence Diagrams [here](https://github.com/bounswe/bounswe2023
    *  3.2. Scenarios and Mockups Mobile: [Mobile Scenario](https://github.com/bounswe/bounswe2023group1/wiki/Milestone-1-Customer-Presentation-%7C-Mobile-Use-Case-Scenario) | [Mobile Refactored Mockups](https://www.figma.com/file/LmUQJGetWO7oD8qCHAwtbl/ResQ?type=design&node-id=597-4381&mode=design&t=BW7N3xzGo9uES6lV-0)
 
 # 4. Project Plan
-![image (1)](https://github.com/bounswe/bounswe2023group1/assets/67320250/60f767ce-7c0d-4f43-a558-f7f368041b77)  
+![app instagantt com_r (1)](https://github.com/bounswe/bounswe2023group1/assets/7621539/281e3779-a898-47de-a29e-6333cf5a486e)
+
 # 5. Communication Plan
 | Platform | Purpose(s) | Time | Participants |
 | :------- | :--------- | :--- | :----------- |
@@ -60,10 +61,8 @@ You can find our Sequence Diagrams [here](https://github.com/bounswe/bounswe2023
 1. Determining deadlines for the tasks
 1. As project goes on, additional meetings other than lab became necessary so we usually have meetings with our subgroups and when the problems or confusions arise, we also make meetings with other sub-groups.
 # 6. RAM (Responsibility Assignment Matrix)
-[group1RAM.pdf](https://github.com/bounswe/bounswe2023group1/files/13251090/group1RAM.pdf)  
 
-![group1RAM-1](https://github.com/bounswe/bounswe2023group1/assets/83069560/366459f5-1cfd-4872-9433-ad20a8a2d13a)  
-
+[group1RAM - Sayfa1.pdf](https://github.com/bounswe/bounswe2023group1/files/13252217/group1RAM.-.Sayfa1.pdf)
 
 
 # 7. Weekly Reports and Any Additional Meeting Notes
