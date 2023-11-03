@@ -607,3 +607,5 @@ Alperen Dağı - [Individual Contribution Report](https://github.com/bounswe/bou
 Furkan Bülbül - [Individual Contribution Report](https://github.com/bounswe/bounswe2023group1/wiki/Furkan-Bülbül-CMPE-451-Milestone-1-Individual-Contribution-Report)
 
 Orkan Akısu- [Individual Contribution Report](https://github.com/bounswe/bounswe2023group1/wiki/Orkan-Akisu's-Individual-Report-for-Milestone-1)
+
+Volkan Öztürk - [Individual Contribution Report](https://github.com/bounswe/bounswe2023group1/wiki/Volkan-%C3%96zt%C3%BCrk-CMPE-451-Milestone-1-Individual-Contribution-Report)  
