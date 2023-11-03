@@ -264,7 +264,7 @@ You can see our Sequence Diagrams [here](https://github.com/bounswe/bounswe2023g
 
 # 3. Scenarios and Mockups
 ## 3.1 Mobile Use Case Scenario
-You can see the mobile use case scenario [here](https://github.com/bounswe/bounswe2023group1/wiki/Milestone-1-Customer-Presentation-%7C-Mobile-Use-Case-Scenario)
+We have created a scenario that wou can view [here](https://github.com/bounswe/bounswe2023group1/wiki/Milestone-1-Customer-Presentation-%7C-Mobile-Use-Case-Scenario). We plan further review and development on the scenario.
 # 4. Project Plan
 # 5. Communication Plan
 | Platform | Purpose(s) | Time | Participants |
