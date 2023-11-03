@@ -30,6 +30,7 @@ You can find our Sequence Diagrams [here](https://github.com/bounswe/bounswe2023
 
 # 3. Scenarios and Mockups
 # 4. Project Plan
+![image (1)](https://github.com/bounswe/bounswe2023group1/assets/67320250/60f767ce-7c0d-4f43-a558-f7f368041b77)  
 # 5. Communication Plan
 | Platform | Purpose(s) | Time | Participants |
 | :------- | :--------- | :--- | :----------- |
