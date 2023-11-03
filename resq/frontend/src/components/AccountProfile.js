@@ -10,6 +10,8 @@ import {
     TextField,
     Grid,
 } from '@mui/material';
+import InputAdornment from '@mui/material/InputAdornment';
+
 
 const user = {
     avatar: 'avatar.png',
@@ -165,8 +167,11 @@ function AccountProfile() {
                             onChange={handleChange}
                             required
                             select
-                            SelectProps={{native: true}}
+                            SelectProps={{ native: true }}
                             value={values.weight}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end" style={{ marginLeft: '-80px' }}>kg</InputAdornment>,
+                            }}
                         >
                             {weight.map((option) => (
                                 <option key={option} value={option}>
@@ -186,6 +191,9 @@ function AccountProfile() {
                             select
                             SelectProps={{native: true}}
                             value={values.height}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end" style={{ marginLeft: '-80px' }}>cm</InputAdornment>,
+                            }}
                         >
                             {height.map((option) => (
                                 <option key={option} value={option}>
