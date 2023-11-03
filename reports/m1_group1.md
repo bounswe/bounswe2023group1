@@ -258,9 +258,9 @@ Boğaziçi University - CMPE 352 Fundamentals of Software Engineering - Spring 2
 ## 2.1 Use Case Diagrams
 You can see our Use Case Diagrams [here](https://github.com/bounswe/bounswe2023group1/wiki/Use-Case-Diagrams)
 ## 2.2 Class Diagrams
-You can see our Sequence Diagrams [here](https://github.com/bounswe/bounswe2023group1/wiki/Sequence-Diagrams)
-## 2.3 Sequence Diagrams
 You can see our Class Diagrams [here](https://github.com/bounswe/bounswe2023group1/wiki/Class-Diagrams)
+## 2.3 Sequence Diagrams
+You can see our Sequence Diagrams [here](https://github.com/bounswe/bounswe2023group1/wiki/Sequence-Diagrams)
 
 # 3. Scenarios and Mockups
 # 4. Project Plan
