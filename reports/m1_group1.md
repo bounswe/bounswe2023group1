@@ -601,3 +601,5 @@ Muhammet Ali Topcu - [Individual Contribution Report](https://github.com/bounswe
 Harun Reşid Ergen - [Individual Contribution Report](https://github.com/bounswe/bounswe2023group1/wiki/Harun-Re%C5%9Fid-Ergen-Milestone-1-Individual-Contribution-Report) 
 
 Alperen Dağı - [Individual Contribution Report](https://github.com/bounswe/bounswe2023group1/wiki/Alperen-Da%C4%9F%C4%B1-CMPE-451-Milestone-1-Individual-Contribution-Report)
+
+Furkan Bülbül - [Individual Contribution Report](https://github.com/bounswe/bounswe2023group1/wiki/Furkan-Bülbül-CMPE-451-Milestone-1-Individual-Contribution-Report)
