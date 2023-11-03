@@ -19,6 +19,8 @@ const user = {
     name: 'Melek Nur Türkoğlu',
     bloodType: '0 RH -',
     gender: 'Woman',
+    weight: '62',
+    height: '162'
 };
 
 const bloodTypes = [
@@ -70,9 +72,21 @@ const gender = [
 const years = Array.from({length: 100}, (_, i) => String(new Date().getFullYear() - i));
 const months = Array.from({length: 12}, (_, i) => String(i + 1).padStart(2, '0'));
 const days = Array.from({length: 31}, (_, i) => String(i + 1).padStart(2, '0'));
+const weight = Array.from({length: 200}, (_, i) => String(i + 1));
+const height = Array.from({length: 200}, (_, i) => String(i + 1));
+
+
+const styles = {
+    card: {
+      width: '28.5%',
+      height: '100%',
+    },
+  };
 
 function AccountProfile() {
     const [values, setValues] = useState({
+        weight: '62',
+        height: '162',
         bloodType: '0 RH +',
         gender: 'Woman',
         year: '1993',
@@ -88,7 +102,7 @@ function AccountProfile() {
     }, [setValues]);
 
     return (
-        <Card sx={{width: 300, height: 457}}>
+        <Card style={styles.card}>
             <CardContent>
                 <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                     <Avatar src={user.avatar} sx={{width: 100, height: 100, mb: 2}}/>
@@ -99,42 +113,88 @@ function AccountProfile() {
             </CardContent>
             <Divider/>
             <CardActions>
-                <TextField
-                    fullWidth
-                    sx={{marginBottom: 2}}
-                    label="Select Blood Type"
-                    name="bloodType"
-                    onChange={handleChange}
-                    required
-                    select
-                    SelectProps={{native: true}}
-                    value={values.bloodType}
-                >
-                    {bloodTypes.map((option) => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>
-                    ))}
-                </TextField>
+                <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            sx={{ marginBottom: 2 }}
+                            label="Select Blood Type"
+                            name="bloodType"
+                            onChange={handleChange}
+                            required
+                            select
+                            SelectProps={{native: true}}
+                            value={values.bloodType}
+                        >
+                            {bloodTypes.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            sx={{marginBottom: 2}}
+                            label="Select Gender"
+                            name="gender"
+                            onChange={handleChange}
+                            required
+                            select
+                            SelectProps={{native: true}}
+                            value={values.gender}
+                        >
+                            {gender.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </TextField>
+                    </Grid>
+                </Grid>
             </CardActions>
             <CardActions>
-                <TextField
-                    fullWidth
-                    sx={{marginBottom: 2}}
-                    label="Select Gender"
-                    name="gender"
-                    onChange={handleChange}
-                    required
-                    select
-                    SelectProps={{native: true}}
-                    value={values.gender}
-                >
-                    {gender.map((option) => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>
-                    ))}
-                </TextField>
+                <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            sx={{ marginBottom: 2 }}
+                            label="Select Weight"
+                            name="weight"
+                            onChange={handleChange}
+                            required
+                            select
+                            SelectProps={{native: true}}
+                            value={values.weight}
+                        >
+                            {weight.map((option) => (
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            sx={{ marginBottom: 2 }}
+                            label="Select Height"
+                            name="height"
+                            onChange={handleChange}
+                            required
+                            select
+                            SelectProps={{native: true}}
+                            value={values.height}
+                        >
+                            {height.map((option) => (
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </TextField>
+                    </Grid>
+                </Grid>
             </CardActions>
             <CardActions>
                 <Grid container spacing={2}>
