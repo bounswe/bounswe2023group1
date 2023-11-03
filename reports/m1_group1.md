@@ -29,6 +29,9 @@ You can find our Class Diagrams [here](https://github.com/bounswe/bounswe2023gro
 You can find our Sequence Diagrams [here](https://github.com/bounswe/bounswe2023group1/wiki/Sequence-Diagrams)
 
 # 3. Scenarios and Mockups
+   *  3.1. Scenarios and Mockups Web: [Web Scenario](https://github.com/bounswe/bounswe2023group1/wiki/User-Case-Scenario-For-Web) | [Web Refactored Mockups](https://www.figma.com/file/LmUQJGetWO7oD8qCHAwtbl/ResQ?type=design&node-id=542-696&mode=design&t=00ut9TFGLm9C5DV3-0)
+   *  3.2. Scenarios and Mockups Mobile [Mobile Scenario](https://github.com/bounswe/bounswe2023group1/wiki/Milestone-1-Customer-Presentation-%7C-Mobile-Use-Case-Scenario) | [Mobile Refactored Mockups](https://www.figma.com/file/LmUQJGetWO7oD8qCHAwtbl/ResQ?type=design&node-id=597-4381&mode=design&t=BW7N3xzGo9uES6lV-0)
+
 # 4. Project Plan
 ![image (1)](https://github.com/bounswe/bounswe2023group1/assets/67320250/60f767ce-7c0d-4f43-a558-f7f368041b77)  
 # 5. Communication Plan
