@@ -61,15 +61,15 @@ There were many unplanned tasks due to Milestone 1. Türker supposed to complete
 | Description | Issue | Assignee | Due | Estimated Duration |
 | --- | --- | --- | --- | --- |
 | Update User Profile Pages of Our Mobile Application According to New Mockups| [#360](https://github.com/bounswe/bounswe2023group1/issues/360) | Çağrı | 14.10.2023 | 10 hr |
-| Create Responder Main Page and Resource Page | [#381](https://github.com/bounswe/bounswe2023group1/issues/381) | Ilgaz | 14.11.2023 | 8hr |
+| Create Responder Main Page and Resource Page | [#381](https://github.com/bounswe/bounswe2023group1/issues/381) | Orkan | 14.11.2023 | 12hr |
 | Enhancement: Victim Request Creation Workflow  | [#380](https://github.com/bounswe/bounswe2023group1/issues/380) | Kübra | 14.11.2023 | 8hr |
 | Event creation service  | [#379](https://github.com/bounswe/bounswe2023group1/issues/379) | Furkan | 14.11.2023 | 8hr |
 | Map - Data Table Component Customized for Search and Filter | [#378](https://github.com/bounswe/bounswe2023group1/issues/378) | Kübra | 14.11.2023 | 8hr |
 | Finalizing Request API | [#377](https://github.com/bounswe/bounswe2023group1/issues/377) | Furkan | 14.11.2023 | 8hr |
 | Finalizing need API | [#376](https://github.com/bounswe/bounswe2023group1/issues/376) | Furkan | 14.11.2023 | 8hr |
 | Account Page Improvement for Victim Consideration  | [#375](https://github.com/bounswe/bounswe2023group1/issues/375) | Kübra | 14.11.2023 | 8hr |
-| Frontend Tie Map to Backend | [#374](https://github.com/bounswe/bounswe2023group1/issues/374) | Ilgaz | 14.11.2023 | 8hr |
-| Frontend Implement List View and Filtering to Map Page | [#373](https://github.com/bounswe/bounswe2023group1/issues/373) | Ilgaz | 14.11.2023 | 8hr |
+| Frontend Tie Map to Backend | [#374](https://github.com/bounswe/bounswe2023group1/issues/374) | Ilgaz | 14.11.2023 | 6hr |
+| Frontend Implement List View and Filtering to Map Page | [#373](https://github.com/bounswe/bounswe2023group1/issues/373) | Ilgaz | 14.11.2023 | 7hr |
 | Finalizing Resource API | [#372](https://github.com/bounswe/bounswe2023group1/issues/372) | Furkan | 14.11.2023 | 8hr |
 | Create Resource Creation Page | [#371](https://github.com/bounswe/bounswe2023group1/issues/371) | Harun | 14.11.2023 | 8hr |
 | Add Responder Buttons | [#370](https://github.com/bounswe/bounswe2023group1/issues/370) | Harun | 14.11.2023 | 8hr |
