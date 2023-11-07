@@ -4,7 +4,7 @@
 **Date:** 07.11.2023
 
 ## Progress Summary
-**This week** We worked for completing Milestone 1. We created new documents and finalized our codes. **Our objective for the following week** is to make our current project better after Milestone 1 according to feedbacks, add responder functionalities, solve previous problems, finalizing some APIs. 
+**This week** We worked for completing Milestone 1. We created new documents and finalized our codes. **Our objective for the following week** is to make our current project better after Milestone 1 according to feedbacks, add responder functionalities, solve previous problems, adn finalizing some APIs. 
 
 ## What was planned for the week? How did it go?
 
