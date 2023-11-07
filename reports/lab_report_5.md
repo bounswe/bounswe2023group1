@@ -50,8 +50,8 @@
 | Implementation of User Roles at Frontend allows multiple user role but one role at the time. | [#341](https://github.com/bounswe/bounswe2023group1/issues/341) | Kübra | 31.10.2023 |[#303](https://github.com/bounswe/bounswe2023group1/pull/303)|
 | Frontend show spesific pages to users based on chosen role | [#339](https://github.com/bounswe/bounswe2023group1/issues/339) | Ilgaz | 31.10.2023 |[#340](https://github.com/bounswe/bounswe2023group1/pull/340)|
 | Add user and login-related functionality to the navbar | [#333](https://github.com/bounswe/bounswe2023group1/issues/333) | Ilgaz | 31.10.2023 |[#330](https://github.com/bounswe/bounswe2023group1/pull/330)|
-| AuthService unit tests | [#321](https://github.com/bounswe/bounswe2023group1/issues/321) | alitpc25 | 01.11.2023 |[#325](https://github.com/bounswe/bounswe2023group1/pull/325)|
-| UserService unit tests | [#318](https://github.com/bounswe/bounswe2023group1/issues/318) | alitpc25 | 30.10.2023 |[#319](https://github.com/bounswe/bounswe2023group1/pull/319)|
+| AuthService unit tests | [#321](https://github.com/bounswe/bounswe2023group1/issues/321) | Ali | 01.11.2023 |[#325](https://github.com/bounswe/bounswe2023group1/pull/325)|
+| UserService unit tests | [#318](https://github.com/bounswe/bounswe2023group1/issues/318) | Ali | 30.10.2023 |[#319](https://github.com/bounswe/bounswe2023group1/pull/319)|
 | Multirole Implementation at Frontend - Userrole Page | [#303](https://github.com/bounswe/bounswe2023group1/issues/303) | Kübra | 31.10.2023 |[#302](https://github.com/bounswe/bounswe2023group1/pull/326)|
 
 ## Planned vs. Actual
@@ -71,7 +71,7 @@ There were many unplanned tasks due to Milestone 1. Türker supposed to complete
 | Frontend Tie Map to Backend | [#374](https://github.com/bounswe/bounswe2023group1/issues/374) | Ilgaz | 14.11.2023 | 6hr |
 | Frontend Implement List View and Filtering to Map Page | [#373](https://github.com/bounswe/bounswe2023group1/issues/373) | Ilgaz | 14.11.2023 | 7hr |
 | Finalizing Resource API | [#372](https://github.com/bounswe/bounswe2023group1/issues/372) | Furkan | 14.11.2023 | 8hr |
-| Create Resource Creation Page | [#371](https://github.com/bounswe/bounswe2023group1/issues/371) | Çağrı | 14.11.2023 | 8hr |
+| Create Resource Creation Page | [#371](https://github.com/bounswe/bounswe2023group1/issues/371) | Çağrı | 21.11.2023 | 8hr |
 | Add Responder Buttons | [#370](https://github.com/bounswe/bounswe2023group1/issues/370) | Harun | 14.11.2023 | 8hr |
 | Adjust Visibilities of the Buttons According to Role | [#369](https://github.com/bounswe/bounswe2023group1/issues/369) | Harun | 14.11.2023 | 8hr |
 | Create Guest View Map with Sign In, Sign Up options | [#368](https://github.com/bounswe/bounswe2023group1/issues/368) | Alperen | 14.11.2023 | 8hr |
@@ -84,10 +84,9 @@ There were many unplanned tasks due to Milestone 1. Türker supposed to complete
 | Implement disaster reporting - Mobile | [#295](https://github.com/bounswe/bounswe2023group1/issues/295) | Volkan | 14.11.2023 | 8hr |
 | Implement disaster reporting - Frontend | [#294](https://github.com/bounswe/bounswe2023group1/issues/294) | Volkan | 14.11.2023 | 8hr |
 | Implement location services and disaster reporting mechanism | [#285](https://github.com/bounswe/bounswe2023group1/issues/285) | Furkan | 14.11.2023 | 8hr |
-| Mobile Settings and Notification Pages | [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Elif | 14.11.2023 | 8hr |
-
+| Mobile Settings and Notification Pages | [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Elif | 14.11.2023 | 9hr |
 ## Risks
-*  It might be difficult to fit all the information on the screen while implementing new designs for user profiles in mobile.
+*  It might be difficult to decide the tradeoff between less scrolling and making the fields bigger since there are many fields on the profile pages of the users in our new designs. 
 
 ## Participants
 - Alperen Dağı
