@@ -61,17 +61,31 @@ There were many unplanned tasks due to Milestone 1. Türker supposed to complete
 | Description | Issue | Assignee | Due | Estimated Duration |
 | --- | --- | --- | --- | --- |
 | Update user profile screen| [#360](https://github.com/bounswe/bounswe2023group1/issues/360) | Çağrı | 14.10.2023 | 10 hr |
-| Setting and notification page screen continue| [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Elif | 31.10.2023 | 9 hr |
-| Login screen, registration continue | [#275](https://github.com/bounswe/bounswe2023group1/issues/275) | Harun | 31.10.2023 | 2 hr|
-| Deployment of backend continue| [#281](https://github.com/bounswe/bounswe2023group1/issues/281) | Türker | 31.10.2023 | 3 hr |
-| Creat User case scenario |[#298](https://github.com/bounswe/bounswe2023group1/issues/298) | Mobile Team | 31.10.2023| 8hr|
-| Design API for victim functionalities | [#283](https://github.com/bounswe/bounswe2023group1/issues/283) | Volkan | 31.10.2023 | 3hr|
-| Reviewing mock-ups considering web page design continue| [#269](https://github.com/bounswe/bounswe2023group1/issues/269) | Front-end Team | 31.10.2023  |4hr|
-| Design API for responder functionalities|[#296](https://github.com/bounswe/bounswe2023group1/issues/296) | Furkan | 31.10.2023 | 4 hr |
-| Creat User case scenario |[#299](https://github.com/bounswe/bounswe2023group1/issues/299)  | Frontend Team | 31.10.2023| 12hr|
-| Implement jwt based authentication for login and queries|[#300](https://github.com/bounswe/bounswe2023group1/issues/300)  | Kübra | 31.10.2023| 12hr|
-| Frontend Implement Draft Map Page | [#284](https://github.com/bounswe/bounswe2023group1/issues/284) | Ilgaz | 31.10.2023 | 10hr |
-| Finalizing category tree | [#297](https://github.com/bounswe/bounswe2023group1/issues/297) | Ali | 31.10.2023 | 3hr |
+| Create Responder Main Page and Resource Page | [#381](https://github.com/bounswe/bounswe2023group1/issues/381) | ilgazer | 14.11.2023 | 8hr |
+| Enhancement: Victim Request Creation Workflow  | [#380](https://github.com/bounswe/bounswe2023group1/issues/380) | kubraaksux | 14.11.2023 | 8hr |
+| Event creation service  | [#379](https://github.com/bounswe/bounswe2023group1/issues/379) | furknbulbul | 14.11.2023 | 8hr |
+| Map - Data Table Component Customized for Search and Filter | [#378](https://github.com/bounswe/bounswe2023group1/issues/378) | kubraaksux | 14.11.2023 | 8hr |
+| Finalizing Request API | [#377](https://github.com/bounswe/bounswe2023group1/issues/377) | furknbulbul | 14.11.2023 | 8hr |
+| Finalizing need API | [#376](https://github.com/bounswe/bounswe2023group1/issues/376) | furknbulbul | 14.11.2023 | 8hr |
+| Account Page Improvement for Victim Consideration  | [#375](https://github.com/bounswe/bounswe2023group1/issues/375) | kubraaksux | 14.11.2023 | 8hr |
+| Frontend Tie Map to Backend | [#374](https://github.com/bounswe/bounswe2023group1/issues/374) | ilgazer | 14.11.2023 | 8hr |
+| Frontend Implement List View and Filtering to Map Page | [#373](https://github.com/bounswe/bounswe2023group1/issues/373) | ilgazer | 14.11.2023 | 8hr |
+| Finalizing Resource API | [#372](https://github.com/bounswe/bounswe2023group1/issues/372) | furknbulbul | 14.11.2023 | 8hr |
+| Create Resource Creation Page | [#371](https://github.com/bounswe/bounswe2023group1/issues/371) | HarunErgen | 14.11.2023 | 8hr |
+| Add Responder Buttons | [#370](https://github.com/bounswe/bounswe2023group1/issues/370) | HarunErgen | 14.11.2023 | 8hr |
+| Adjust Visibilities of the Buttons According to Role | [#369](https://github.com/bounswe/bounswe2023group1/issues/369) | HarunErgen | 14.11.2023 | 8hr |
+| Create Guest View Map with Sign In, Sign Up options | [#368](https://github.com/bounswe/bounswe2023group1/issues/368) | HarunErgen | 14.11.2023 | 8hr |
+| Frontend Milestone 2 Requirements  Considerations- Future Plans | [#366](https://github.com/bounswe/bounswe2023group1/issues/366) | kubraaksux | 14.11.2023 | 8hr |
+| Update Sign In and Sign Up Pages According to the Latest Version of Mockups | [#364](https://github.com/bounswe/bounswe2023group1/issues/364) | HarunErgen | 14.11.2023 | 8hr |
+| Update User Profile Pages of Our Mobile Application According to New Mockups | [#360](https://github.com/bounswe/bounswe2023group1/issues/360) | GulbeycanCagri | 14.11.2023 | 8hr |
+| Login problem | [#354](https://github.com/bounswe/bounswe2023group1/issues/354) | kubraaksux | 14.11.2023 | 8hr |
+| Web Exit Issue | [#353](https://github.com/bounswe/bounswe2023group1/issues/353) | kubraaksux | 14.11.2023 | 8hr |
+| Mobile- Map Screen Implementation | [#324](https://github.com/bounswe/bounswe2023group1/issues/324) | alperenDagi | 14.11.2023 | 8hr |
+| Finalizing the categorization tree | [#297](https://github.com/bounswe/bounswe2023group1/issues/297) | furknbulbul | 14.11.2023 | 8hr |
+| Implement disaster reporting - Mobile | [#295](https://github.com/bounswe/bounswe2023group1/issues/295) | volcaniqueo | 14.11.2023 | 8hr |
+| Implement disaster reporting - Frontend | [#294](https://github.com/bounswe/bounswe2023group1/issues/294) | volcaniqueo | 14.11.2023 | 8hr |
+| Implement location services and disaster reporting mechanism | [#285](https://github.com/bounswe/bounswe2023group1/issues/285) | furknbulbul | 14.11.2023 | 8hr |
+| Mobile Settings and Notification Pages | [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | HarunErgen | 14.11.2023 | 8hr |
 
 ## Risks
 ...
