@@ -71,7 +71,7 @@ There were many unplanned tasks due to Milestone 1. Türker supposed to complete
 | Frontend Tie Map to Backend | [#374](https://github.com/bounswe/bounswe2023group1/issues/374) | Ilgaz | 14.11.2023 | 6hr |
 | Frontend Implement List View and Filtering to Map Page | [#373](https://github.com/bounswe/bounswe2023group1/issues/373) | Ilgaz | 14.11.2023 | 7hr |
 | Finalizing Resource API | [#372](https://github.com/bounswe/bounswe2023group1/issues/372) | Furkan | 14.11.2023 | 8hr |
-| Create Resource Creation Page | [#371](https://github.com/bounswe/bounswe2023group1/issues/371) | Çağrı | 21.11.2023 | 8hr |
+| Create Resource Creation Page | [#371](https://github.com/bounswe/bounswe2023group1/issues/371) | Çağrı | 14.11.2023 | 8hr |
 | Add Responder Buttons | [#370](https://github.com/bounswe/bounswe2023group1/issues/370) | Harun | 14.11.2023 | 8hr |
 | Adjust Visibilities of the Buttons According to Role | [#369](https://github.com/bounswe/bounswe2023group1/issues/369) | Harun | 14.11.2023 | 8hr |
 | Create Guest View Map with Sign In, Sign Up options | [#368](https://github.com/bounswe/bounswe2023group1/issues/368) | Alperen | 14.11.2023 | 8hr |
