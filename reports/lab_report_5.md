@@ -84,7 +84,7 @@ There were many unplanned tasks due to Milestone 1. Türker supposed to complete
 | Implement disaster reporting - Mobile | [#295](https://github.com/bounswe/bounswe2023group1/issues/295) | Volkan | 14.11.2023 | 8hr |
 | Implement disaster reporting - Frontend | [#294](https://github.com/bounswe/bounswe2023group1/issues/294) | Volkan | 14.11.2023 | 8hr |
 | Implement location services and disaster reporting mechanism | [#285](https://github.com/bounswe/bounswe2023group1/issues/285) | Furkan | 14.11.2023 | 8hr |
-| Mobile Settings and Notification Pages | [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Harun | 14.11.2023 | 8hr |
+| Mobile Settings and Notification Pages | [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Elif | 14.11.2023 | 8hr |
 
 ## Risks
 *  It might be difficult to fit all the information on the screen while implementing new designs for user profiles in mobile.
