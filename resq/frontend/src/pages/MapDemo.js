@@ -103,7 +103,7 @@ const RequestCard = ({request: {requester, urgency, needs, status, longitude, la
                 Made by: {requester.name} {requester.surname}
             </Typography>
             <Typography variant="body2" color="text.primary" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
-                Location: {`(${cityName})`}
+                Location: {`${cityName}`}
             </Typography>
         </CardContent>
         <OffsetActions disableSpacing>
@@ -177,7 +177,7 @@ const ResourceCard = ({request: {owner, urgency, resources, status, longitude, l
                 Owner: {owner.name} {owner.surname}
             </Typography>
             <Typography variant="body2" color="text.primary" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
-                Location: {`(${cityName})`}
+                Location: {`${cityName}`}
             </Typography>
         </CardContent>
         <OffsetActions disableSpacing>
@@ -304,7 +304,6 @@ export default function MapDemo() {
         </ThemeProvider>
     );
 }
-
 
 
 
