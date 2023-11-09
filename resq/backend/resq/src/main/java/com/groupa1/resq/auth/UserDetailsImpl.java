@@ -2,6 +2,7 @@ package com.groupa1.resq.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.groupa1.resq.entity.User;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
+@Data
 @EqualsAndHashCode
 @NoArgsConstructor
 public class UserDetailsImpl implements UserDetails {

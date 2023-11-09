@@ -39,7 +39,7 @@ const customTheme = createTheme({
 });
 
 
-export default function UserRoles() {
+export default function UserRoles({setRole}) {
 
     const [selectedRole, setSelectedRole] = React.useState('');
 
@@ -49,6 +49,7 @@ export default function UserRoles() {
 
     const navigate = useNavigate();
     const handleSubmit = (event) => {
+        setRole(selectedRole)
         navigate('/map');
         event.preventDefault();
         // const data = new FormData(event.currentTarget);

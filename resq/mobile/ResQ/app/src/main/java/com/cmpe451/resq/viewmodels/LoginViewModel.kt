@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.cmpe451.resq.data.remote.LoginResponse
 import com.cmpe451.resq.domain.LoginUseCase
+import com.cmpe451.resq.utils.NavigationItem
 import kotlinx.coroutines.launch
 
 class LoginViewModel() : ViewModel() {
@@ -26,8 +27,7 @@ class LoginViewModel() : ViewModel() {
                 if (result.isSuccess) {
                     _loginResponse.value = result.getOrNull()
                     _errorMessage.value = null
-                    navController.navigate("dummy")
-
+                    navController.navigate(NavigationItem.Map.route)
                 } else {
                     _errorMessage.value = result.exceptionOrNull()?.message
                 }

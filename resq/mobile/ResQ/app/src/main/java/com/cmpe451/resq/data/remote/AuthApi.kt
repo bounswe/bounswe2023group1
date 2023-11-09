@@ -58,4 +58,3 @@ class AuthApi {
         return authService.register(registerRequest)
     }
 }
-
