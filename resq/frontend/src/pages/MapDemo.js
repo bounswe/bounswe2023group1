@@ -14,7 +14,7 @@ import disasterImage from '../disaster.png';
 import Container from '@mui/material/Container';
 import {useNavigate} from 'react-router-dom';
 import DisasterMap from "../components/DisasterMap";
-import { useState, useEffect } from 'react';
+import {useState} from "react";
 import {Card, CardActions, CardContent, CardHeader, Collapse, IconButton} from "@mui/material";
 import {type_colors} from "../Colors";
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -22,8 +22,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import styled from "styled-components";
-import axios from 'axios';
-import Geocode from 'react-geocode';
+
 
 const customTheme = createTheme({
     palette: {
@@ -61,28 +60,8 @@ const OffsetActions = styled(CardActions)`
   padding: 0;
 `
 
-const RequestCard = ({request: {requester, urgency, needs, status, longitude, latitude }}) => {
+const RequestCard = ({request: {requester, urgency, needs, status}}) => {
     const [expanded, setExpanded] = useState(false);
-    const [locationName, setLocationName] = useState('');
-    const [cityName, setCityName] = useState('');
-
-    useEffect(() => {
-        const reverseGeocode = async () => {
-        try {
-            const response = await axios.get(
-            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCehlfJwJ-V_xOWZ9JK3s0rcjkV2ga0DVg`
-            );
-
-            const cityName = response.data.results[0]?.formatted_address || 'Unknown';
-            setLocationName(cityName);
-            setCityName(cityName);
-        } catch (error) {
-            console.error('Error fetching location name:', error);
-        }
-        };
-
-        reverseGeocode();
-    }, [latitude, longitude]);
 
     return <Card variant="outlined">
         <CardHeader
@@ -102,9 +81,7 @@ const RequestCard = ({request: {requester, urgency, needs, status, longitude, la
             <Typography variant="body2" color="text.primary" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
                 Made by: {requester.name} {requester.surname}
             </Typography>
-            <Typography variant="body2" color="text.primary" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
-                Location: {`(${cityName})`}
-            </Typography>
+
         </CardContent>
         <OffsetActions disableSpacing>
             {/*<IconButton aria-label="add to favorites">
@@ -135,29 +112,9 @@ const RequestCard = ({request: {requester, urgency, needs, status, longitude, la
 }
 
 
-const ResourceCard = ({request: {owner, urgency, resources, status, longitude, latitude}}) => {
+
+const ResourceCard = ({request: {owner, urgency, resources, status}}) => {
     const [expanded, setExpanded] = useState(false);
-    const [locationName, setLocationName] = useState('');
-    const [cityName, setCityName] = useState('');
-
-    useEffect(() => {
-        const reverseGeocode = async () => {
-        try {
-            const response = await axios.get(
-            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCehlfJwJ-V_xOWZ9JK3s0rcjkV2ga0DVg`
-            );
-
-            const cityName = response.data.results[0]?.formatted_address || 'Unknown';
-            setLocationName(cityName);
-            setCityName(cityName);
-        } catch (error) {
-            console.error('Error fetching location name:', error);
-        }
-        };
-
-        reverseGeocode();
-    }, [latitude, longitude]);
-
 
     return <Card variant="outlined">
         <CardHeader
@@ -175,9 +132,6 @@ const ResourceCard = ({request: {owner, urgency, resources, status, longitude, l
             </Typography>
             <Typography variant="body2" color="text.primary" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
                 Owner: {owner.name} {owner.surname}
-            </Typography>
-            <Typography variant="body2" color="text.primary" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
-                Location: {`(${cityName})`}
             </Typography>
         </CardContent>
         <OffsetActions disableSpacing>
