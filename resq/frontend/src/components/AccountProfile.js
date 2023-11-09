@@ -72,8 +72,6 @@ const gender = [
 ];
 
 const years = Array.from({length: 100}, (_, i) => String(new Date().getFullYear() - i));
-const months = Array.from({length: 12}, (_, i) => String(i + 1).padStart(2, '0'));
-const days = Array.from({length: 31}, (_, i) => String(i + 1).padStart(2, '0'));
 const weight = Array.from({length: 200}, (_, i) => String(i + 1));
 const height = Array.from({length: 200}, (_, i) => String(i + 1));
 
@@ -92,8 +90,6 @@ function AccountProfile() {
         bloodType: '0 RH +',
         gender: 'Woman',
         year: '1993',
-        month: '05',
-        day: '29',
     });
 
     const handleChange = useCallback((event) => {
@@ -219,44 +215,6 @@ function AccountProfile() {
                             value={values.year}
                         >
                             {years.map((option) => (
-                                <option key={option} value={option}>
-                                    {option}
-                                </option>
-                            ))}
-                        </TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <TextField
-                            fullWidth
-                            sx={{marginBottom: 2}}
-                            label="Month"
-                            name="month"
-                            onChange={handleChange}
-                            required
-                            select
-                            SelectProps={{native: true}}
-                            value={values.month}
-                        >
-                            {months.map((option) => (
-                                <option key={option} value={option}>
-                                    {option}
-                                </option>
-                            ))}
-                        </TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <TextField
-                            fullWidth
-                            sx={{marginBottom: 2}}
-                            label="Day"
-                            name="day"
-                            onChange={handleChange}
-                            required
-                            select
-                            SelectProps={{native: true}}
-                            value={values.day}
-                        >
-                            {days.map((option) => (
                                 <option key={option} value={option}>
                                     {option}
                                 </option>
