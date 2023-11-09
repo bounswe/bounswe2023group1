@@ -54,7 +54,7 @@ function AccountProfileDetails() {
     return (
         <ThemeProvider theme={customTheme}>
             <form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                <Card style={{width: '100%', maxWidth: '400px'}}>
+                <Card style={{width: '100%', maxWidth: '400px', height: '99.2%'}}>
                     <CardHeader/>
                     <CardContent sx={{pt: 0}}>
                         <Box sx={{m: -1.5}}>

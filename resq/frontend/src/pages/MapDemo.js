@@ -72,6 +72,7 @@ const RequestCard = ({request: {requester, urgency, needs, status}}) => {
             <Typography variant="body2" color="text.primary" sx={{fontSize: '12px', fontWeight: 'bold'}}>
                 Made by: {requester.name} {requester.surname}
             </Typography>
+
         </CardContent>
         <OffsetActions disableSpacing>
             {/*<IconButton aria-label="add to favorites">
@@ -102,7 +103,10 @@ const RequestCard = ({request: {requester, urgency, needs, status}}) => {
 }
 
 
-const ResourceCard = ({request: {owner, name, quantity}}) => {
+
+const ResourceCard = ({request: {owner, urgency, resources, status}}) => {
+    const [expanded, setExpanded] = useState(false);
+
     return <Card variant="outlined">
         <CardHeader
             avatar={
@@ -111,13 +115,41 @@ const ResourceCard = ({request: {owner, name, quantity}}) => {
                 </Avatar>
             }
             titleTypographyProps={{variant: 'h6'}}
-            title={`${quantity} ${name}`}
+            title={resources.map(({name, quantity}) => `${quantity} ${name}`).join(", ")}
         />
         <CardContent>
-            <Typography variant="body2" color="text.primary" sx={{fontSize: '12px', fontWeight: 'bold'}}>
+            <Typography variant="body1" sx={{ fontSize: '16px', fontWeight: 'bold' }}>
+                Urgency: <span style={{ color: 'red', fontWeight: 'bold' }}>{urgency}</span> | Status: <span style={{ color: 'blue' , fontWeight: 'bold'}}>{status}</span>
+            </Typography>
+            <Typography variant="body2" color="text.primary" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
                 Owner: {owner.name} {owner.surname}
             </Typography>
         </CardContent>
+        <OffsetActions disableSpacing>
+            {/*<IconButton aria-label="add to favorites">
+                <FavoriteIcon/>
+            </IconButton>
+            <IconButton aria-label="share">
+                <ShareIcon/>
+            </IconButton>*/}
+            <ExpandMore
+                expand={expanded}
+                onClick={() => setExpanded(!expanded)}
+                aria-expanded={expanded}
+                aria-label="show more"
+            >
+                <ExpandMoreIcon/>
+            </ExpandMore>
+        </OffsetActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+                {resources.map(({name, description, quantity}) =>
+                    <Typography variant="body2" color="text.primary">
+                        {quantity} {name}: {description}
+                    </Typography>
+                )}
+            </CardContent>
+        </Collapse>
     </Card>;
 }
 
@@ -176,8 +208,15 @@ const mock_markers = [
             name: "Te",
             surname: "St"
         },
-        name: "Bottled water",
-        quantity: 300,
+        urgency: "HIGH",
+        resources: [
+            {
+                name: "Bottled Water",
+                description: "1.5 liters bottles",
+                quantity: 300,
+            },
+        ],
+        status: "READY"
     },
 ]
 

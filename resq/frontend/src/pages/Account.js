@@ -164,8 +164,15 @@ function Account() {
                 onClick={() => {
                 navigate('/map');
               }}
-              >Save Details</Button>
-            <Button variant="contained" onClick={handleClickOpen}>Request for a Role</Button>
+                sx={{ flex: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: '10px', width: '200px' }}
+              >Save Details
+              </Button>
+              <Button 
+                variant="contained" 
+                onClick={handleClickOpen}
+                sx={{ flex: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '10px', whiteSpace: 'nowrap' , width: '200px' }}
+                >Request for a Role
+              </Button>
           </CardActions>
           <div>
             <SimpleDialog
@@ -183,10 +190,6 @@ function Account() {
 }
 
 export default Account;
-
-
-
-
 
 
 
