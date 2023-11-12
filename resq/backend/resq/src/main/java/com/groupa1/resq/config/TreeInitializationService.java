@@ -1,11 +1,20 @@
 package com.groupa1.resq.config;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groupa1.resq.entity.CategoryTreeNode;
 import com.groupa1.resq.repository.CategoryTreeNodeRepository;
 import com.groupa1.resq.service.CategoryTreeNodeService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class TreeInitializationService {
@@ -13,47 +22,45 @@ public class TreeInitializationService {
     @Autowired
     private CategoryTreeNodeService categoryTreeNodeService;
 
+    private final String filePath = "category-tree.json";
+
+    @Value("${category-tree.reset}")
+    private boolean categoryTreeReset;
+
     @Transactional
     public void initializeTree() {
-        if (categoryTreeNodeService.isTreeEmpty()) {
-            CategoryTreeNode root = new CategoryTreeNode();
-            root.setData("Category");
-            categoryTreeNodeService.save(root);
-
-            CategoryTreeNode child1 = new CategoryTreeNode();
-            child1.setData("Human Resource");
-            child1.setParent(root);
-            categoryTreeNodeService.save(child1);
-
-            CategoryTreeNode child2 = new CategoryTreeNode();
-            child2.setData("Clothing");
-            child2.setParent(root);
-            categoryTreeNodeService.save(child2);
-
-            CategoryTreeNode child3 = new CategoryTreeNode();
-            child3.setData("Shelter");
-            child3.setParent(root);
-            categoryTreeNodeService.save(child3);
-
-            CategoryTreeNode child4 = new CategoryTreeNode();
-            child4.setData("Tools and Equipment");
-            child4.setParent(root);
-            categoryTreeNodeService.save(child4);
-
-            CategoryTreeNode child5 = new CategoryTreeNode();
-            child5.setData("Food and Water");
-            child5.setParent(root);
-            categoryTreeNodeService.save(child5);
-
-            CategoryTreeNode child6 = new CategoryTreeNode();
-            child6.setData("Medical Supplies");
-            child6.setParent(root);
-            categoryTreeNodeService.save(child6);
-
-            CategoryTreeNode child7 = new CategoryTreeNode();
-            child7.setData("Transportation");
-            child7.setParent(root);
-            categoryTreeNodeService.save(child7);
+        if(categoryTreeReset) {
+            categoryTreeNodeService.deleteAll();
         }
+        if (categoryTreeNodeService.isTreeEmpty() || categoryTreeReset) {
+            try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath)){
+                if (inputStream != null) {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    JsonNode rootNode = objectMapper.readTree(inputStream);
+                    buildCategoryTree(rootNode, null);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Handle exception
+            }
+        }
+    }
+
+    private CategoryTreeNode buildCategoryTree(JsonNode node, CategoryTreeNode parent) {
+        CategoryTreeNode categoryTreeNode = new CategoryTreeNode();
+        categoryTreeNode.setData(node.get("data").asText());
+        categoryTreeNode.setParent(parent);
+
+        Set<CategoryTreeNode> children = new HashSet<>();
+        if (node.has("children")) {
+            for (JsonNode childNode : node.get("children")) {
+                CategoryTreeNode child = buildCategoryTree(childNode, categoryTreeNode);
+                children.add(child);
+            }
+        }
+
+        categoryTreeNode.setChildren(children);
+        categoryTreeNodeService.save(categoryTreeNode);
+        return categoryTreeNode;
     }
 }
