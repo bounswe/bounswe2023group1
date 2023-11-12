@@ -1,9 +1,11 @@
 package com.groupa1.resq.service;
 
 import com.groupa1.resq.entity.User;
+import com.groupa1.resq.entity.Request;
 import com.groupa1.resq.repository.RequestRepository;
 import com.groupa1.resq.repository.UserRepository;
 import com.groupa1.resq.request.CreateReqRequest;
+import com.groupa1.resq.request.UpdateReqRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.Optional;
 import static org.mockito.Mockito.*;
+import org.springframework.data.jpa.domain.Specification;
 
 @ExtendWith(MockitoExtension.class)
 public class RequestServiceTest {
@@ -48,23 +51,44 @@ public class RequestServiceTest {
     }
 
     @Test
-    void test_viewRequestsByUser() {
+    void test_viewRequestsByFilter() {
         // Given
         User user = new User();
         when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
         // when
-        requestService.viewRequestsByUser(1L);
+        requestService.viewRequestsByFilter(BigDecimal.valueOf(1), BigDecimal.valueOf(1), null, null, 1L);
         // then
-        verify(requestRepository, times(1)).findByRequester(any());
+        verify(requestRepository, times(1)).findAll(any(Specification.class));
     }
 
     @Test
-    void test_viewRequestsByLocation() {
+    void test_update() {
         // Given
+        UpdateReqRequest updateReqRequest = new UpdateReqRequest();
+        User user = new User();
+        Request request = new Request();
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+        when(requestRepository.findById(any(Long.class))).thenReturn(Optional.of(request));
+        request.setRequester(user);
         // when
-        requestService.viewRequestsByLocation(new BigDecimal(1), new BigDecimal(1));
+        requestService.update(updateReqRequest, 1L, 1L);
         // then
-        verify(requestRepository, times(1)).findByLongitudeAndLatitude(any(), any());
+        verify(requestRepository, times(1)).save(any());
     }
+
+    @Test
+    void test_deleteRequest() {
+        // Given
+        User user = new User();
+        Request request = new Request();
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+        when(requestRepository.findById(any(Long.class))).thenReturn(Optional.of(request));
+        request.setRequester(user);
+        // when
+        requestService.deleteRequest(1L, 1L);
+        // then
+        verify(requestRepository, times(1)).deleteById(any());
+    }
+
 
 }

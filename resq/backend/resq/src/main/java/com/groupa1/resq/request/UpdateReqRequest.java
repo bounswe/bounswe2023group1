@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 @Data
-public class CreateReqRequest {
+public class UpdateReqRequest {
     private String description;
     private BigDecimal latitude;
     private BigDecimal longitude;

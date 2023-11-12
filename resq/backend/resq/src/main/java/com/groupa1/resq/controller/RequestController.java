@@ -1,8 +1,12 @@
 package com.groupa1.resq.controller;
 
 import com.groupa1.resq.config.ResqAppProperties;
+import com.groupa1.resq.entity.Need;
 import com.groupa1.resq.entity.Request;
+import com.groupa1.resq.entity.enums.EStatus;
+import com.groupa1.resq.entity.enums.EUrgency;
 import com.groupa1.resq.request.CreateReqRequest;
+import com.groupa1.resq.request.UpdateReqRequest;
 import com.groupa1.resq.service.RequestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +28,17 @@ public class RequestController {
     @Autowired
     private RequestService requestService;
 
-    @GetMapping("/viewRequestsByUser")
+    @GetMapping("/viewRequestsByFilter")
     @PreAuthorize("hasRole('FACILITATOR')")
-    public List<Request> viewRequestsByUser(@RequestParam Long userId) {
-        log.info("Viewing requests for userId: {}", userId);
-        return requestService.viewRequestsByUser(userId);
+    public List<Request> viewRequestsByFilter(@RequestParam(required = false) BigDecimal longitude,
+                                        @RequestParam(required = false) BigDecimal latitude,
+                                        @RequestParam(required = false) EStatus status,
+                                        @RequestParam(required = false) EUrgency urgency,
+                                        @RequestParam(required = false) Long userId) {
+        log.info("Viewing requests for location: {}, {}, status: {}, urgency: {}, user: {}", longitude, latitude, status, urgency, userId);
+        return requestService.viewRequestsByFilter(longitude, latitude, status, urgency, userId);
     }
 
-    @GetMapping("/viewRequestsByLocation")
-    @PreAuthorize("hasRole('FACILITATOR')")
-    public List<Request> viewRequestsByLocation(@RequestParam BigDecimal longitude, @RequestParam BigDecimal latitude) {
-        log.info("Viewing requests for location: {}, {}", longitude, latitude);
-        return requestService.viewRequestsByLocation(longitude, latitude);
-    }
 
     @PostMapping("/createRequest")
     @PreAuthorize("hasRole('FACILITATOR')")
@@ -51,6 +53,22 @@ public class RequestController {
     public List<Request> viewAllRequests() {
         log.info("Viewing all requests");
         return requestService.viewAllRequests();
+    }
+
+    @PostMapping("/updateRequest")
+    @PreAuthorize("hasRole('FACILITATOR')")
+    public String updateRequest(@RequestBody UpdateReqRequest updateReqRequest, @RequestParam Long userId, @RequestParam Long requestId) {
+        log.info("Updating request for user: {}, request: {}", userId, requestId);
+        requestService.update(updateReqRequest, userId, requestId);
+        return "Request successfully updated.";
+    }
+
+    @PostMapping("/deleteRequest")
+    @PreAuthorize("hasRole('FACILITATOR')")
+    public String deleteRequest(@RequestParam Long userId, @RequestParam Long requestId) {
+        log.info("Deleting request for user: {}, request: {}", userId, requestId);
+        requestService.deleteRequest(userId, requestId);
+        return "Request successfully deleted.";
     }
 
 
