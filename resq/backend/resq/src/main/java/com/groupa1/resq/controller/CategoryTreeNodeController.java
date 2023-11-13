@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -28,5 +29,11 @@ public class CategoryTreeNodeController {
     public ResponseEntity<Set<CategoryTreeNode>> getSubCategoryByName(@RequestParam String name) {
         log.info("Getting subcategories of " + name);
         return categoryTreeNodeService.getSubCategoryByName(name);
+    }
+
+    @GetMapping("/getCategoryTree")
+    public ResponseEntity<String> getCategoryTree() {
+        log.info("Getting all category tree");
+        return categoryTreeNodeService.getCategoryTree();
     }
 }
