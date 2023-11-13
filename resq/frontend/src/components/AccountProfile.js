@@ -90,6 +90,7 @@ function AccountProfile() {
         bloodType: '0 RH +',
         gender: 'Woman',
         year: '1993',
+        illness:' ',
     });
 
     const handleChange = useCallback((event) => {
@@ -131,6 +132,41 @@ function AccountProfile() {
                             ))}
                         </TextField>
                     </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            sx={{marginBottom: 2}}
+                            label="Any Ilness"
+                            name="illness"
+                            onChange={handleChange}
+                            required
+                            value={values.illness}
+                        >
+                        </TextField>
+                    </Grid>
+                </Grid>
+            </CardActions>
+            <CardActions>
+                <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                            <TextField
+                                fullWidth
+                                sx={{marginBottom: 2}}
+                                label="Year"
+                                name="year"
+                                onChange={handleChange}
+                                required
+                                select
+                                SelectProps={{native: true}}
+                                value={values.year}
+                            >
+                                {years.map((option) => (
+                                    <option key={option} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </TextField>
+                        </Grid>
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
@@ -192,29 +228,6 @@ function AccountProfile() {
                             }}
                         >
                             {height.map((option) => (
-                                <option key={option} value={option}>
-                                    {option}
-                                </option>
-                            ))}
-                        </TextField>
-                    </Grid>
-                </Grid>
-            </CardActions>
-            <CardActions>
-                <Grid container spacing={2}>
-                    <Grid item xs={4}>
-                        <TextField
-                            fullWidth
-                            sx={{marginBottom: 2}}
-                            label="Year"
-                            name="year"
-                            onChange={handleChange}
-                            required
-                            select
-                            SelectProps={{native: true}}
-                            value={values.year}
-                        >
-                            {years.map((option) => (
                                 <option key={option} value={option}>
                                     {option}
                                 </option>
