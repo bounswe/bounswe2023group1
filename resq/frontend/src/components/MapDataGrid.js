@@ -11,18 +11,20 @@ import { useDemoData } from '@mui/x-data-grid-generator';
 import { DataGrid } from '@mui/x-data-grid';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 2 },
+  { field: 'id', headerName: 'ID', width: 2, flex:0.5 },
   {
     field: 'Name',
     headerName: <strong>{'Name'}</strong>,
     width: 100,
     align: 'left',
+    flex: 1, 
   },
   {
     field: 'Type',
     headerName:  <strong>{'Type'}</strong>,
     width: 100,
     align: 'left',
+    flex: 1, 
   },
   {
     field: 'Quantity',
@@ -30,11 +32,13 @@ const columns = [
     type: 'number',
     width: 80,
     align: 'left',
+    flex: 0.5, 
   },
   {
     field: 'Location',
     headerName:  <strong>{'Location'}</strong>,
     align: 'left',
+    flex: 0.5, 
   },
 ];
 

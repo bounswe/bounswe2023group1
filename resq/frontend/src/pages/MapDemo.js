@@ -298,7 +298,7 @@ export default function MapDemo() {
                     }
                     {(!selectedPoint) && <> 
                         <MapDataGrid sx={{flexBasis: "33%", flexShrink: 0, display: "flex", flexDirection: "row", flexWrap: 'nowrap', marginRight: "12px"}}/>
-                        <Box sx={{ width: "36px" }}/>
+                        <Box sx={{ width: "46px" }}/>
                     </>}
                     <Box sx={{flexBasis: "66%", flexGrow: 100}}>
                         <DisasterMap markers={mock_markers} onPointSelected={setSelectedPoint}/>
