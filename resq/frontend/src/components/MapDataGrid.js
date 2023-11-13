@@ -62,6 +62,14 @@ export default function MapDataGrid() {
       <DataGrid
         rows={rows}
         columns={columns}
+        components={{ Toolbar: GridToolbar }}
+        sx={{
+          '& .MuiDataGrid-toolbarContainer': {
+            justifyContent: 'flex-end', 
+            align: 'right',
+            marginBottom: '16px', 
+          }
+        }}
         initialState={{
           pagination: {
             paginationModel: { page: 0, pageSize: 10 },
