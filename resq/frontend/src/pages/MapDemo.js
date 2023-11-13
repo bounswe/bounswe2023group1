@@ -24,6 +24,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import styled from "styled-components";
 import axios from 'axios';
 import Geocode from 'react-geocode';
+import MapDataGrid from '../components/MapDataGrid'
+
 
 const customTheme = createTheme({
     palette: {
@@ -294,6 +296,10 @@ export default function MapDemo() {
                         <Box sx={{width: "36px"}}/>
                     </>
                     }
+                    {(!selectedPoint) && <> 
+                        <MapDataGrid sx={{flexBasis: "33%", flexShrink: 0, display: "flex", flexDirection: "row", flexWrap: 'nowrap', marginRight: "12px"}}/>
+                        <Box sx={{ width: "36px" }}/>
+                    </>}
                     <Box sx={{flexBasis: "66%", flexGrow: 100}}>
                         <DisasterMap markers={mock_markers} onPointSelected={setSelectedPoint}/>
                     </Box>
