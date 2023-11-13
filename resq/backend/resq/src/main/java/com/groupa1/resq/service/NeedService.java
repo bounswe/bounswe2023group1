@@ -2,6 +2,7 @@ package com.groupa1.resq.service;
 
 import com.groupa1.resq.entity.Need;
 import com.groupa1.resq.entity.User;
+import com.groupa1.resq.entity.enums.ENeedStatus;
 import com.groupa1.resq.exception.EntityNotFoundException;
 import com.groupa1.resq.exception.NotOwnerException;
 import com.groupa1.resq.repository.NeedRepository;
@@ -11,6 +12,7 @@ import com.groupa1.resq.request.UpdateNeedRequest;
 import com.groupa1.resq.specification.NeedSpecifications;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -28,7 +30,7 @@ public class NeedService {
     UserRepository userRepository;
 
 
-    public void save(Long userId, CreateNeedRequest createNeedRequest) {
+    public ResponseEntity<String> save(Long userId, CreateNeedRequest createNeedRequest) {
         User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Need need = new Need();
         need.setRequester(requester);
@@ -37,37 +39,40 @@ public class NeedService {
         need.setLatitude(createNeedRequest.getLatitude());
         need.setQuantity(createNeedRequest.getQuantity());
         need.setCategoryTreeId(createNeedRequest.getCategoryTreeId());
+        need.setStatus(ENeedStatus.NOT_INVOLVED);
         needRepository.save(need);
+        return ResponseEntity.ok("Need created successfully");
     }
 
-    public List<Need> viewAllNeeds() {
-        return needRepository.findAll();
+    public ResponseEntity<List<Need>> viewAllNeeds() {
+        return ResponseEntity.ok(needRepository.findAll());
     }
 
-    public List<Need> viewNeedsByUserId(Long userId) {
+    public ResponseEntity<List<Need>> viewNeedsByUserId(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
-        return needRepository.findByRequester(user);
+        return ResponseEntity.ok(needRepository.findByRequester(user));
     }
 
-    public Need viewNeed(Long userId, Long needId) {
+    public ResponseEntity<Need> viewNeed(Long userId, Long needId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Need need = needRepository.findById(needId).orElseThrow(() -> new EntityNotFoundException("Need not found"));
         if(need.getRequester().getId() != user.getId()) {
             throw new NotOwnerException("User is not the owner of the need");
         }
-        return need;
+        return ResponseEntity.ok(need);
     }
 
-    public void deleteNeed(Long userId, Long needId) {
+    public ResponseEntity<String> deleteNeed(Long userId, Long needId) {
         User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Need need = needRepository.findById(needId).orElseThrow(() -> new EntityNotFoundException("Need not found"));
         if(need.getRequester().getId() != requester.getId()) {
             throw new NotOwnerException("User is not the owner of the need");
         }
         needRepository.deleteById(needId);
+        return ResponseEntity.ok("Need deleted successfully");
     }
 
-    public void update(UpdateNeedRequest updateNeedRequest, Long userId, Long needId) {
+    public ResponseEntity<String> update (UpdateNeedRequest updateNeedRequest, Long userId, Long needId) {
         Need need = needRepository.findById(needId).orElseThrow(() -> new EntityNotFoundException("Need not found"));
         User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         if(need.getRequester().getId() != requester.getId()) {
@@ -79,10 +84,11 @@ public class NeedService {
         need.setQuantity(updateNeedRequest.getQuantity());
         need.setCategoryTreeId(updateNeedRequest.getCategoryTreeId());
         needRepository.save(need);
+        return ResponseEntity.ok("Need updated successfully");
     }
 
 
-    public List<Need> viewNeedsByFilter(BigDecimal longitude, BigDecimal latitude, String categoryTreeId, Long userId) {
+    public ResponseEntity<List<Need>> viewNeedsByFilter(BigDecimal longitude, BigDecimal latitude, String categoryTreeId, Long userId) {
 
         Specification<Need> spec = Specification.where(null);
 
@@ -97,9 +103,20 @@ public class NeedService {
             User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
             spec = spec.and(NeedSpecifications.hasRequester(userId));
         }
-        return needRepository.findAll(spec);
+        return ResponseEntity.ok(needRepository.findAll(spec));
 
+    }
 
+    public ResponseEntity<String> cancelNeed(Long needId) {
+        Need need = needRepository.findById(needId).orElseThrow(() -> new EntityNotFoundException("Need not found"));
+        need.setStatus(ENeedStatus.CANCELLED);
+        needRepository.save(need);
+        return ResponseEntity.ok("Need cancelled successfully");
+    }
 
+    public ResponseEntity<List<Need>> filterByDistance(BigDecimal longitude,
+                                                       BigDecimal latitude,
+                                                       BigDecimal distance) {
+        return ResponseEntity.ok(needRepository.filterByDistance(longitude, latitude, distance));
     }
 }
