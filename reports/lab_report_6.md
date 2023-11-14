@@ -107,6 +107,11 @@ After disasters, some roads may be closed to traffic. Therefore, it would be nic
 
 We need to use the Google Maps API for showing maps. In addition, we need to learn which routes are closed to the traffic and store them. Afterward, we need to add this information to our map implementation and find optimal routes for the users. All these necessities burden our app with much workload and might cause irresponsiveness.
 
+AUTOMATED ROLE VERIFICATION:
+
+In our application, except the victim role, a user needs a kind of verification. We planned to build a verification process with human action. However, having an automated system that checks the role assignments to users decrease the overhead on the system. However, effort to create an automated verification system is exceeds the project's scope.
+
+Implementing an automated system for role assignments not only reduces the system overhead but also improves the efficiency and accuracy of the verification process, ensuring an easy and secure user experience.
 
 
 
@@ -121,4 +126,5 @@ We need to use the Google Maps API for showing maps. In addition, we need to lea
 - Orkan Akısu
 - Volkan Öztürk
 - Türker Erdem
+- Elif Tokluoğlu
 
