@@ -1,6 +1,9 @@
 package com.groupa1.resq.entity;
 
+import com.groupa1.resq.entity.enums.ENeedStatus;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -30,5 +33,8 @@ public class Need extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "request_id")
     private Request request;
+
+    @Enumerated(EnumType.STRING)
+    private ENeedStatus status;
 
 }
