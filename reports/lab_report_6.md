@@ -90,12 +90,25 @@ Responders also need to see where they're needed. Visual cues such as this map h
 
 If the tasks were listed in bullet points instead of a map, it would have been more complex and error-prone for the responder. For example, they would have difficulty distinguishing Arnavutköy, the providence and Arnavutköy, the neighbourhood, locations 42 km apart.
 
-
 The map's role is less central to the application's information architecture for power users such as coordinators and facilitators. Still, it is extremely important for these people to have the big picture of the situation on the ground. The map facilitates this by visualising how many requests and resources exist and where these are concentrated geographically. Furthermore, for coordinators, maps provide a way to see how the different tasks in an action are distributed geographically. This visual helps the coordinator intuit which order of tasks is the most logical.
 
 FILTERING AND REPORTING MECHANISM:
+In a disaster response application, the design of the "Map Listing, Filtering with Data Table, and Reporting Mechanism" is pivotal for delivering rapid, efficient, and user-friendly interaction, particularly vital for coordinators managing crisis situations and users to be able to quick access and easily use. This mechanism directly caters to the unique challenges and urgency inherent in disaster management.
 
+Enhanced Map Listing (Requirement 1.1.2.1.5): This feature allows victims to view available resources both on a map and as a list. The dual-view option ensures that users can quickly grasp the spatial distribution of resources while having the option to delve into a detailed list format. This versatility in presentation is crucial in high-stress scenarios where different users may require different data representations for quick understanding and decision-making.
 
+Advanced Data Table Filtering (Requirement 1.1.2.1.6): The dynamic filtering options in the data table are designed for rapid navigation through extensive datasets. Users can filter resources by name, category, and distance, enabling them to quickly identify the most relevant resources. This feature reduces the time spent searching for information, a critical factor during emergencies where every second counts.
+
+Since focus is data table because filtering and reporting is its funcitonalities. Focus on the UI/UX aspects of data table:
+
+Advanced Sorting and Filtering Capabilities: With sophisticated sorting and filtering options, the data table allows users to quickly navigate and organize large datasets. This feature is especially important in time-sensitive situations, enabling users to find the most relevant information without delay.
+Interactive Elements: The table includes interactive features such as expandable rows and clickable elements. These interactive elements make it easier to explore and understand complex data, allowing users to access detailed information without overwhelming the main view.
+High Performance and Scalability: Designed for high performance, the data table can handle large volumes of data without compromising speed or responsiveness. This scalability is essential in disaster management scenarios, where data influx can be substantial and unpredictable.
+Accessibility and Ease of Use: The table is designed with accessibility in mind, ensuring that it is usable by a wide range of users, including those with disabilities. Its intuitive layout and clear visual cues make it easy to use, even for those not familiar with such systems.
+Export Functionality: The inclusion of export options for data (such as CSV or Excel formats) is particularly beneficial for detailed analysis and record-keeping, allowing coordinators to maintain logs and perform offline analysis.
+In conclusion, the data table's design embodies the principles of modern UI/UX design – it is intuitive, responsive, and capable of handling complex data management tasks efficiently. These characteristics are invaluable in the context of a disaster response application, where the ability to quickly access, analyze, and act on data can have critical implications. By blending advanced technical capabilities with user-centered design, the data table becomes a cornerstone of the system's effectiveness in managing disaster response efforts.
+
+Note, some of these are already implemented. Some is planned. 
 
 
 
