@@ -81,7 +81,7 @@ There were many unfinished task due to improper estimations in the previous week
 
 ### UI/UX Planned for This Application
 
-MAP:
+1 / MAP:
 The map is large and at the centre of the application. Because of this feature, it is very convenient for users to use the application with ease. Because the users need this application to aid them in the real world, a map is the best presentation to transmit the information. The locations of the resources and requests are exact information that can be viewed on the map. There are also multiple resources and requests that the users can pick among any useful. 
 
 Victims can easily view where the resources are located when they enter the application and wouldn't lose precious time trying to navigate it. They can easily see what resources and help locations are nearby without having to contend with addresses and other textual information. Considering the mental workload a victim is under, this simplicity is vital for our application. 
@@ -92,14 +92,21 @@ If the tasks were listed in bullet points instead of a map, it would have been m
 
 The map's role is less central to the application's information architecture for power users such as coordinators and facilitators. Still, it is extremely important for these people to have the big picture of the situation on the ground. The map facilitates this by visualising how many requests and resources exist and where these are concentrated geographically. Furthermore, for coordinators, maps provide a way to see how the different tasks in an action are distributed geographically. This visual helps the coordinator intuit which order of tasks is the most logical.
 
-FILTERING AND REPORTING MECHANISM:
+DATA TABLE MAP FEATURES FOR UI/UX ENHANCEMENT
 In a disaster response application, the design of the "Map Listing, Filtering with Data Table, and Reporting Mechanism" is pivotal for delivering rapid, efficient, and user-friendly interaction, particularly vital for coordinators managing crisis situations and users to be able to quick access and easily use. This mechanism directly caters to the unique challenges and urgency inherent in disaster management.
+
+2/ FILTERING MECHANISM MAP:
 
 Enhanced Map Listing (Requirement 1.1.2.1.5): This feature allows victims to view available resources both on a map and as a list. The dual-view option ensures that users can quickly grasp the spatial distribution of resources while having the option to delve into a detailed list format. This versatility in presentation is crucial in high-stress scenarios where different users may require different data representations for quick understanding and decision-making.
 
 Advanced Data Table Filtering (Requirement 1.1.2.1.6): The dynamic filtering options in the data table are designed for rapid navigation through extensive datasets. Users can filter resources by name, category, and distance, enabling them to quickly identify the most relevant resources. This feature reduces the time spent searching for information, a critical factor during emergencies where every second counts.
 
-Since focus is data table because filtering and reporting is its funcitonalities. Focus on the UI/UX aspects of data table:
+3/ REPORTING MECHANISM MAP:
+
+Partial Coverage of Requirement 1.2.5.1: The system generates live reports on outstanding requests, showing the deficit in materiel by location. This functionality is crucial for coordinators to understand immediate needs and allocate resources efficiently.
+Assisting Requirement 1.2.5.2: While it does not fully cover this requirement, the reporting mechanism provides valuable insights that assist in assessing the overall progress of disaster response efforts. It contributes to understanding the impact of actions on the affected population, albeit indirectly. This aspect is particularly beneficial for coordinators who need to gauge the effectiveness of their strategies in real-time and make swift adjustments.
+
+Since focus is data table, further investigation of data table functioanilities are listed below. Filtering and reporting is data table's features and they serve two distinct functions. Focus on the UI/UX aspects of data table:
 
 Advanced Sorting and Filtering Capabilities: With sophisticated sorting and filtering options, the data table allows users to quickly navigate and organize large datasets. This feature is especially important in time-sensitive situations, enabling users to find the most relevant information without delay.
 Interactive Elements: The table includes interactive features such as expandable rows and clickable elements. These interactive elements make it easier to explore and understand complex data, allowing users to access detailed information without overwhelming the main view.
@@ -110,17 +117,20 @@ In conclusion, the data table's design embodies the principles of modern UI/UX d
 
 Note, some of these are already implemented. Some is planned. 
 
+4/ STREAMLINED NOTIFICATION INTERFACE IN UI/UX DESIGN 
+
+Our application's UI/UX design features a streamlined notification page, designed to enhance user interaction and efficiency. This centralized hub aggregates all notifications in one location, significantly simplifying the user experience by reducing the need to navigate through multiple pages. Each notification is thoughtfully linked to specific pages within the application, allowing users to directly access relevant content and respond swiftly. The intuitive layout of the notification page ensures that users can easily scan and prioritize their notifications, further enhancing usability. Personalization is a key aspect of this design, with notifications tailored to individual user preferences, thereby increasing engagement and relevance. Additionally, the incorporation of accessibility features makes this crucial component of the application usable by a broad audience, including those with disabilities. This notification system is a prime example of effective UI/UX design, where convenience, efficiency, and accessibility are harmoniously integrated to improve the overall user experience.
 
 
 ### UI/UX Enhancement Not Planned for this Project but Further can be Improved
 
-ROUTE SUGGESTION FEATURE:
+1/ ROUTE SUGGESTION FEATURE:
 
 After disasters, some roads may be closed to traffic. Therefore, it would be nice to suggest alternative routes on the map. However, it would be hard to implement this idea with a good UI/UX experience for the users. Besides, it may require complex algorithms. Therefore, we have decided to exclude it from the project. 
 
 We need to use the Google Maps API for showing maps. In addition, we need to learn which routes are closed to the traffic and store them. Afterward, we need to add this information to our map implementation and find optimal routes for the users. All these necessities burden our app with much workload and might cause irresponsiveness.
 
-AUTOMATED ROLE VERIFICATION:
+2/ AUTOMATED ROLE VERIFICATION:
 
 In our application, except the victim role, a user needs a kind of verification. We planned to build a verification process with human action. However, having an automated system that checks the role assignments to users decrease the overhead on the system. However, effort to create an automated verification system is exceeds the project's scope.
 
