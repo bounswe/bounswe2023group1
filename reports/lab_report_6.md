@@ -25,10 +25,10 @@
 | Add Responder Buttons | [#370](https://github.com/bounswe/bounswe2023group1/issues/370) | Harun | 14.11.2023 | - | 4hr |8hr |
 | Adjust Visibilities of the Buttons According to Role | [#369](https://github.com/bounswe/bounswe2023group1/issues/369) | Harun | 14.11.2023 | - | 6hr | 8hr |
 | Create Guest View Map with Sign In, Sign Up options | [#368](https://github.com/bounswe/bounswe2023group1/issues/368) | Alperen | 14.11.2023 | - | 5hr | 8hr |
-| Frontend Milestone 2 Requirements  Considerations- Future Plans | [#366](https://github.com/bounswe/bounswe2023group1/issues/366) | Kübra | 14.11.2023 | - | 0hr | 2hr |
+| Frontend Milestone 2 Requirements  Considerations- Future Plans | [#366](https://github.com/bounswe/bounswe2023group1/issues/366) | Kübra | 14.11.2023 | - | 2hr | 8hr |
 | Update Sign In and Sign Up Pages According to the Latest Version of Mockups | [#364](https://github.com/bounswe/bounswe2023group1/issues/364) | Harun | 14.11.2023 | - | 2hr | 8hr |
 | Login problem | [#354](https://github.com/bounswe/bounswe2023group1/issues/354) | Kübra | 14.11.2023 | - | 0hr | 2hr |
-| Web Exit Issue | [#353](https://github.com/bounswe/bounswe2023group1/issues/353) | Kübra | 14.11.2023 | - | 0hr | 2hr |
+| Web Exit Issue | [#353](https://github.com/bounswe/bounswe2023group1/issues/353) | Kübra | 14.11.2023 | - | 2hr | 2hr |
 | Mobile- Map Screen Implementation | [#324](https://github.com/bounswe/bounswe2023group1/issues/324) | Alperen | 14.11.2023 | - | 5hr |8hr |
 | Finalizing the categorization tree | [#297](https://github.com/bounswe/bounswe2023group1/issues/297) | Ali | 14.11.2023 | [#384](https://github.com/bounswe/bounswe2023group1/pull/384) | 6hr | 8hr|
 | Mobile Settings and Notification Pages | [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Elif | 14.11.2023 | - | 4hr | 9hr |
@@ -58,10 +58,9 @@ There were many unfinished task due to improper estimations in the previous week
 | Continue - Add Responder Buttons | [#370](https://github.com/bounswe/bounswe2023group1/issues/370) | Harun | 21.11.2023 | 4hr |
 | Continue - Adjust Visibilities of the Buttons According to Role | [#369](https://github.com/bounswe/bounswe2023group1/issues/369) | Harun | 21.11.2023 | 3hr |
 | Continue - Create Guest View Map with Sign In, Sign Up options | [#368](https://github.com/bounswe/bounswe2023group1/issues/368) | Alperen | 21.11.2023 | 4hr |
-| Continue - Frontend Milestone 2 Requirements  Considerations- Future Plans | [#366](https://github.com/bounswe/bounswe2023group1/issues/366) | Kübra | 21.11.2023 | 2hr |
+| Continue - Frontend Milestone 2 Requirements  Considerations- Future Plans | [#366](https://github.com/bounswe/bounswe2023group1/issues/366) | Kübra | 21.11.2023 | 8hr |
 | Continue - Update Sign In and Sign Up Pages According to the Latest Version of Mockups | [#364](https://github.com/bounswe/bounswe2023group1/issues/364) | Harun | 21.11.2023 | 6hr |
 | Continue - Login problem | [#354](https://github.com/bounswe/bounswe2023group1/issues/354) | Kübra | 21.11.2023 | 2hr |
-| Continue - Web Exit Issue | [#353](https://github.com/bounswe/bounswe2023group1/issues/353) | Kübra | 21.11.2023 | 2hr |
 | Continue - Mobile- Map Screen Implementation | [#324](https://github.com/bounswe/bounswe2023group1/issues/324) | Alperen | 21.11.2023 | 3hr |
 | Continue - Mobile Settings and Notification Pages | [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Elif | 21.11.2023 | 5hr |
 | Improve the Request API location service | [#392](https://github.com/bounswe/bounswe2023group1/issues/392) | Volkan | 21.11.2023 | 2hr |
