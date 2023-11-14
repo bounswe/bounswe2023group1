@@ -48,8 +48,7 @@ There were many unfinished task due to improper estimations in the previous week
 ## Your plans for the next week
 | Description | Issue | Assignee | Due | Estimated Duration |
 | --- | --- | --- | --- | --- |
-
-| Continue - Update User Profile Pages of Our Mobile Application According to New Mockups| [#360](https://github.com/bounswe/bounswe2023group1/issues/360) | Çağrı | 21.11.2023 | 3hr |
+| Continue - Update User Profile Pages of Our Mobile Application According to New Mockups | [#360](https://github.com/bounswe/bounswe2023group1/issues/360) | Çağrı | 21.11.2023 | 3hr |
 | Continue - Create Responder Main Page and Resource Page | [#381](https://github.com/bounswe/bounswe2023group1/issues/381) | Orkan | 21.11.2023 | 6hr |
 | Continue - Enhancement: Victim Request Creation Workflow  | [#380](https://github.com/bounswe/bounswe2023group1/issues/380) | Kübra | 21.11.2023 | 8hr |
 | Continue - Event creation service  | [#379](https://github.com/bounswe/bounswe2023group1/issues/379) | Türker | 21.11.2023 | 8hr |
@@ -80,7 +79,7 @@ There were many unfinished task due to improper estimations in the previous week
 
 ## Additional Notes
 
-# UI/UX Planned for This Application
+### UI/UX Planned for This Application
 
 MAP:
 The map is large and at the centre of the application. Because of this feature, it is very convenient for users to use the application with ease. Because the users need this application to aid them in the real world, a map is the best presentation to transmit the information. The locations of the resources and requests are exact information that can be viewed on the map. There are also multiple resources and requests that the users can pick among any useful. 
@@ -100,7 +99,7 @@ FILTERING AND REPORTING MECHANISM:
 
 
 
-# UI/UX Enhancement Not Planned for this Project but Further can be Improved
+### UI/UX Enhancement Not Planned for this Project but Further can be Improved
 
 ROUTE SUGGESTION FEATURE:
 
