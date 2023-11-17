@@ -23,9 +23,9 @@ public class ResourceService {
     private CategoryTreeNodeService categoryTreeNodeService;
 
     public ResponseEntity<String> createResource(CreateResourceRequest createResourceRequest) {
-        if(createResourceRequest.getOwnerId() == null) {
-            log.error("Owner id is null");
-            return ResponseEntity.badRequest().body("Owner id is null");
+        if(createResourceRequest.getSenderId() == null) {
+            log.error("Sender id is null");
+            return ResponseEntity.badRequest().body("Sender id is null");
         }
         // Request's categoryTreeId will be something like: 1_3_6_11 and so on. These are node_ids kept in database.
         // We will provide the categories one by one to the frontend when users are creating a resource.
@@ -36,9 +36,9 @@ public class ResourceService {
             return ResponseEntity.badRequest().body("Category tree id is invalid");
 
         }
-        User user = userService.findById(createResourceRequest.getOwnerId());
+        User user = userService.findById(createResourceRequest.getSenderId());
         Resource resource = new Resource();
-        resource.setOwner(user);
+        resource.setSender(user);
         resource.setLongitude(createResourceRequest.getLongitude());
         resource.setLatitude(createResourceRequest.getLatitude());
         resource.setQuantity(createResourceRequest.getQuantity());

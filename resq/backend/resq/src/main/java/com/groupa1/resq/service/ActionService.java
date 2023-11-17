@@ -39,6 +39,10 @@ public class ActionService {
 
 
     public ResponseEntity<String> createAction(CreateActionRequest createActionRequest) {
+        if (!taskRepository.existsById(createActionRequest.getTaskId())){
+            return ResponseEntity.badRequest().body("No task found");
+        }
+
         // crating action within any task
         Action actionEntity = new Action();
         User verifier = userRepository.findById(createActionRequest.getVerifierId()).orElseThrow(()-> new EntityNotFoundException("No user found"));
@@ -50,6 +54,7 @@ public class ActionService {
         BigDecimal endLongitude = createActionRequest.getEndLongitude();
         actionEntity.setVerifier(verifier);
         actionEntity.setCompleted(false); //default
+        actionEntity.setVerified(false); // default
         actionEntity.setDescription(description);
         actionEntity.setDueDate(dueDate);
         actionEntity.setStartLatitude(startLatitude);
@@ -58,20 +63,14 @@ public class ActionService {
         actionEntity.setEndLongitude(endLongitude);
         actionEntity.setCreatedAt(LocalDateTime.now());
 
-
-        if (!taskRepository.existsById(createActionRequest.getTaskId())){
-            return ResponseEntity.badRequest().body("No task found");
-        }
         Task task = taskRepository.findById(createActionRequest.getTaskId()).orElseThrow(()-> new EntityNotFoundException("No task found"));
         task.getActions().add(actionEntity);
+        taskRepository.save(task);
+
         actionEntity.setTask(task);
-
-
 
         actionRepository.save(actionEntity);
         return ResponseEntity.ok("Action saved successfully!");
-
-
 
     }
 

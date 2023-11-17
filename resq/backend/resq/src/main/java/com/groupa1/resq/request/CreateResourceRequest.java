@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 @Data
 public class CreateResourceRequest {
-    private Long ownerId;
+    private Long senderId;
     private String categoryTreeId;
     private Integer quantity;
     private BigDecimal latitude;

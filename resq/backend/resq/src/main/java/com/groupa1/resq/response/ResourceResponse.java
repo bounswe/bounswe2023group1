@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Accessors(chain = true)
 public class ResourceResponse {
     private long id;
-    private User owner;
+    private User sender;
     private int quantity;
     private EGender gender;
     private String categoryId;
