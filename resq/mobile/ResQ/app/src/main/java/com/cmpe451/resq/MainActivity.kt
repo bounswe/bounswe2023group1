@@ -83,6 +83,9 @@ fun NavGraph(
         composable(NavigationItem.Request.route) {
             RequestScreen(navController)
         }
+        composable(NavigationItem.Resource.route) {
+            //ResourceScreen(navController)
+        }
         composable(NavigationItem.Profile.route) {
             ProfileScreen(1, navController) // 1 for now
 
