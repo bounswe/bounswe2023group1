@@ -85,7 +85,6 @@ fun NavGraph(
         }
         composable(NavigationItem.Profile.route) {
             ProfileScreen(1, navController) // 1 for now
-
         }
         composable(NavigationItem.Notifications.route) {
             //NotificationsScreen(navController)

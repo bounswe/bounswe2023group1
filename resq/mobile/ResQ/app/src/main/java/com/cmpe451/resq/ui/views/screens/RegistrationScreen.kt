@@ -199,7 +199,7 @@
                 )
             ) {
                 Text(
-                    text = "Create account",
+                    text = "Sign Up",
                     color = DeepBlue,
                     fontSize = 16.sp
                 )
@@ -223,7 +223,7 @@
                     navController.navigate("login")
                 }) {
                     Text(
-                        text = "Log in",
+                        text = "Sign in",
                         style = MaterialTheme.typography.bodySmall,
                         color = DeepBlue,
                         fontWeight = FontWeight.Medium,
