@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import RequestAddress from '../components/RequestAddress';
+import RequestDetails from '../components/RequestDetails';
 
 function Copyright(props) {
     return (
@@ -29,12 +30,14 @@ function Copyright(props) {
 }
 
 
-const steps = ['Request address'];
+const steps = ['Request address', 'Request details'];
 
 function getStepContent(step) {
     switch (step) {
         case 0:
             return <RequestAddress />;
+        case 1:
+            return <RequestDetails />;
         default:
             throw new Error('Unknown step');
     }
@@ -96,7 +99,7 @@ export default function Request() {
                                     onClick={handleNext}
                                     sx={{ mt: 3, ml: 1 }}
                                 >
-                                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                                    {activeStep === steps.length - 1 ? 'Proceed' : 'Next'}
                                 </Button>
                             </Box>
                         </React.Fragment>
