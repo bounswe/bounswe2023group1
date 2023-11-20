@@ -13,6 +13,7 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import RequestAddress from '../components/RequestAddress';
 import RequestDetails from '../components/RequestDetails';
+import RequestReview from '../components/RequestReview';
 
 function Copyright(props) {
     return (
@@ -30,7 +31,7 @@ function Copyright(props) {
 }
 
 
-const steps = ['Request address', 'Request details'];
+const steps = ['Request address', 'Request details', 'Review'];
 
 function getStepContent(step) {
     switch (step) {
@@ -38,6 +39,8 @@ function getStepContent(step) {
             return <RequestAddress />;
         case 1:
             return <RequestDetails />;
+        case 2:
+            return <RequestReview />;
         default:
             throw new Error('Unknown step');
     }
