@@ -42,6 +42,6 @@
 - Furkan Bülbül
 - Harun Reşid Ergen
 - Kübra Aksu
-- Orkan Akıtsu
+- Orkan Akısu
 - Volkan Öztürk
 - Türker Erdem
