@@ -8,7 +8,7 @@ import MapDemo from "./pages/MapDemo";
 import Account from "./pages/Account";
 import RoleRequest from "./pages/RoleRequest";
 import LogoutIcon from '@mui/icons-material/Logout';
-import CreateRequestForm from "./components/CreateRequestForm";
+import RequestAddress from "./components/RequestAddress";
 
 const SmallRedCircle = () =>
     <svg
@@ -74,9 +74,9 @@ function App() {
                                             <SmallRedCircle />
                                             <strong>Account</strong>
                                         </Nav.Link>
-                                        <Nav.Link key={"/createrequestform"} href={"/createrequestform"} style={{ "marginLeft": "auto" }}>
+                                        <Nav.Link key={"/requestaddress"} href={"/requestaddress"} style={{ "marginLeft": "auto" }}>
                                             <SmallRedCircle />
-                                            <strong>Create Request</strong>
+                                            <strong>Request Address</strong>
                                         </Nav.Link>
                                         <Nav.Link key={"signout"} href={"#"} onClick={signOut}
                                             style={{ "marginLeft": "auto" }}>
@@ -109,8 +109,8 @@ function App() {
                             token ? <>
                                 <Route path="/account" state={{ token, setToken }}
                                     element={React.createElement(Account, { token, setToken })} />
-                                <Route path="/createrequestform" state={{ token, setToken }}
-                                    element={React.createElement(CreateRequestForm, { token, setToken })} />
+                                <Route path="/requestaddress" state={{ token, setToken }}
+                                    element={React.createElement(RequestAddress, { token, setToken })} />
                             </>
                                 : <>
                                     <Route path="/signin" state={{ token, setToken }}
