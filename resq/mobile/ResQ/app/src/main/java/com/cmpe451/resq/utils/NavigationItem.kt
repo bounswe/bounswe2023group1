@@ -15,9 +15,7 @@ enum class NavigationItem(val route: String) {
 
     Request(route = "request"),
 
-    OngoingTasks(route = "ongoingTasks"),
-
-    Resource(route = "resource");
+    OngoingTasks(route = "ongoingTasks");
 
     companion object {
         private val routeToBottomNavigationItemMap = mapOf(
