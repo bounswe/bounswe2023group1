@@ -1,4 +1,4 @@
-<div align="center"><img src="https://user-images.githubusercontent.com/83069560/230832649-1788da25-6212-40a5-8eff-40955922ab59.png" alt="" width="150px" height="150px"><h1> CMPE352 Group 1 <br/> Disaster Response Platform </h1></div>
+<div align="center"><img src="https://user-images.githubusercontent.com/83069560/230832649-1788da25-6212-40a5-8eff-40955922ab59.png" alt="" width="150px" height="150px"><h1> CMPE352/451 Group 1 <br/> Disaster Response Platform </h1></div>
 
 ***
 
@@ -20,9 +20,6 @@ On this Wiki, you will find information about our project's team members, meetin
         <img width="150" height="150" src="https://avatars.githubusercontent.com/u/111731140?s=400&u=027ee8298b5f81ade0880eaa1b429740d843a0a8&v=4">
       </td>
       <td>
-        <img width="150" height="150" src="https://user-images.githubusercontent.com/85332462/224952778-9b901083-74f1-4ab8-918e-d0d9b81cef2e.jpeg">
-      </td>
-      <td>
         <img width="150" height="150" src="https://user-images.githubusercontent.com/83069560/224148461-c4d096de-a362-4209-988b-3705fab42589.jpeg">
       </td>
       <td>
@@ -34,7 +31,6 @@ On this Wiki, you will find information about our project's team members, meetin
     </tr>
     <tr>
       <td><a href="https://github.com/bounswe/bounswe2023group1/wiki/Alperen-Dağı">Alperen Dağı</a></td>
-      <td><a href="https://github.com/bounswe/bounswe2023group1/wiki/Sezer-Çot">Sezer Çot</a></td>
       <td><a href="https://github.com/bounswe/bounswe2023group1/wiki/Harun-Reşid-Ergen">Harun Reşid Ergen</a></td>
       <td><a href="https://github.com/bounswe/bounswe2023group1/wiki/Çağrı-Gülbeycan">Çağrı Gülbeycan</a></td>
       <td><a href="https://github.com/bounswe/bounswe2023group1/wiki/Kübra-Aksu">Kübra Aksu</a></td>
@@ -52,17 +48,29 @@ On this Wiki, you will find information about our project's team members, meetin
       <td>
         <img width="150" height="150" src="https://avatars.githubusercontent.com/u/85035781?s=400&u=3ff7c29503e0d91021a7bf1a3b63668974210cb8&v=4">
       </td>
-      <td>
-        <img width="150" height="150" src="https://user-images.githubusercontent.com/83069560/228039120-b2253b2c-2bf1-4286-bcc4-8a12a53b0444.jpg">
-      </td>
     </tr>
-    <tr>
     <tr>
       <td><a href="https://github.com/bounswe/bounswe2023group1/wiki/Muhammet-Ali-Topcu">Muhammet Ali Topcu</a></td>
       <td><a href="https://github.com/bounswe/bounswe2023group1/wiki/Volkan-Öztürk">Volkan Öztürk</a></td>
       <td><a href="https://github.com/bounswe/bounswe2023group1/wiki/Ilgaz-Er">Ilgaz Er</a></td>
       <td><a href="https://github.com/bounswe/bounswe2023group1/wiki/Furkan-Bülbül">Furkan Bülbül</a></td>
-      <td><a href="https://github.com/bounswe/bounswe2023group1/wiki/Cem-Sarpkaya">Cem Sarpkaya</a></td>
     </tr>
+    <tr>
+      <td>
+        <img width="150" height="150" src="https://www.linkpicture.com/q/turker_profile.jpeg">
+      </td>
+     <td>
+      <img width="150" height="150" src="https://avatars.githubusercontent.com/u/47911063?s=400&u=d79dc3fded468865ef93e35aac18b7b7b10442f0&v=4">
+      </td>
+      <td>
+      <img width="150" height="150" src="https://avatars.githubusercontent.com/u/36167517?v=4">
+      </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/bounswe/bounswe2023group1/wiki/H%C3%BCseyin-T%C3%BCrker-Erdem">Hüseyin Türker Erdem</a></td>
+      <td><a href="https://github.com/bounswe/bounswe2023group1/wiki/Elif-Tokluo%C4%9Flu">Elif Tokluoğlu</a></td>
+      <td><a href="https://github.com/bounswe/bounswe2023group1/wiki/Orkan-Akısu">Orkan Akısu</a></td>
+    </tr>
+   
   </tbody>
 </table>
