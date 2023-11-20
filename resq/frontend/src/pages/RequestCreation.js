@@ -79,10 +79,7 @@ export default function Request() {
                                 Your request is saved.
                             </Typography>
                             <Typography variant="subtitle1">
-                                Your order number is #2001539. We have emailed your order
-                                confirmation, and will send you an update when your order has
-                                shipped.
-                            </Typography>
+                                Your request has been successfully created. We will process it promptly. You can track the status of your request on your profile page.                            </Typography>
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
