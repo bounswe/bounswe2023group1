@@ -9,6 +9,7 @@ import Account from "./pages/Account";
 import RoleRequest from "./pages/RoleRequest";
 import LogoutIcon from '@mui/icons-material/Logout';
 import RequestAddress from "./components/RequestAddress";
+import Request from "./pages/RequestCreation";
 
 const SmallRedCircle = () =>
     <svg
@@ -78,6 +79,10 @@ function App() {
                                             <SmallRedCircle />
                                             <strong>Request Address</strong>
                                         </Nav.Link>
+                                        <Nav.Link key={"/requestcreation"} href={"/requestcreation"} style={{ "marginLeft": "auto" }}>
+                                            <SmallRedCircle />
+                                            <strong>Create Request</strong>
+                                        </Nav.Link>
                                         <Nav.Link key={"signout"} href={"#"} onClick={signOut}
                                             style={{ "marginLeft": "auto" }}>
                                             <LogoutIcon />
@@ -111,6 +116,8 @@ function App() {
                                     element={React.createElement(Account, { token, setToken })} />
                                 <Route path="/requestaddress" state={{ token, setToken }}
                                     element={React.createElement(RequestAddress, { token, setToken })} />
+                                <Route path="/requestcreation" state={{ token, setToken }}
+                                    element={React.createElement(Request, { token, setToken })} />
                             </>
                                 : <>
                                     <Route path="/signin" state={{ token, setToken }}
