@@ -8,7 +8,6 @@ import MapDemo from "./pages/MapDemo";
 import Account from "./pages/Account";
 import RoleRequest from "./pages/RoleRequest";
 import LogoutIcon from '@mui/icons-material/Logout';
-import RequestAddress from "./components/RequestAddress";
 import Request from "./pages/RequestCreation";
 
 const SmallRedCircle = () =>
@@ -75,10 +74,6 @@ function App() {
                                             <SmallRedCircle />
                                             <strong>Account</strong>
                                         </Nav.Link>
-                                        <Nav.Link key={"/requestaddress"} href={"/requestaddress"} style={{ "marginLeft": "auto" }}>
-                                            <SmallRedCircle />
-                                            <strong>Request Address</strong>
-                                        </Nav.Link>
                                         <Nav.Link key={"/requestcreation"} href={"/requestcreation"} style={{ "marginLeft": "auto" }}>
                                             <SmallRedCircle />
                                             <strong>Create Request</strong>
@@ -114,8 +109,6 @@ function App() {
                             token ? <>
                                 <Route path="/account" state={{ token, setToken }}
                                     element={React.createElement(Account, { token, setToken })} />
-                                <Route path="/requestaddress" state={{ token, setToken }}
-                                    element={React.createElement(RequestAddress, { token, setToken })} />
                                 <Route path="/requestcreation" state={{ token, setToken }}
                                     element={React.createElement(Request, { token, setToken })} />
                             </>
