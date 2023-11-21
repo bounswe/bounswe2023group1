@@ -1,7 +1,6 @@
 package com.groupa1.resq.utils;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
