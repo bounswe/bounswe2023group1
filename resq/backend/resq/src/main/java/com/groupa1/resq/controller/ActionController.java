@@ -1,5 +1,6 @@
 package com.groupa1.resq.controller;
 
+import com.groupa1.resq.request.CreateCommentRequest;
 import com.groupa1.resq.request.CreateActionRequest;
 import com.groupa1.resq.response.ActionResponse;
 import com.groupa1.resq.service.ActionService;
@@ -34,6 +35,47 @@ public class ActionController {
     public ResponseEntity<List<ActionResponse>> viewActions(@RequestParam Long taskId) {
         return actionService.viewActions( taskId);
     }
+
+    @PreAuthorize("hasRole('COORDINATOR')")
+    @PostMapping("/deleteAction")
+    public ResponseEntity<String> deleteAction(@RequestParam Long actionId) {
+        return actionService.deleteAction(actionId);
+    }
+
+    @PreAuthorize("hasRole('COORDINATOR')")
+    @PostMapping("/updateAction")
+    public ResponseEntity<String> updateAction(@RequestBody CreateActionRequest createActionRequest, @RequestParam Long actionId) {
+        return actionService.updateAction(createActionRequest, actionId);
+    }
+
+
+
+    @PreAuthorize("hasRole('RESPONDER')")
+    @PostMapping("/completeAction")
+    public ResponseEntity<String> completeAction(@RequestParam Long actionId, @RequestParam Long userId) {
+        return actionService.completeAction(actionId, userId);
+    }
+    @PreAuthorize("hasRole('FACILITATOR')")
+    @PostMapping("/verifyAction")
+    public ResponseEntity<String> verifyAction(@RequestParam Long actionId, @RequestParam Long userId){
+        return actionService.verifyAction(actionId, userId);
+    }
+
+    @PreAuthorize("hasRole('FACILITATOR')")
+    @PostMapping("/commentAction")
+    public ResponseEntity<String> verifyAction(@RequestBody
+                                               CreateCommentRequest commentActionRequest){
+        return actionService.commentAction(commentActionRequest);
+    }
+
+    //TODO
+//    @PreAuthorize("hasRole('FACILITATOR')")
+//    @PostMapping("/notifyCoordinator")
+//    public ResponseEntity<String> notifyCoordinator(@RequestParam Long actionId){
+//        return actionService.notifyCoordinator(actionId);
+//    }
+
+
 
 
 }

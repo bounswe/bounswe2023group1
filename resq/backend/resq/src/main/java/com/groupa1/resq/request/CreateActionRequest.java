@@ -14,13 +14,13 @@ public class CreateActionRequest {
     private Long verifierId;
     private String description;
     private boolean isCompleted;
+    private boolean isVerified;
     private BigDecimal startLatitude;
     private BigDecimal startLongitude;
 
     private BigDecimal endLatitude;
     private BigDecimal endLongitude;
     private LocalDateTime dueDate;
-
 
 
 }

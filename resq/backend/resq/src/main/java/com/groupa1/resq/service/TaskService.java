@@ -1,30 +1,39 @@
 package com.groupa1.resq.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groupa1.resq.entity.Action;
+import com.groupa1.resq.entity.Feedback;
 import com.groupa1.resq.entity.Resource;
 import com.groupa1.resq.entity.Task;
 import com.groupa1.resq.entity.User;
 import com.groupa1.resq.entity.enums.EGender;
 import com.groupa1.resq.entity.enums.EStatus;
 import com.groupa1.resq.entity.enums.EUrgency;
+import com.groupa1.resq.exception.EntityNotFoundException;
 import com.groupa1.resq.repository.TaskRepository;
 import com.groupa1.resq.repository.UserRepository;
+import com.groupa1.resq.request.CreateFeedbackRequest;
 import com.groupa1.resq.request.CreateTaskRequest;
 import com.groupa1.resq.response.ActionResponse;
 import com.groupa1.resq.response.FeedbackResponse;
 import com.groupa1.resq.response.ResourceResponse;
 import com.groupa1.resq.response.TaskResponse;
+import com.groupa1.resq.utils.NullAwareBeanUtilsBean;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -42,6 +51,12 @@ public class TaskService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private NullAwareBeanUtilsBean beanUtils;
+
 
 
     @Transactional
@@ -54,7 +69,7 @@ public class TaskService {
         List<Action> actionEntities = new ArrayList<>();
         List<Resource> resourceEntities = new ArrayList<>();
         EUrgency urgency = createTaskRequest.getUrgency();
-        EStatus status = EStatus.PENDING; // thought the default should be like pending
+        EStatus status = EStatus.PENDING;
         String description = createTaskRequest.getDescription();
 
 
@@ -114,7 +129,6 @@ public class TaskService {
     }
 
 
-
     public ResponseEntity<String> acceptTask(Long taskId, Long userId) {
         Optional<Task> task = taskRepository.findById(taskId);
         if (task.isPresent()) {
@@ -134,6 +148,21 @@ public class TaskService {
             return ResponseEntity.badRequest().body("Task not found");
         }
     }
+
+    public ResponseEntity<String> declineTask(Long taskId, Long userId){
+        Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFoundException("No task found"));
+        User user = userRepository.findById(userId).orElseThrow(()-> new EntityNotFoundException("No user found"));
+        if (task.getAssignee().getId() != user.getId()){
+            log.error("User is not the assignee of the task");
+            return ResponseEntity.badRequest().body("User is not the assignee of the task");
+        }
+        task.setStatus(EStatus.DECLINED);
+        taskRepository.save(task);
+        return ResponseEntity.ok("Task declined");
+    }
+
+
+
 
     public ResponseEntity<List<TaskResponse>> viewAllTasks(Long userId) {
         Optional<List<Task>> tasks = taskRepository.findByAssignee(userId);
@@ -199,6 +228,79 @@ public class TaskService {
             return ResponseEntity.notFound().build();
         }
 
+    }
+    @Transactional
+    public ResponseEntity<String> deleteTask(@RequestParam Long taskId){
+        Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFoundException("No task found"));
+        taskRepository.delete(task);
+        return ResponseEntity.ok("Task deleted successfully");
+    }
+
+    @Transactional
+    public ResponseEntity<String> updateTask(Map<Object, Object> fields, Long taskId)
+
+            throws InvocationTargetException, IllegalAccessException {
+        //TODO: implement other update methods to update specific fields
+        Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFoundException("No task found"));
+        Task updatedTask = objectMapper.convertValue(fields, Task.class);
+        beanUtils.copyProperties(task, updatedTask); // copy fields of updatedTask to task ignoring null values
+        taskRepository.save(task);
+        return ResponseEntity.ok("Task updated successfully");
+    }
+    public ResponseEntity<String> assignTask(Long taskId, Long userId){
+        Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFoundException("No task found"));
+        User user = userRepository.findById(userId).orElseThrow(()-> new EntityNotFoundException("No user found"));
+        task.setAssignee(user);
+        task.setStatus(EStatus.PENDING);
+        taskRepository.save(task);
+        // send notification to responder
+        return ResponseEntity.ok("Task assigned successfully");
+    }
+
+    public ResponseEntity<String> unassignTask(Long taskId){
+        Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFoundException("No task found"));
+        task.setAssignee(null);
+        task.setStatus(EStatus.FREE);
+        taskRepository.save(task);
+        // send notification to responder
+        return ResponseEntity.ok("Task unassigned successfully");
+    }
+
+    public ResponseEntity<String> completeTask(Long taskId, Long userId){
+        Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFoundException("No task found"));
+        User user = userRepository.findById(userId).orElseThrow(()-> new EntityNotFoundException("No user found"));
+        if (task.getAssignee().getId() != user.getId()){
+            log.error("User is not the assignee of the task");
+            return ResponseEntity.badRequest().body("User is not the assignee of the task");
+        }
+        if (task.getStatus() != EStatus.TODO){
+            log.error("Task is not in progress");
+            return ResponseEntity.badRequest().body("Task is not in progress");
+        }
+        Set<Action> actions = task.getActions();
+        actions.stream().filter(action -> !action.isCompleted());
+        if (actions.size() > 0){
+            log.error("Task is not completed, there are actions not completed");
+            return ResponseEntity.badRequest().body("Actions are not done");
+        }
+
+        task.setStatus(EStatus.DONE);
+        taskRepository.save(task);
+        // send notification to coordinator
+        return ResponseEntity.ok("Task completed");
+    }
+
+    public ResponseEntity<String> giveFeedback(CreateFeedbackRequest feedbackRequest){
+        Task task = taskRepository.findById(feedbackRequest.getTaskId()).orElseThrow(()-> new EntityNotFoundException("No task found"));
+        User user = userRepository.findById(feedbackRequest.getUserId()).orElseThrow(()-> new EntityNotFoundException("No user found"));
+        Feedback feedback = new Feedback();
+        feedback.setCreator(user);
+        feedback.setMessage(feedbackRequest.getMessage());
+        feedback.setTask(task);
+        task.getFeedbacks().add(feedback);
+        // send notification to coordinator
+        taskRepository.save(task);
+        return ResponseEntity.ok("Feedback saved successfully");
     }
 
 

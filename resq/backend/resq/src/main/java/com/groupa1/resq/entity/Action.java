@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @NoArgsConstructor
 @Entity
@@ -26,13 +27,21 @@ public class Action extends BaseEntity {
 
     private LocalDateTime dueDate;
 
+    // for responder
     private boolean isCompleted;
-
+    // for facilitator
+    private boolean isVerified;
     private BigDecimal startLatitude;
     private BigDecimal startLongitude;
 
     private BigDecimal endLatitude;
     private BigDecimal endLongitude;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="action")
+    private Set<Comment> comments;
+
+
+
 
 }
 

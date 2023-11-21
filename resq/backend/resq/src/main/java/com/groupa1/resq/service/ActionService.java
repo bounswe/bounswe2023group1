@@ -1,22 +1,22 @@
 package com.groupa1.resq.service;
 
-import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;
 import com.groupa1.resq.entity.Action;
+import com.groupa1.resq.entity.Comment;
 import com.groupa1.resq.entity.Task;
 import com.groupa1.resq.entity.User;
 import com.groupa1.resq.exception.EntityNotFoundException;
+import com.groupa1.resq.exception.NotOwnerException;
 import com.groupa1.resq.repository.ActionRepository;
 import com.groupa1.resq.repository.TaskRepository;
 import com.groupa1.resq.repository.UserRepository;
+import com.groupa1.resq.request.CreateCommentRequest;
 import com.groupa1.resq.request.CreateActionRequest;
 import com.groupa1.resq.response.ActionResponse;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -65,13 +65,39 @@ public class ActionService {
         Task task = taskRepository.findById(createActionRequest.getTaskId()).orElseThrow(()-> new EntityNotFoundException("No task found"));
         task.getActions().add(actionEntity);
         actionEntity.setTask(task);
-
-
-
         actionRepository.save(actionEntity);
         return ResponseEntity.ok("Action saved successfully!");
 
 
+    }
+    @Transactional
+    public ResponseEntity<String> deleteAction(Long actionId){
+        Action action = actionRepository.findById(actionId).orElse(null);
+        if (action == null){
+            log.error("No action found with id: {}", actionId);
+            throw new EntityNotFoundException("No action found");
+        }
+        actionRepository.delete(action);
+        return ResponseEntity.ok("Action deleted successfully");
+    }
+
+    @Transactional
+    public ResponseEntity<String> updateAction(CreateActionRequest createActionRequest, Long actionId){
+        Action action = actionRepository.findById(actionId).orElseThrow(()-> new EntityNotFoundException("No action found"));
+        User verifier = userRepository.findById(createActionRequest.getVerifierId()).orElseThrow(()-> new EntityNotFoundException("No user found"));
+        action.setTask(taskRepository.findById(createActionRequest.getTaskId()).orElseThrow(()-> new EntityNotFoundException("No task found")));
+        action.setVerifier(verifier);
+        action.setDescription(createActionRequest.getDescription());
+        action.setCompleted(createActionRequest.isCompleted());
+        action.setVerified(createActionRequest.isVerified());
+        action.setStartLatitude(createActionRequest.getStartLatitude());
+        action.setStartLongitude(createActionRequest.getStartLongitude());
+        action.setEndLatitude(createActionRequest.getEndLatitude());
+        action.setEndLongitude(createActionRequest.getEndLongitude());
+        action.setDueDate(createActionRequest.getDueDate());
+
+        actionRepository.save(action);
+        return ResponseEntity.ok("Action updated successfully");
 
     }
 
@@ -100,6 +126,89 @@ public class ActionService {
             return null;
         }
     }
+
+    @Transactional
+    public ResponseEntity<String> completeAction(Long actionId, Long userId){
+        Action action = actionRepository.findById(actionId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
+        if (action == null){
+            log.error("No action found with id: {}", actionId);
+            throw new EntityNotFoundException("No action found");
+        }
+        if (user == null){
+            log.error("No user found with id: {}", userId);
+            throw new EntityNotFoundException("No user found");
+        }
+        if (action.getTask().getAssignee().getId() != userId) {
+            log.error(
+                    "User with id: {} is not the assignee for action with id: {}",
+                    userId, actionId);
+            throw new NotOwnerException("User is not the assignee for action");
+        }
+        action.setCompleted(true);
+        actionRepository.save(action);
+        return ResponseEntity.ok("Action completed by responder");
+
+
+
+    }
+
+    @Transactional
+    public ResponseEntity<String> verifyAction(Long actionId, Long userId) {
+        Action action = actionRepository.findById(actionId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (action == null) {
+            log.error("No action found with id: {}", actionId);
+            throw new EntityNotFoundException("No action found");
+        }
+        if (user == null) {
+            log.error("No user found with id: {}", userId);
+            throw new EntityNotFoundException("No user found");
+        }
+        if (action.getVerifier() == null) {
+            log.error("No verifier found for action with id: {}", actionId);
+            throw new EntityNotFoundException("No verifier found for action");
+        }
+        if (action.getVerifier().getId() != userId) {
+            log.error(
+                    "User with id: {} is not the verifier for action with id: {}",
+                    userId, actionId);
+            throw new NotOwnerException("User is not the verifier for action");
+        }
+        action.setVerified(true);
+        actionRepository.save(action);
+        return ResponseEntity.ok("Action verified by facilitator");
+    }
+
+
+    public ResponseEntity<String> commentAction(
+            CreateCommentRequest commentActionRequest) {
+    User user = userRepository.findById(commentActionRequest.getUserId()).orElse(null);
+    Action action = actionRepository.findById(commentActionRequest.getActionId()).orElse(null);
+    User verifier = action.getVerifier();
+    if(action == null || user == null || verifier == null){
+        log.error("Action, user, or action verifier is not found");
+        throw new EntityNotFoundException("No action found");
+    }
+    if (user.getId() != verifier.getId()){
+        log.error("User with id: {} is not the verifier for action with id: {}",
+                user.getId(), action.getId());
+        throw new NotOwnerException("User is not the verifier for action");
+    }
+    Comment comment = new Comment();
+    comment.setVerifier(user);
+    comment.setAction(action);
+    comment.setComment(commentActionRequest.getComment());
+    action.getComments().add(comment);
+    return ResponseEntity.ok("Comment added successfully");
+
+}
+
+
+
+
+
 
 
 
