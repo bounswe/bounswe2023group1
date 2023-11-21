@@ -32,8 +32,8 @@
 | Creation of Ongoing Task Screen | [#391](https://github.com/bounswe/bounswe2023group1/issues/391) | Çağrı | 21.11.2023 |[#412](https://github.com/bounswe/bounswe2023group1/pull/412)| 4hr | 8hr |
 | Creation of My Task screen | [#390](https://github.com/bounswe/bounswe2023group1/issues/390) | Harun | 21.11.2023 | - | 2hr | 8hr |
 | Improving API's to provide admin related service | [#395](https://github.com/bounswe/bounswe2023group1/issues/395) | Volkan | 21.11.2023 | - | 1hr | 4hr |
-| Improving API's to provide coordinator related service | [#397](https://github.com/bounswe/bounswe2023group1/issues/390) | Volkan | 21.11.2023 | - | 1hr | 4hr |
-| Task and Action API's will be improved | [#390](https://github.com/bounswe/bounswe2023group1/issues/390) | Furkan | 21.11.2023 |[#424](https://github.com/bounswe/bounswe2023group1/pull/424)| 4hr | 8hr |
+| Improving API's to provide coordinator related service | [#397](https://github.com/bounswe/bounswe2023group1/issues/397) | Volkan | 21.11.2023 | - | 1hr | 4hr |
+| Task and Action API's will be improved | [#398](https://github.com/bounswe/bounswe2023group1/issues/398) | Furkan | 21.11.2023 |[#424](https://github.com/bounswe/bounswe2023group1/pull/424)| 4hr | 8hr |
 | Notification service and Database Implementation | [#396](https://github.com/bounswe/bounswe2023group1/issues/396) | Ali | 21.11.2023 |[#400](https://github.com/bounswe/bounswe2023group1/pull/400)| 7hr | 8hr |
 
 ## Completed tasks that were not planned for the week
@@ -43,9 +43,9 @@
 
 ## Planned vs. Actual
 There were many unfinished tasks due to improper estimations in the previous week's report. Most tasks last longer than we expected. We will continue on the unfinished task this week.  
-We planned to finish [#360](https://github.com/bounswe/bounswe2023group1/issues/360), but we have encountered some problems that we didn't predict. So, we will continue.
-We planned to finish [#369](https://github.com/bounswe/bounswe2023group1/issues/369), but managing role-based functionalities take more time than we expected.
-
+We planned to finish [#360](https://github.com/bounswe/bounswe2023group1/issues/360), but we have encountered some problems that we didn't predict. So, we will continue.  
+We planned to finish [#369](https://github.com/bounswe/bounswe2023group1/issues/369), but managing role-based functionalities take more time than we expected.  
+We planned to implement push notification in backend, but it is postponed for now. [#401](https://github.com/bounswe/bounswe2023group1/issues/401)
 
 ## Your plans for the next week
 | Description | Issue | Assignee | Due | Estimated Duration |
@@ -54,7 +54,7 @@ We planned to finish [#369](https://github.com/bounswe/bounswe2023group1/issues/
 | Continue - Creation of Notification Screen | [#394](https://github.com/bounswe/bounswe2023group1/issues/394) | Alperen | 28.11.2023 | 2hr |
 | Continue - Creation of My Task screen | [#390](https://github.com/bounswe/bounswe2023group1/issues/390) | Harun | 28.11.2023 | 6hr |
 | Continue - Improving API's to provide admin related service | [#395](https://github.com/bounswe/bounswe2023group1/issues/395) | Volkan | 28.11.2023 | 3hr |
-| Continue - Improving API's to provide coordinator related service | [#397](https://github.com/bounswe/bounswe2023group1/issues/390) | Volkan | 28.11.2023 | 3hr |
+| Continue - Improving API's to provide coordinator related service | [#397](https://github.com/bounswe/bounswe2023group1/issues/397) | Volkan | 28.11.2023 | 3hr |
 | Continue - Update User Profile Pages of Our Mobile Application According to New Mockups | [#360](https://github.com/bounswe/bounswe2023group1/issues/360) | Çağrı | 28.11.2023 | 2hr |
 | Continue - Create Responder Main Page and Resource Page | [#381](https://github.com/bounswe/bounswe2023group1/issues/381) | Orkan | 28.11.2023 | 3hr |
 | Continue - Event creation service  | [#379](https://github.com/bounswe/bounswe2023group1/issues/379) | Türker | 28.11.2023 | 4hr |
@@ -75,10 +75,10 @@ We planned to finish [#369](https://github.com/bounswe/bounswe2023group1/issues/
 | Frontend - Task status update | [#420](https://github.com/bounswe/bounswe2023group1/issues/420) | Orkan | 28.11.2023 | 8hr |
 | Develop map based interfaces for warnings, disaster occurrences, and actions | [#425](https://github.com/bounswe/bounswe2023group1/issues/425) | Furkan | 28.11.2023 | 8hr |
 | Implement digital resource management, categorization, dynamic needs adaptation | [#426](https://github.com/bounswe/bounswe2023group1/issues/426) | Volkan | 28.11.2023 | 8hr |
-| Handling the Notification Cases | [#426](https://github.com/bounswe/bounswe2023group1/issues/426) | Ali | 28.11.2023 | 8hr |
+| Handling the Notification Cases | [#427](https://github.com/bounswe/bounswe2023group1/issues/427) | Ali | 28.11.2023 | 8hr |
 
 ## Risks
-*  Since Milestone 2 is near, we need to implement more things this week.
+*  We need to implement more things this week as Milestone 2 is approaching, and we have a lot of things in progress.
 
 ## Additional Notes
 
