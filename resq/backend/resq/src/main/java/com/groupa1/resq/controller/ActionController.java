@@ -68,12 +68,7 @@ public class ActionController {
         return actionService.commentAction(commentActionRequest);
     }
 
-    //TODO
-//    @PreAuthorize("hasRole('FACILITATOR')")
-//    @PostMapping("/notifyCoordinator")
-//    public ResponseEntity<String> notifyCoordinator(@RequestParam Long actionId){
-//        return actionService.notifyCoordinator(actionId);
-//    }
+
 
 
 
