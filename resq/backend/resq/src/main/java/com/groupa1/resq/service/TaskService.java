@@ -5,8 +5,10 @@ import com.groupa1.resq.entity.Resource;
 import com.groupa1.resq.entity.Task;
 import com.groupa1.resq.entity.User;
 import com.groupa1.resq.entity.enums.EGender;
+import com.groupa1.resq.entity.enums.ENotificationEntityType;
 import com.groupa1.resq.entity.enums.EStatus;
 import com.groupa1.resq.entity.enums.EUrgency;
+import com.groupa1.resq.repository.ActionRepository;
 import com.groupa1.resq.repository.TaskRepository;
 import com.groupa1.resq.repository.UserRepository;
 import com.groupa1.resq.request.CreateTaskRequest;
@@ -14,6 +16,7 @@ import com.groupa1.resq.response.ActionResponse;
 import com.groupa1.resq.response.FeedbackResponse;
 import com.groupa1.resq.response.ResourceResponse;
 import com.groupa1.resq.response.TaskResponse;
+import com.groupa1.resq.util.NotificationMessages;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +45,11 @@ public class TaskService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ActionRepository actionRepository;
 
+    @Autowired
+    NotificationService notificationService;
 
     @Transactional
     public ResponseEntity<String> createTask(CreateTaskRequest createTaskRequest) {
@@ -80,13 +87,13 @@ public class TaskService {
 
         createTaskRequest.getResources().forEach( resource -> {
             Resource resourceEntity = new Resource();
-            User owner = userService.findById(resource.getOwnerId());
+            User owner = userService.findById(resource.getSenderId());
             String categoryTreeId = resource.getCategoryTreeId();// I think this should a different calculation
             EGender gender = resource.getGender();
             Integer quantity = resource.getQuantity();
             BigDecimal latitude = resource.getLatitude();
             BigDecimal longitude = resource.getLongitude();
-            resourceEntity.setOwner(owner);
+            resourceEntity.setSender(owner);
             resourceEntity.setCategoryTreeId(categoryTreeId);
             resourceEntity.setQuantity(quantity);
             resourceEntity.setGender(gender);
@@ -107,8 +114,14 @@ public class TaskService {
         task.setResources(new HashSet<>(resourceEntities));
         task.setCreatedAt(LocalDateTime.now());
 
-        taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+        actionEntities.forEach(action -> {
+            action.setTask(savedTask);
+        });
+        actionRepository.saveAll(actionEntities);
 
+        String bodyMessage = String.format(NotificationMessages.TASK_ASSIGNED, assigner.getId(), task.getId());
+        notificationService.sendNotification("New Task Assigned", bodyMessage, assignee.getId(), task.getId(), ENotificationEntityType.TASK);
 
         return ResponseEntity.ok("Task saved successfully");
     }
@@ -170,7 +183,7 @@ public class TaskService {
                 task.getResources().forEach(resource -> {
 
                 resourceResponse.setId(resource.getId())
-                        .setOwner(resource.getOwner()) // may change to resource.getOwner().getId()
+                        .setSender(resource.getSender()) // may change to resource.getOwner().getId()
                         .setQuantity(resource.getQuantity())
                         .setGender(resource.getGender())
                         .setCategoryId(resource.getCategoryTreeId())

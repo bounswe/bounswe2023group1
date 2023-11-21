@@ -6,7 +6,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
@@ -14,11 +16,17 @@ import java.math.BigDecimal;
 @Entity
 @Table( name = "RESOURCE")
 @Data
+@EqualsAndHashCode(callSuper = true, exclude = {"sender", "receiver"})
+@ToString(callSuper = true)
 public class Resource extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private User owner;
+    @JoinColumn(name = "sender_id")
+    private User sender;
+
+    @ManyToOne
+    @JoinColumn(name = "receiver_id")
+    private User receiver;
 
     private String categoryTreeId;
 
