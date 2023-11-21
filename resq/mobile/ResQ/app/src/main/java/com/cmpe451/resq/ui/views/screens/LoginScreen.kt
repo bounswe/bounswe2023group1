@@ -1,5 +1,6 @@
 package com.cmpe451.resq.ui.views.screens
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -25,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -157,7 +159,7 @@ fun LoginScreen(navController: NavController) {
 
         // Login button
         Button(
-            onClick = { viewModel.login(email, password, navController) },
+            onClick = { viewModel.login(email, password, navController, context) },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 containerColor = LightGreen
@@ -214,8 +216,6 @@ fun LoginScreen(navController: NavController) {
                 )
             }
         }
-
         SnackbarHost(hostState = snackbarHostState)
-
     }
 }
