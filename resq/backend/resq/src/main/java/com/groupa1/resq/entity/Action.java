@@ -2,7 +2,9 @@ package com.groupa1.resq.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,6 +14,8 @@ import java.util.Set;
 @Entity
 @Table( name = "ACTION")
 @Data
+@EqualsAndHashCode(callSuper = true, exclude = {"task", "verifier"})
+@ToString(callSuper = true)
 public class Action extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "task_id")
@@ -27,10 +31,9 @@ public class Action extends BaseEntity {
 
     private LocalDateTime dueDate;
 
-    // for responder
     private boolean isCompleted;
-    // for facilitator
     private boolean isVerified;
+
     private BigDecimal startLatitude;
     private BigDecimal startLongitude;
 
@@ -39,9 +42,6 @@ public class Action extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy="action")
     private Set<Comment> comments;
-
-
-
 
 }
 

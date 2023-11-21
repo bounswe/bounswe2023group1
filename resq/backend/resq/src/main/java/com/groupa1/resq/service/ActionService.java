@@ -1,9 +1,11 @@
 package com.groupa1.resq.service;
 
+
 import com.groupa1.resq.entity.Action;
 import com.groupa1.resq.entity.Comment;
 import com.groupa1.resq.entity.Task;
 import com.groupa1.resq.entity.User;
+import com.groupa1.resq.entity.enums.ENotificationEntityType;
 import com.groupa1.resq.exception.EntityNotFoundException;
 import com.groupa1.resq.exception.NotOwnerException;
 import com.groupa1.resq.repository.ActionRepository;
@@ -12,6 +14,7 @@ import com.groupa1.resq.repository.UserRepository;
 import com.groupa1.resq.request.CreateCommentRequest;
 import com.groupa1.resq.request.CreateActionRequest;
 import com.groupa1.resq.response.ActionResponse;
+import com.groupa1.resq.util.NotificationMessages;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +40,15 @@ public class ActionService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private NotificationService notificationService;
+
 
     public ResponseEntity<String> createAction(CreateActionRequest createActionRequest) {
+        if (!taskRepository.existsById(createActionRequest.getTaskId())){
+            return ResponseEntity.badRequest().body("No task found");
+        }
+
         // crating action within any task
         Action actionEntity = new Action();
         User verifier = userRepository.findById(createActionRequest.getVerifierId()).orElseThrow(()-> new EntityNotFoundException("No user found"));
@@ -50,6 +60,7 @@ public class ActionService {
         BigDecimal endLongitude = createActionRequest.getEndLongitude();
         actionEntity.setVerifier(verifier);
         actionEntity.setCompleted(false); //default
+        actionEntity.setVerified(false); // default
         actionEntity.setDescription(description);
         actionEntity.setDueDate(dueDate);
         actionEntity.setStartLatitude(startLatitude);
@@ -57,11 +68,6 @@ public class ActionService {
         actionEntity.setEndLatitude(endLatitude);
         actionEntity.setEndLongitude(endLongitude);
         actionEntity.setCreatedAt(LocalDateTime.now());
-
-
-        if (!taskRepository.existsById(createActionRequest.getTaskId())){
-            return ResponseEntity.badRequest().body("No task found");
-        }
         Task task = taskRepository.findById(createActionRequest.getTaskId()).orElseThrow(()-> new EntityNotFoundException("No task found"));
         task.getActions().add(actionEntity);
         actionEntity.setTask(task);
@@ -147,6 +153,11 @@ public class ActionService {
         }
         action.setCompleted(true);
         actionRepository.save(action);
+
+        String bodyMessage = String.format(NotificationMessages.ACTION_WAITING_FOR_VERIFICATION, action.getId());
+        notificationService.sendNotification("Request Created", bodyMessage, action.getVerifier().getId(), action.getId() , ENotificationEntityType.RESOURCE);
+
+
         return ResponseEntity.ok("Action completed by responder");
 
 
@@ -178,6 +189,8 @@ public class ActionService {
         }
         action.setVerified(true);
         actionRepository.save(action);
+        String bodyMessage = String.format(NotificationMessages.ACTION_VERIFIED, action.getId(), action.getVerifier().getId());
+        notificationService.sendNotification("New Task Assigned", bodyMessage, user.getId(), action.getId(), ENotificationEntityType.TASK);
         return ResponseEntity.ok("Action verified by facilitator");
     }
 

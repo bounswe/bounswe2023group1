@@ -4,14 +4,17 @@ import com.groupa1.resq.entity.enums.EStatus;
 import com.groupa1.resq.entity.enums.EUrgency;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+import java.util.HashSet;
 import java.util.Set;
 
-@NoArgsConstructor
 @Entity
 @Table( name = "TASK")
 @Data
+@EqualsAndHashCode(callSuper = true, exclude = {"assignee", "assigner", "actions", "resources", "feedbacks"})
+@ToString(callSuper = true)
 public class Task extends BaseEntity {
 
     @ManyToOne
@@ -40,5 +43,11 @@ public class Task extends BaseEntity {
     @Lob
     @Column(length = 3000)
     private String description;
+
+    public Task() {
+        this.actions = new HashSet<>();
+        this.resources = new HashSet<>();
+        this.feedbacks = new HashSet<>();
+    }
 
 }

@@ -7,9 +7,11 @@ import com.groupa1.resq.entity.Resource;
 import com.groupa1.resq.entity.Task;
 import com.groupa1.resq.entity.User;
 import com.groupa1.resq.entity.enums.EGender;
+import com.groupa1.resq.entity.enums.ENotificationEntityType;
 import com.groupa1.resq.entity.enums.EStatus;
 import com.groupa1.resq.entity.enums.EUrgency;
 import com.groupa1.resq.exception.EntityNotFoundException;
+import com.groupa1.resq.repository.ActionRepository;
 import com.groupa1.resq.repository.TaskRepository;
 import com.groupa1.resq.repository.UserRepository;
 import com.groupa1.resq.request.CreateFeedbackRequest;
@@ -19,9 +21,9 @@ import com.groupa1.resq.response.FeedbackResponse;
 import com.groupa1.resq.response.ResourceResponse;
 import com.groupa1.resq.response.TaskResponse;
 import com.groupa1.resq.utils.NullAwareBeanUtilsBean;
+import com.groupa1.resq.util.NotificationMessages;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -57,7 +59,11 @@ public class TaskService {
     @Autowired
     private NullAwareBeanUtilsBean beanUtils;
 
+    @Autowired
+    private ActionRepository actionRepository;
 
+    @Autowired
+    NotificationService notificationService;
 
     @Transactional
     public ResponseEntity<String> createTask(CreateTaskRequest createTaskRequest) {
@@ -95,13 +101,13 @@ public class TaskService {
 
         createTaskRequest.getResources().forEach( resource -> {
             Resource resourceEntity = new Resource();
-            User owner = userService.findById(resource.getOwnerId());
+            User owner = userService.findById(resource.getSenderId());
             String categoryTreeId = resource.getCategoryTreeId();// I think this should a different calculation
             EGender gender = resource.getGender();
             Integer quantity = resource.getQuantity();
             BigDecimal latitude = resource.getLatitude();
             BigDecimal longitude = resource.getLongitude();
-            resourceEntity.setOwner(owner);
+            resourceEntity.setSender(owner);
             resourceEntity.setCategoryTreeId(categoryTreeId);
             resourceEntity.setQuantity(quantity);
             resourceEntity.setGender(gender);
@@ -122,8 +128,14 @@ public class TaskService {
         task.setResources(new HashSet<>(resourceEntities));
         task.setCreatedAt(LocalDateTime.now());
 
-        taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+        actionEntities.forEach(action -> {
+            action.setTask(savedTask);
+        });
+        actionRepository.saveAll(actionEntities);
 
+        String bodyMessage = String.format(NotificationMessages.TASK_ASSIGNED, assigner.getId(), task.getId());
+        notificationService.sendNotification("New Task Assigned", bodyMessage, assignee.getId(), task.getId(), ENotificationEntityType.TASK);
 
         return ResponseEntity.ok("Task saved successfully");
     }
@@ -199,7 +211,7 @@ public class TaskService {
                 task.getResources().forEach(resource -> {
 
                 resourceResponse.setId(resource.getId())
-                        .setOwner(resource.getOwner()) // may change to resource.getOwner().getId()
+                        .setSender(resource.getSender())
                         .setQuantity(resource.getQuantity())
                         .setGender(resource.getGender())
                         .setCategoryId(resource.getCategoryTreeId())
@@ -250,19 +262,30 @@ public class TaskService {
     public ResponseEntity<String> assignTask(Long taskId, Long userId){
         Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFoundException("No task found"));
         User user = userRepository.findById(userId).orElseThrow(()-> new EntityNotFoundException("No user found"));
+        if (task.getAssignee() != null){
+            log.error("Task already assigned");
+            return ResponseEntity.badRequest().body("Task already assigned");
+        }
         task.setAssignee(user);
         task.setStatus(EStatus.PENDING);
         taskRepository.save(task);
-        // send notification to responder
+        User assigner = task.getAssigner();
+        String bodyMessage = String.format(NotificationMessages.TASK_ASSIGNED, assigner.getId(), task.getId());
+        notificationService.sendNotification("New Task Assigned", bodyMessage, user.getId(), task.getId(), ENotificationEntityType.TASK);
+
         return ResponseEntity.ok("Task assigned successfully");
     }
 
     public ResponseEntity<String> unassignTask(Long taskId){
         Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFoundException("No task found"));
+        User user = userRepository.findById(task.getAssignee().getId()).orElseThrow(()-> new EntityNotFoundException("No user found"));
+
         task.setAssignee(null);
         task.setStatus(EStatus.FREE);
         taskRepository.save(task);
-        // send notification to responder
+        User assigner = task.getAssigner();
+        String bodyMessage = String.format(NotificationMessages.TASK_UNASSIGNED, assigner.getId(), task.getId());
+        notificationService.sendNotification("You Are Unassigned", bodyMessage, user.getId(), task.getId(), ENotificationEntityType.TASK);
         return ResponseEntity.ok("Task unassigned successfully");
     }
 
@@ -286,7 +309,7 @@ public class TaskService {
 
         task.setStatus(EStatus.DONE);
         taskRepository.save(task);
-        // send notification to coordinator
+
         return ResponseEntity.ok("Task completed");
     }
 
@@ -298,7 +321,7 @@ public class TaskService {
         feedback.setMessage(feedbackRequest.getMessage());
         feedback.setTask(task);
         task.getFeedbacks().add(feedback);
-        // send notification to coordinator
+        // TODO: send notification to coordinator
         taskRepository.save(task);
         return ResponseEntity.ok("Feedback saved successfully");
     }
