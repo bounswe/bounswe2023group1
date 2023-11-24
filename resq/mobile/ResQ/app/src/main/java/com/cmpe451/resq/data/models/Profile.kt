@@ -16,5 +16,12 @@ data class ProfileData(
     var height: String?,
     var year: String?,
     var month: String?,
-    var day: String?,
+    var day: String?
+)
+
+data class UserInfoResponse(
+    val name: String,
+    val surname: String,
+    val email: String,
+    val roles: List<String>
 )

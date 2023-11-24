@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.cmpe451.resq.data.remote.LoginResponse
+import com.cmpe451.resq.data.models.LoginResponse
 import com.cmpe451.resq.domain.LoginUseCase
 import com.cmpe451.resq.utils.NavigationItem
 import kotlinx.coroutines.launch

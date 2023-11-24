@@ -78,7 +78,7 @@ fun NavGraph(
         startDestination = NavigationItem.Login.route
     ) {
         composable(NavigationItem.Register.route) {
-            RegistrationScreen(navController)
+            RegistrationScreen(navController, appContext)
         }
         composable(NavigationItem.Login.route) {
             LoginScreen(navController, appContext)

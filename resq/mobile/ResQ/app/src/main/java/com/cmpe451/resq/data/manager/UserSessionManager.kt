@@ -51,7 +51,7 @@ class UserSessionManager(appContext: Context) {
 
     fun getUserToken(): String? = pref.getString(JWT_TOKEN, null)
 
-    fun getUserId(): Int = pref.getInt(USER_ID, -1)
+    fun getUserId(): Int = pref.getInt(USER_ID, 0)
 
     fun getUserName(): String? = pref.getString(USER_NAME, null)
 

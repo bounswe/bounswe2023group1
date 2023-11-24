@@ -40,7 +40,6 @@ import com.cmpe451.resq.viewmodels.MapViewModel
 @Composable
 fun MapScreen(navController: NavController, appContext: Context) {
     val viewModel: MapViewModel = viewModel()
-
     val userSessionManager = UserSessionManager.getInstance(appContext)
     val userRoles = userSessionManager.getUserRoles()
 
