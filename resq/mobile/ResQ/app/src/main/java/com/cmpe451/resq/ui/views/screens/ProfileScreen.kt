@@ -41,12 +41,10 @@ import com.cmpe451.resq.ui.theme.ResourceColor
 import com.cmpe451.resq.utils.NavigationItem
 
 @Composable
-fun ProfileScreen(userId: Int, navController: NavController) {
+fun ProfileScreen(navController: NavController, appContext: Context) {
     val viewModel: ProfileViewModel = viewModel()
-    LaunchedEffect(userId) {
 
-        viewModel.getUserData(userId)
-    }
+    viewModel.getUserData(appContext)
 
     val profileData by viewModel.profile
     when (profileData) {
@@ -55,11 +53,14 @@ fun ProfileScreen(userId: Int, navController: NavController) {
             Text("Loading...")
         }
         else -> {
-            if (profileData!!.role == "Victim" || profileData!!.role == "Responder") {
-                Profile(profileData = profileData!!, navController = navController)
-            } else {
-                // Handle other roles or unknown roles
-                Text("Unknown Role")
+            val userRoles = profileData!!.roles
+            if (userRoles != null) {
+                if (userRoles.contains("VICTIM") || userRoles.contains("RESPONDER")) {
+                    Profile(profileData = profileData!!, navController = navController)
+                } else {
+                    // Handle other roles or unknown roles
+                    Text("Unknown Role")
+                }
             }
         }
     }
@@ -70,9 +71,9 @@ fun ProfileScreen(userId: Int, navController: NavController) {
 fun Profile(profileData:ProfileData, navController: NavController) {
     val name = profileData.name
     val surname = profileData.surname
-    val dateOfBirth = profileData.dateOfBirth
-    val role = profileData.role
-    val address = profileData.address
+    val email = profileData.email
+    val selectedRole = profileData.selectedRole
+
     Column {
         Surface(
             modifier = Modifier.fillMaxWidth()
@@ -85,7 +86,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                     ) {
                         Column {
                             Text(
-                                text = "User Profile",
+                                text = "Account",
                                 style = TextStyle(
                                     fontSize = 25.sp,
                                     color = Color(0xFF224957),
@@ -139,7 +140,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                             //               .clip(CircleShape) // Clip to a circular shape
                             //       )
 
-                            Spacer(modifier = Modifier.width(16.dp)) // Add space between photo and info
+                            Spacer(modifier = Modifier.width(16.dp))
 
                             Column(
                                 modifier = Modifier
@@ -155,7 +156,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                     },
                                     style = TextStyle(
                                         fontSize = 20.sp,
-                                        color = Color(0xFF224957) // Set the font color to #224957
+                                        color = Color(0xFF224957)
                                     )
                                 )
                                 Text(
@@ -167,7 +168,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                     },
                                     style = TextStyle(
                                         fontSize = 20.sp,
-                                        color = Color(0xFF224957) // Set the font color to #224957
+                                        color = Color(0xFF224957)
                                     )
                                 )
                                 Text(
@@ -179,7 +180,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                     },
                                     style = TextStyle(
                                         fontSize = 20.sp,
-                                        color = Color(0xFF224957) // Set the font color to #224957
+                                        color = Color(0xFF224957)
                                     )
                                 )
                                 Text(
@@ -191,7 +192,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                     },
                                     style = TextStyle(
                                         fontSize = 20.sp,
-                                        color = Color(0xFF224957) // Set the font color to #224957
+                                        color = Color(0xFF224957)
                                     )
                                 )
                                 if (role == "Responder") {
@@ -236,7 +237,8 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                             ) {
                                 Text(text = "My Requests")
                             }
-                        } else if (role == "Responder") {
+                        }
+                        else if (role == "Responder") {
                             // "My Resources" button
                             Button(
                                 onClick = {
@@ -263,6 +265,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                 Text(text = "My Tasks")
                             }
                         }
+
                         // "Edit Profile" button
                         Button(
                             onClick = {
@@ -281,7 +284,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                     "✏️",
                                     fontSize = 20.sp
                                 )
-                                Spacer(modifier = Modifier.width(8.dp)) // Add space between the icon and the button text
+                                Spacer(modifier = Modifier.width(8.dp))
                                 Text(text = "Edit Profile")
                             }
                         }

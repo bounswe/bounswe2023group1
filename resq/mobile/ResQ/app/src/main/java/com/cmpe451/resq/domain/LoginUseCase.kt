@@ -26,8 +26,6 @@ class LoginUseCase() {
     }
     private fun saveLoginResponse(loginResponse: LoginResponse, appContext: Context) {
         val userSessionManager = UserSessionManager(appContext)
-        val gson = Gson()
-        val rolesJson = gson.toJson(loginResponse.roles)
 
         userSessionManager.createLoginSession(
             token = loginResponse.jwt,
@@ -35,7 +33,7 @@ class LoginUseCase() {
             userName = loginResponse.name,
             userSurname = loginResponse.surname,
             userEmail = loginResponse.email,
-            userRoles = rolesJson
+            userRoles = loginResponse.roles
         )
     }
 }
