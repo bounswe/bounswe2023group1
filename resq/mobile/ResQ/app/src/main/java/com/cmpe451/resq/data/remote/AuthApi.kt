@@ -1,5 +1,6 @@
 package com.cmpe451.resq.data.remote
 
+import com.cmpe451.resq.data.Constants
 import okhttp3.ResponseBody
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -42,7 +43,7 @@ class AuthApi {
 
     init {
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://16.16.63.194/resq/api/v1/") // TODO: Replace with backend URL
+            .baseUrl(Constants.BACKEND_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

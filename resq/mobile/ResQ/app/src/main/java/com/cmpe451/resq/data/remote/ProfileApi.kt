@@ -1,6 +1,7 @@
 package com.cmpe451.resq.data.remote
 
-import android.content.Context
+import androidx.compose.ui.res.stringResource
+import com.cmpe451.resq.data.Constants
 import com.cmpe451.resq.data.models.ProfileData
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -27,7 +28,7 @@ class ProfileRepository {
 
     init {
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://16.16.63.194/resq/api/v1/")
+            .baseUrl(Constants.BACKEND_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

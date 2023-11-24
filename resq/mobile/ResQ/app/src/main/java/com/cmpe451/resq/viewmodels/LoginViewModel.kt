@@ -30,10 +30,6 @@ class LoginViewModel() : ViewModel() {
                     _loginResponse.value = result.getOrNull()
                     _errorMessage.value = null
 
-                    // Create session
-                    val sessionManager = UserSessionManager(context)
-                    _loginResponse.value?.jwt?.let { sessionManager.createLoginSession(it) }
-
                     navController.navigate(NavigationItem.Map.route)
                 } else {
                     _errorMessage.value = result.exceptionOrNull()?.message

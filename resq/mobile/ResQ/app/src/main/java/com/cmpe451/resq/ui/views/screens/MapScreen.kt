@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.cmpe451.resq.R
+import com.cmpe451.resq.data.manager.UserSessionManager
 import com.cmpe451.resq.ui.theme.RequestColor
 import com.cmpe451.resq.ui.theme.ResourceColor
 import com.cmpe451.resq.utils.NavigationItem
@@ -41,8 +42,8 @@ import com.cmpe451.resq.viewmodels.MapViewModel
 fun MapScreen(navController: NavController, appContext: Context) {
     val viewModel: MapViewModel = viewModel()
 
-    val sharedPref = appContext.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-    val userRoles = sharedPref.getString("USER_ROLES", "")
+    val userSessionManager = UserSessionManager(appContext)
+    val userRoles = userSessionManager.getUserRoles() ?: ""
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -54,12 +55,12 @@ fun MapScreen(navController: NavController, appContext: Context) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                if (userRoles != null) {
+                if (userRoles.isNotEmpty()) {
                     if (userRoles.contains("VICTIM") || userRoles.contains("FACILITATOR")) {
                         AddRequestButton {
                             navController.navigate(NavigationItem.Request.route)
                         }
-                }
+                    }
                     if (userRoles.contains("RESPONDER") || userRoles.contains("FACILITATOR")) {
                         AddResourceButton {
                             navController.navigate(NavigationItem.Resource.route)
