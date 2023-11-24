@@ -32,6 +32,7 @@ import com.cmpe451.resq.ui.views.screens.ProfileScreen
 import com.cmpe451.resq.ui.views.screens.RegistrationScreen
 import com.cmpe451.resq.ui.views.screens.RequestScreen
 import com.cmpe451.resq.ui.views.screens.ResourceScreen
+import com.cmpe451.resq.ui.views.screens.SettingsScreen
 import com.cmpe451.resq.utils.BottomNavigationItem
 import com.cmpe451.resq.utils.NavigationItem
 
@@ -75,7 +76,7 @@ fun NavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = NavigationItem.Login.route
+        startDestination = NavigationItem.Map.route
     ) {
         composable(NavigationItem.Register.route) {
             RegistrationScreen(navController)
@@ -102,7 +103,7 @@ fun NavGraph(
             //NotificationsScreen(navController)
         }
         composable(NavigationItem.Settings.route) {
-            //SettingsScreen(navController)
+            SettingsScreen(navController, appContext)
         }
     }
 }
