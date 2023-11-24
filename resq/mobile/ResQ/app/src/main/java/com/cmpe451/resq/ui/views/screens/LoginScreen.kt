@@ -49,8 +49,7 @@ private val lexendDecaFont = FontFamily(Font(R.font.lexend_deca))
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(navController: NavController) {
-
+fun LoginScreen(navController: NavController, appContext: Context) {
     val viewModel: LoginViewModel = viewModel()
 
     var email by remember { mutableStateOf("") }
@@ -58,7 +57,6 @@ fun LoginScreen(navController: NavController) {
     var rememberMe by remember { mutableStateOf(false) }
 
     val snackbarHostState = remember { SnackbarHostState() }
-
 
     Column(
         modifier = Modifier
@@ -68,13 +66,13 @@ fun LoginScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = "App Logo",
-            modifier = Modifier.size(150.dp)
-        )
+    Image(
+        painter = painterResource(id = R.drawable.logo),
+        contentDescription = "App Logo",
+        modifier = Modifier.size(150.dp)
+    )
 
-        Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(16.dp))
 
         // Sign in text
         Text(
@@ -159,7 +157,7 @@ fun LoginScreen(navController: NavController) {
 
         // Login button
         Button(
-            onClick = { viewModel.login(email, password, navController, context) },
+            onClick = { viewModel.login(email, password, navController, appContext) },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 containerColor = LightGreen

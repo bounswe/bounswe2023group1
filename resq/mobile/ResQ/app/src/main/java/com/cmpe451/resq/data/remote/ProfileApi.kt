@@ -1,5 +1,6 @@
 package com.cmpe451.resq.data.remote
 
+import android.content.Context
 import com.cmpe451.resq.data.models.ProfileData
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -34,7 +35,6 @@ class ProfileRepository {
     }
 
     suspend fun getUserData(): ProfileData{
-
         val response =  profileService.getUserInfo(
             "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGl0cGMyNTI1QGdtYWlsLmNvbSIsImlhdCI6MTY5ODcwMzU5MiwiZXhwIjoxNjk4Nzg5OTkyfQ.FLyFCITkyCEYOuMBdaSHWCl5V1MrLSl5Yt5Y2L2WAlc",
             "Victim"

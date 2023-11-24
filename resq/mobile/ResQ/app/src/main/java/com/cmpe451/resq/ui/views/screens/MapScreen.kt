@@ -1,5 +1,6 @@
 package com.cmpe451.resq.ui.views.screens
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,8 +38,11 @@ import com.cmpe451.resq.utils.NavigationItem
 import com.cmpe451.resq.viewmodels.MapViewModel
 
 @Composable
-fun MapScreen(navController: NavController) {
+fun MapScreen(navController: NavController, appContext: Context) {
     val viewModel: MapViewModel = viewModel()
+
+    val sharedPref = appContext.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+    val userRoles = sharedPref.getString("USER_ROLES", "")
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -50,13 +54,20 @@ fun MapScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                AddRequestButton {
-                    navController.navigate(NavigationItem.Request.route)
-                }
-                AddResourceButton {
-                    navController.navigate(NavigationItem.Resource.route)
-                }
+              if (userRoles != null) {
+                  if (userRoles.contains("VICTIM") || userRoles.contains("FACILITATOR")) {
+                      AddRequestButton {
+                          navController.navigate(NavigationItem.Request.route)
+                      }
+                  }
+                  if (userRoles.contains("RESPONDER") || userRoles.contains("FACILITATOR")) {
+                  AddResourceButton {
+                      navController.navigate(NavigationItem.Resource.route)
+                  }
+               }
+
             }
+
             Spacer(modifier = Modifier.height(16.dp))
             SearchBar(viewModel)
             Image(
