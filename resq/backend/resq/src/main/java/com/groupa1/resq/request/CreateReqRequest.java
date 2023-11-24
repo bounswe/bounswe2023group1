@@ -13,7 +13,7 @@ public class CreateReqRequest {
     private String description;
     private BigDecimal latitude;
     private BigDecimal longitude;
-    private Set<Need> needs;
+    private Set<Long> needIds;
     private EStatus status;
     private EUrgency urgency;
 }

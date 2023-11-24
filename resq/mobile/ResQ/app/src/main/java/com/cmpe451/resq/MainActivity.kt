@@ -25,10 +25,11 @@ import androidx.navigation.compose.rememberNavController
 import com.cmpe451.resq.ui.theme.LightGreen
 import com.cmpe451.resq.ui.theme.ResQTheme
 import com.cmpe451.resq.ui.views.screens.LoginScreen
+import com.cmpe451.resq.ui.views.screens.RequestScreen
 import com.cmpe451.resq.ui.views.screens.MapScreen
 import com.cmpe451.resq.ui.views.screens.ProfileScreen
 import com.cmpe451.resq.ui.views.screens.RegistrationScreen
-import com.cmpe451.resq.ui.views.screens.RequestScreen
+import com.cmpe451.resq.ui.views.screens.OngoingTasksScreen
 import com.cmpe451.resq.utils.BottomNavigationItem
 import com.cmpe451.resq.utils.NavigationItem
 
@@ -85,6 +86,9 @@ fun NavGraph(
         }
         composable(NavigationItem.Resource.route) {
             //ResourceScreen(navController)
+        }
+        composable(NavigationItem.OngoingTasks.route) {
+            OngoingTasksScreen(navController)
         }
         composable(NavigationItem.Profile.route) {
             ProfileScreen(1, navController) // 1 for now

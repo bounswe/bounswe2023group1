@@ -10,19 +10,19 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import disasterImage from "../disaster.png";
-import {useNavigate} from 'react-router-dom';
-import {signup} from "../AppService";
+import { useNavigate } from 'react-router-dom';
+import { signup } from "../AppService";
 
 
 function Copyright(props) {
     return (
-        <div style={{position: 'fixed', bottom: 0, width: '100%'}}>
+        <div style={{ position: 'fixed', bottom: 0, width: '100%' }}>
             <Typography variant="body2" color="text.secondary" align="center" {...props}>
                 {'Copyright © '}
                 <Link color="inherit" href="https://github.com/bounswe/bounswe2023group1">
-                    <span style={{fontWeight: 'bold'}}>ResQ</span>
+                    <span style={{ fontWeight: 'bold' }}>ResQ</span>
                 </Link>{' '}
                 {new Date().getFullYear()}
                 {'.'}
@@ -48,7 +48,7 @@ export default function SignUp() {
     const [signUpClicked, setSignUpClicked] = React.useState(false);
 
     async function signUp() {
-        const registerUserRequest = {email, password, name: firstName, surname: lastName};
+        const registerUserRequest = { email, password, name: firstName, surname: lastName };
 
         try {
             const response = await signup(registerUserRequest);
@@ -57,7 +57,6 @@ export default function SignUp() {
             }
             return response;
         } catch (error) {
-            console.error('Signup error:', error);
             return error.response;
         }
     }
@@ -71,6 +70,16 @@ export default function SignUp() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        if (!signUpClicked) {
+            alert('Please accept the terms and conditions.');
+            return;
+        }
+
+        if (password.includes(' ') || password.length < 8) {
+            alert("Password must be at least 8 characters and cannot contain empty characters!");
+            return;
+        }
+
         const registerUserRequest = {
             email,
             password,
@@ -78,27 +87,26 @@ export default function SignUp() {
             lastName,
         };
 
-        if (password.includes(' ') || password.length < 8) {
-            alert("Password must be at least 8 characters and cannot contain empty characters!");
+        const response = await signUp(registerUserRequest);
+
+        if (response?.status === 200) {
+            console.log(response.data);
+            alert('APPROVED');
+            navigate('/signin');
+        } else if (response?.status === 400) {
+            // Check for specific bad request error related to user already signed up
+            alert('You have already signed up. Please sign in.');
         } else {
-            if (signUpClicked) {
-                let user = email + password + firstName + lastName;
-                console.log(user);
-
-                await signUp(registerUserRequest);
-                alert('APPROVED');
-                navigate('/signin');
-            } else {
-                alert('Please accept the terms and conditions.');
-            }
-
+            // Handle other errors
+            alert('Signup failed. Please try again.');
         }
     }
+
 
     return (
         <ThemeProvider theme={customTheme}>
             <Container component="main" maxWidth="xs">
-                <CssBaseline/>
+                <CssBaseline />
                 <Box
                     sx={{
                         marginTop: 1,
@@ -107,19 +115,19 @@ export default function SignUp() {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{width: 80, height: 80, marginBottom: '10px'}}>
+                    <Avatar sx={{ width: 80, height: 80, marginBottom: '10px' }}>
                         <img
                             src={disasterImage}
                             alt="Disaster"
-                            style={{width: '100%', height: '100%', objectFit: 'cover'}}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                     </Avatar>
-                    <Typography component="h5" variant="h5" sx={{color: 'red', fontWeight: 'bold', margin: '0'}}>
+                    <Typography component="h5" variant="h5" sx={{ color: 'red', fontWeight: 'bold', margin: '0' }}>
                         ResQ
                     </Typography>
 
-                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%'}}>
-                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
@@ -174,8 +182,8 @@ export default function SignUp() {
                                 <Grid item xs={12}>
                                     <FormControlLabel
                                         control={<Checkbox checked={signUpClicked}
-                                                           onChange={() => setSignUpClicked(!signUpClicked)}
-                                                           color="error"/>}
+                                            onChange={() => setSignUpClicked(!signUpClicked)}
+                                            color="error" />}
                                         label={
                                             <Typography variant="body2" color="text.secondary">
                                                 By signing up, you agree to our Terms , Privacy Policy and Cookies
@@ -194,7 +202,7 @@ export default function SignUp() {
                                     setSignUpClicked(true);
                                     handleSubmit(e);
                                 }}
-                                sx={{mt: 3, mb: 2}}
+                                sx={{ mt: 3, mb: 2 }}
                             >
                                 Sign Up
                             </Button>
@@ -206,7 +214,7 @@ export default function SignUp() {
                                 </Grid>
                             </Grid>
                         </Box>
-                        <Copyright sx={{mt: 8}}/>
+                        <Copyright sx={{ mt: 8 }} />
                     </div>
                 </Box>
             </Container>

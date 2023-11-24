@@ -1,34 +1,36 @@
 package com.groupa1.resq.entity;
 
-import com.groupa1.resq.entity.enums.EUrgency;
+import com.groupa1.resq.entity.enums.ENotificationEntityType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.math.BigDecimal;
-
 @NoArgsConstructor
 @Entity
-@Table( name = "INFO")
+@Table( name = "NOTIFICATION")
 @Data
 @EqualsAndHashCode(callSuper = true, exclude = {"user"})
 @ToString(callSuper = true)
-public class Info extends BaseEntity{
+public class Notification extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Lob
-    @Column(length = 3000)
-    private String description;
+    private String title;
 
-    private BigDecimal latitude;
-    private BigDecimal longitude;
+    @Lob
+    @Column(length = 1000)
+    private String body;
+
+    private boolean isRead;
+
+    private Long relatedEntityId;
 
     @Enumerated(EnumType.STRING)
-    private EUrgency urgency;
+    private ENotificationEntityType notificationType;
+
 
 }
