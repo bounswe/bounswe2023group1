@@ -5,15 +5,19 @@ import com.groupa1.resq.entity.enums.EStatus;
 import com.groupa1.resq.entity.enums.EUrgency;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
-@NoArgsConstructor
 @Entity
 @Table( name = "REQUEST")
 @Data
+@EqualsAndHashCode(callSuper = true, exclude = {"requester", "needs"})
+@ToString(callSuper = true)
 public class Request extends BaseEntity{
 
     @ManyToOne
@@ -32,5 +36,9 @@ public class Request extends BaseEntity{
     private BigDecimal latitude;
     private BigDecimal longitude;
     private String description;
+
+    public Request() {
+        this.needs = new HashSet<>();
+    }
 
 }

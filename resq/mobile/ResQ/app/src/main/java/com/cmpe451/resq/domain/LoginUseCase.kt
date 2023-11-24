@@ -1,6 +1,9 @@
 package com.cmpe451.resq.domain
 
 import android.content.Context
+import android.provider.Settings.Global.putInt
+import android.provider.Settings.Global.putString
+import androidx.compose.ui.platform.LocalContext
 import com.cmpe451.resq.data.remote.AuthApi
 import com.cmpe451.resq.data.remote.LoginRequest
 import com.cmpe451.resq.data.remote.LoginResponse

@@ -20,16 +20,20 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.cmpe451.resq.R
+import com.cmpe451.resq.ui.theme.RequestColor
+import com.cmpe451.resq.ui.theme.ResourceColor
 import com.cmpe451.resq.utils.NavigationItem
 import com.cmpe451.resq.viewmodels.MapViewModel
 
@@ -46,12 +50,22 @@ fun MapScreen(navController: NavController, appContext: Context) {
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            if (userRoles != null) {
-                if (userRoles.contains("VICTIM") || userRoles.contains("FACILITATOR")) {
-                    AddRequestButton {
-                        navController.navigate(NavigationItem.Request.route)
-                    }
-                }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+              if (userRoles != null) {
+                  if (userRoles.contains("VICTIM") || userRoles.contains("FACILITATOR")) {
+                      AddRequestButton {
+                          navController.navigate(NavigationItem.Request.route)
+                      }
+                  }
+                  if (userRoles.contains("RESPONDER") || userRoles.contains("FACILITATOR")) {
+                  AddResourceButton {
+                      navController.navigate(NavigationItem.Resource.route)
+                  }
+               }
+
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -81,20 +95,49 @@ fun AddRequestButton(onClick: () -> Unit) {
         onClick = onClick,
         shape = RoundedCornerShape(20.dp),
         modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth(),
+            .width(160.dp)
+            .padding(8.dp),
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = Color(0xFFB356AF)
+            backgroundColor = RequestColor
         )
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Add Request", color = Color.White)
-            Spacer(modifier = Modifier.width(8.dp))
-            Icon(Icons.Default.Add, contentDescription = "Add Request", tint = Color.White)
-        }
+        Icon(
+            Icons.Default.Add,
+            contentDescription = "Add Request",
+            tint = Color.White
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            "Add Request",
+            color = Color.White,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+fun AddResourceButton(onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        shape = RoundedCornerShape(20.dp),
+        modifier = Modifier
+            .width(160.dp)
+            .padding(8.dp),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = ResourceColor
+        )
+    ) {
+        Icon(
+            Icons.Default.AddCircle,
+            contentDescription = "Add Resource",
+            tint = Color.White
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            "Add Resource",
+            color = Color.White,
+            textAlign = TextAlign.Center
+
+        )
     }
 }

@@ -37,6 +37,8 @@ import androidx.navigation.NavController
 import com.cmpe451.resq.viewmodels.ProfileViewModel
 import com.cmpe451.resq.data.models.ProfileData
 import androidx.compose.runtime.LaunchedEffect
+import com.cmpe451.resq.ui.theme.ResourceColor
+import com.cmpe451.resq.utils.NavigationItem
 
 @Composable
 fun ProfileScreen(userId: Int, navController: NavController) {
@@ -238,9 +240,9 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                             // "My Resources" button
                             Button(
                                 onClick = {
-                                    // Add Resources action here
+                                    navController.navigate(NavigationItem.Resource.route)
                                 },
-                                colors = ButtonDefaults.buttonColors(Color(0xFF397FE7)),
+                                colors = ButtonDefaults.buttonColors(ResourceColor),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .width(200.dp)
@@ -250,7 +252,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                             }
                             Button(
                                 onClick = {
-                                    // Add Tasks action here
+                                    navController.navigate(NavigationItem.Task.route)
                                 },
                                 colors = ButtonDefaults.buttonColors(Color(0xFFE7A139)),
                                 modifier = Modifier

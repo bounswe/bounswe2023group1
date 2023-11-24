@@ -21,14 +21,19 @@ class LoginViewModel() : ViewModel() {
     private val _errorMessage = mutableStateOf<String?>(null)
     val errorMessage: State<String?> = _errorMessage
 
-
     fun login(email: String, password: String, navController: NavController, appContext: Context) {
+
         if (validateLoginInputs(email, password)) {
             viewModelScope.launch {
                 val result = loginUseCase.execute(email, password, appContext)
                 if (result.isSuccess) {
                     _loginResponse.value = result.getOrNull()
                     _errorMessage.value = null
+
+                    // Create session
+                    val sessionManager = UserSessionManager(context)
+                    _loginResponse.value?.jwt?.let { sessionManager.createLoginSession(it) }
+
                     navController.navigate(NavigationItem.Map.route)
                 } else {
                     _errorMessage.value = result.exceptionOrNull()?.message
@@ -36,6 +41,7 @@ class LoginViewModel() : ViewModel() {
             }
         }
     }
+
 
     fun validateLoginInputs(email: String, password: String): Boolean {
         when {

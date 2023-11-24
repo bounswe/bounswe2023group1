@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -163,7 +164,7 @@ fun LoginScreen(navController: NavController, appContext: Context) {
             )
         ) {
             Text(
-                "Login",
+                "Sign in",
                 color = DeepBlue,
                 fontSize = 16.sp
             )
@@ -178,7 +179,7 @@ fun LoginScreen(navController: NavController, appContext: Context) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Not Registered Yet? ",
+                text = "Don't have an account? ",
                 style = MaterialTheme.typography.bodySmall,
                 fontSize = 14.sp
                 )
@@ -186,7 +187,7 @@ fun LoginScreen(navController: NavController, appContext: Context) {
                 navController.navigate(NavigationItem.Register.route)
             }) {
                 Text(
-                    text = "Create an account",
+                    text = "Sign Up",
                     style = MaterialTheme.typography.bodySmall,
                     color = DeepBlue,
                     fontWeight = FontWeight.Medium,
@@ -199,7 +200,7 @@ fun LoginScreen(navController: NavController, appContext: Context) {
         if (viewModel.loginResponse.value != null) {
             LaunchedEffect(key1 = viewModel.loginResponse.value) {
                 snackbarHostState.showSnackbar(
-                    message = "Login success",
+                    message = "Sign in success",
                     duration = SnackbarDuration.Short
                 )
             }
@@ -208,13 +209,11 @@ fun LoginScreen(navController: NavController, appContext: Context) {
         if (viewModel.errorMessage.value != null) {
             LaunchedEffect(key1 = viewModel.errorMessage.value) {
                 snackbarHostState.showSnackbar(
-                    message = "Login failed: ${viewModel.errorMessage.value}",
+                    message = "Sign in failed: ${viewModel.errorMessage.value}",
                     duration = SnackbarDuration.Short
                 )
             }
         }
-
         SnackbarHost(hostState = snackbarHostState)
-
     }
 }

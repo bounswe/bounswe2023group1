@@ -8,7 +8,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
@@ -16,6 +18,8 @@ import java.math.BigDecimal;
 @Entity
 @Table( name = "NEED")
 @Data
+@EqualsAndHashCode(callSuper = true, exclude = {"requester", "request"})
+@ToString(callSuper = true)
 public class Need extends BaseEntity{
 
     @ManyToOne
