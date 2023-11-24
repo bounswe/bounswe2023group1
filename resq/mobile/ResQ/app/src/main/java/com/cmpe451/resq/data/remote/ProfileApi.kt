@@ -1,7 +1,8 @@
 package com.cmpe451.resq.data.remote
 
-import androidx.compose.ui.res.stringResource
+import android.content.Context
 import com.cmpe451.resq.data.Constants
+import com.cmpe451.resq.data.manager.UserSessionManager
 import com.cmpe451.resq.data.models.ProfileData
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -22,9 +23,10 @@ data class UserInfoResponse(
     val roles: List<String>
 )
 
-class ProfileRepository {
+class ProfileRepository(appContext: Context) {
 
     private val profileService: ProfileService
+    private val userSessionManager: UserSessionManager = UserSessionManager(appContext)
 
     init {
         val retrofit = Retrofit.Builder()
@@ -35,40 +37,19 @@ class ProfileRepository {
         profileService = retrofit.create(ProfileService::class.java)
     }
 
-    suspend fun getUserData(): ProfileData{
-        val response =  profileService.getUserInfo(
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGl0cGMyNTI1QGdtYWlsLmNvbSIsImlhdCI6MTY5ODcwMzU5MiwiZXhwIjoxNjk4Nzg5OTkyfQ.FLyFCITkyCEYOuMBdaSHWCl5V1MrLSl5Yt5Y2L2WAlc",
-            "Victim"
-        )
+    suspend fun getUserData(): ProfileData {
+        val token = userSessionManager.getUserToken() ?: ""
+        val selectedRole = userSessionManager.getSelectedRole() ?: ""
+
+        val response = profileService.getUserInfo("Bearer $token", selectedRole)
 
         return ProfileData(
             name = response.body()?.name,
             surname = response.body()?.surname,
-            dateOfBirth = "29/05/1993",
-            role = "Victim",
-            address = ""
-            //address = "123 Main Street, apt 4B San Diego CA, 91911"
+            email = response.body()?.email,
+            roles = response.body()?.roles,
+            selectedRole = selectedRole
         )
+    }
 
-        // This is a placeholder response
-        /*
-                return ProfileData(
-                    name = "Responder",
-                    surname = "Responderoğlu",
-                    dateOfBirth = "01/01/1990",
-                    role = "Responder" ,
-                    address = "123 Main Street, apt 4B San Diego CA, 91911"
-                    //address = null
-                )
-        */
-
-        /*
-                return ProfileData(
-                    name = "Harun",
-                    surname = "Ergen",
-                    dateOfBirth = "18/10/2000",
-                    role = "Victim" ,
-                    //address = "123 Main Street, apt 4B San Diego CA, 91911"
-                   address = null)
-          */
-    }}
+}
