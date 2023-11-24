@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.cmpe451.resq.ui.theme.LightGreen
+import com.cmpe451.resq.ui.theme.ResourceColor
 import com.cmpe451.resq.viewmodels.ResourceViewModel
 
 @Composable
@@ -80,7 +81,7 @@ fun DropdownMenuComponentWithColorChange(
                         onItemSelected(item)
                         expanded = false
                     },
-                    modifier = Modifier.background(if (item == selected) Color(0xFF397FE7) else Color.Transparent)
+                    modifier = Modifier.background(if (item == selected) ResourceColor else Color.Transparent)
                 ) {
                     Text(text = item, color = if (item == selected) Color.White else Color.Black)
                 }
@@ -112,7 +113,7 @@ fun ResourceScreen(
     ) {
         TopAppBar(
             title = { Text(text = "Resource",
-                color = Color(0xFF397FE7)) },
+                color = ResourceColor) },
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
