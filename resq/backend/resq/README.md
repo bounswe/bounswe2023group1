@@ -59,3 +59,9 @@ Application context root is /resq/api/v1/. You can reach the application via
 https://localhost:8081/resq/api/v1/.
 To reach the API documentation:  
 https://localhost:8081/resq/api/v1/swagger-ui.html
+
+
+Production API Documentation:  
+https://api.resq.org.tr/resq/api/v1/swagger-ui/index.html
+
+Production URL: https://api.resq.org.tr/resq/api/v1

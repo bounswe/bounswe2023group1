@@ -1,6 +1,6 @@
 FROM maven:3.6.3-openjdk-17 as stage1
 WORKDIR /app
-COPY pom.xml .
+COPY ./pom.xml .
 # go-offline using the pom.xml
 RUN mvn dependency:go-offline
 # copy your other files
@@ -10,8 +10,8 @@ RUN mvn clean install -Dmaven.test.skip=true
 
 FROM openjdk:17-jdk
 WORKDIR /app
-ARG JAR_FILE=/app/target/resq-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=./app/target/resq-0.0.1-SNAPSHOT.jar
 COPY --from=stage1 ${JAR_FILE} ./app/app.jar
-COPY project_env_prod /app/config
+COPY ./project_env_prod /app/config
 ENV resq.appdir=/app/config
 ENTRYPOINT ["java","-jar","./app/app.jar"]
