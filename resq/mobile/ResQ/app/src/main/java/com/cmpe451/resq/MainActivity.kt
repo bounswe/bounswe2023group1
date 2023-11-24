@@ -1,5 +1,6 @@
 package com.cmpe451.resq
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -36,8 +37,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val appContext = applicationContext
             ResQTheme {
-                MainScreen()
+                MainScreen(appContext)
             }
         }
     }
@@ -45,7 +47,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(appContext: Context) {
     val navController = rememberNavController()
 
     Scaffold(
@@ -57,7 +59,8 @@ fun MainScreen() {
                     .fillMaxSize()
             ) {
                 NavGraph(
-                    navController = navController
+                    navController = navController,
+                    appContext = appContext
                 )
             }
         },)
@@ -66,6 +69,7 @@ fun MainScreen() {
 @Composable
 fun NavGraph(
     navController: NavHostController,
+    appContext: Context
 ) {
     NavHost(
         navController = navController,
@@ -75,10 +79,10 @@ fun NavGraph(
             RegistrationScreen(navController)
         }
         composable(NavigationItem.Login.route) {
-            LoginScreen(navController)
+            LoginScreen(navController, appContext)
         }
         composable(NavigationItem.Map.route) {
-            MapScreen(navController = navController)
+            MapScreen(navController = navController, appContext)
         }
         composable(NavigationItem.Request.route) {
             RequestScreen(navController)

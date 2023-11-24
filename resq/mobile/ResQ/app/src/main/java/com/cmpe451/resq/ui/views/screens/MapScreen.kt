@@ -1,5 +1,6 @@
 package com.cmpe451.resq.ui.views.screens
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -34,8 +34,11 @@ import com.cmpe451.resq.utils.NavigationItem
 import com.cmpe451.resq.viewmodels.MapViewModel
 
 @Composable
-fun MapScreen(navController: NavController) {
+fun MapScreen(navController: NavController, appContext: Context) {
     val viewModel: MapViewModel = viewModel()
+
+    val sharedPref = appContext.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+    val userRoles = sharedPref.getString("USER_ROLES", "")
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -43,9 +46,14 @@ fun MapScreen(navController: NavController) {
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            AddRequestButton {
-                navController.navigate(NavigationItem.Request.route)
+            if (userRoles != null) {
+                if (userRoles.contains("VICTIM") || userRoles.contains("FACILITATOR")) {
+                    AddRequestButton {
+                        navController.navigate(NavigationItem.Request.route)
+                    }
+                }
             }
+
             Spacer(modifier = Modifier.height(16.dp))
             SearchBar(viewModel)
             Image(
@@ -53,7 +61,6 @@ fun MapScreen(navController: NavController) {
                 contentDescription = "Mock Map",
                 modifier = Modifier.fillMaxSize()
             )
-
         }
     }
 }

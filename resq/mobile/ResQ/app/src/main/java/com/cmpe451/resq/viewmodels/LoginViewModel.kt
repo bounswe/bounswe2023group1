@@ -1,5 +1,6 @@
 package com.cmpe451.resq.viewmodels
 
+import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -20,10 +21,11 @@ class LoginViewModel() : ViewModel() {
     private val _errorMessage = mutableStateOf<String?>(null)
     val errorMessage: State<String?> = _errorMessage
 
-    fun login(email: String, password: String, navController: NavController) {
+
+    fun login(email: String, password: String, navController: NavController, appContext: Context) {
         if (validateLoginInputs(email, password)) {
             viewModelScope.launch {
-                val result = loginUseCase.execute(email, password)
+                val result = loginUseCase.execute(email, password, appContext)
                 if (result.isSuccess) {
                     _loginResponse.value = result.getOrNull()
                     _errorMessage.value = null
