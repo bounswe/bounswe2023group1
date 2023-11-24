@@ -54,18 +54,18 @@ fun MapScreen(navController: NavController, appContext: Context) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-              if (userRoles != null) {
-                  if (userRoles.contains("VICTIM") || userRoles.contains("FACILITATOR")) {
-                      AddRequestButton {
-                          navController.navigate(NavigationItem.Request.route)
-                      }
-                  }
-                  if (userRoles.contains("RESPONDER") || userRoles.contains("FACILITATOR")) {
-                  AddResourceButton {
-                      navController.navigate(NavigationItem.Resource.route)
-                  }
-               }
-
+                if (userRoles != null) {
+                    if (userRoles.contains("VICTIM") || userRoles.contains("FACILITATOR")) {
+                        AddRequestButton {
+                            navController.navigate(NavigationItem.Request.route)
+                        }
+                }
+                    if (userRoles.contains("RESPONDER") || userRoles.contains("FACILITATOR")) {
+                        AddResourceButton {
+                            navController.navigate(NavigationItem.Resource.route)
+                        }
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
