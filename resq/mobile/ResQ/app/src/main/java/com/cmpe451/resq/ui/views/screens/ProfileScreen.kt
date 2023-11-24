@@ -10,15 +10,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -37,6 +47,9 @@ import androidx.navigation.NavController
 import com.cmpe451.resq.viewmodels.ProfileViewModel
 import com.cmpe451.resq.data.models.ProfileData
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.cmpe451.resq.ui.theme.ResourceColor
 import com.cmpe451.resq.utils.NavigationItem
 
@@ -69,226 +82,411 @@ fun ProfileScreen(navController: NavController, appContext: Context) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Profile(profileData:ProfileData, navController: NavController) {
-    val name = profileData.name
-    val surname = profileData.surname
-    val email = profileData.email
-    val selectedRole = profileData.selectedRole
+    var selectedRole = { mutableStateOf(profileData.selectedRole ?: "") }
+    var name by remember { mutableStateOf(profileData.surname ?: "") }
+    var surname by remember { mutableStateOf(profileData.surname ?: "") }
+    var year by remember { mutableStateOf(profileData.year ?: "") }
+    var month by remember { mutableStateOf(profileData.month ?: "") }
+    var day by remember { mutableStateOf(profileData.day ?: "") }
+    var email by remember { mutableStateOf(profileData.email ?: "") }
+    var weight by remember { mutableStateOf(profileData.weight ?: "") }
+    var gender by remember { mutableStateOf(profileData.gender ?: "") }
+    var height by remember { mutableStateOf(profileData.height ?: "") }
+    var country by remember { mutableStateOf(profileData.country ?: "") }
+    var  city by remember { mutableStateOf(profileData.city ?: "") }
+    var state by remember { mutableStateOf(profileData.state ?: "") }
+    var phoneNumber by remember { mutableStateOf(profileData.phoneNumber ?: "") }
+    var bloodType by remember { mutableStateOf(profileData.bloodType ?: "") }
 
-    Column {
-        Surface(
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .background(Color.White)
+    ) {
+        TopAppBar(
+            navigationIcon = {
+                IconButton(onClick = { navController.navigateUp() }) {
+                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+                }
+            },
+            title = {
+                Text(
+                    text = "Account",
+                    style = TextStyle(
+                        fontSize = 25.sp,
+                        color = Color(0xFF224957),
+                        textAlign = TextAlign.Center
+                    ),
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+            },
             modifier = Modifier.fillMaxWidth()
-        ) {
-            CenterAlignedTopAppBar(
-                title = {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column {
-                            Text(
-                                text = "Account",
-                                style = TextStyle(
-                                    fontSize = 25.sp,
-                                    color = Color(0xFF224957),
-                                    textAlign = TextAlign.Center
-                                ),
-                                modifier = Modifier.align(Alignment.CenterHorizontally)
-                            )
+        )
 
-                            Divider(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(Color(0xFF224957))
-                            )
-                        }
-                    }
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-        Column {
-            Box(
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.White)
+        ) {
+            Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = Color.White)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 Column(
                     modifier = Modifier
-                        .fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-
+                        .fillMaxWidth()
+                        .padding(16.dp)
                 ) {
-
-                    // Profile photo area
-                    Surface(
-                        color = Color.White, // Background color for the profile photo area
-                        shape = RoundedCornerShape(8.dp),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(5.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            // Profile photo
-                            //       Image(
-                            //           painter = painterResource(id = R.drawable.ic_launcher_foreground), // Replace with your profile photo resource
-                            //           contentDescription = null,
-                            //           modifier = Modifier
-                            //               .size(80.dp)
-                            //               .clip(CircleShape) // Clip to a circular shape
-                            //       )
-
-                            Spacer(modifier = Modifier.width(16.dp))
-
-                            Column(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(5.dp)
-                            ) {
-                                Text(
-                                    text = buildAnnotatedString {
-                                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                                            append("Name:")
-                                        }
-                                        append(" $name")
-                                    },
-                                    style = TextStyle(
-                                        fontSize = 20.sp,
-                                        color = Color(0xFF224957)
-                                    )
-                                )
-                                Text(
-                                    text = buildAnnotatedString {
-                                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                                            append("Surname:")
-                                        }
-                                        append(" $surname")
-                                    },
-                                    style = TextStyle(
-                                        fontSize = 20.sp,
-                                        color = Color(0xFF224957)
-                                    )
-                                )
-                                Text(
-                                    text = buildAnnotatedString {
-                                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                                            append("Date of Birth:")
-                                        }
-                                        append(" $dateOfBirth")
-                                    },
-                                    style = TextStyle(
-                                        fontSize = 20.sp,
-                                        color = Color(0xFF224957)
-                                    )
-                                )
-                                Text(
-                                    text = buildAnnotatedString {
-                                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                                            append("Role:")
-                                        }
-                                        append(" $role")
-                                    },
-                                    style = TextStyle(
-                                        fontSize = 20.sp,
-                                        color = Color(0xFF224957)
-                                    )
-                                )
-                                if (role == "Responder") {
-                                    Text(
-                                        text = buildAnnotatedString {
-                                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                                                append("Address:")
-                                            }
-                                            append(" $address")
-                                        },
-                                        style = TextStyle(
-                                            fontSize = 20.sp,
-                                            color = Color(0xFF224957)
-                                        )
-                                    )
-                                }
-                            }
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    Column(
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(5.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                            .padding(4.dp)
+                            .background(Color.White)
+                    ) {
+                        name?.let {
+                            OutlinedTextField(
+                                value = it,
+                                onValueChange = { name = it },
+                                label = { Text("First Name") },
+                                shape = RoundedCornerShape(15),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(4.dp)
+                                    .background(Color.White),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    containerColor = Color.White,
+                                    textColor = Color.Black,
+                                    cursorColor = Color.Black
+
+                                )
+
+                            )
+                        }
+
+
+                        // Surname
+                        surname?.let {
+                            OutlinedTextField(
+                                value = it,
+                                onValueChange = { surname = it },
+                                label = { Text("Last Name") },
+                                shape = RoundedCornerShape(15),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(4.dp)
+                                    .background(Color.White),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    containerColor = Color.White,
+                                    textColor = Color.Black,
+                                    cursorColor = Color.Black
+                                ))
+                        }
+
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp)
 
                     ) {
-                        if (role == "Victim") {
-                            // "My Requests" button
-                            Button(
-                                onClick = {
-                                    // Add requests action here
-                                },
-                                colors = ButtonDefaults.buttonColors(Color(0xFFB356AF)),
+                        // Email
+                        email?.let {
+                            OutlinedTextField(
+                                value = it,
+                                onValueChange = { email = it },
+                                label = { Text("Email") },
+                                shape = RoundedCornerShape(15),
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .width(200.dp)
-                                    .height(50.dp)
-                            ) {
-                                Text(text = "My Requests")
-                            }
-                        }
-                        else if (role == "Responder") {
-                            // "My Resources" button
-                            Button(
-                                onClick = {
-                                    navController.navigate(NavigationItem.Resource.route)
-                                },
-                                colors = ButtonDefaults.buttonColors(ResourceColor),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .width(200.dp)
-                                    .height(50.dp)
-                            ) {
-                                Text(text = "My Resources")
-                            }
-                            Button(
-                                onClick = {
-                                    navController.navigate(NavigationItem.Task.route)
-                                },
-                                colors = ButtonDefaults.buttonColors(Color(0xFFE7A139)),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .width(200.dp)
-                                    .height(50.dp)
-                            ) {
-                                Text(text = "My Tasks")
-                            }
-                        }
-
-                        // "Edit Profile" button
-                        Button(
-                            onClick = {
-                                // Add profile action here
-                            },
-                            colors = ButtonDefaults.buttonColors(Color(0xFF224957)),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .width(200.dp)
-                                .height(50.dp)
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    "✏️",
-                                    fontSize = 20.sp
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = "Edit Profile")
-                            }
+                                    .weight(1f)
+                                    .padding(4.dp)
+                                    .background(Color.White),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    containerColor = Color.White,
+                                    textColor = Color.Black,
+                                    cursorColor = Color.Black,
+                                ))
                         }
                     }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                    ) {
+                        // Email
+                        phoneNumber?.let {
+                            OutlinedTextField(
+                                value = it,
+                                onValueChange = { phoneNumber = it },
+                                label = { Text("Phone Number") },
+                                shape = RoundedCornerShape(15),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(4.dp)
+                                    .background(Color.White),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    containerColor = Color.White,
+                                    textColor = Color.Black,
+                                    cursorColor = Color.Black,
+                                ))
+                        }
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                    ) {
+                        // Email
+                        country?.let {
+                            OutlinedTextField(
+                                value = it,
+                                onValueChange = { country = it },
+                                label = { Text("Country") },
+                                shape = RoundedCornerShape(15),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(4.dp)
+                                    .background(Color.White),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    containerColor = Color.White,
+                                    textColor = Color.Black,
+                                    cursorColor = Color.Black,
+
+                                    )
+                            )
+                        }
+                        city?.let {
+                            OutlinedTextField(
+                                value = it,
+                                onValueChange = { city = it },
+                                label = { Text("City") },
+                                shape = RoundedCornerShape(15),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(4.dp)
+                                    .background(Color.White),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    containerColor = Color.White,
+                                    textColor = Color.Black,
+                                    cursorColor = Color.Black,
+                                ))
+
+                        }
+                        state?.let {
+                            OutlinedTextField(
+                                value = it,
+                                onValueChange = { state = it },
+                                label = { Text("State") },
+                                shape = RoundedCornerShape(15),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(4.dp)
+                                    .background(Color.White),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    containerColor = Color.White,
+                                    textColor = Color.Black,
+                                    cursorColor = Color.Black,
+                                ))
+
+
+                        }
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                    ) {
+                        // Weight
+                        weight?.let {
+                            OutlinedTextField(
+                                value = it,
+                                onValueChange = { weight = it },
+                                label = { Text("Weight") },
+                                shape = RoundedCornerShape(15),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(4.dp)
+                                    .background(Color.White),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    containerColor = Color.White,
+                                    textColor = Color.Black,
+                                    cursorColor = Color.Black
+                                ))
+
+                        }
+                        height?.let {
+                            OutlinedTextField(
+                                value = it,
+                                onValueChange = { height = it },
+                                label = { Text("Height") },
+                                shape = RoundedCornerShape(15),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(4.dp)
+                                    .background(Color.White),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    containerColor = Color.White,
+                                    textColor = Color.Black,
+                                    cursorColor = Color.Black,
+                                ))
+                        }
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                    ) {
+                        gender?.let {
+                            OutlinedTextField(
+                                value = it,
+                                onValueChange = { gender = it },
+                                label = { Text("Gender") },
+                                shape = RoundedCornerShape(15),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(4.dp)
+                                    .background(Color.White),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    containerColor = Color.White,
+                                    textColor = Color.Black,
+                                    cursorColor = Color.Black
+                                ))
+                        }
+
+
+                        bloodType?.let {
+                            OutlinedTextField(
+                                value = it,
+                                onValueChange = { bloodType = it },
+                                label = { Text("Blood Type") },
+                                shape = RoundedCornerShape(15),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(4.dp)
+                                    .background(Color.White),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    containerColor = Color.White,
+                                    textColor = Color.Black,
+                                    cursorColor = Color.Black
+                                ))
+                        }}
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                    ) {
+                        year?.let {
+                            OutlinedTextField(
+                                value = it,
+                                onValueChange = { year = it },
+                                label = { Text("Year") },
+                                shape = RoundedCornerShape(15),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(4.dp)
+                                    .background(Color.White),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    containerColor = Color.White,
+                                    textColor = Color.Black,
+                                    cursorColor = Color.Black
+                                ))
+
+                        }
+                        month?.let {
+                            OutlinedTextField(
+                                value = it,
+                                onValueChange = { month = it },
+                                label = { Text("Month") },
+                                shape = RoundedCornerShape(15),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(4.dp)
+                                    .background(Color.White),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    containerColor = Color.White,
+                                    textColor = Color.Black,
+                                    cursorColor = Color.Black
+                                ))
+                        }
+                        day?.let {
+                            OutlinedTextField(
+                                value = it,
+                                onValueChange = { year = it },
+                                label = { Text("Day") },
+                                shape = RoundedCornerShape(15),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(4.dp)
+                                    .background(Color.White),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    containerColor = Color.White,
+                                    textColor = Color.Black,
+                                    cursorColor = Color.Black
+                                )
+
+                            )
+
+                        }
+                    }
+                }
+            }
+        }
+
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Row(
+                modifier = Modifier.align(Alignment.Start)
+            ) {
+                Button(
+                    onClick = {
+                        // Handle button click
+                    },
+                    colors =  ButtonDefaults.buttonColors(Color(0xFFB356AF)),
+                    modifier = Modifier
+                        .size(170.dp, 60.dp) // Set the width and height
+                        .padding(4.dp)
+                ) {
+                    Text(text = "My Requests")
+                } }
+            Spacer(modifier =Modifier.height(20.dp))
+            Row(
+                modifier = Modifier.align(Alignment.Start)
+            ) {
+                Button(
+                    onClick = {
+                        // Handle button click
+                    },
+                    colors = ButtonDefaults.buttonColors(Color(0xFF224957)),
+                    modifier = Modifier
+                        .size(170.dp, 60.dp)
+                        .padding(2.dp)
+                ) {
+                    Text(text = "Save Details")
+
+                }
+                Spacer(modifier = Modifier.width(25.dp))
+                Button(
+                    onClick = {
+                        // Handle button click
+                    },
+                    colors = ButtonDefaults.buttonColors(Color(0xFF224957)),
+                    modifier = Modifier
+                        .size(170.dp, 60.dp)
+                        .padding(2.dp)
+                ) {
+                    Text(text = "Request Role")
                 }
             }
         }

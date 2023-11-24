@@ -48,7 +48,18 @@ class ProfileRepository(appContext: Context) {
             surname = response.body()?.surname,
             email = response.body()?.email,
             roles = response.body()?.roles,
-            selectedRole = selectedRole
+            selectedRole = selectedRole,
+            year = "1990",
+            month = "05",
+            day = "29",
+            city = "Istanbul",
+            country = "Turkey",
+            gender = "Female",
+            bloodType = "0 rh-",
+            height = "180",
+            weight = "80",
+            phoneNumber = "05321234567",
+            state = "Kadikoy",
         )
     }
 
