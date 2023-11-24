@@ -55,16 +55,16 @@ fun MapScreen(navController: NavController, appContext: Context) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                if (userRoles.isNotEmpty()) {
-                    if (userRoles.contains("VICTIM") || userRoles.contains("FACILITATOR")) {
-                        AddRequestButton {
-                            navController.navigate(NavigationItem.Request.route)
-                        }
-                    }
-                    if (userRoles.contains("RESPONDER") || userRoles.contains("FACILITATOR")) {
-                        AddResourceButton {
-                            navController.navigate(NavigationItem.Resource.route)
-                        }
+                //if (userRoles.isNotEmpty()) {
+                //    if (userRoles.contains("VICTIM") || userRoles.contains("FACILITATOR")) {
+                //        AddRequestButton {
+                //            navController.navigate(NavigationItem.Request.route)
+                //        }
+                //    }
+                //    if (userRoles.contains("RESPONDER") || userRoles.contains("FACILITATOR")) {
+                //        AddResourceButton {
+                //            navController.navigate(NavigationItem.Resource.route)
+                //        }
                     }
                 }
             }
@@ -77,8 +77,8 @@ fun MapScreen(navController: NavController, appContext: Context) {
                 modifier = Modifier.fillMaxSize()
             )
         }
-    }
-}
+//    }
+//}
 
 @Composable
 fun SearchBar(viewModel: MapViewModel) {
