@@ -2,21 +2,14 @@ package com.cmpe451.resq.utils
 
 enum class NavigationItem(val route: String) {
     Login (route = "login"),
-
     Register (route = "register"),
-
     Profile(route = "profile"),
-
     Map(route = "map"),
-
     Settings(route = "settings"),
-
     Notifications(route = "notifications"),
-
     Request(route = "request"),
-
-    Resource(route = "resource");
-   
+    Resource(route = "resource"),
+    Task(route = "task");
     OngoingTasks(route = "ongoingTasks");
 
     companion object {
