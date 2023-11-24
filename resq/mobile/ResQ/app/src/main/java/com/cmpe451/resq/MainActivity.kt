@@ -26,6 +26,7 @@ import com.cmpe451.resq.ui.theme.LightGreen
 import com.cmpe451.resq.ui.theme.ResQTheme
 import com.cmpe451.resq.ui.views.screens.LoginScreen
 import com.cmpe451.resq.ui.views.screens.RequestScreen
+import com.cmpe451.resq.ui.views.screens.ResourceScreen
 import com.cmpe451.resq.ui.views.screens.MapScreen
 import com.cmpe451.resq.ui.views.screens.ProfileScreen
 import com.cmpe451.resq.ui.views.screens.RegistrationScreen
@@ -85,7 +86,7 @@ fun NavGraph(
             RequestScreen(navController)
         }
         composable(NavigationItem.Resource.route) {
-            //ResourceScreen(navController)
+            ResourceScreen(navController)
         }
         composable(NavigationItem.OngoingTasks.route) {
             OngoingTasksScreen(navController)
