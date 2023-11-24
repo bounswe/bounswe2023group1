@@ -164,7 +164,7 @@ fun LoginScreen(navController: NavController) {
             )
         ) {
             Text(
-                "Login",
+                "Sign in",
                 color = DeepBlue,
                 fontSize = 16.sp
             )
@@ -179,7 +179,7 @@ fun LoginScreen(navController: NavController) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Not Registered Yet? ",
+                text = "Don't have an account? ",
                 style = MaterialTheme.typography.bodySmall,
                 fontSize = 14.sp
                 )
@@ -187,7 +187,7 @@ fun LoginScreen(navController: NavController) {
                 navController.navigate(NavigationItem.Register.route)
             }) {
                 Text(
-                    text = "Create an account",
+                    text = "Sign Up",
                     style = MaterialTheme.typography.bodySmall,
                     color = DeepBlue,
                     fontWeight = FontWeight.Medium,
@@ -200,7 +200,7 @@ fun LoginScreen(navController: NavController) {
         if (viewModel.loginResponse.value != null) {
             LaunchedEffect(key1 = viewModel.loginResponse.value) {
                 snackbarHostState.showSnackbar(
-                    message = "Login success",
+                    message = "Sign in success",
                     duration = SnackbarDuration.Short
                 )
             }
@@ -209,7 +209,7 @@ fun LoginScreen(navController: NavController) {
         if (viewModel.errorMessage.value != null) {
             LaunchedEffect(key1 = viewModel.errorMessage.value) {
                 snackbarHostState.showSnackbar(
-                    message = "Login failed: ${viewModel.errorMessage.value}",
+                    message = "Sign in failed: ${viewModel.errorMessage.value}",
                     duration = SnackbarDuration.Short
                 )
             }
