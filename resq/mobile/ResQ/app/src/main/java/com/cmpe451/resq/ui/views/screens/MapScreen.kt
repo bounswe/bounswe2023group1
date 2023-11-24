@@ -23,7 +23,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -42,8 +41,8 @@ import com.cmpe451.resq.viewmodels.MapViewModel
 fun MapScreen(navController: NavController, appContext: Context) {
     val viewModel: MapViewModel = viewModel()
 
-    val userSessionManager = UserSessionManager(appContext)
-    val userRoles = userSessionManager.getUserRoles() ?: ""
+    val userSessionManager = UserSessionManager.getInstance(appContext)
+    val userRoles = userSessionManager.getUserRoles()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -55,16 +54,16 @@ fun MapScreen(navController: NavController, appContext: Context) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                //if (userRoles.isNotEmpty()) {
-                //    if (userRoles.contains("VICTIM") || userRoles.contains("FACILITATOR")) {
-                //        AddRequestButton {
-                //            navController.navigate(NavigationItem.Request.route)
-                //        }
-                //    }
-                //    if (userRoles.contains("RESPONDER") || userRoles.contains("FACILITATOR")) {
-                //        AddResourceButton {
-                //            navController.navigate(NavigationItem.Resource.route)
-                //        }
+                if (userRoles.isNotEmpty()) {
+                    if (userRoles.contains("VICTIM") || userRoles.contains("FACILITATOR")) {
+                        AddRequestButton {
+                            navController.navigate(NavigationItem.Request.route)
+                        }
+                    }
+                    if (userRoles.contains("RESPONDER") || userRoles.contains("FACILITATOR")) {
+                        AddResourceButton {
+                            navController.navigate(NavigationItem.Resource.route)
+                        }
                     }
                 }
             }
@@ -77,8 +76,8 @@ fun MapScreen(navController: NavController, appContext: Context) {
                 modifier = Modifier.fillMaxSize()
             )
         }
-//    }
-//}
+    }
+}
 
 @Composable
 fun SearchBar(viewModel: MapViewModel) {

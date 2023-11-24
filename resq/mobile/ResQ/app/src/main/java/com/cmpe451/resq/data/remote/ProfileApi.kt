@@ -26,7 +26,7 @@ data class UserInfoResponse(
 class ProfileRepository(appContext: Context) {
 
     private val profileService: ProfileService
-    private val userSessionManager: UserSessionManager = UserSessionManager(appContext)
+    private val userSessionManager: UserSessionManager = UserSessionManager.getInstance(appContext)
 
     init {
         val retrofit = Retrofit.Builder()
@@ -62,5 +62,4 @@ class ProfileRepository(appContext: Context) {
             state = "Kadikoy",
         )
     }
-
 }
