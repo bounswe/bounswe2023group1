@@ -5,7 +5,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import Container from '@mui/material/Container';
-import {useNavigate} from 'react-router-dom';
 import {Card, CardContent, CardHeader} from "@mui/material";
 
 
@@ -44,15 +43,8 @@ const NotificationCard = ({notif, onClick}) => <Card
     </CardContent>
 </Card>
 
+// noinspection JSUnusedLocalSymbols
 export default function Notifications({token, notifications, setNotifications}) {
-
-    const [selectedRole, setSelectedRole] = React.useState('');
-
-    const handleRoleChange = (event) => {
-        setSelectedRole(event.target.value);
-    };
-
-    const navigate = useNavigate();
 
     const handleNotifRead = (i) => {
         const new_notifs = JSON.parse(JSON.stringify(notifications))
