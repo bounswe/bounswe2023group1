@@ -1,4 +1,4 @@
-package com.groupa1.resq.utils;
+package com.groupa1.resq.util;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.stereotype.Component;

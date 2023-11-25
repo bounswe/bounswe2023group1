@@ -20,7 +20,7 @@ import com.groupa1.resq.response.ActionResponse;
 import com.groupa1.resq.response.FeedbackResponse;
 import com.groupa1.resq.response.ResourceResponse;
 import com.groupa1.resq.response.TaskResponse;
-import com.groupa1.resq.utils.NullAwareBeanUtilsBean;
+import com.groupa1.resq.util.NullAwareBeanUtilsBean;
 import com.groupa1.resq.util.NotificationMessages;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
