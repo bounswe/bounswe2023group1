@@ -15,9 +15,7 @@ jobs:
 
       - name: Decrypt and Extract project_env_prod
         run: |
-          ls
-          find src
-          cd bounswe2023group1/resq/backend/resq/
+          cd ./resq/backend/resq/
           gpg --quiet --batch --yes --decrypt --passphrase="$RESQ_PASSPHRASE" --output project_env_prod.tar.gz project_env_prod.tar.gz.gpg
           tar xzvf project_env_prod.tar.gz -C project_env_prod
         env:
@@ -30,6 +28,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
+          ls
           cd bounswe2023group1/resq/backend/resq/
           docker build -t alitpc2525/resq:latest -f Dockerfile.remote .
           docker login -u alitpc2525 -p ${{ secrets.DOCKER_PASSWORD }}
