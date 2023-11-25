@@ -1,0 +1,117 @@
+package com.groupa1.resq.service;
+
+import com.groupa1.resq.entity.Need;
+import com.groupa1.resq.entity.Request;
+import com.groupa1.resq.entity.User;
+import com.groupa1.resq.entity.enums.ENotificationEntityType;
+import com.groupa1.resq.entity.enums.EStatus;
+import com.groupa1.resq.entity.enums.EUrgency;
+import com.groupa1.resq.exception.EntityNotFoundException;
+import com.groupa1.resq.exception.NotOwnerException;
+import com.groupa1.resq.repository.NeedRepository;
+import com.groupa1.resq.repository.RequestRepository;
+import com.groupa1.resq.repository.UserRepository;
+import com.groupa1.resq.request.CreateReqRequest;
+import com.groupa1.resq.request.UpdateReqRequest;
+import com.groupa1.resq.specification.RequestSpecifications;
+import com.groupa1.resq.util.NotificationMessages;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@Service
+@Slf4j
+public class RequestService {
+
+    @Autowired
+    RequestRepository requestRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    NeedRepository needRepository;
+
+    @Autowired
+    NotificationService notificationService;
+
+    public void save(Long userId, CreateReqRequest createReqRequest) {
+        User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Request request = new Request();
+        request.setRequester(requester);
+        request.setDescription(createReqRequest.getDescription());
+        request.setLongitude(createReqRequest.getLongitude());
+        request.setLatitude(createReqRequest.getLatitude());
+        request.setUrgency(createReqRequest.getUrgency());
+        request.setStatus(createReqRequest.getStatus());
+
+        Set<Need> needSet = new HashSet<>(needRepository.findAllById(createReqRequest.getNeedIds()));
+        request.setNeeds(needSet);
+        requestRepository.save(request);
+
+        needSet.forEach(
+                need ->
+                {
+                    need.setRequest(request);
+                    String bodyMessage = String.format(NotificationMessages.REQUEST_CREATED_WITH_NEED, need.getId(), requester.getId(), request.getId());
+                    notificationService.sendNotification("Request Created", bodyMessage, need.getRequester().getId(), request.getId() , ENotificationEntityType.REQUEST);
+                }
+        );
+        needRepository.saveAll(needSet);
+    }
+
+    public List<Request> viewAllRequests() {
+        return requestRepository.findAll();
+    }
+
+    public List<Request> viewRequestsByFilter(BigDecimal longitude, BigDecimal latitude, EStatus status, EUrgency urgency, Long userId) {
+
+        Specification<Request> spec = Specification.where(null);
+
+        if (longitude != null && latitude != null) {
+            spec = spec.and(RequestSpecifications.hasLongitude(longitude));
+            spec = spec.and(RequestSpecifications.hasLatitude(latitude));
+        }
+        if (status != null) {
+            spec = spec.and(RequestSpecifications.hasStatus(status));
+        }
+        if (urgency != null) {
+            spec = spec.and(RequestSpecifications.hasUrgency(urgency));
+        }
+        if (userId != null) {
+            User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+            spec = spec.and(RequestSpecifications.hasRequester(userId));
+        }
+        return requestRepository.findAll(spec);
+    }
+
+    public void update(UpdateReqRequest updateReqRequest, Long userId, Long requestId) {
+        Request request = requestRepository.findById(requestId).orElseThrow(() -> new EntityNotFoundException("Request not found"));
+        User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        if(request.getRequester().getId() != requester.getId()) {
+            throw new NotOwnerException("User is not the owner of the request");
+        }
+        request.setDescription(updateReqRequest.getDescription());
+        request.setLongitude(updateReqRequest.getLongitude());
+        request.setLatitude(updateReqRequest.getLatitude());
+        request.setStatus(updateReqRequest.getStatus());
+        request.setUrgency(updateReqRequest.getUrgency());
+        requestRepository.save(request);
+    }
+
+    public void deleteRequest(Long userId, Long needId) {
+        User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Request request = requestRepository.findById(needId).orElseThrow(() -> new EntityNotFoundException("Request not found"));
+        if(request.getRequester().getId() != requester.getId()) {
+            throw new NotOwnerException("User is not the owner of the request");
+        }
+        requestRepository.deleteById(needId);
+    }
+
+}
