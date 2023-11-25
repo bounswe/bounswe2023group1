@@ -1,0 +1,39 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: actions/setup-docker@v2
+        with:
+          dockerfile: ./bounswe2023group1/resq/backend/resq/Dockerfile.remote
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t resq:latest -f ./bounswe2023group1/resq/backend/resq/Dockerfile.remote ./bounswe2023group1/resq/backend/resq/
+          docker login -u alitpc2525 -p ${{ secrets.DOCKER_PASSWORD }}
+          docker tag resq:latest alitpc2525/resq:latest
+          docker push alitpc2525/resq:latest
+
+      - name: SSH into AWS EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.AWS_PRIVATE_KEY }}
+          script: |
+            sudo service docker start
+            sudo docker rm -f $(sudo docker ps -q)
+            sudo docker pull alitpc2525/resq:latest
+            sudo docker run -d -p 443:8081 -v /home/ec2-user/certbot/keystore.p12:/app/keystore.p12 alitpc2525/resq:latest
+            sudo docker ps
