@@ -16,11 +16,11 @@ jobs:
       - name: Set up Docker
         uses: actions/setup-docker@v2
         with:
-          dockerfile: ./bounswe2023group1/resq/backend/resq/Dockerfile.remote
+          dockerfile: ../../resq/backend/resq/Dockerfile.remote
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t resq:latest -f ./bounswe2023group1/resq/backend/resq/Dockerfile.remote ./bounswe2023group1/resq/backend/resq/
+          docker build -t resq:latest -f ../../resq/backend/resq/Dockerfile.remote ../../resq/backend/resq/
           docker login -u alitpc2525 -p ${{ secrets.DOCKER_PASSWORD }}
           docker tag resq:latest alitpc2525/resq:latest
           docker push alitpc2525/resq:latest
