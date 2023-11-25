@@ -13,6 +13,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Decrypt and Extract project_env_prod
+        run: |
+          gpg --quiet --batch --yes --decrypt --passphrase="$RESQ_PASSPHRASE" --output project_env_prod.tar.gz project_env_prod.tar.gz.gpg
+          tar xzvf project_env_prod.tar.gz
+        env:
+          RESQ_PASSPHRASE: ${{ secrets.RESQ_PASSPHRASE }}
+
       - name: Set up Docker
         uses: actions/setup-docker@v2
         with:
@@ -20,9 +27,9 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t resq:latest -f ../../resq/backend/resq/Dockerfile.remote ../../resq/backend/resq/
+          docker build -t alitpc2525/resq:latest -f ../../resq/backend/resq/Dockerfile.remote ../../resq/backend/resq/
           docker login -u alitpc2525 -p ${{ secrets.DOCKER_PASSWORD }}
-          docker tag resq:latest alitpc2525/resq:latest
+          docker tag alitpc2525/resq:latest alitpc2525/resq:latest
           docker push alitpc2525/resq:latest
 
       - name: SSH into AWS EC2
@@ -35,5 +42,5 @@ jobs:
             sudo service docker start
             sudo docker rm -f $(sudo docker ps -q)
             sudo docker pull alitpc2525/resq:latest
-            sudo docker run -d -p 443:8081 -v /home/ec2-user/certbot/keystore.p12:/app/keystore.p12 alitpc2525/resq:latest
+            sudo docker run -d -p 443:8081 -v /home/ec2-user/certbot/keystore.p12:/app/keystore.p12 -v $(pwd)/project_env_prod:/app/project_env_prod alitpc2525/resq:latest
             sudo docker ps
