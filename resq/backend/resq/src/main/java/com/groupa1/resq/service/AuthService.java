@@ -2,6 +2,7 @@ package com.groupa1.resq.service;
 
 import com.groupa1.resq.auth.UserDetailsImpl;
 import com.groupa1.resq.entity.User;
+import com.groupa1.resq.entity.UserProfile;
 import com.groupa1.resq.entity.enums.EUserRole;
 import com.groupa1.resq.request.LoginUserRequest;
 import com.groupa1.resq.request.RegisterUserRequest;
@@ -35,6 +36,9 @@ public class AuthService {
     PasswordEncoder encoder;
 
     @Autowired
+    UserProfileService userProfileService;
+
+    @Autowired
     JwtUtils jwtUtils;
 
 
@@ -53,6 +57,12 @@ public class AuthService {
         // Each registered user has VICTIM role by default.
         roles.add(EUserRole.VICTIM);
         user.setRoles(roles);
+        UserProfile userProfile = new UserProfile();
+        userProfile.setName(registerUserRequest.getName());
+        userProfile.setSurname(registerUserRequest.getSurname());
+        userProfile.setUser(user);
+        userProfileService.saveProfile(userProfile);
+        user.setUserProfile(userProfile);
         userService.save(user);
 
         return ResponseEntity.ok("User registered successfully!");

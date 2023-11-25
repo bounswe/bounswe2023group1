@@ -1,17 +1,15 @@
 package com.groupa1.resq.controller;
 
 import com.groupa1.resq.config.ResqAppProperties;
-import com.groupa1.resq.converter.ProfileConverter;
 import com.groupa1.resq.converter.UserConverter;
-import com.groupa1.resq.dto.ProfileDto;
 import com.groupa1.resq.dto.UserDto;
 import com.groupa1.resq.entity.User;
 import com.groupa1.resq.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -28,8 +26,6 @@ public class UserController {
     @Autowired
     private UserConverter userConverter;
 
-    @Autowired
-    private ProfileConverter profileConverter;
     @PostMapping("/requestRole")
     public String requestRole(@RequestParam Long userId, @RequestParam String role) {
         log.info("Requested role: {} requested for user: {}", role, userId);
@@ -86,18 +82,4 @@ public class UserController {
         return "Coordinator Board.";
     }
 
-    @GetMapping("getProfileInfo")
-    @PreAuthorize("hasRole('FACILITATOR') or hasRole('COORDINATOR') or hasRole('RESPONDER') or hasRole('VICTIM')")
-    public ProfileDto getProfileInfo(@RequestParam Long userId) {
-        log.info("Get profile info requested for userId : {}", userId);
-        return profileConverter.convertToDto(userService.findById(userId).getUserProfile());
-    }
-
-//    @PostMapping("/updateProfile")
-//    @PreAuthorize("hasRole('FACILITATOR') or hasRole('COORDINATOR') or hasRole('RESPONDER') or hasRole('VICTIM')")
-//    public String updateProfile(@RequestParam Long userId, @RequestBody ProfileDto profileDto) {
-//        log.info("Updating profile for user: {}", userId);
-//        userService.updateProfile(userId, profileDto);
-//        return "Profile successfully updated.";
-//    }
 }

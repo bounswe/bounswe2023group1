@@ -22,7 +22,7 @@ public class UserProfile extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private EGender gender;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
