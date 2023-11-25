@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4.1.1
 
       - name: Decrypt and Extract project_env_prod
         run: |
@@ -21,7 +21,7 @@ jobs:
           RESQ_PASSPHRASE: ${{ secrets.RESQ_PASSPHRASE }}
 
       - name: Set up Docker
-        uses: actions/docker-setup-buildx@v3
+        uses: docker/setup-buildx-action@v3.0.0
         with:
           dockerfile: ../../resq/backend/resq/Dockerfile.remote
 
@@ -33,7 +33,7 @@ jobs:
           docker push alitpc2525/resq:latest
 
       - name: SSH into AWS EC2
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.AWS_EC2_HOST }}
           username: ec2-user
