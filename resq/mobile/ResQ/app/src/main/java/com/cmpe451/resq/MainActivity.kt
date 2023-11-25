@@ -23,6 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.cmpe451.resq.data.manager.UserSessionManager
 import com.cmpe451.resq.ui.theme.LightGreen
 import com.cmpe451.resq.ui.theme.ResQTheme
 import com.cmpe451.resq.ui.views.screens.LoginScreen
@@ -54,7 +55,7 @@ fun MainScreen(appContext: Context) {
     val navController = rememberNavController()
 
     Scaffold(
-        bottomBar = { BottomNavigationBar(navController = navController) },
+        bottomBar = { BottomNavigationBar(navController, appContext) },
         content = { paddingValues ->
             Box(
                 modifier = Modifier
@@ -109,7 +110,7 @@ fun NavGraph(
 }
 
 @Composable
-fun BottomNavigationBar(navController: NavController) {
+fun BottomNavigationBar(navController: NavController, appContext: Context) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route ?: return
     val currentBottomNavigation = NavigationItem.getBottomNavigationItem(currentRoute) ?: return
@@ -120,6 +121,7 @@ fun BottomNavigationBar(navController: NavController) {
         BottomNavigationItem.values().forEach {
             BottomNavigationItem(
                 selected = currentBottomNavigation == it,
+                enabled = UserSessionManager.getInstance(appContext).isLoggedIn(),
                 onClick = {
                     navController.navigate(it.navigation.route) {
                         navController.graph.startDestinationRoute?.let { route ->

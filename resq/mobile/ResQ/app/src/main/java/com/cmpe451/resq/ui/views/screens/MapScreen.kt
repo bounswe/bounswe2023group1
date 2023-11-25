@@ -32,6 +32,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.cmpe451.resq.R
 import com.cmpe451.resq.data.manager.UserSessionManager
+import com.cmpe451.resq.ui.theme.DeepBlue
 import com.cmpe451.resq.ui.theme.RequestColor
 import com.cmpe451.resq.ui.theme.ResourceColor
 import com.cmpe451.resq.utils.NavigationItem
@@ -63,6 +64,14 @@ fun MapScreen(navController: NavController, appContext: Context) {
                         AddResourceButton {
                             navController.navigate(NavigationItem.Resource.route)
                         }
+                    }
+                }
+                else {
+                    AddSignInButton{
+                        navController.navigate(NavigationItem.Login.route)
+                    }
+                    AddSignUpButton{
+                        navController.navigate(NavigationItem.Register.route)
                     }
                 }
             }
@@ -137,6 +146,46 @@ fun AddResourceButton(onClick: () -> Unit) {
             color = Color.White,
             textAlign = TextAlign.Center
 
+        )
+    }
+}
+
+@Composable
+fun AddSignInButton(onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        shape = RoundedCornerShape(20.dp),
+        modifier = Modifier
+            .width(160.dp)
+            .padding(8.dp),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = DeepBlue
+        )
+    ) {
+        Text(
+            "Sign In",
+            color = Color.White,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+fun AddSignUpButton(onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        shape = RoundedCornerShape(20.dp),
+        modifier = Modifier
+            .width(160.dp)
+            .padding(8.dp),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = DeepBlue
+        )
+    ) {
+        Text(
+            "Sign Up",
+            color = Color.White,
+            textAlign = TextAlign.Center
         )
     }
 }
