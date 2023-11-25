@@ -21,7 +21,7 @@ jobs:
           RESQ_PASSPHRASE: ${{ secrets.RESQ_PASSPHRASE }}
 
       - name: Set up Docker
-        uses: actions/setup-docker@v2
+        uses: actions/docker-setup-buildx@v3
         with:
           dockerfile: ../../resq/backend/resq/Dockerfile.remote
 
