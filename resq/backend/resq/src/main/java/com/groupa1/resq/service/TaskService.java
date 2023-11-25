@@ -249,13 +249,12 @@ public class TaskService {
     }
 
     @Transactional
-    public ResponseEntity<String> updateTask(Map<Object, Object> fields, Long taskId)
+    public ResponseEntity<String> updateTask(Task newTask, Long taskId)
 
             throws InvocationTargetException, IllegalAccessException {
         //TODO: implement other update methods to update specific fields
         Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFoundException("No task found"));
-        Task updatedTask = objectMapper.convertValue(fields, Task.class);
-        beanUtils.copyProperties(task, updatedTask); // copy fields of updatedTask to task ignoring null values
+        beanUtils.copyProperties(task, newTask); // copy fields of updatedTask to task ignoring null values
         taskRepository.save(task);
         return ResponseEntity.ok("Task updated successfully");
     }

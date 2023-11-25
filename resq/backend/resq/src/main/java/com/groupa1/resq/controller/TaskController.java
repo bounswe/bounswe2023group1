@@ -1,6 +1,6 @@
 package com.groupa1.resq.controller;
 
-import com.groupa1.resq.request.CreateActionRequest;
+import com.groupa1.resq.entity.Task;
 import com.groupa1.resq.request.CreateFeedbackRequest;
 import com.groupa1.resq.request.CreateTaskRequest;
 import com.groupa1.resq.response.TaskResponse;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @Slf4j
@@ -65,9 +64,9 @@ public class TaskController {
     @PreAuthorize("hasRole('COORDINATOR')")
     @PatchMapping("/updateTask")
     public ResponseEntity<String> updateTask(@RequestBody
-                                             Map<Object, Object> fields, @RequestParam Long taskId)
+                                             Task newTask, @RequestParam Long taskId)
             throws InvocationTargetException, IllegalAccessException {
-        return taskService.updateTask(fields, taskId);
+        return taskService.updateTask(newTask, taskId);
     }
 
     @PreAuthorize("hasRole('COORDINATOR')")
