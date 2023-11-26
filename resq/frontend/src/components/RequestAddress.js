@@ -56,16 +56,7 @@ export default function CreateRequestForm() {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ width: 80, height: 80, marginBottom: '10px' }}>
-                        <img
-                            src={disasterImage}
-                            alt="Disaster"
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        />
-                    </Avatar>
-                    <Typography component="h5" variant="h5" sx={{ color: 'red', fontWeight: 'bold', margin: '0' }}>
-                        ResQ
-                    </Typography>
+
                     <Typography component="h1" variant="h5" sx={{ color: 'red', fontWeight: 'bold', margin: '0' }}>
                         Create Request
                     </Typography>
@@ -158,7 +149,7 @@ export default function CreateRequestForm() {
                             </Grid>
                             <Grid item xs={12}>
                                 <FormControlLabel
-                                    control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
+                                    control={<Checkbox color="error" name="saveAddress" value="yes" />}
                                     label="Use this address for my request"
                                 />
                             </Grid>

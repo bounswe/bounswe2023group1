@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import RequestAddress from '../components/RequestAddress';
 import RequestDetails from '../components/RequestDetails';
 import RequestReview from '../components/RequestReview';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function Copyright(props) {
     return (
@@ -29,6 +30,14 @@ function Copyright(props) {
         </div>
     );
 }
+
+const customTheme = createTheme({
+    palette: {
+        primary: {
+            main: '#FF0000',
+        },
+    },
+});
 
 
 const steps = ['Request address', 'Request details', 'Review'];
@@ -59,57 +68,59 @@ export default function Request() {
 
     return (
         <React.Fragment>
-            <CssBaseline />
-            <AppBar
-                position="absolute"
-                color="default"
-                elevation={0}
-                sx={{
-                    position: 'relative',
-                    borderBottom: (t) => `1px solid ${t.palette.divider}`,
-                }}
-            >
-            </AppBar>
-            <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-                <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-                    <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
-                        {steps.map((label) => (
-                            <Step key={label}>
-                                <StepLabel>{label}</StepLabel>
-                            </Step>
-                        ))}
-                    </Stepper>
-                    {activeStep === steps.length ? (
-                        <React.Fragment>
-                            <Typography variant="h5" gutterBottom>
-                                Your request is saved.
-                            </Typography>
-                            <Typography variant="subtitle1">
-                                Your request has been successfully created. We will process it promptly. You can track the status of your request on your profile page.                            </Typography>
-                        </React.Fragment>
-                    ) : (
-                        <React.Fragment>
-                            {getStepContent(activeStep)}
-                            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                {activeStep !== 0 && (
-                                    <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                                        Back
-                                    </Button>
-                                )}
+            <ThemeProvider theme={customTheme}>
+                <CssBaseline />
+                <AppBar
+                    position="absolute"
+                    color="default"
+                    elevation={0}
+                    sx={{
+                        position: 'relative',
+                        borderBottom: (t) => `1px solid ${t.palette.divider}`,
+                    }}
+                >
+                </AppBar>
+                <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+                    <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+                        <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+                            {steps.map((label) => (
+                                <Step key={label}>
+                                    <StepLabel>{label}</StepLabel>
+                                </Step>
+                            ))}
+                        </Stepper>
+                        {activeStep === steps.length ? (
+                            <React.Fragment>
+                                <Typography variant="h5" gutterBottom>
+                                    Your request is saved.
+                                </Typography>
+                                <Typography variant="subtitle1">
+                                    Your request has been successfully created. We will process it promptly. You can track the status of your request on your profile page.                            </Typography>
+                            </React.Fragment>
+                        ) : (
+                            <React.Fragment>
+                                {getStepContent(activeStep)}
+                                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                    {activeStep !== 0 && (
+                                        <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                                            Back
+                                        </Button>
+                                    )}
 
-                                <Button
-                                    variant="contained"
-                                    onClick={handleNext}
-                                    sx={{ mt: 3, ml: 1 }}
-                                >
-                                    {activeStep === steps.length - 1 ? 'Proceed' : 'Next'}
-                                </Button>
-                            </Box>
-                        </React.Fragment>
-                    )}
-                </Paper>
-                <Copyright />
-            </Container>
+                                    <Button
+                                        variant="contained"
+                                        onClick={handleNext}
+                                        sx={{ mt: 3, ml: 1 }}
+                                    >
+                                        {activeStep === steps.length - 1 ? 'Proceed' : 'Next'}
+                                    </Button>
+                                </Box>
+                            </React.Fragment>
+                        )}
+                    </Paper>
+                    <Copyright />
+                </Container>
+            </ThemeProvider>
         </React.Fragment>
     );
 }
