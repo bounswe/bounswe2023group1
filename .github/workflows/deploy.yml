@@ -15,7 +15,7 @@ jobs:
 
       - name: Clone Private Repo
         run: |
-          git clone https://alitpc25:${{ secrets.PRIVATE_REPO_TOKEN }}@github.com/alitpc25/cmpe451group1configrepo.git private-repo
+          git clone https://alitpc25:$PRIVATE_REPO_TOKEN@github.com/alitpc25/cmpe451group1configrepo.git private-repo
         env:
           PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
 
