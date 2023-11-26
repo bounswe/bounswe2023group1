@@ -16,7 +16,8 @@ jobs:
       - name: Debug GPG Key
         run: |
           cd ./resq/backend/resq/
-          gpg --list-secret-keys --keyid-format LONG
+          gpg --list-secret-keys --keyid-format LONG > gpg_keys_output.txt
+          cat gpg_keys_output.txt
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
           gpg --list-secret-keys --keyid-format LONG
 
