@@ -19,7 +19,7 @@ jobs:
         run: |
           cd ./resq/backend/resq/
           gpg --quiet --batch --yes --decrypt --passphrase="$RESQ_PASSPHRASE" --output project_env_prod.tar.gz project_env_prod.tar.gz.gpg
-          tar xzvf project_env_prod.tar.gz -C project_env_prod
+          tar xzvf project_env_prod.tar.gz
 
       - name: Set up Docker
         uses: docker/setup-buildx-action@v3.0.0
