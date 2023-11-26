@@ -11,11 +11,18 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        with:
-         repository: alitpc25/cmpe451group1configrepo
-         path: 'resq/backend/resq/project_env_prod'
-         token: '${{ secrets.PRIVATE_CONFIG_REPO_TOKEN || github.token }}'
-         ref: 'main'
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo {{ secrets.PRIVATE_REPO_SSH_KEY }} > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Clone Private Repository
+        run: |
+          git clone git@github.com:alitpc25/cmpe451group1configrepo.git
+          cp -r private-repo/project_env_prod ./resq/backend/resq/project_env_prod
 
 #      - name: Decrypt and Extract project_env_prod
 #        env:
