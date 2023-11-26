@@ -13,11 +13,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4.1.1
 
-      - name: Test GPG Encryption/Decryption
-        run: |
-          echo "Test message" | gpg --symmetric --cipher-algo AES256 --output test_file.gpg --passphrase "$YOUR_PASSPHRASE"
-          gpg --batch --yes --passphrase="$YOUR_PASSPHRASE" --decrypt --output --verbose test_decrypted_file.txt test_file.gpg
-
       - name: Decrypt and Extract project_env_prod
         env:
           RESQ_PASSPHRASE: ${{ secrets.RESQ_PASSPHRASE }}
