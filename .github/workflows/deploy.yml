@@ -13,6 +13,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4.1.1
 
+      - name: Debug GPG Key
+        run: |
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
+          gpg --list-secret-keys --keyid-format LONG
+
       - name: Decrypt and Extract project_env_prod
         env:
           RESQ_PASSPHRASE: ${{ secrets.RESQ_PASSPHRASE }}
