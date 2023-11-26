@@ -1,6 +1,9 @@
 package com.cmpe451.resq.ui.views.screens
 import android.content.Context
+import android.net.Uri
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -39,26 +43,82 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.cmpe451.resq.viewmodels.ProfileViewModel
+import coil.compose.rememberAsyncImagePainter
 import com.cmpe451.resq.data.models.ProfileData
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.text.input.KeyboardType
+import com.cmpe451.resq.ui.theme.MyTasksColor
+import com.cmpe451.resq.ui.theme.RequestColor
+import com.cmpe451.resq.ui.theme.ResourceColor
+import com.cmpe451.resq.viewmodels.ProfileViewModel
 import java.time.Year
+@Composable
+fun ProfileButton(color: Color, text:String, route: String, navController: NavController) {
+    Button(
+        onClick = {
+            if (route.isNotEmpty()){
+                navController.navigate(route)
+                }
 
+        },
+        colors = ButtonDefaults.buttonColors(color),
+        modifier = Modifier
+            .size(170.dp, 60.dp)
+    ) {
+        Text(text = text)
+    }
+}
+
+@Composable
+fun ProfilePhoto() {
+    var imageUri = rememberSaveable { mutableStateOf("") }
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let { imageUri.value = it.toString() }
+    }
+        if (imageUri.value.isEmpty()) {
+            Image(
+                Icons.Default.AccountCircle,
+                contentDescription = "User Profile",
+                modifier = Modifier
+                    .size(150.dp)
+                    .clickable { launcher.launch("image/*") },
+            )
+        }
+        else{
+            val painter = rememberAsyncImagePainter(imageUri.value)
+            Image(
+                painter = painter,
+                contentDescription = "User Profile",
+
+                modifier = Modifier
+                    .size(150.dp)
+                    .clip(CircleShape)
+                    .clickable { launcher.launch("image/*") },
+                contentScale = ContentScale.Crop
+            )
+        }
+    // TO DO: Save imageUri.value to database, and retrieve it when the user logs in again.
+    // TO DO: Add deletion option
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -146,7 +206,7 @@ private fun String.isDigit() = filter { it.isDigit() }
 
 fun generateYears(start: Int, end: Int): List<String>{
     val years = mutableListOf<String>()
-    for (i in start..end){
+    for (i in end downTo start){
         years.add(i.toString())
     }
     return years
@@ -179,7 +239,8 @@ fun generateDays(month: String): List<String>{
 @Composable
 fun Profile(profileData:ProfileData, navController: NavController) {
     val genders = listOf("Male", "Female")
-    val bloodTypes = listOf("AB Rh+", "AB Rh-", "A Rh+", "A Rh-", "B Rh+", "B Rh-", "O Rh+", "O Rh-")
+    val bloodTypes =
+        listOf("AB Rh+", "AB Rh-", "A Rh+", "A Rh-", "B Rh+", "B Rh-", "O Rh+", "O Rh-")
     val years = generateYears(1900, Year.now().value)
     val months = generateMonths()
     var selectedRole = { mutableStateOf(profileData.selectedRole ?: "") }
@@ -198,10 +259,24 @@ fun Profile(profileData:ProfileData, navController: NavController) {
     var phoneNumber by remember { mutableStateOf(profileData.phoneNumber ?: "") }
     var bloodType by remember { mutableStateOf(profileData.bloodType ?: "") }
     var isEmailValid by remember { mutableStateOf(false) }
-    var isPhoneValid  by remember { mutableStateOf(false) }
+    var isPhoneValid by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf("") }
     val snackbarHostState = remember { SnackbarHostState() }
 
+    var profileColor = Color(0xFFFFFFFF)
+    when (selectedRole().value) {
+        "VICTIM" -> {
+            profileColor = RequestColor
+        }
+
+        "RESPONDER" -> {
+            profileColor = ResourceColor
+        }
+
+        "FACILITATOR" -> {
+            profileColor = MyTasksColor
+        }
+    }
 
 
     Column(
@@ -229,14 +304,14 @@ fun Profile(profileData:ProfileData, navController: NavController) {
             },
             modifier = Modifier.fillMaxWidth()
         )
-        Row (verticalAlignment = Alignment.CenterVertically){
-            Image(
-                Icons.Default.AccountCircle,
-                contentDescription = "User Profile",
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(
                 modifier = Modifier
-                    .size(150.dp)
                     .weight(1f)
-            )
+                    .padding(start = 16.dp)
+            ) {
+                ProfilePhoto()
+            }
             Text(
                 text = "$name $surname",
                 modifier = Modifier.weight(1f),
@@ -272,7 +347,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                             .padding(4.dp)
                             .background(Color.White)
                     ) {
-                        name?.let {
+                        name.let {
                             OutlinedTextField(
                                 value = it,
                                 onValueChange = { name = it.letterOrSpace() },
@@ -295,9 +370,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                             )
                         }
 
-
-
-                        surname?.let {
+                        surname.let {
                             OutlinedTextField(
                                 value = it,
                                 onValueChange = { surname = it.letterOrSpace() },
@@ -327,15 +400,17 @@ fun Profile(profileData:ProfileData, navController: NavController) {
 
                     ) {
 
-                        email?.let {
-                            val isValidEmail = android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()
+                        email.let {
+                            val isValidEmail =
+                                android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()
                             isEmailValid = isValidEmail
 
                             OutlinedTextField(
                                 value = it,
                                 onValueChange = {
                                     email = it
-                                    isEmailValid = android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()
+                                    isEmailValid =
+                                        android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()
                                 },
                                 label = { Text("Email") },
                                 shape = RoundedCornerShape(15),
@@ -362,14 +437,16 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                             .padding(4.dp)
                     ) {
 
-                        phoneNumber?.let {
+                        phoneNumber.let {
                             OutlinedTextField(
                                 value = it,
                                 keyboardOptions = KeyboardOptions.Default.copy(
                                     keyboardType = KeyboardType.Phone
                                 ),
-                                onValueChange = { phoneNumber = it.isDigit()
-                                    isPhoneValid = android.util.Patterns.PHONE.matcher(it).matches()},
+                                onValueChange = {
+                                    phoneNumber = it.isDigit()
+                                    isPhoneValid = android.util.Patterns.PHONE.matcher(it).matches()
+                                },
 
                                 label = { Text("Phone Number") },
                                 shape = RoundedCornerShape(15),
@@ -394,7 +471,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                             .padding(4.dp)
                     ) {
 
-                        country?.let {
+                        country.let {
                             OutlinedTextField(
                                 value = it,
                                 onValueChange = { country = it.letterOrSpace() },
@@ -412,7 +489,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                     )
                             )
                         }
-                        city?.let {
+                        city.let {
                             OutlinedTextField(
                                 value = it,
                                 onValueChange = { city = it.letterOrSpace() },
@@ -430,7 +507,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                             )
 
                         }
-                        state?.let {
+                        state.let {
                             OutlinedTextField(
                                 value = it,
                                 onValueChange = { state = it.letterOrSpace() },
@@ -456,7 +533,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                             .padding(4.dp)
                     ) {
 
-                        weight?.let {
+                        weight.let {
                             OutlinedTextField(
                                 value = it,
                                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -477,7 +554,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                             )
 
                         }
-                        height?.let {
+                        height.let {
                             OutlinedTextField(
                                 value = it,
                                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -503,27 +580,27 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                             .fillMaxWidth(),
 
                         ) {
-                        Column ( modifier = Modifier.weight(1f)){
-                            gender?.let {
+                        Column(modifier = Modifier.weight(1f)) {
+                            gender.let {
                                 TextListSelectionWithColorChange(
                                     items = genders,
                                     selectedItem = gender,
                                     onItemSelected = { gender = it },
                                     label = "Gender",
-                                    color = Color(0xFFB356AF)
+                                    color = profileColor
                                 )
                             }
                         }
 
 
-                        Column ( modifier = Modifier.weight(1f)){
-                            bloodType?.let {
+                        Column(modifier = Modifier.weight(1f)) {
+                            bloodType.let {
                                 TextListSelectionWithColorChange(
                                     items = bloodTypes,
                                     selectedItem = bloodType,
                                     onItemSelected = { bloodType = it },
                                     label = "Blood Type",
-                                    color = Color(0xFFB356AF)
+                                    color = profileColor
                                 )
                             }
                         }
@@ -533,37 +610,38 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                             .fillMaxWidth()
                             .padding(4.dp)
                     ) {
-                        Column ( modifier = Modifier.weight(1f)){
-                            year?.let {
+                        Column(modifier = Modifier.weight(1f)) {
+                            year.let {
                                 TextListSelectionWithColorChange(
                                     items = years,
                                     selectedItem = year,
                                     onItemSelected = { year = it },
                                     label = "Year",
-                                    color = Color(0xFFB356AF)
+                                    color = profileColor
                                 )
                             }
                         }
-                        Column ( modifier = Modifier.weight(1f)){
-                            month?.let {
+                        Column(modifier = Modifier.weight(1f)) {
+                            month.let {
                                 TextListSelectionWithColorChange(
                                     items = months,
                                     selectedItem = month,
                                     onItemSelected = { month = it },
                                     label = "Month",
-                                    color = Color(0xFFB356AF)
+                                    color = profileColor
                                 )
                             }
                         }
-                        Column ( modifier = Modifier.weight(1f)){
+                        Column(modifier = Modifier.weight(1f)) {
                             val days = generateDays(month)
-                            day?.let {
+
+                            day.let {
                                 TextListSelectionWithColorChange(
                                     items = days,
                                     selectedItem = day,
                                     onItemSelected = { day = it },
                                     label = "Day",
-                                    color = Color(0xFFB356AF)
+                                    color = profileColor
                                 )
                             }
                         }
@@ -581,20 +659,20 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                 .padding(start = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Row(
-                modifier = Modifier.align(Alignment.Start)
-            ) {
-                Button(
-                    onClick = {
-                        // @TO DO: Handle button click
-                    },
-                    colors = ButtonDefaults.buttonColors(Color(0xFFB356AF)),
-                    modifier = Modifier
-                        .size(170.dp, 60.dp)
-                ) {
-                    Text(text = "My Requests")
+            when (selectedRole().value) {
+                "VICTIM" -> {
+                    VictimProfileButtons(navController = navController)
+                }
+
+                "RESPONDER" -> {
+                    ResponderProfileButtons(navController = navController)
+                }
+
+                "FACILITATOR" -> {
+                    FacilitatorProfileButtons(navController = navController)
                 }
             }
+
             Spacer(modifier = Modifier.height(20.dp))
             Row(
                 modifier = Modifier.align(Alignment.Start)
@@ -611,15 +689,12 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                 // @TO DO: Save details
                                 message = "Please check your email address and phone number."
 
-                            }
-                            else if (!isPhoneValid){
+                            } else if (!isPhoneValid) {
                                 message = "Please check your phone number."
 
-                            }
-                            else if (!isEmailValid){
+                            } else if (!isEmailValid) {
                                 message = "Please check your email address."
-                            }
-                            else{
+                            } else {
                                 // @TO DO Handle Save Details button click
                                 message = "Details saved successfully."
                             }
@@ -631,7 +706,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                         Text(text = "Save Details")
                     }
 
-                    Spacer(modifier = Modifier.width(25.dp))
+                    Spacer(modifier = Modifier.width(30.dp))
                     Button(
                         onClick = {
                             //@ TO DO Handle button click
@@ -660,4 +735,55 @@ fun Profile(profileData:ProfileData, navController: NavController) {
             .padding(16.dp)
     )
 
+
+
+}
+
+@Composable
+fun FacilitatorProfileButtons(navController: NavController) {
+    TODO("Not yet implemented")
+}
+
+@Composable
+fun ResponderProfileButtons(navController: NavController) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(4.dp)
+    ) {
+        ProfileButton(
+            color = ResourceColor,
+            text = "My Resources",
+            route = "resources",
+            navController = navController
+        )
+    }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(4.dp)
+    ) {
+        ProfileButton(
+            color = MyTasksColor,
+            text = "My Tasks",
+            route = "OngoingTasks",
+            navController = navController
+        )
+    }
+}
+
+@Composable
+fun VictimProfileButtons(navController: NavController) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(4.dp)
+    ) {
+        ProfileButton(
+            color = RequestColor,
+            text = "My Request",
+            route = "",
+            navController = navController
+        )
+    }
 }
