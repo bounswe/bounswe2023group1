@@ -215,7 +215,7 @@ export default function RequestDetails2() {
     };
 
     const handleKeyPress9 = (event) => {
-        if (event.key === 'Enter' && inputValue1) {
+        if (event.key === 'Enter' && inputValue9) {
             const newValue = inputValue9 + ' Girl';
             if (!selectedValues9.includes(newValue)) {
                 setSelectedValues9([...selectedValues9, newValue]);
@@ -287,7 +287,7 @@ export default function RequestDetails2() {
     };
 
     const handleKeyPress13 = (event) => {
-        const newValue = inputValue13 + ' XL';
+        const newValue = inputValue13 + ' Boy';
         if (event.key === 'Enter' && inputValue13) {
             if (!selectedValues13.includes(newValue)) {
                 setSelectedValues13([...selectedValues5, newValue]);
@@ -300,59 +300,41 @@ export default function RequestDetails2() {
         setSelectedValues13(selectedValues13.filter(item => item !== value));
     };
 
-    const handleInputChange14 = (event) => {
-        setInputValue14(event.target.value);
-    };
-
+    const handleInputChange14 = (event) => setInputValue14(event.target.value);
     const handleKeyPress14 = (event) => {
-        const newValue = inputValue14 + ' L';
-        if (event.key === 'Enter' && inputValue6) {
+        if (event.key === 'Enter' && inputValue14) {
+            const newValue = inputValue14 + ' - Boy';
             if (!selectedValues14.includes(newValue)) {
                 setSelectedValues14([...selectedValues14, newValue]);
             }
             setInputValue14('');
         }
     };
+    const handleDelete14 = (value) => setSelectedValues14(selectedValues14.filter(item => item !== value));
 
-    const handleDelete14 = (value) => {
-        setSelectedValues14(selectedValues14.filter(item => item !== value));
-    };
-
-    const handleInputChange15 = (event) => {
-        setInputValue15(event.target.value);
-    };
-
+    const handleInputChange15 = (event) => setInputValue15(event.target.value);
     const handleKeyPress15 = (event) => {
-        const newValue = inputValue15 + ' M';
         if (event.key === 'Enter' && inputValue15) {
+            const newValue = inputValue15 + ' - Baby';
             if (!selectedValues15.includes(newValue)) {
                 setSelectedValues15([...selectedValues15, newValue]);
             }
             setInputValue15('');
         }
     };
+    const handleDelete15 = (value) => setSelectedValues15(selectedValues15.filter(item => item !== value));
 
-    const handleDelete15 = (value) => {
-        setSelectedValues15(selectedValues15.filter(item => item !== value));
-    };
-
-    const handleInputChange16 = (event) => {
-        setInputValue16(event.target.value);
-    };
-
+    const handleInputChange16 = (event) => setInputValue16(event.target.value);
     const handleKeyPress16 = (event) => {
-        const newValue = inputValue16 + ' S';
         if (event.key === 'Enter' && inputValue16) {
+            const newValue = inputValue16 + ' - Baby';
             if (!selectedValues16.includes(newValue)) {
-                setSelectedValues8([...selectedValues16, newValue]);
+                setSelectedValues16([...selectedValues16, newValue]);
             }
             setInputValue16('');
         }
     };
-
-    const handleDelete16 = (value) => {
-        setSelectedValues16(selectedValues16.filter(item => item !== value));
-    };
+    const handleDelete16 = (value) => setSelectedValues16(selectedValues16.filter(item => item !== value));
 
 
     // Menu properties
