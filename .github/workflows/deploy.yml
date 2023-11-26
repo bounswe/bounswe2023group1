@@ -18,7 +18,7 @@ jobs:
           RESQ_PASSPHRASE: ${{ secrets.RESQ_PASSPHRASE }}
         run: |
           cd ./resq/backend/resq/
-          gpg --quiet --batch --yes --decrypt --passphrase="testwrongpassphrase" --output project_env_prod.tar.gz project_env_prod.tar.gz.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$RESQ_PASSPHRASE" --output project_env_prod.tar.gz project_env_prod.tar.gz.gpg
           tar xzvf project_env_prod.tar.gz
 
       - name: Set up Docker
