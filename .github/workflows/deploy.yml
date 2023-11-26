@@ -17,6 +17,7 @@ jobs:
         env:
           RESQ_PASSPHRASE: ${{ secrets.RESQ_PASSPHRASE }}
         run: |
+          cd ./resq/backend/resq/
           gpg --quiet --batch --yes --decrypt --passphrase="$RESQ_PASSPHRASE" --output project_env_prod.tar.gz project_env_prod.tar.gz.gpg
           tar xzvf project_env_prod.tar.gz
 
@@ -28,7 +29,7 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           ls
-          cd bounswe2023group1/resq/backend/resq/
+          cd ./resq/backend/resq/
           docker build -t alitpc2525/resq:latest -f Dockerfile.remote .
           docker login -u alitpc2525 -p ${{ secrets.DOCKER_PASSWORD }}
           docker tag alitpc2525/resq:latest alitpc2525/resq:latest
