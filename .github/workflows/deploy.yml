@@ -13,13 +13,23 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4.1.1
 
-      - name: Decrypt and Extract project_env_prod
-        env:
-          RESQ_PASSPHRASE: ${{ secrets.RESQ_PASSPHRASE }}
+      - name: Clone Private Repo
         run: |
-          cd ./resq/backend/resq/
-          gpg --quiet --batch --yes --verbose --decrypt --passphrase="$RESQ_PASSPHRASE" --output  project_env_prod.tar.gz project_env_prod.tar.gz.gpg
-          tar xzvf project_env_prod.tar.gz
+          git clone https://alitpc25:${{ secrets.PRIVATE_REPO_TOKEN }}@github.com/alitpc25/cmpe451group1configrepo.git private-repo
+        env:
+          PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
+
+      - name: Copy Config
+        run: |
+          cp private-repo/project_env_prod/* ./project_env_prod/
+
+#      - name: Decrypt and Extract project_env_prod
+#        env:
+#          RESQ_PASSPHRASE: ${{ secrets.RESQ_PASSPHRASE }}
+#        run: |
+#          cd ./resq/backend/resq/
+#         gpg --quiet --batch --yes --verbose --decrypt --passphrase="$RESQ_PASSPHRASE" --output  project_env_prod.tar.gz project_env_prod.tar.gz.gpg
+#          tar xzvf project_env_prod.tar.gz
 
       - name: Set up Docker
         uses: docker/setup-buildx-action@v3.0.0
