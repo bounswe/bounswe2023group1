@@ -15,8 +15,8 @@ jobs:
 
       - name: Import GPG Key
         uses: crazy-max/ghaction-import-gpg@v6
-        env:
-           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        with:
+           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
            RESQ_PASSPHRASE: ${{ secrets.RESQ_PASSPHRASE }}
 
       - name: Decrypt and Extract project_env_prod
