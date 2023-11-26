@@ -36,7 +36,6 @@ const customTheme = createTheme({
 });
 
 
-
 const ExpandMore = styled(IconButton)`
   transform: ${({ expand }) => !expand ? 'rotate(0deg)' : 'rotate(180deg)'};
   margin-left: auto;
@@ -290,7 +289,6 @@ export default function MapDemo() {
                         <DisasterMap markers={mock_markers} onPointSelected={setSelectedPoint} />
                     </Box>
                 </Box>
-
             </Container>
         </ThemeProvider>
     );
