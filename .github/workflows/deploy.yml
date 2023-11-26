@@ -13,13 +13,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: SSH into AWS EC2
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.AWS_EC2_HOST }}
-          username: ec2-user
-          key: ${{ secrets.AWS_PRIVATE_KEY }}
-          script: |
-            ls
+        env:
+          HOST: ${{ secrets.AWS_EC2_HOST }}
+          AWS_PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
+        run: |
+          echo "$AWS_PRIVATE_KEY" > aws-secret-key.pem
+          chmod 600 aws-secret-key.pem
+          ssh -i ./aws-key.pem ec2-user@$HOST
+          ls
 
       - name: Update and Install libssl-dev
         run: |
