@@ -34,7 +34,7 @@ async function getAddress(latitude, longitude) {
 }
 
 
-export const AnnotationCard = ({item: {title, short_description, long_description, latitude, longitude, icon}}) => {
+export const AnnotationCard = ({item: {title, short_description, long_description, latitude, longitude, category}}) => {
     const [expanded, setExpanded] = useState(false);
     const [locationName, setLocationName] = useState('');
 
@@ -45,8 +45,8 @@ export const AnnotationCard = ({item: {title, short_description, long_descriptio
     return <Card variant="outlined">
         <CardHeader
             avatar={
-                <Avatar sx={{bgcolor: type_colors["Request"]}} aria-label={icon}>
-                    <AnnotationIcon icon={icon} color={"white"}/>
+                <Avatar sx={{bgcolor: type_colors["Request"]}} aria-label={category}>
+                    <AnnotationIcon icon={category} color={"white"}/>
                 </Avatar>
             }
             titleTypographyProps={{variant: 'h6'}}

@@ -15,6 +15,7 @@ function mapboxProvider(x, y, z, dpr) {
     }`;
 }
 
+const marker_order = ["Annotation", "Request", "Resource"]
 
 export default function DisasterMap({onPointSelected, markers = [], center}) {
     const [zoom, setZoom] = useState(6.5);
@@ -35,15 +36,15 @@ export default function DisasterMap({onPointSelected, markers = [], center}) {
                     event.preventDefault()
                 }}
             >
-                {marker.icon ? <AnnotationIcon icon={marker.icon}/> : <MarkerIcon color={type_colors[marker.type]}/>}
+                {marker.type==="Annotation" ? <AnnotationIcon icon={marker.category}/> : <MarkerIcon color={type_colors[marker.type]}/>}
             </Marker>
         );
     };
 
     // noinspection JSValidateTypes
     return (
-        <div style={{display: "flex"}}>
-            <div style={{flexGrow: 100, height: "calc(100vh - 56px)"}}>
+        <div style={{display: "flex", height: "100%"}}>
+            <div style={{flexGrow: 100, height: "100%"}}>
                 <Map
                     provider={mapboxProvider}
                     dprs={[1, 2]}
@@ -60,7 +61,9 @@ export default function DisasterMap({onPointSelected, markers = [], center}) {
                         setZoom(zoom)
                     }}>
                     <ZoomControl/>
-                    {markers.map(renderMarker)}
+                    {markers
+                        .sort(({type})=> -marker_order.indexOf(type))
+                        .map(renderMarker)}
                 </Map>
             </div>
         </div>
