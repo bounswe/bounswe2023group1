@@ -16,19 +16,13 @@ const StyledFormControl = styled(FormControl)({
 
 const StyledSelect = styled(MuiSelect)({
     '& .MuiOutlinedInput-input': {
-        padding: '10px 14px', // Adjust padding to match TextField
+        padding: '14px 14px', // Adjust padding to match TextField
     },
     '& .MuiOutlinedInput-notchedOutline': {
         borderColor: 'rgba(0, 0, 0, 0.23)', // Match TextField border color
     },
-    '&:hover .MuiOutlinedInput-notchedOutline': {
-        borderColor: '#FF5151', // Change to red on hover
-    },
-    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-        borderColor: '#FF5151', // Change to red when focused
-        borderWidth: '2px', // Match TextField focus border width
-    },
-    // Include additional states like error, disabled, etc.
+    minHeight: '56px',
+
 });
 
 
