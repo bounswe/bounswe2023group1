@@ -55,7 +55,7 @@ public class ResourceController {
     public ResponseEntity<List<ResourceDto>> filterByDistance(@RequestParam
                                                    BigDecimal longitude, @RequestParam BigDecimal latitude, @RequestParam BigDecimal distance) {
         log.info("Filtering resources by distance");
-        return resourceService.filterByDistance(longitude, latitude, distance);
+        return resourceService.filterByDistance(latitude, longitude, distance);
     }
 
     @PreAuthorize("hasRole('COORDINATOR')")

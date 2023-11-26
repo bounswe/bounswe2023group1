@@ -93,7 +93,7 @@ public class ResourceService {
         if (userId != null) {
             spec = spec.and(ResourceSpecifications.hasOwnerId(userId));
         }
-        return ResponseEntity.ok(resourceRepository.findAll().stream().map(resource -> resourceConverter.convertToDto(resource)).toList());
+        return ResponseEntity.ok(resourceRepository.findAll(spec).stream().map(resource -> resourceConverter.convertToDto(resource)).toList());
 
     }
     public ResponseEntity<List<ResourceDto>> filterByDistance(BigDecimal latitude, BigDecimal longitude, BigDecimal distance){
