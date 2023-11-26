@@ -1,7 +1,6 @@
 package com.cmpe451.resq.ui.views.screens
 
 import android.content.Context
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,18 +24,22 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.cmpe451.resq.R
 import com.cmpe451.resq.data.manager.UserSessionManager
 import com.cmpe451.resq.ui.theme.DeepBlue
 import com.cmpe451.resq.ui.theme.RequestColor
 import com.cmpe451.resq.ui.theme.ResourceColor
 import com.cmpe451.resq.utils.NavigationItem
 import com.cmpe451.resq.viewmodels.MapViewModel
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 fun MapScreen(navController: NavController, appContext: Context) {
@@ -78,11 +81,20 @@ fun MapScreen(navController: NavController, appContext: Context) {
 
             Spacer(modifier = Modifier.height(16.dp))
             SearchBar(viewModel)
-            Image(
-                painter = painterResource(id = R.drawable.mock_map),
-                contentDescription = "Mock Map",
-                modifier = Modifier.fillMaxSize()
-            )
+            val singapore = LatLng(1.35, 103.87)
+            val cameraPositionState = rememberCameraPositionState {
+                position = CameraPosition.fromLatLngZoom(singapore, 10f)
+            }
+            GoogleMap(
+                modifier = Modifier.fillMaxSize(),
+                cameraPositionState = cameraPositionState
+            ) {
+                Marker(
+                    state = MarkerState(position = singapore),
+                    title = "Singapore",
+                    snippet = "Marker in Singapore"
+                )
+            }
         }
     }
 }
