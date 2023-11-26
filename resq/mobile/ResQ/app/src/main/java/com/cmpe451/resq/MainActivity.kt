@@ -1,9 +1,11 @@
 package com.cmpe451.resq
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -38,6 +40,7 @@ import com.cmpe451.resq.utils.BottomNavigationItem
 import com.cmpe451.resq.utils.NavigationItem
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -49,6 +52,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(appContext: Context) {
@@ -70,6 +74,7 @@ fun MainScreen(appContext: Context) {
         },)
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavGraph(
     navController: NavHostController,
@@ -98,7 +103,7 @@ fun NavGraph(
             OngoingTasksScreen(navController)
         }
         composable(NavigationItem.Profile.route) {
-            ProfileScreen(navController, appContext) // 1 for now
+            ProfileScreen(navController, appContext)
         }
         composable(NavigationItem.Notifications.route) {
             //NotificationsScreen(navController)
