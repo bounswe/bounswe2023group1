@@ -1,5 +1,7 @@
 package com.groupa1.resq.service;
 
+import com.groupa1.resq.converter.RequestConverter;
+import com.groupa1.resq.dto.RequestDto;
 import com.groupa1.resq.entity.Need;
 import com.groupa1.resq.entity.Request;
 import com.groupa1.resq.entity.User;
@@ -41,7 +43,10 @@ public class RequestService {
     @Autowired
     NotificationService notificationService;
 
-    public void save(Long userId, CreateReqRequest createReqRequest) {
+    @Autowired
+    RequestConverter requestConverter;
+
+    public Long save(Long userId, CreateReqRequest createReqRequest) {
         User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Request request = new Request();
         request.setRequester(requester);
@@ -53,7 +58,7 @@ public class RequestService {
 
         Set<Need> needSet = new HashSet<>(needRepository.findAllById(createReqRequest.getNeedIds()));
         request.setNeeds(needSet);
-        requestRepository.save(request);
+        Long requestId = requestRepository.save(request).getId();
 
         needSet.forEach(
                 need ->
@@ -64,13 +69,14 @@ public class RequestService {
                 }
         );
         needRepository.saveAll(needSet);
+        return requestId;
     }
 
-    public List<Request> viewAllRequests() {
-        return requestRepository.findAll();
+    public List<RequestDto> viewAllRequests() {
+        return requestRepository.findAll().stream().map(request -> requestConverter.convertToDto(request)).toList();
     }
 
-    public List<Request> viewRequestsByFilter(BigDecimal longitude, BigDecimal latitude, EStatus status, EUrgency urgency, Long userId) {
+    public List<RequestDto> viewRequestsByFilter(BigDecimal longitude, BigDecimal latitude, EStatus status, EUrgency urgency, Long userId) {
 
         Specification<Request> spec = Specification.where(null);
 
@@ -88,7 +94,7 @@ public class RequestService {
             User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
             spec = spec.and(RequestSpecifications.hasRequester(userId));
         }
-        return requestRepository.findAll(spec);
+        return requestRepository.findAll(spec).stream().map(request -> requestConverter.convertToDto(request)).toList();
     }
 
     public void update(UpdateReqRequest updateReqRequest, Long userId, Long requestId) {
