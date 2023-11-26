@@ -6,10 +6,10 @@ import com.groupa1.resq.dto.UserDto;
 import com.groupa1.resq.entity.User;
 import com.groupa1.resq.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -81,4 +81,5 @@ public class UserController {
     public String coordinatorAccess() {
         return "Coordinator Board.";
     }
+
 }
