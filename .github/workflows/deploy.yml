@@ -13,12 +13,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4.1.1
 
+      - name: Test GPG Encryption/Decryption
+      run: |
+        echo "Test message" | gpg --symmetric --cipher-algo AES256 --output test_file.gpg --passphrase "$YOUR_PASSPHRASE"
+        gpg --batch --yes --passphrase="$YOUR_PASSPHRASE" --decrypt --output test_decrypted_file.txt test_file.gpg
+
       - name: Decrypt and Extract project_env_prod
         env:
           RESQ_PASSPHRASE: ${{ secrets.RESQ_PASSPHRASE }}
         run: |
           cd ./resq/backend/resq/
-          gpg --quiet --batch --yes --decrypt --passphrase="$RESQ_PASSPHRASE" --output project_env_prod.tar.gz project_env_prod.tar.gz.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$RESQ_PASSPHRASE" --output --verbose project_env_prod.tar.gz project_env_prod.tar.gz.gpg
           tar xzvf project_env_prod.tar.gz
 
       - name: Set up Docker
