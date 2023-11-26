@@ -15,7 +15,7 @@ jobs:
         with:
          repository: alitpc25/cmpe451group1configrepo
          path: './config'
-         token: '${{ secrets.PRIVATE_CONFIG_REPO_TOKEN }}'
+         token: '${{ secrets.PRIVATE_CONFIG_REPO_TOKEN || github.token }}'
 
       - name: Copy Config
         run: |
