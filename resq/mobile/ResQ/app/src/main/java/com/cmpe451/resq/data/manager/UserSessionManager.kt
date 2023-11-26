@@ -16,6 +16,17 @@ class UserSessionManager(appContext: Context) {
         private const val USER_ROLES = "USER_ROLES"
         private const val SELECTED_ROLE = "SELECTED_ROLE"
         private const val KEY_IS_LOGGED_IN = "IS_LOGGED_IN"
+
+        @Volatile
+        private lateinit var instance: UserSessionManager
+        fun getInstance(appContext: Context): UserSessionManager {
+            synchronized(this) {
+                if (!::instance.isInitialized) {
+                    instance = UserSessionManager(appContext)
+                }
+                return instance
+            }
+        }
     }
 
     private var pref: SharedPreferences = appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -40,7 +51,7 @@ class UserSessionManager(appContext: Context) {
 
     fun getUserToken(): String? = pref.getString(JWT_TOKEN, null)
 
-    fun getUserId(): Int = pref.getInt(USER_ID, -1)
+    fun getUserId(): Int = pref.getInt(USER_ID, 0)
 
     fun getUserName(): String? = pref.getString(USER_NAME, null)
 

@@ -21,37 +21,27 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.cmpe451.resq.viewmodels.ProfileViewModel
 import com.cmpe451.resq.data.models.ProfileData
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import com.cmpe451.resq.ui.theme.ResourceColor
-import com.cmpe451.resq.utils.NavigationItem
+import com.cmpe451.resq.viewmodels.ProfileViewModel
 
 @Composable
 fun ProfileScreen(navController: NavController, appContext: Context) {
@@ -83,7 +73,7 @@ fun ProfileScreen(navController: NavController, appContext: Context) {
 @Composable
 fun Profile(profileData:ProfileData, navController: NavController) {
     var selectedRole = { mutableStateOf(profileData.selectedRole ?: "") }
-    var name by remember { mutableStateOf(profileData.surname ?: "") }
+    var name by remember { mutableStateOf(profileData.name ?: "") }
     var surname by remember { mutableStateOf(profileData.surname ?: "") }
     var year by remember { mutableStateOf(profileData.year ?: "") }
     var month by remember { mutableStateOf(profileData.month ?: "") }

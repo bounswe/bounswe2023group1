@@ -5,8 +5,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cmpe451.resq.data.remote.ProfileRepository
 import com.cmpe451.resq.data.models.ProfileData
+import com.cmpe451.resq.data.remote.ResqService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -16,11 +16,11 @@ class ProfileViewModel() : ViewModel() {
     private val errorMessage = MutableStateFlow<String?>(null)
 
     fun getUserData(appContext: Context) {
-        val profileRepository = ProfileRepository(appContext)
+        val api = ResqService(appContext)
 
         viewModelScope.launch {
             try {
-                val data = profileRepository.getUserData()
+                val data = api.getUserData()
                 _profileData.value = data
             } catch (e: Exception) {
                 errorMessage.value = e.message

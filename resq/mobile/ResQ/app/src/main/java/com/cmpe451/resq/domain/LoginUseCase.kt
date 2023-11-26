@@ -1,21 +1,18 @@
 package com.cmpe451.resq.domain
 
 import android.content.Context
-import android.provider.Settings.Global.putInt
-import android.provider.Settings.Global.putString
-import androidx.compose.ui.platform.LocalContext
 import com.cmpe451.resq.data.manager.UserSessionManager
-import com.cmpe451.resq.data.remote.AuthApi
-import com.cmpe451.resq.data.remote.LoginRequest
-import com.cmpe451.resq.data.remote.LoginResponse
-import com.google.gson.Gson
+import com.cmpe451.resq.data.models.LoginRequest
+import com.cmpe451.resq.data.models.LoginResponse
+import com.cmpe451.resq.data.remote.ResqService
 
 class LoginUseCase() {
 
-    private val authApi = AuthApi()
 
     suspend fun execute(email: String, password: String, appContext: Context): Result<LoginResponse> {
-        val response = authApi.login(LoginRequest(email, password))
+        val api = ResqService(appContext)
+
+        val response = api.login(LoginRequest(email, password))
         if (response.isSuccessful) {
             response.body()?.let {
                 saveLoginResponse(it, appContext)
@@ -25,7 +22,7 @@ class LoginUseCase() {
         return Result.failure(Throwable(response.message()))
     }
     private fun saveLoginResponse(loginResponse: LoginResponse, appContext: Context) {
-        val userSessionManager = UserSessionManager(appContext)
+        val userSessionManager = UserSessionManager.getInstance(appContext)
 
         userSessionManager.createLoginSession(
             token = loginResponse.jwt,

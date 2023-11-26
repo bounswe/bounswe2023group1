@@ -1,5 +1,6 @@
 package com.cmpe451.resq.viewmodels
 
+import android.content.Context
 import android.util.Patterns
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -26,12 +27,13 @@ class RegistrationViewModel() : ViewModel() {
         password: String,
         confirmPassword: String,
         termsAccepted: Boolean,
-        navController: NavController
+        navController: NavController,
+        appContext: Context
     ) {
         if (validateRegistrationInputs(name, surname, email, password, confirmPassword, termsAccepted)) {
             viewModelScope.launch {
                 try {
-                    val result = registrationUseCase.execute(name, surname, email, password)
+                    val result = registrationUseCase.execute(name, surname, email, password, appContext)
                     if (result.isSuccess) {
                         _registerMessage.value = result.getOrNull()
                         _errorMessage.value = null

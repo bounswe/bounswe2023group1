@@ -23,7 +23,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -33,6 +32,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.cmpe451.resq.R
 import com.cmpe451.resq.data.manager.UserSessionManager
+import com.cmpe451.resq.ui.theme.DeepBlue
 import com.cmpe451.resq.ui.theme.RequestColor
 import com.cmpe451.resq.ui.theme.ResourceColor
 import com.cmpe451.resq.utils.NavigationItem
@@ -41,9 +41,8 @@ import com.cmpe451.resq.viewmodels.MapViewModel
 @Composable
 fun MapScreen(navController: NavController, appContext: Context) {
     val viewModel: MapViewModel = viewModel()
-
-    val userSessionManager = UserSessionManager(appContext)
-    val userRoles = userSessionManager.getUserRoles() ?: ""
+    val userSessionManager = UserSessionManager.getInstance(appContext)
+    val userRoles = userSessionManager.getUserRoles()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -55,16 +54,24 @@ fun MapScreen(navController: NavController, appContext: Context) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                //if (userRoles.isNotEmpty()) {
-                //    if (userRoles.contains("VICTIM") || userRoles.contains("FACILITATOR")) {
-                //        AddRequestButton {
-                //            navController.navigate(NavigationItem.Request.route)
-                //        }
-                //    }
-                //    if (userRoles.contains("RESPONDER") || userRoles.contains("FACILITATOR")) {
-                //        AddResourceButton {
-                //            navController.navigate(NavigationItem.Resource.route)
-                //        }
+                if (userRoles.isNotEmpty()) {
+                    if (userRoles.contains("VICTIM") || userRoles.contains("FACILITATOR")) {
+                        AddRequestButton {
+                            navController.navigate(NavigationItem.Request.route)
+                        }
+                    }
+                    if (userRoles.contains("RESPONDER") || userRoles.contains("FACILITATOR")) {
+                        AddResourceButton {
+                            navController.navigate(NavigationItem.Resource.route)
+                        }
+                    }
+                }
+                else {
+                    AddSignInButton{
+                        navController.navigate(NavigationItem.Login.route)
+                    }
+                    AddSignUpButton{
+                        navController.navigate(NavigationItem.Register.route)
                     }
                 }
             }
@@ -77,8 +84,8 @@ fun MapScreen(navController: NavController, appContext: Context) {
                 modifier = Modifier.fillMaxSize()
             )
         }
-//    }
-//}
+    }
+}
 
 @Composable
 fun SearchBar(viewModel: MapViewModel) {
@@ -139,6 +146,46 @@ fun AddResourceButton(onClick: () -> Unit) {
             color = Color.White,
             textAlign = TextAlign.Center
 
+        )
+    }
+}
+
+@Composable
+fun AddSignInButton(onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        shape = RoundedCornerShape(20.dp),
+        modifier = Modifier
+            .width(160.dp)
+            .padding(8.dp),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = DeepBlue
+        )
+    ) {
+        Text(
+            "Sign In",
+            color = Color.White,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+fun AddSignUpButton(onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        shape = RoundedCornerShape(20.dp),
+        modifier = Modifier
+            .width(160.dp)
+            .padding(8.dp),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = DeepBlue
+        )
+    ) {
+        Text(
+            "Sign Up",
+            color = Color.White,
+            textAlign = TextAlign.Center
         )
     }
 }
