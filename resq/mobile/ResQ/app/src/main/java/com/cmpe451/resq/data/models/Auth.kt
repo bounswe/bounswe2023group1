@@ -1,6 +1,6 @@
 package com.cmpe451.resq.data.models
 
-data class LoginRequest(
+data class LoginRequestBody(
     val email: String,
     val password: String
 )
@@ -12,7 +12,7 @@ data class LoginResponse(
     val email: String,
     val roles: List<String>
 )
-data class RegisterRequest(
+data class RegisterRequestBody(
     val name: String,
     val surname: String,
     val email: String,
