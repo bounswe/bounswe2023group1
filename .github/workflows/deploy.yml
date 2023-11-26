@@ -14,9 +14,9 @@ jobs:
         uses: actions/checkout@v4.1.1
 
       - name: Test GPG Encryption/Decryption
-      run: |
-        echo "Test message" | gpg --symmetric --cipher-algo AES256 --output test_file.gpg --passphrase "$YOUR_PASSPHRASE"
-        gpg --batch --yes --passphrase="$YOUR_PASSPHRASE" --decrypt --output test_decrypted_file.txt test_file.gpg
+        run: |
+          echo "Test message" | gpg --symmetric --cipher-algo AES256 --output test_file.gpg --passphrase "$YOUR_PASSPHRASE"
+          gpg --batch --yes --passphrase="$YOUR_PASSPHRASE" --decrypt --output --verbose test_decrypted_file.txt test_file.gpg
 
       - name: Decrypt and Extract project_env_prod
         env:
