@@ -15,7 +15,7 @@ jobs:
 
       - name: Clone Private Repo
         run: |
-          git clone https://alitpc25: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@github.com/alitpc25/cmpe451group1configrepo.git private-repo
+          git clone https://alitpc25:${{ secrets.PRIVATE_CONFIG_REPO_TOKEN}}@github.com/alitpc25/cmpe451group1configrepo.git private-repo
 
       - name: Copy Config
         run: |
