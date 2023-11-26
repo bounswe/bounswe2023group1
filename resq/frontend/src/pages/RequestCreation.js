@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import RequestAddress from '../components/RequestAddress';
-import RequestDetails from '../components/RequestDetails';
+import RequestDetails1 from '../components/RequestDetails1';
 import RequestReview from '../components/RequestReview';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -47,7 +47,7 @@ function getStepContent(step) {
         case 0:
             return <RequestAddress />;
         case 1:
-            return <RequestDetails />;
+            return <RequestDetails1 />;
         case 2:
             return <RequestReview />;
         default:
