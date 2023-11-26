@@ -1,6 +1,7 @@
 package com.groupa1.resq.controller;
 
 import com.groupa1.resq.config.ResqAppProperties;
+import com.groupa1.resq.dto.RequestDto;
 import com.groupa1.resq.entity.Need;
 import com.groupa1.resq.entity.Request;
 import com.groupa1.resq.entity.enums.EStatus;
@@ -30,11 +31,11 @@ public class RequestController {
 
     @GetMapping("/viewRequestsByFilter")
     @PreAuthorize("hasRole('FACILITATOR')")
-    public List<Request> viewRequestsByFilter(@RequestParam(required = false) BigDecimal longitude,
-                                        @RequestParam(required = false) BigDecimal latitude,
-                                        @RequestParam(required = false) EStatus status,
-                                        @RequestParam(required = false) EUrgency urgency,
-                                        @RequestParam(required = false) Long userId) {
+    public List<RequestDto> viewRequestsByFilter(@RequestParam(required = false) BigDecimal longitude,
+                                                 @RequestParam(required = false) BigDecimal latitude,
+                                                 @RequestParam(required = false) EStatus status,
+                                                 @RequestParam(required = false) EUrgency urgency,
+                                                 @RequestParam(required = false) Long userId) {
         log.info("Viewing requests for location: {}, {}, status: {}, urgency: {}, user: {}", longitude, latitude, status, urgency, userId);
         return requestService.viewRequestsByFilter(longitude, latitude, status, urgency, userId);
     }
@@ -42,15 +43,15 @@ public class RequestController {
 
     @PostMapping("/createRequest")
     @PreAuthorize("hasRole('FACILITATOR')")
-    public String createRequest(@RequestParam Long userId, @RequestBody CreateReqRequest createReqRequest) {
+    public Long createRequest(@RequestParam Long userId, @RequestBody CreateReqRequest createReqRequest) {
         log.info("Creating request for user: {}", userId);
-        requestService.save(userId, createReqRequest);
-        return "Request successfully created.";
+        return requestService.save(userId, createReqRequest);
+
     }
 
     @GetMapping("/viewAllRequests")
-    @PreAuthorize("hasRole('FACILITATOR')")
-    public List<Request> viewAllRequests() {
+    @PreAuthorize("hasRole('FACILITATOR') or hasRole('COORDINATOR')")
+    public List<RequestDto> viewAllRequests() {
         log.info("Viewing all requests");
         return requestService.viewAllRequests();
     }
