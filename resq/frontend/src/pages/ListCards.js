@@ -18,6 +18,7 @@ const OffsetActions = styled(CardActions)`
   transform: translate(-8px, -28px);
   height: 0;
   padding: 0;
+  flex-direction: row-reverse;
 `
 
 async function getAddress(latitude, longitude) {
@@ -45,7 +46,7 @@ export const AnnotationCard = ({item: {title, short_description, long_descriptio
         <CardHeader
             avatar={
                 <Avatar sx={{bgcolor: type_colors["Request"]}} aria-label={icon}>
-                    <AnnotationIcon icon={icon}/>
+                    <AnnotationIcon icon={icon} color={"white"}/>
                 </Avatar>
             }
             titleTypographyProps={{variant: 'h6'}}

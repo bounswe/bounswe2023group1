@@ -3,9 +3,9 @@ import * as React from "react";
 
 export const AnnotationIcon = ({icon, color}) =>
     ({
-        fire: <LocalFireDepartment style={{pointerEvents: "auto"}}/>,
-        health: <LocalHospital style={{pointerEvents: "auto", color: color || "#e00000"}}/>,
-        closed: <Cancel style={{pointerEvents: "auto"}}/>
+        fire: <LocalFireDepartment style={{pointerEvents: "auto", height: "38.6px"}}/>,
+        health: <LocalHospital style={{pointerEvents: "auto", height: "38.6px", color: color || "#e00000"}}/>,
+        closed: <Cancel style={{pointerEvents: "auto", height: "38.6px"}}/>
     })[icon]
 export const MarkerIcon = ({color}) => (
     <svg
