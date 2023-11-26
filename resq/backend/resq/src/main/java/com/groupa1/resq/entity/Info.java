@@ -3,7 +3,9 @@ package com.groupa1.resq.entity;
 import com.groupa1.resq.entity.enums.EUrgency;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
@@ -11,6 +13,8 @@ import java.math.BigDecimal;
 @Entity
 @Table( name = "INFO")
 @Data
+@EqualsAndHashCode(callSuper = true, exclude = {"user"})
+@ToString(callSuper = true)
 public class Info extends BaseEntity{
 
     @ManyToOne

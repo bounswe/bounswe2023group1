@@ -2,7 +2,9 @@ package com.groupa1.resq.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.Set;
 
@@ -10,6 +12,8 @@ import java.util.Set;
 @Entity
 @Table( name = "FEEDBACK")
 @Data
+@EqualsAndHashCode(callSuper = true, exclude = {"task", "creator"})
+@ToString(callSuper = true)
 public class Feedback extends BaseEntity {
 
     @ManyToOne

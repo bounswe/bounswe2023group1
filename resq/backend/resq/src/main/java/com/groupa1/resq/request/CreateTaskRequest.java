@@ -33,7 +33,7 @@ public class CreateTaskRequest {
 
     @Data
     public static class Resource {
-        private Long ownerId;
+        private Long senderId;
         private String categoryTreeId;
         private EGender gender;
         private Integer quantity;

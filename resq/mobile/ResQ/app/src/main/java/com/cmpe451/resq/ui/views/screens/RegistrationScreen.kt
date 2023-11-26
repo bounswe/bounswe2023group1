@@ -1,5 +1,6 @@
     package com.cmpe451.resq.ui.views.screens
     
+    import android.content.Context
     import com.cmpe451.resq.R
     import androidx.compose.runtime.Composable
     import androidx.compose.ui.Alignment
@@ -41,7 +42,7 @@
     
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun RegistrationScreen(navController: NavController) {
+    fun RegistrationScreen(navController: NavController, appContext: Context) {
     
         val viewModel: RegistrationViewModel = viewModel()
 
@@ -190,7 +191,8 @@
                         password,
                         confirmPassword,
                         termsAccepted,
-                        navController
+                        navController,
+                        appContext
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -199,7 +201,7 @@
                 )
             ) {
                 Text(
-                    text = "Create account",
+                    text = "Sign Up",
                     color = DeepBlue,
                     fontSize = 16.sp
                 )
@@ -223,7 +225,7 @@
                     navController.navigate("login")
                 }) {
                     Text(
-                        text = "Log in",
+                        text = "Sign in",
                         style = MaterialTheme.typography.bodySmall,
                         color = DeepBlue,
                         fontWeight = FontWeight.Medium,
