@@ -23,6 +23,9 @@ jobs:
 
       - name: Clone Private Repository
         run: |
+          ls
+          cd ..
+          ls
           git clone git@github.com:alitpc25/cmpe451group1configrepo.git
           cp -r cmpe451group1configrepo/project_env_prod ./resq/backend/resq/project_env_prod
 
