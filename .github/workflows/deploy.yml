@@ -19,7 +19,7 @@ jobs:
         run: |
           echo "$AWS_PRIVATE_KEY" > aws-secret-key.pem
           chmod 600 aws-secret-key.pem
-          ssh -o StrictHostKeyChecking=no -i ./aws-secret-key.pem ec2-user@$HOST
+          ssh -o StrictHostKeyChecking=no -i ./aws-secret-key.pem ec2-user@${{ secrets.AWS_EC2_HOST }}
           ls
 
       - name: Update and Install libssl-dev
