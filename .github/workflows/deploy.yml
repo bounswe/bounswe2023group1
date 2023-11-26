@@ -16,8 +16,10 @@ jobs:
       - name: Decrypt and Extract project_env_prod
         env:
           RESQ_PASSPHRASE: ${{ secrets.RESQ_PASSPHRASE }}
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
         run: |
           cd ./resq/backend/resq/
+          echo "$GPG_PRIVATE_KEY" | gpg --import
           gpg --quiet --batch --yes --decrypt --passphrase="$RESQ_PASSPHRASE" --output project_env_prod.tar.gz project_env_prod.tar.gz.gpg
           tar xzvf project_env_prod.tar.gz
 
