@@ -88,7 +88,7 @@
                     modifier = Modifier.weight(1f).padding(end = 8.dp), // half width and add some padding
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = DeepBlue,
-                        textColor = Color.White,
+                        focusedTextColor = Color.White,
                         cursorColor = Color.White
                     )
                 )
@@ -100,7 +100,7 @@
                     modifier = Modifier.weight(1f).padding(start = 8.dp), // half width and add some padding
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = DeepBlue,
-                        textColor = Color.White,
+                        focusedTextColor = Color.White,
                         cursorColor = Color.White
                     )
                 )
@@ -116,7 +116,7 @@
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = DeepBlue,
-                    textColor = Color.White,
+                    focusedTextColor = Color.White,
                     cursorColor = Color.White
                 )
             )
@@ -133,7 +133,7 @@
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = DeepBlue,
-                    textColor = Color.White,
+                    focusedTextColor = Color.White,
                     cursorColor = Color.White
                 )
             )
@@ -150,7 +150,7 @@
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = DeepBlue,
-                    textColor = Color.White,
+                    focusedTextColor = Color.White,
                     cursorColor = Color.White
                 )
             )

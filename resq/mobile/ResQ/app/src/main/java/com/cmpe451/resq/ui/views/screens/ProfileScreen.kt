@@ -39,24 +39,24 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.cmpe451.resq.viewmodels.ProfileViewModel
 import com.cmpe451.resq.data.models.ProfileData
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.text.input.KeyboardType
+import com.cmpe451.resq.viewmodels.ProfileViewModel
 import java.time.Year
 
 
@@ -287,7 +287,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                 ),
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
                                     containerColor = Color.White,
-                                    textColor = Color.Black,
+                                    focusedTextColor = Color.Black,
                                     cursorColor = Color.Black
 
                                 )
@@ -312,7 +312,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                 ),
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
                                     containerColor = Color.White,
-                                    textColor = Color.Black,
+                                    focusedTextColor = Color.Black,
                                     cursorColor = Color.Black
                                 )
                             )
@@ -345,7 +345,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                     .background(Color.White),
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
                                     containerColor = Color.White,
-                                    textColor = Color.Black,
+                                    focusedTextColor = Color.Black,
                                     cursorColor = Color.Black,
                                     focusedBorderColor = if (isEmailValid) Color.Black else Color.Red
                                 ),
@@ -380,7 +380,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                     .background(Color.White),
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
                                     containerColor = Color.White,
-                                    textColor = Color.Black,
+                                    focusedTextColor = Color.Black,
                                     cursorColor = Color.Black,
                                     focusedBorderColor = if (isPhoneValid) Color.Black else Color.Red
                                 )
@@ -406,7 +406,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                     .background(Color.White),
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
                                     containerColor = Color.White,
-                                    textColor = Color.Black,
+                                    focusedTextColor = Color.Black,
                                     cursorColor = Color.Black,
 
                                     )
@@ -424,7 +424,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                     .background(Color.White),
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
                                     containerColor = Color.White,
-                                    textColor = Color.Black,
+                                    focusedTextColor = Color.Black,
                                     cursorColor = Color.Black,
                                 )
                             )
@@ -442,7 +442,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                     .background(Color.White),
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
                                     containerColor = Color.White,
-                                    textColor = Color.Black,
+                                    focusedTextColor = Color.Black,
                                     cursorColor = Color.Black,
                                 )
                             )
@@ -471,7 +471,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                     .background(Color.White),
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
                                     containerColor = Color.White,
-                                    textColor = Color.Black,
+                                    focusedTextColor = Color.Black,
                                     cursorColor = Color.Black
                                 )
                             )
@@ -492,7 +492,7 @@ fun Profile(profileData:ProfileData, navController: NavController) {
                                     .background(Color.White),
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
                                     containerColor = Color.White,
-                                    textColor = Color.Black,
+                                    focusedTextColor = Color.Black,
                                     cursorColor = Color.Black,
                                 )
                             )
