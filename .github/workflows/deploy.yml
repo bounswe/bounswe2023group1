@@ -14,12 +14,9 @@ jobs:
         uses: actions/checkout@v4
         with:
          repository: alitpc25/cmpe451group1configrepo
-         path: './config'
+         path: './resq/backend/resq/project_env_prod'
          token: '${{ secrets.PRIVATE_CONFIG_REPO_TOKEN || github.token }}'
-
-      - name: Copy Config
-        run: |
-          cp config/project_env_prod/* ./project_env_prod/
+         ref: 'main'
 
 #      - name: Decrypt and Extract project_env_prod
 #        env:
