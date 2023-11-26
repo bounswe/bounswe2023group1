@@ -5,29 +5,68 @@ import { Option as BaseOption, optionClasses } from '@mui/base/Option';
 import { styled } from '@mui/system';
 import { Popper as BasePopper } from '@mui/base/Popper';
 import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider, FormControl, InputLabel, FormHelperText } from '@mui/material';
+import { Select as MuiSelect, MenuItem } from '@mui/material';
 
-export default function UnstyledSelectRichOptions() {
+
+const StyledFormControl = styled(FormControl)({
+    marginBottom: '16px', // Match spacing
+    // Include any additional global styles that should apply to all form controls
+});
+
+const StyledSelect = styled(MuiSelect)({
+    '& .MuiOutlinedInput-input': {
+        padding: '10px 14px', // Adjust padding to match TextField
+    },
+    '& .MuiOutlinedInput-notchedOutline': {
+        borderColor: 'rgba(0, 0, 0, 0.23)', // Match TextField border color
+    },
+    '&:hover .MuiOutlinedInput-notchedOutline': {
+        borderColor: '#FF5151', // Change to red on hover
+    },
+    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+        borderColor: '#FF5151', // Change to red when focused
+        borderWidth: '2px', // Match TextField focus border width
+    },
+    // Include additional states like error, disabled, etc.
+});
+
+
+export default function UnstyledSelectRichOptions(props) {
+    const { label, name, value, onChange, error, helperText } = props;
+
     return (
         <ThemeProvider theme={customTheme}>
-            <Select placeholder="Select country…" style={customStyles}>
-                {countries.map((country) => (
-                    <Option key={country.code} value={country.code} label={country.label}>
-                        <img
-                            loading="lazy"
-                            width={20}
-                            height={14}
-                            srcSet={`https://flagcdn.com/w40/${country.code.toLowerCase()}.png 2x`}
-                            src={`https://flagcdn.com/w20/${country.code.toLowerCase()}.png`}
-                            alt={`Flag of ${country.label}`}
-                        />
-                        {country.label} ({country.code}) +{country.phone}
-                    </Option>
-                ))}
-            </Select>
+            <StyledFormControl variant="outlined" fullWidth error={error}>
+                {label && <InputLabel htmlFor={name}>{label}</InputLabel>}
+                <StyledSelect
+                    {...props}
+                    name={name}
+                    value={value}
+                    onChange={onChange}
+                    label={label}
+                    notched={Boolean(value)}
+                >
+                    {countries.map((country) => (
+                        <MenuItem key={country.code} value={country.code}>
+                            <img
+                                loading="lazy"
+                                width={20}
+                                height={14}
+                                srcSet={`https://flagcdn.com/w40/${country.code.toLowerCase()}.png 2x`}
+                                src={`https://flagcdn.com/w20/${country.code.toLowerCase()}.png`}
+                                alt={`Flag of ${country.label}`}
+                            />
+                            {country.label} ({country.code}) +{country.phone}
+                        </MenuItem>
+                    ))}
+                </StyledSelect>
+                {helperText && <FormHelperText>{helperText}</FormHelperText>}
+            </StyledFormControl>
         </ThemeProvider>
     );
 }
+
 
 const customTheme = createTheme({
     palette: {
@@ -66,13 +105,15 @@ Select.propTypes = {
     }),
 };
 
-const blue = {
-    100: '#DAECFF',
-    200: '#99CCF3',
-    400: '#3399FF',
-    500: '#007FFF',
-    600: '#0072E5',
-    900: '#003A75',
+const red = {
+    100: '#FFE5E5', // light red
+    200: '#FFB2B2', // light-medium red
+    300: '#FFB2B2', // light-medium red
+    400: '#FF7A7A', // medium red
+    500: '#FF5151', // true red
+    600: '#FF2828', // medium-dark red
+    700: '#FF2828', // medium-dark red
+    900: '#B20000', // dark red
 };
 
 const grey = {
@@ -91,8 +132,22 @@ const grey = {
 const Button = React.forwardRef(function Button(props, ref) {
     const { ownerState, ...other } = props;
     const [clicked, setClicked] = React.useState(false);
+
+    const handleClick = () => {
+        setClicked(!clicked);
+    };
+
+    const buttonStyle = {
+        ...other.style,
+        border: clicked ? '1px solid red' : '1px solid transparent',
+    };
     return (
-        <StyledButton type="button" {...other} ref={ref}>
+        <StyledButton
+            type="button"
+            {...other}
+            ref={ref}
+            onClick={handleClick}
+            style={buttonStyle}>
             {other.children}
             <UnfoldMoreRoundedIcon />
         </StyledButton>
@@ -114,25 +169,25 @@ const StyledButton = styled('button', { shouldForwardProp: () => true })(
   border-radius: 8px;
   text-align: left;
   line-height: 1.5;
-  background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
-  border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
-  color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+  background: ${theme.palette.mode === 'dark' ? red[900] : '#fff'};
+  border: 1px solid ${theme.palette.mode === 'dark' ? red[700] : red[700]};
+  color: ${theme.palette.mode === 'dark' ? red[300] : red[900]};
   position: relative;
-  box-shadow: 0px 2px 2px ${theme.palette.mode === 'dark' ? grey[900] : grey[50]};
+  box-shadow: 0px 2px 2px ${theme.palette.mode === 'dark' ? red[900] : red[50]};
 
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 120ms;
 
   &:hover {
-    background: ${theme.palette.mode === 'dark' ? grey[800] : grey[50]};
-    border-color: ${theme.palette.mode === 'dark' ? grey[600] : grey[300]};
+    background: ${theme.palette.mode === 'dark' ? red[800] : red[50]};
+    border-color: ${theme.palette.mode === 'dark' ? red[600] : red[300]};
   }
 
   &.${selectClasses.focusVisible} {
     outline: 0;
-    border-color: ${blue[400]};
-    box-shadow: 0 0 0 3px ${theme.palette.mode === 'dark' ? blue[600] : blue[200]};
+    border-color: ${red[400]};
+    box-shadow: 0 0 0 3px ${theme.palette.mode === 'dark' ? red[600] : red[200]};
   }
 
   & > svg {
@@ -157,9 +212,9 @@ const Listbox = styled('ul')(
   border-radius: 12px;
   overflow: auto;
   outline: 0px;
-  background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
-  border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
-  color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+  background: ${theme.palette.mode === 'dark' ? red[900] : '#fff'};
+  border: 1px solid ${theme.palette.mode === 'dark' ? red[700] : red[200]};
+  color: ${theme.palette.mode === 'dark' ? red[300] : red[900]};
   box-shadow: 0px 2px 6px ${theme.palette.mode === 'dark' ? 'rgba(0,0,0, 0.50)' : 'rgba(0,0,0, 0.05)'
         };
   `,
@@ -177,27 +232,27 @@ const Option = styled(BaseOption)(
   }
 
   &.${optionClasses.selected} {
-    background-color: ${theme.palette.mode === 'dark' ? blue[900] : blue[100]};
-    color: ${theme.palette.mode === 'dark' ? blue[100] : blue[900]};
+    background-color: ${theme.palette.mode === 'dark' ? red[900] : red[100]};
+    color: ${theme.palette.mode === 'dark' ? red[100] : red[900]};
   }
 
   &.${optionClasses.highlighted} {
-    background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
-    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+    background-color: ${theme.palette.mode === 'dark' ? red[800] : red[100]};
+    color: ${theme.palette.mode === 'dark' ? red[300] : red[900]};
   }
 
   &.${optionClasses.highlighted}.${optionClasses.selected} {
-    background-color: ${theme.palette.mode === 'dark' ? blue[900] : blue[100]};
-    color: ${theme.palette.mode === 'dark' ? blue[100] : blue[900]};
+    background-color: ${theme.palette.mode === 'dark' ? red[900] : red[100]};
+    color: ${theme.palette.mode === 'dark' ? red[100] : red[900]};
   }
 
   &.${optionClasses.disabled} {
-    color: ${theme.palette.mode === 'dark' ? grey[700] : grey[400]};
+    color: ${theme.palette.mode === 'dark' ? red[700] : red[400]};
   }
 
   &:hover:not(.${optionClasses.disabled}) {
-    background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
-    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+    background-color: ${theme.palette.mode === 'dark' ? red[800] : red[100]};
+    color: ${theme.palette.mode === 'dark' ? red[300] : red[900]};
   }
 
   & img {
