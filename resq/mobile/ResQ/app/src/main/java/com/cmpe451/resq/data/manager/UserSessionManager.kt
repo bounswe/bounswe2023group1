@@ -43,7 +43,7 @@ class UserSessionManager(appContext: Context) {
         editor.putString(USER_EMAIL, userEmail)
         editor.putString(USER_ROLES, rolesJson)
         if (userRoles.isNotEmpty()) {
-            editor.putString(SELECTED_ROLE, userRoles.last())
+            editor.putString(SELECTED_ROLE, userRoles.first())
         }
         editor.putBoolean(KEY_IS_LOGGED_IN, true)
         editor.apply()

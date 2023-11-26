@@ -62,7 +62,6 @@ class LoginViewModel() : ViewModel() {
         )
     }
 
-
     private fun validateLoginInputs(email: String, password: String): Boolean {
         return when {
             email.isBlank() -> {
