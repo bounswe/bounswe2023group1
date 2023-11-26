@@ -89,7 +89,7 @@ fun NavGraph(
             MapScreen(navController, appContext)
         }
         composable(NavigationItem.Request.route) {
-            RequestScreen(navController)
+            RequestScreen(navController, appContext)
         }
         composable(NavigationItem.Resource.route) {
             ResourceScreen(navController)
