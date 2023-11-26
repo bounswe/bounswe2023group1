@@ -1,7 +1,7 @@
 package com.groupa1.resq.controller;
 
 import com.groupa1.resq.config.ResqAppProperties;
-import com.groupa1.resq.entity.Need;
+import com.groupa1.resq.dto.NeedDto;
 import com.groupa1.resq.request.CreateNeedRequest;
 import com.groupa1.resq.request.UpdateNeedRequest;
 import com.groupa1.resq.service.NeedService;
@@ -28,17 +28,17 @@ public class NeedController {
 
     @GetMapping("/viewNeedsByFilter")
     @PreAuthorize("hasRole('FACILITATOR') or hasRole('COORDINATOR')")
-    public ResponseEntity<List<Need>> viewNeedsByFilter(@RequestParam(required = false) BigDecimal longitude,
-                                                       @RequestParam(required = false) BigDecimal latitude,
-                                                       @RequestParam(required = false) String categoryTreeId,
-                                                       @RequestParam(required = false) Long userId) {
+    public ResponseEntity<List<NeedDto>> viewNeedsByFilter(@RequestParam(required = false) BigDecimal longitude,
+                                                           @RequestParam(required = false) BigDecimal latitude,
+                                                           @RequestParam(required = false) String categoryTreeId,
+                                                           @RequestParam(required = false) Long userId) {
         log.info("Viewing needs for location: {}, {}, category: {}, user: {}", longitude, latitude, categoryTreeId, userId);
         return needService.viewNeedsByFilter(longitude, latitude, categoryTreeId, userId);
     }
 
     @PostMapping("/createNeed")
     @PreAuthorize("hasRole('VICTIM') or hasRole('FACILITATOR')")
-    public ResponseEntity<String> createNeed(@RequestParam Long userId, @RequestBody CreateNeedRequest createNeedRequest) {
+    public Long createNeed(@RequestParam Long userId, @RequestBody CreateNeedRequest createNeedRequest) {
         log.info("Creating need for user: {}", userId);
         return needService.save(userId, createNeedRequest);
 
@@ -46,21 +46,21 @@ public class NeedController {
 
     @GetMapping("/viewAllNeeds")
     @PreAuthorize("hasRole('FACILITATOR')")
-    public ResponseEntity<List<Need>> viewAllNeeds() {
+    public ResponseEntity<List<NeedDto>> viewAllNeeds() {
         log.info("Viewing all needs");
         return needService.viewAllNeeds();
     }
 
     @GetMapping("/viewNeed")
     @PreAuthorize("hasRole('VICTIM') or hasRole('FACILITATOR')")
-    public ResponseEntity<Need> viewNeed(@RequestParam Long userId, @RequestParam Long needId) {
+    public ResponseEntity<NeedDto> viewNeed(@RequestParam Long userId, @RequestParam Long needId) {
         log.info("Viewing need with id: {}", needId);
         return needService.viewNeed(userId, needId);
     }
 
     @GetMapping("/viewNeedsByUserId")
     @PreAuthorize("hasRole('VICTIM') or hasRole('FACILITATOR')")
-    public ResponseEntity<List<Need>> viewNeedsByUserId(@RequestParam Long userId) {
+    public ResponseEntity<List<NeedDto>> viewNeedsByUserId(@RequestParam Long userId) {
         log.info("Viewing needs for user: {}", userId);
         return needService.viewNeedsByUserId(userId);
     }
@@ -88,9 +88,9 @@ public class NeedController {
         return needService.cancelNeed(needId);
     }
 
-    @GetMapping("filterByDistance")
+    @GetMapping("/filterByDistance")
     @PreAuthorize("hasRole('FACILITATOR') or hasRole('COORDINATOR')")
-    public ResponseEntity<List<Need>> filterByDistance(@RequestParam BigDecimal longitude,
+    public ResponseEntity<List<NeedDto>> filterByDistance(@RequestParam BigDecimal longitude,
                                                        @RequestParam BigDecimal latitude,
                                                        @RequestParam BigDecimal distance) {
         log.info("Filtering needs by distance");
