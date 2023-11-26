@@ -1,5 +1,7 @@
 package com.groupa1.resq.service;
 
+import com.groupa1.resq.converter.ResourceConverter;
+import com.groupa1.resq.dto.ResourceDto;
 import com.groupa1.resq.entity.Resource;
 import com.groupa1.resq.entity.User;
 import com.groupa1.resq.exception.EntityNotFoundException;
@@ -28,7 +30,10 @@ public class ResourceService {
     @Autowired
     private CategoryTreeNodeService categoryTreeNodeService;
 
-    public ResponseEntity<String> createResource(CreateResourceRequest createResourceRequest) {
+    @Autowired
+    private ResourceConverter resourceConverter;
+
+    public ResponseEntity<Object> createResource(CreateResourceRequest createResourceRequest) {
         if(createResourceRequest.getSenderId() == null) {
             log.error("Sender id is null");
             return ResponseEntity.badRequest().body("Sender id is null");
@@ -49,8 +54,8 @@ public class ResourceService {
         resource.setLatitude(createResourceRequest.getLatitude());
         resource.setQuantity(createResourceRequest.getQuantity());
         resource.setCategoryTreeId(createResourceRequest.getCategoryTreeId());
-        resourceRepository.save(resource);
-        return ResponseEntity.ok("Resource created successfully");
+        Long resourceId = resourceRepository.save(resource).getId();
+        return ResponseEntity.ok(resourceId);
     }
     public ResponseEntity<String> updateResource(CreateResourceRequest createResourceRequest, Long resourceId){
         Resource resource = resourceRepository.findById(resourceId).orElseThrow(() -> new EntityNotFoundException("Resource not found with id: " + resourceId));
@@ -63,9 +68,9 @@ public class ResourceService {
         resourceRepository.save(resource);
         return ResponseEntity.ok("Resource updated successfully");
     }
-    public ResponseEntity<Resource> viewResource(Long resourceId){
+    public ResponseEntity<ResourceDto> viewResource(Long resourceId){
         Resource resource = resourceRepository.findById(resourceId).orElseThrow(() -> new EntityNotFoundException("Resource not found with id: " + resourceId));
-        return ResponseEntity.ok(resource);
+        return ResponseEntity.ok(resourceConverter.convertToDto(resource));
     }
     public ResponseEntity<String> deleteResource(Long resourceId){
         Resource resource = resourceRepository.findById(resourceId).orElseThrow(() -> new EntityNotFoundException("Resource not found with id: " + resourceId));
@@ -73,7 +78,7 @@ public class ResourceService {
         return ResponseEntity.ok("Resource deleted successfully");
     }
 
-    public ResponseEntity<List<Resource>> filterResource(BigDecimal latitude, BigDecimal longitude, String categoryTreeId, Long userId){
+    public ResponseEntity<List<ResourceDto>> filterResource(BigDecimal latitude, BigDecimal longitude, String categoryTreeId, Long userId){
         Specification<Resource> spec = Specification.where(null);
 
         if (longitude != null && latitude != null) {
@@ -88,10 +93,10 @@ public class ResourceService {
         if (userId != null) {
             spec = spec.and(ResourceSpecifications.hasOwnerId(userId));
         }
-        return ResponseEntity.ok(resourceRepository.findAll());
+        return ResponseEntity.ok(resourceRepository.findAll().stream().map(resource -> resourceConverter.convertToDto(resource)).toList());
 
     }
-    public ResponseEntity<List<Resource>> filterByDistance(BigDecimal latitude, BigDecimal longitude, BigDecimal distance){
-        return ResponseEntity.ok(resourceRepository.filterByDistance(latitude, longitude, distance));
+    public ResponseEntity<List<ResourceDto>> filterByDistance(BigDecimal latitude, BigDecimal longitude, BigDecimal distance){
+        return ResponseEntity.ok(resourceRepository.filterByDistance(latitude, longitude, distance).stream().map(resource -> resourceConverter.convertToDto(resource)).toList());
     }
 }

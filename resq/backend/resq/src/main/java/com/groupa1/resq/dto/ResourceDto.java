@@ -1,0 +1,18 @@
+package com.groupa1.resq.dto;
+
+import com.groupa1.resq.entity.enums.EGender;
+import lombok.Data;
+
+import java.math.BigDecimal;
+
+@Data
+public class ResourceDto {
+    private Long id;
+    private Long senderId;
+    private Long receiverId;
+    private String categoryTreeId;
+    private EGender gender;
+    private Integer quantity;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
+}
