@@ -23,7 +23,6 @@ export default function ResourceDetails1() {
     const [selectedMaterialValues, setSelectedMaterialValues] = useState([]);
     const [selectedHumanValues, setSelectedHumanValues] = useState([]);
 
-    // Define the getStyles function here
     const getStyles = (item, selectedItems, theme) => {
         return {
             fontWeight:
@@ -31,28 +30,6 @@ export default function ResourceDetails1() {
                     ? theme.typography.fontWeightRegular
                     : theme.typography.fontWeightMedium,
         };
-    };
-
-    useEffect(() => {
-        // Update the description whenever any relevant data changes
-        handleDescriptionChange();
-    }, [isMaterialResourceChecked, selectedMaterialValues, isHumanResourceChecked, selectedHumanValues]);
-
-    const handleDescriptionChange = () => {
-        let description = "Description:\n";
-
-        if (isMaterialResourceChecked) {
-            description += "Material Resources: " + selectedMaterialValues.join(', ') + "\n";
-        }
-
-        if (isHumanResourceChecked) {
-            description += "Human Resources: " + selectedHumanValues.join(', ') + "\n";
-        }
-
-        updateResourceData({
-            ...resourceData,
-            description: description,
-        });
     };
 
     const handleMaterialChange = (event) => {
