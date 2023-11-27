@@ -65,31 +65,10 @@ export default function Resource() {
         }
     }
 
-    const handleSubmit = async () => {
-        const url = 'http://api.resq.org.tr/resq/api/v1/need/createNeed';
-        const userId = localStorage.getItem('userId');
-
-        axios.post(`${url}?userId=${userId}`, resourceData, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(response => {
-                if (response.status === 200) {
-                    console.log('Resource created successfully:', response.data);
-                    alert('Resource created successfully!');
-                } else {
-                    console.error('Error creating resource:', response.statusText);
-                }
-            })
-            .catch(error => {
-                console.error('Error creating resource:', error);
-            });
-    };
-
-    const handleNext = () => {
+    const handleNext = async () => {
         if (activeStep === steps.length - 1) {
-            handleSubmit();
+            await createResource(resourceData)
+            alert('Resource created successfully!');
         } else {
             setActiveStep(activeStep + 1);
         }
