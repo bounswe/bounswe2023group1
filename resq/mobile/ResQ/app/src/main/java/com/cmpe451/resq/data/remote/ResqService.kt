@@ -14,7 +14,7 @@ import com.cmpe451.resq.data.models.Need
 import com.cmpe451.resq.data.models.ProfileData
 import com.cmpe451.resq.data.models.RegisterRequestBody
 import com.cmpe451.resq.data.models.UserInfoRequest
-import com.cmpe451.resq.data.models.UserInfo
+
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -49,6 +49,7 @@ interface NeedService {
     ): Response<Int>
 
 
+
     @GET("need/filterByDistance")
     fun filterNeedByDistance(
         @Query("latitude") latitude: Double,
@@ -69,12 +70,15 @@ interface AuthService {
 }
 
 interface ProfileService {
-    @GET("user/getUserInfo")
+    @GET("profile/getProfileInfo")
     suspend fun getUserInfo(
         @Query("userId") userId: Int,
         @Header("Authorization") jwtToken: String,
         @Header("X-Selected-Role") role: String
-    ): Response<UserInfoResponse>
+
+    ): Response<ProfileData>
+
+
 
     @POST("user/requestRole")
     suspend fun selectRole(
@@ -85,14 +89,14 @@ interface ProfileService {
     ): Response<String>
 
 
+
     @POST("profile/updateProfile")
     suspend fun updateProfile(
         @Query("userId") userId: Int,
         @Header("Authorization") jwtToken: String,
         @Header("X-Selected-Role") role: String,
         @Body request: UserInfoRequest
-    ): Response<ResponseBody>
-
+    ): Response<String>
 }
 
 class ResqService(appContext: Context) {
@@ -175,17 +179,16 @@ class ResqService(appContext: Context) {
         if (birthDate.isNullOrBlank()) {
             return null
         }
-
-        try {
+        return try {
             val date = LocalDate.parse(birthDate)
             val year = date.year.toString()
             val month = date.monthValue.toString()
             val day = date.dayOfMonth.toString()
 
-            return Triple(year, month, day)
+            Triple(year, month, day)
         } catch (e: DateTimeParseException) {
             //TO DO Handle parsing error if needed
-            return null
+            null
         }
     }
 
@@ -202,42 +205,47 @@ class ResqService(appContext: Context) {
             role = selectedRole
         )
 
-        val parsedDate = parseBirthDate(response.body()?.birth_date)
-        val (parsedYear, parsedMonth, parsedDay) = parsedDate ?: Triple("", "", "")
-        val profileData = ProfileData(
-            name = response.body()?.name, surname = response.body()?.surname,
-            email = response.body()?.email,
-            roles = response.body()?.roles, selectedRole = selectedRole,
-            year = parsedYear, month = parsedMonth, day = parsedDay,
-            city = response.body()?.city, country = response.body()?.country,
-            gender = response.body()?.gender, bloodType = response.body()?.bloodType, height = response.body()?.height.toString(), weight = response.body()?.weight.toString(),
-            phoneNumber = response.body()?.phoneNumber, state = response.body()?.state,
-            emailConfirmed = response.body()?.emailConfirmed, privacyPolicyAccepted = response.body()?.privacyPolicyAccepted
-
+        return ProfileData(
+            name = response.body()?.name,
+            surname = response.body()?.surname,
+            city = response.body()?.city,
+            country = response.body()?.country,
+            gender = response.body()?.gender,
+            bloodType = response.body()?.bloodType,
+            height = response.body()?.height,
+            weight = response.body()?.weight,
+            phoneNumber = response.body()?.phoneNumber,
+            state = response.body()?.state,
+            emailConfirmed = response.body()?.emailConfirmed,
+            privacyPolicyAccepted = response.body()?.privacyPolicyAccepted,
+            birthdate = response.body()?.birthdate.toString(),
         )
-        return profileData
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun updateUserData(profileData: ProfileData): Response<ResponseBody>{
+    suspend fun updateUserData(profileData: ProfileData): Response<String> {
         val token = userSessionManager.getUserToken() ?: ""
         val userId = userSessionManager.getUserId()
         val selectedRole = userSessionManager.getSelectedRole() ?: ""
-        val formattedBirthDate = profileData.getFormattedBirthDate()
+
         val request = UserInfoRequest(
-            name =  profileData.name ?: "",
+            name = profileData.name ?: "",
             surname = profileData.surname ?: "",
-            email = profileData.email ?: "",
-            roles = profileData.roles ?: listOf(),
-            birth_date = formattedBirthDate,
+            birthdate = null,
             country = profileData.country ?: "",
             city = profileData.city ?: "",
             state = profileData.state ?: "",
             bloodType = profileData.bloodType ?: "",
-            height = profileData.height?.toIntOrNull(),
-            weight = profileData.weight?.toIntOrNull(),
+            height = profileData.height,
+            weight = profileData.weight,
             gender = profileData.gender ?: "",
             phoneNumber = profileData.phoneNumber ?: "",
+        )
+        return profileService.updateProfile(
+            userId = userId,
+            jwtToken = "Bearer $token",
+            role = selectedRole,
+            request = request
         )
         val response = profileService.updateProfile(
             userId = userId,
@@ -246,11 +254,8 @@ class ResqService(appContext: Context) {
             request = request
         )
         return response
-
-
-
     }
-
+    
     suspend fun selectRole(requestedRole: String): Response<String> {
         val userId = userSessionManager.getUserId()
         val token = userSessionManager.getUserToken() ?: ""
@@ -262,7 +267,6 @@ class ResqService(appContext: Context) {
             jwtToken = "Bearer $token",
             role = requestedRole
         )
-
         return response
     }
 }

@@ -101,6 +101,12 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
+}
+
 }
 
 secrets{
@@ -109,3 +115,4 @@ secrets{
     ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
     ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
 }
+
