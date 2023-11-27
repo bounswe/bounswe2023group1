@@ -63,8 +63,15 @@ interface ProfileService {
         @Query("userId") userId: Int,
         @Header("Authorization") jwtToken: String,
         @Header("X-Selected-Role") role: String
-    ): Response<UserInfo>
+    ): Response<UserInfoResponse>
 
+    @POST("user/requestRole")
+    suspend fun selectRole(
+        @Query("userId") userId: Int,
+        @Query("role") requestedRole: String,
+        @Header("Authorization") jwtToken: String,
+        @Header("X-Selected-Role") role: String
+    ): Response<String>
 
 
     @POST("profile/updateProfile")
@@ -74,6 +81,7 @@ interface ProfileService {
         @Header("X-Selected-Role") role: String,
         @Body request: UserInfoRequest
     ): Response<ResponseBody>
+
 }
 
 class ResqService(appContext: Context) {
@@ -216,5 +224,18 @@ class ResqService(appContext: Context) {
 
     }
 
+    suspend fun selectRole(requestedRole: String): Response<String> {
+        val userId = userSessionManager.getUserId()
+        val token = userSessionManager.getUserToken() ?: ""
+        val role = userSessionManager.getSelectedRole() ?: ""
 
+        val response = profileService.selectRole(
+            userId = userId,
+            requestedRole = requestedRole,
+            jwtToken = "Bearer $token",
+            role = requestedRole
+        )
+
+        return response
+    }
 }
