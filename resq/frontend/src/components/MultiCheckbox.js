@@ -52,8 +52,8 @@ export const MultiCheckbox = ({name, choices, onChosenChanged}) => {
     };
 
     useEffect(() => {
-        onChosenChanged && onChosenChanged(currentChoices)
-    }, [onChosenChanged, currentChoices])
+        onChosenChanged && onChosenChanged(choices.filter(a => currentChoices.indexOf(a.id) !== -1))
+    }, [onChosenChanged, currentChoices, choices])
 
     return <FormControl sx={{m: 1}}>
         <InputLabel id={label_id}>{name}</InputLabel>
