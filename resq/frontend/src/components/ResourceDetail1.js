@@ -59,7 +59,6 @@ export default function ResourceDetails1() {
         'District Responsible',
     ];
 
-    // Menu properties
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
     const MenuProps = {
