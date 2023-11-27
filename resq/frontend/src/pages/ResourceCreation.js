@@ -11,11 +11,11 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import ResourceAddress from '../components/ResourceAddress';
-import ResourceDetail1 from '../components/ResourceDetail1';
-import ResourceDetail2 from '../components/ResourceDetail2';
+import ResourceAddress from '../components/Resource/ResourceAddress';
+import ResourceDetail1 from '../components/Resource/ResourceDetail1';
+import ResourceDetail2 from '../components/Resource/ResourceDetail2';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { ResourceProvider } from '../components/ResourceContext';
+import { ResourceProvider } from '../components/Resource/ResourceContext';
 import { useResource } from './ResourceContext';
 import axios from 'axios';
 
