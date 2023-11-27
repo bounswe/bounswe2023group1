@@ -10,6 +10,7 @@ import com.cmpe451.resq.data.models.CreateNeedRequestBody
 import com.cmpe451.resq.data.models.CreateResourceRequestBody
 import com.cmpe451.resq.data.models.LoginRequestBody
 import com.cmpe451.resq.data.models.LoginResponse
+import com.cmpe451.resq.data.models.Need
 import com.cmpe451.resq.data.models.ProfileData
 import com.cmpe451.resq.data.models.RegisterRequestBody
 import com.cmpe451.resq.data.models.UserInfoRequest
@@ -46,6 +47,16 @@ interface NeedService {
         @Header("X-Selected-Role") role: String,
         @Body requestBody: CreateNeedRequestBody
     ): Response<Int>
+
+
+    @GET("need/filterByDistance")
+    fun filterNeedByDistance(
+        @Query("latitude") latitude: Double,
+        @Query("longitude") longitude: Double,
+        @Query("distance") distance: Double,
+        @Header("Authorization") jwtToken: String,
+        @Header("X-Selected-Role") role: String,
+    ): Response<List<Need>>
 
 }
 
@@ -135,6 +146,22 @@ class ResqService(appContext: Context) {
             jwtToken = "Bearer $token",
             role = "VICTIM",
             requestBody = request
+        )
+    }
+
+    suspend fun filterNeedByDistance(
+        latitude: Double,
+        longitude: Double,
+        distance: Double
+    ): Response<List<Need>> {
+        val selectedRole = userSessionManager.getSelectedRole() ?: ""
+        val token = userSessionManager.getUserToken() ?: ""
+        return needService.filterNeedByDistance(
+            latitude = latitude,
+            longitude = longitude,
+            distance = distance,
+            role = selectedRole,
+            jwtToken = "Bearer $token"
         )
     }
 

@@ -45,19 +45,24 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.cmpe451.resq.viewmodels.ProfileViewModel
 import com.cmpe451.resq.data.models.ProfileData
+import com.cmpe451.resq.viewmodels.ProfileViewModel
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -65,6 +70,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.KeyboardType
 import com.cmpe451.resq.data.manager.UserSessionManager
+
 import java.time.Year
 import androidx.compose.material.MaterialTheme.typography
 import kotlinx.coroutines.launch
@@ -326,7 +332,6 @@ fun Profile(profileData:ProfileData, navController: NavController, availableRole
                             }
 
 
-
                             surname?.let {
                                 OutlinedTextField(
                                     value = it,
@@ -356,7 +361,6 @@ fun Profile(profileData:ProfileData, navController: NavController, availableRole
                                 .padding(4.dp)
 
                         ) {
-
                             email?.let {
                                 val isValidEmail =
                                     android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()
@@ -394,7 +398,6 @@ fun Profile(profileData:ProfileData, navController: NavController, availableRole
                                 .fillMaxWidth()
                                 .padding(4.dp)
                         ) {
-
                             phoneNumber?.let {
                                 OutlinedTextField(
                                     value = it,
@@ -429,7 +432,6 @@ fun Profile(profileData:ProfileData, navController: NavController, availableRole
                                 .fillMaxWidth()
                                 .padding(4.dp)
                         ) {
-
                             country?.let {
                                 OutlinedTextField(
                                     value = it,
