@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Map, Marker, ZoomControl} from 'pigeon-maps';
 import {type_colors} from "../Colors";
 import {AnnotationIcon, MarkerIcon} from "./MapIcons";
@@ -17,8 +17,13 @@ function mapboxProvider(x, y, z, dpr) {
 
 const marker_order = ["Annotation", "Request", "Resource"]
 
-export default function DisasterMap({onPointSelected, markers = [], mapCenter, setMapCenter, onBoundsChanged}) {
+export default function DisasterMap({onPointSelected, markers = [], center}) {
     const [zoom, setZoom] = useState(6.5);
+    const [mapCenter, setMapCenter] = useState([39, 34.5])
+
+    useEffect(() => {
+        center && setMapCenter(center);
+    }, [center])
 
     const renderMarker = (marker) => {
         return (
@@ -31,8 +36,7 @@ export default function DisasterMap({onPointSelected, markers = [], mapCenter, s
                     event.preventDefault()
                 }}
             >
-                {marker.type === "Annotation" ? <AnnotationIcon icon={marker.category}/> :
-                    <MarkerIcon color={type_colors[marker.type]}/>}
+                {marker.type==="Annotation" ? <AnnotationIcon icon={marker.category}/> : <MarkerIcon color={type_colors[marker.type]}/>}
             </Marker>
         );
     };
@@ -52,14 +56,13 @@ export default function DisasterMap({onPointSelected, markers = [], mapCenter, s
                         onPointSelected(null);
                         event.preventDefault()
                     }}
-                    onBoundsChanged={({center, zoom, bounds}) => {
+                    onBoundsChanged={({center, zoom}) => {
                         setMapCenter(center)
                         setZoom(zoom)
-                        onBoundsChanged(bounds)
                     }}>
                     <ZoomControl/>
                     {markers
-                        .sort(({type}) => -marker_order.indexOf(type))
+                        .sort(({type})=> -marker_order.indexOf(type))
                         .map(renderMarker)}
                 </Map>
             </div>

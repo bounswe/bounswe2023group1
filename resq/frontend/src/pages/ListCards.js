@@ -7,7 +7,7 @@ import {type_colors} from "../Colors";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import styled from "styled-components";
-import {AnnotationIcon} from "./MapIcons";
+import {AnnotationIcon} from "../components/MapIcons";
 
 const ExpandMore = styled(IconButton)`
   transform: ${({expand}) => !expand ? 'rotate(0deg)' : 'rotate(180deg)'};
@@ -34,7 +34,7 @@ async function getAddress(latitude, longitude) {
 }
 
 
-export const AnnotationCard = ({item: {title, short_description, long_description, latitude, longitude, category, date}}) => {
+export const AnnotationCard = ({item: {title, short_description, long_description, latitude, longitude, category}}) => {
     const [expanded, setExpanded] = useState(false);
     const [locationName, setLocationName] = useState('');
 
@@ -61,6 +61,12 @@ export const AnnotationCard = ({item: {title, short_description, long_descriptio
             </Typography>
         </CardContent>
         <OffsetActions disableSpacing>
+            {/*<IconButton aria-label="add to favorites">
+                <FavoriteIcon/>
+            </IconButton>
+            <IconButton aria-label="share">
+                <ShareIcon/>
+            </IconButton>*/}
             <ExpandMore
                 expand={expanded}
                 onClick={() => setExpanded(!expanded)}
@@ -72,8 +78,6 @@ export const AnnotationCard = ({item: {title, short_description, long_descriptio
         </OffsetActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
-                Added on: {date}
-                <br/>
                 {long_description}
             </CardContent>
         </Collapse>
