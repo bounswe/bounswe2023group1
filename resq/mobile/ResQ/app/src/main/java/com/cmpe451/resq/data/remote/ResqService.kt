@@ -132,7 +132,7 @@ class ResqService(appContext: Context) {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun getUserData(): ProfileData {
+    suspend fun getUserInfo(): ProfileData {
         val token = userSessionManager.getUserToken() ?: ""
 
         val userId = userSessionManager.getUserId()
