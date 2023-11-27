@@ -27,7 +27,7 @@ const customTheme = createTheme({
     },
 });
 
-export default function CreateResourceForm() {
+export default function ResourceAddress() {
     const { resourceData, setResourceData } = useContext(ResourceContext);
     const [latitude, setLatitude] = useState('');
     const [longitude, setLongitude] = useState('');
@@ -64,34 +64,6 @@ export default function CreateResourceForm() {
         handleGeocode();
     }, [resourceData.address1, resourceData.city, resourceData.state, resourceData.country]);
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        const payload = {
-            ...resourceData,
-            latitude: latitude,
-            longitude: longitude,
-        };
-
-        try {
-            const response = await fetch('YOUR_BACKEND_API_ENDPOINT', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-            });
-
-            if (response.ok) {
-                console.log('Resource Data submitted successfully:', payload);
-            } else {
-                console.error('Error submitting Resource Data to the backend');
-            }
-        } catch (error) {
-            console.error('HTTP request error:', error);
-        }
-    };
-
     const handleChange = (event) => {
         const { name, value } = event.target;
         setResourceData((prevResourceData) => ({
@@ -120,7 +92,7 @@ export default function CreateResourceForm() {
                         Resource Delivery Address
                     </Typography>
                     <React.Fragment>
-                        <form onSubmit={handleSubmit}>
+                        <form>
                             <Grid container spacing={3}>
                                 <Grid item xs={12}>
                                     <TextField
