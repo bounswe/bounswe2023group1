@@ -14,8 +14,6 @@ import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import disasterImage from '../../disaster.png';
-import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import { ResourceContext } from './ResourceContext';
@@ -29,16 +27,14 @@ const customTheme = createTheme({
     },
 });
 
-export default function ResourceAddress() {
-    const GOOGLE_API_KEY = "AIzaSyCehlfJwJ-V_xOWZ9JK3s0rcjkV2ga0DVg";
-
+export default function CreateResourceForm() {
     const { resourceData, setResourceData } = useContext(ResourceContext);
     const [latitude, setLatitude] = useState('');
     const [longitude, setLongitude] = useState('');
 
     const handleGeocode = async () => {
         const address = `${resourceData.address1}, ${resourceData.city}, ${resourceData.state}, ${resourceData.country}`;
-        const apiKey = 'YOUR_GOOGLE_API_KEY';
+        const apiKey = 'AIzaSyCehlfJwJ-V_xOWZ9JK3s0rcjkV2ga0DVg';
 
         try {
             const response = await fetch(
@@ -68,11 +64,32 @@ export default function ResourceAddress() {
         handleGeocode();
     }, [resourceData.address1, resourceData.city, resourceData.state, resourceData.country]);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log('Resource Data:', resourceData);
-        console.log('Latitude:', latitude);
-        console.log('Longitude:', longitude);
+
+        const payload = {
+            ...resourceData,
+            latitude: latitude,
+            longitude: longitude,
+        };
+
+        try {
+            const response = await fetch('YOUR_BACKEND_API_ENDPOINT', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (response.ok) {
+                console.log('Resource Data submitted successfully:', payload);
+            } else {
+                console.error('Error submitting Resource Data to the backend');
+            }
+        } catch (error) {
+            console.error('HTTP request error:', error);
+        }
     };
 
     const handleChange = (event) => {
