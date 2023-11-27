@@ -26,6 +26,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -58,11 +61,10 @@ fun RequestScreen(
     val selectedCategoryState = viewModel.selectedCategory
     val categories = viewModel.categories.value
 
-
-    val priorities = listOf("HIGH", "MEDIUM", "LOW")
-    var selectedPriority by remember { mutableStateOf(viewModel.selectedPriority.value) }
-
+    var description by remember { mutableStateOf("") }
     var quantity by remember { mutableStateOf("") }
+
+    val snackbarHostState = remember { SnackbarHostState() }
 
     Column(
         modifier = Modifier
@@ -132,22 +134,18 @@ fun RequestScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                DropdownMenuComponent(
-                    label = "Priority",
-                    items = priorities,
-                    selectedItem = selectedPriority,
-                    itemToString = { it },
-                    onItemSelected = { priority ->
-                        selectedPriority = priority
-                        viewModel.updatePriority(priority)
-                    }
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text("Description") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                    modifier = Modifier.fillMaxWidth()
                 )
-
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 OutlinedTextField(
-                    value = quantity, // you can bind this to a state variable to store the quantity
+                    value = quantity,
                     onValueChange = { quantity = it },
                     label = { Text("Quantity") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -158,7 +156,7 @@ fun RequestScreen(
 
                 // Enter Button
                 Button(
-                    onClick = { viewModel.onEnter() },
+                    onClick = { viewModel.onEnter(description, quantity, appContext) },
                     colors = ButtonDefaults.buttonColors(backgroundColor = LightGreen),
                     shape = RoundedCornerShape(50)
                 ) {
@@ -166,6 +164,16 @@ fun RequestScreen(
                 }
             }
         }
+        // Success and Error messages
+        if (viewModel.createNeedResponse.value != null) {
+            LaunchedEffect(key1 = viewModel.createNeedResponse.value) {
+                snackbarHostState.showSnackbar(
+                    message = "Need created successfully.",
+                    duration = SnackbarDuration.Long
+                )
+            }
+        }
+        SnackbarHost(hostState = snackbarHostState)
     }
 }
 

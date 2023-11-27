@@ -4,6 +4,7 @@ import com.groupa1.resq.entity.enums.EGender;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 public class ResourceDto {
@@ -15,4 +16,5 @@ public class ResourceDto {
     private Integer quantity;
     private BigDecimal latitude;
     private BigDecimal longitude;
+    private LocalDateTime createdDate;
 }

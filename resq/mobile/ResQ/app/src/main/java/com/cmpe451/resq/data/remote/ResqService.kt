@@ -4,6 +4,7 @@ import android.content.Context
 import com.cmpe451.resq.data.Constants
 import com.cmpe451.resq.data.manager.UserSessionManager
 import com.cmpe451.resq.data.models.CategoryNode
+import com.cmpe451.resq.data.models.CreateNeedRequestBody
 import com.cmpe451.resq.data.models.LoginRequestBody
 import com.cmpe451.resq.data.models.LoginResponse
 import com.cmpe451.resq.data.models.ProfileData
@@ -26,9 +27,11 @@ interface CategoryTreeNodeService {
 interface NeedService {
     @POST("need/createNeed")
     suspend fun createNeed(
+        @Query("userId") userId: Int,
         @Header("Authorization") jwtToken: String,
-        @Header("X-Selected-Role") role: String
-        )
+        @Header("X-Selected-Role") role: String,
+        @Body requestBody: CreateNeedRequestBody
+    ): Response<Int>
 }
 
 interface AuthService {
@@ -55,6 +58,7 @@ class ResqService(appContext: Context) {
         .build()
 
     private val categoryTreeNodeService: CategoryTreeNodeService = retrofit.create(CategoryTreeNodeService::class.java)
+    private val needService: NeedService = retrofit.create(NeedService::class.java)
     private val authService: AuthService = retrofit.create(AuthService::class.java)
     private val profileService: ProfileService = retrofit.create(ProfileService::class.java)
 
@@ -71,14 +75,28 @@ class ResqService(appContext: Context) {
         )
     }
 
+    // Need methods
+    suspend fun createNeed(request: CreateNeedRequestBody): Response<Int> {
+        val userId = userSessionManager.getUserId()
+        val token = userSessionManager.getUserToken() ?: ""
+        val selectedRole = userSessionManager.getSelectedRole() ?: ""
+
+        return needService.createNeed(
+            userId = userId,
+            jwtToken = "Bearer $token",
+            role = selectedRole,
+            requestBody = request
+        )
+    }
+
     // Auth methods
     suspend fun login(request: LoginRequestBody): Response<LoginResponse> = authService.login(request)
     suspend fun register(request: RegisterRequestBody): Response<ResponseBody> = authService.register(request)
 
     // Profile methods
     suspend fun getUserInfo(): ProfileData {
-        val token = userSessionManager.getUserToken() ?: ""
         val userId = userSessionManager.getUserId()
+        val token = userSessionManager.getUserToken() ?: ""
         val selectedRole = userSessionManager.getSelectedRole() ?: ""
 
         val response = profileService.getUserInfo(

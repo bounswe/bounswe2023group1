@@ -12,7 +12,9 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import RequestAddress from '../components/RequestAddress';
-import RequestDetails from '../components/RequestDetails';
+import RequestDetails1 from '../components/RequestDetails1';
+import RequestDetails2 from '../components/RequestDetails2';
+import RequestDetails3 from '../components/RequestDetails3';
 import RequestReview from '../components/RequestReview';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -40,15 +42,19 @@ const customTheme = createTheme({
 });
 
 
-const steps = ['Request address', 'Request details', 'Review'];
+const steps = ['Request address', 'Recurrent Needs', 'Clothing Needs', 'Further Needs', 'Request Review'];
 
 function getStepContent(step) {
     switch (step) {
         case 0:
             return <RequestAddress />;
         case 1:
-            return <RequestDetails />;
+            return <RequestDetails1 />;
         case 2:
+            return <RequestDetails2 />;
+        case 3:
+            return <RequestDetails3 />;
+        case 4:
             return <RequestReview />;
         default:
             throw new Error('Unknown step');

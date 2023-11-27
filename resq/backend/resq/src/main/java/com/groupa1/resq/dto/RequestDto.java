@@ -5,6 +5,7 @@ import com.groupa1.resq.entity.enums.EUrgency;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -17,5 +18,6 @@ public class RequestDto {
     private BigDecimal latitude;
     private BigDecimal longitude;
     private String description;
+    private LocalDateTime createdDate;
 
 }

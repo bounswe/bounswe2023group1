@@ -144,20 +144,7 @@ const mock_markers = [
                 quantity: 500,
             },
         ],
-    },
-    ...[...Array(20).keys()].map(i =>
-        [...Array(20).keys()].map(j => (
-            {
-                type: "Request",
-                latitude: 37 + 0.5 * i,
-                longitude: 31 + 0.5 * j,
-                requester: {
-                    name: "Müslüm",
-                    surname: "Ertürk"
-                },
-                urgency: "HIGH",
-                needs: []
-            }))).flat()
+    }
 ]
 
 function getAllCategories(item) {

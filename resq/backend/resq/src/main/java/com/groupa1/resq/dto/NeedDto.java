@@ -4,6 +4,7 @@ import com.groupa1.resq.entity.enums.ENeedStatus;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 public class NeedDto {
@@ -16,4 +17,5 @@ public class NeedDto {
     private BigDecimal longitude;
     private Long requestId;
     private ENeedStatus status;
+    private LocalDateTime createdDate;
 }

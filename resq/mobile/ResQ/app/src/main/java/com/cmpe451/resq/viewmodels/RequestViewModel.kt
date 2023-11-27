@@ -5,9 +5,12 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cmpe451.resq.data.manager.UserSessionManager
 import com.cmpe451.resq.data.models.CategoryNode
+import com.cmpe451.resq.data.models.CreateNeedRequestBody
+import com.cmpe451.resq.data.models.LoginRequestBody
+import com.cmpe451.resq.data.models.LoginResponse
 import com.cmpe451.resq.data.remote.ResqService
+import com.cmpe451.resq.utils.NavigationItem
 import kotlinx.coroutines.launch
 
 class RequestViewModel : ViewModel() {
@@ -29,11 +32,8 @@ class RequestViewModel : ViewModel() {
     private val _items = mutableStateOf<List<CategoryNode>>(emptyList())
     val items: State<List<CategoryNode>> = _items
 
-    private val _selectedPriority = mutableStateOf("LOW")
-    val selectedPriority: State<String> = _selectedPriority
-
-    private val _quantity = mutableStateOf<String?>(null)
-    val quantity: State<String?> = _quantity
+    private val _createNeedResponse = mutableStateOf<String?>(null)
+    val createNeedResponse: State<String?> = _createNeedResponse
 
     fun updateCategory(category: CategoryNode) {
         _selectedCategory.value = category
@@ -45,13 +45,8 @@ class RequestViewModel : ViewModel() {
         fetchItemsForType(type.id)
     }
 
-
     fun updateItem(item: CategoryNode) {
         _selectedItem.value = item
-    }
-
-    fun updatePriority(priority: String) {
-        _selectedPriority.value = priority
     }
 
     private fun fetchTypesForCategory(categoryId: Int) {
@@ -82,6 +77,38 @@ class RequestViewModel : ViewModel() {
         }
     }
 
-    fun onEnter() {
+    fun onEnter(description: String, quantity: String, appContext: Context) {
+        viewModelScope.launch {
+            val result = getCreateNeedResponse(description, quantity, appContext)
+
+            if (result.isSuccess) {
+                _createNeedResponse.value = result.getOrNull().toString()
+            } else {
+                _createNeedResponse.value = result.exceptionOrNull()?.message
+            }
+        }
+    }
+
+    private suspend fun getCreateNeedResponse(description: String, quantity: String, appContext: Context): Result<Int> {
+        val api = ResqService(appContext)
+        val categoryId = _selectedItem.value?.id?.toString() ?: _selectedType.value?.id?.toString() ?: ""
+
+        if (categoryId.isNotEmpty()) {
+            val requestBody = CreateNeedRequestBody(
+                description = description,
+                latitude = 0.0,
+                longitude = 0.0,
+                categoryTreeId = categoryId,
+                quantity = quantity.toIntOrNull() ?: 0
+            )
+            val response = api.createNeed(requestBody)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    return Result.success(it)
+                }
+            }
+            return Result.failure(Throwable(response.message()))
+        }
+        return Result.failure(Throwable(message = "No category"))
     }
 }
