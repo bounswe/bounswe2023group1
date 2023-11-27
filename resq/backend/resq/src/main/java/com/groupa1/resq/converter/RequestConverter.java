@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class RequestConverter {
@@ -37,6 +36,7 @@ public class RequestConverter {
         requestDto.setLongitude(request.getLongitude());
         requestDto.setStatus(request.getStatus());
         requestDto.setDescription(request.getDescription());
+        requestDto.setCreatedDate(request.getCreatedAt());
         return requestDto;
     }
 
@@ -52,6 +52,7 @@ public class RequestConverter {
         request.setUrgency(requestDto.getUrgency());
         request.setStatus(requestDto.getStatus());
         request.setDescription(requestDto.getDescription());
+        request.setCreatedAt(requestDto.getCreatedDate());
         return request;
     }
 
