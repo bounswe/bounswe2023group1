@@ -1,24 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography, Grid, TextField } from '@mui/material';
-import { useResource } from './ResourceContext';
-import { useContext } from 'react';
 import { ResourceContext } from './ResourceContext';
+import { useContext } from 'react';
 
-export default function ResourceDetail2() {
-    const { resourceData, setResourceData } = useContext(ResourceContext);
-
-    const { updateResourceData } = useResource();
+export default function ResourceDetail2({ onQuantityChange }) {
+    const { resourceData } = useContext(ResourceContext);
 
     const [materialQuantity, setMaterialQuantity] = useState('');
     const [materialDescription, setMaterialDescription] = useState('');
 
-    const handleQuantityChange = (quantityValue) => {
-        updateResourceData({
-            ...resourceData,
-            quantity: parseInt(quantityValue),
-            description: materialDescription,
-        });
-    };
+    useEffect(() => {
+        onQuantityChange(materialQuantity);
+    }, [materialQuantity, onQuantityChange]);
 
     return (
         <React.Fragment>
@@ -32,10 +25,7 @@ export default function ResourceDetail2() {
                         variant="outlined"
                         fullWidth
                         value={materialQuantity}
-                        onChange={(event) => {
-                            setMaterialQuantity(event.target.value);
-                            handleQuantityChange(event.target.value);
-                        }}
+                        onChange={(event) => setMaterialQuantity(event.target.value)}
                     />
                 </Grid>
                 <Grid item xs={12}>
