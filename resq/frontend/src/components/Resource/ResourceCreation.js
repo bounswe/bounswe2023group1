@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { createContext, useState, useContext } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -11,13 +11,13 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import ResourceAddress from '../components/Resource/ResourceAddress';
-import ResourceDetail1 from '../components/Resource/ResourceDetail1';
-import ResourceDetail2 from '../components/Resource/ResourceDetail2';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {ResourceProvider, useResource} from '../components/Resource/ResourceContext';
 import axios from 'axios';
 
+import { ResourceProvider, useResource } from './ResourceContext';
+import ResourceDetail1 from "./ResourceDetail1";
+import ResourceDetail2 from "./ResourceDetail2";
+import ResourceAddress from "./ResourceAddress";
 
 function Copyright(props) {
     return (
@@ -41,7 +41,6 @@ const customTheme = createTheme({
         },
     },
 });
-
 
 const steps = ['Resource delivery address', 'Type of Resource', 'Resource Details'];
 
@@ -84,7 +83,6 @@ export default function Resource() {
             });
     };
 
-
     const handleNext = () => {
         if (activeStep === steps.length - 1) {
             handleSubmit();
@@ -93,11 +91,9 @@ export default function Resource() {
         }
     };
 
-
     const handleBack = () => {
         setActiveStep(activeStep - 1);
     };
-
 
     return (
         <ResourceProvider>

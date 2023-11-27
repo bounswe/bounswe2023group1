@@ -1,42 +1,34 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     Typography,
     Grid,
     FormControlLabel,
     Checkbox,
     FormControl,
+    InputLabel,
     Select,
     MenuItem,
     OutlinedInput,
     Autocomplete, TextField
 } from '@mui/material';
-import {createTheme} from '@mui/material/styles';
-import {useTheme} from '@mui/material/styles';
-import {useResource} from './ResourceContext';
-import {useContext} from 'react';
-import {ResourceContext} from './ResourceContext';
+import { createTheme } from '@mui/material/styles';
+import { Theme, useTheme } from '@mui/material/styles';
+import { useResource } from './ResourceContext';
+import { useContext } from 'react';
+import { ResourceContext } from './ResourceContext';
 import {useQuery} from "@tanstack/react-query";
 import {getCategoryTree} from "../../AppService";
 
-export default function ResourceDetails1() {
-    const {resourceData, setResourceData} = useContext(ResourceContext);
+export default function ResourceDetails1({ onDescriptionChange }) {
+    const { materialneeds, humanResources } = useContext(ResourceContext);
     const categoryTree = useQuery({queryKey: ['categoryTree'], queryFn: getCategoryTree})
 
-    const handleDescriptionChange = (descriptionValue) => {
-        setResourceData({
-            ...resourceData,
-            description: descriptionValue,
-        });
-    };
-
-    const {updateResourceData} = useResource();
     const [isMaterialResourceChecked, setIsMaterialResourceChecked] = useState(false);
     const [isHumanResourceChecked, setIsHumanResourceChecked] = useState(false);
 
     const [selectedMaterialValue, setSelectedMaterial] = useState(null);
     const [selectedHumanValues, setSelectedHumanValues] = useState([]);
 
-    // Define the getStyles function here
     const getStyles = (item, selectedItems, theme) => {
         return {
             fontWeight:
@@ -50,28 +42,15 @@ export default function ResourceDetails1() {
         setSelectedHumanValues(event.target.value);
     };
 
-    const humanResources = [
-        'Doctor',
-        'Nurse',
-        'Translator',
-        'Rescue Team',
-        'Lorry Driver',
-        'Food Service',
-        'District Responsible',
-    ];
-
-    const ITEM_HEIGHT = 48;
-    const ITEM_PADDING_TOP = 8;
-    const MenuProps = {
-        PaperProps: {
-            style: {
-                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-                width: 250,
-            },
-        },
-    };
-
     const theme = useTheme();
+
+    useEffect(() => {
+        const description = {
+            material: (isMaterialResourceChecked && selectedMaterialValue) || '',
+            human: isHumanResourceChecked ? selectedHumanValues.join(', ') : '',
+        };
+        onDescriptionChange(description);
+    }, [isMaterialResourceChecked, selectedMaterialValues, isHumanResourceChecked, selectedHumanValues, onDescriptionChange]);
 
     const comboBoxItems = (categoryTree.data?.getLeafCategories() || [])
         .map(cat => ({label: cat.data, id: cat.id}))
@@ -81,7 +60,6 @@ export default function ResourceDetails1() {
         });
 
     return (
-
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
                 Resource Type
@@ -89,8 +67,7 @@ export default function ResourceDetails1() {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <FormControlLabel
-                        control={<Checkbox color="primary" name="materialresource" checked={isMaterialResourceChecked}
-                                           onChange={(e) => setIsMaterialResourceChecked(e.target.checked)}/>}
+                        control={<Checkbox color="primary" name="materialresource" checked={isMaterialResourceChecked} onChange={(e) => setIsMaterialResourceChecked(e.target.checked)} />}
                         label="Material Resource"
                     />
                     {isMaterialResourceChecked && (
@@ -113,19 +90,18 @@ export default function ResourceDetails1() {
                 </Grid>
                 <Grid item xs={12}>
                     <FormControlLabel
-                        control={<Checkbox color="primary" name="humanresource" checked={isHumanResourceChecked}
-                                           onChange={(e) => setIsHumanResourceChecked(e.target.checked)}/>}
+                        control={<Checkbox color="primary" name="humanresource" checked={isHumanResourceChecked} onChange={(e) => setIsHumanResourceChecked(e.target.checked)} />}
                         label="Human Resource"
                     />
                     {isHumanResourceChecked && (
                         <>
-                            <FormControl sx={{m: 1, width: 300, mt: 3}}>
+                            <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
                                 <Select
                                     multiple
                                     displayEmpty
                                     value={selectedHumanValues}
                                     onChange={handleHumanChange}
-                                    input={<OutlinedInput/>}
+                                    input={<OutlinedInput />}
                                     renderValue={(selected) => {
                                         if (selected.length === 0) {
                                             return <em>Choose human resource type</em>;
@@ -133,7 +109,7 @@ export default function ResourceDetails1() {
                                         return selected.join(', ');
                                     }}
                                     MenuProps={MenuProps}
-                                    inputProps={{'aria-label': 'Without label'}}
+                                    inputProps={{ 'aria-label': 'Without label' }}
                                 >
                                     <MenuItem disabled value="">
                                         <em>Choose human resource type</em>

@@ -1,25 +1,17 @@
-import React, { useState } from 'react';
-import { Typography, Grid, FormControlLabel, Checkbox, TextField } from '@mui/material';
-import { useResource } from './ResourceContext';
+import React, { useState, useEffect } from 'react';
+import { Typography, Grid, TextField } from '@mui/material';
+import { ResourceContext } from './ResourceContext';
+import { useContext } from 'react';
 
-export default function ResourceDetail2() {
-    const { updateResourceData } = useResource();
-    const [isMaterialResourceChecked, setIsMaterialResourceChecked] = useState(false);
-    const [isHumanResourceChecked, setIsHumanResourceChecked] = useState(false);
+export default function ResourceDetail2({ onQuantityChange }) {
+    const { resourceData } = useContext(ResourceContext);
 
     const [materialQuantity, setMaterialQuantity] = useState('');
     const [materialDescription, setMaterialDescription] = useState('');
 
-    const [humanQuantity, setHumanQuantity] = useState('');
-    const [humanDescription, setHumanDescription] = useState('');
-
-    const handleMaterialCheckboxChange = (event) => {
-        setIsMaterialResourceChecked(event.target.checked);
-    };
-
-    const handleHumanCheckboxChange = (event) => {
-        setIsHumanResourceChecked(event.target.checked);
-    };
+    useEffect(() => {
+        onQuantityChange(materialQuantity);
+    }, [materialQuantity, onQuantityChange]);
 
     return (
         <React.Fragment>
