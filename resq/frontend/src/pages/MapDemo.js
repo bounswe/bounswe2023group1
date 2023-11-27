@@ -1,4 +1,3 @@
-// noinspection JSUnusedLocalSymbols
 
 import * as React from 'react';
 import { useEffect, useState } from 'react';
@@ -144,20 +143,29 @@ const mock_markers = [
                 quantity: 500,
             },
         ],
-    }
+    },
+    ...[...Array(20).keys()].map(i =>
+        [...Array(20).keys()].map(j => (
+            {
+                type: "Request",
+                latitude: 37 + 0.5 * i,
+                longitude: 31 + 0.5 * j,
+                requester: {
+                    name: "Müslüm",
+                    surname: "Ertürk"
+                },
+                urgency: "HIGH",
+                needs: []
+            }))).flat()
 ]
 
 function getAllCategories(item) {
-    // Extract categories based on the type of item
     switch (item.type) {
         case "Annotation":
-            // Annotations may have a single category
             return [item?.category];
         case "Resource":
-            // Resources may have multiple categories
             return item.resources.map(resource => resource?.category);
         case "Request":
-            // Requests may have multiple needs, each with its own category
             return item.needs.map(need => need?.category);
         default:
             return [];
@@ -213,7 +221,6 @@ const makeFilterByBounds = ({ ne: [ne_lat, ne_lng], sw: [sw_lat, sw_lng] }) =>
 
 
 export default function MapDemo() {
-    // eslint-disable-next-line no-unused-vars
     const [allMarkers, setAllMarkers] = useState(mock_markers)
     const [shownMarkers, setShownMarkers] = useState(allMarkers)
     const [selectedPoint, setSelectedPoint] = useState(null)
@@ -270,7 +277,6 @@ export default function MapDemo() {
             .filter(makeFilterByBounds(mapBounds))
     ), [allMarkers, amountFilter, categoryFilter, dateFromFilter, dateToFilter, mapBounds, typeFilter])
 
-    // noinspection JSValidateTypes
     return (
         <ThemeProvider theme={customTheme}>
             <Container maxWidth="100%" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
@@ -323,13 +329,11 @@ export default function MapDemo() {
                         {shownMarkers.filter(marker => marker.type !== 'Annotation').map((marker, index) => {
                             const SelectedCard = cards[marker.type];
                             const locationName = locationNames[`${marker.latitude},${marker.longitude}`] || 'Loading...';
-                            return ( // Add this return statement
-                                <SelectedCard
-                                    item={{ ...marker, locationName }}
-                                    onClick={() => setSelectedPoint(marker)}
-                                    key={`${marker.type}-${index}`}
-                                />
-                            );
+                            <SelectedCard
+                                item={{ ...marker, locationName }}
+                                onClick={() => setSelectedPoint(marker)}
+                                key={`${marker.type}-${index}`}
+                            />
                         })}
 
                     </Box>
