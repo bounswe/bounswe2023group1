@@ -126,7 +126,11 @@ export function viewAllRequests() {
 }
 
 export function createResource(createResourceRequest) {
-    return axios.post(`${RESOURCE_API_BASE_URL}/createResource`, createResourceRequest);
+    return axios.post(`${RESOURCE_API_BASE_URL}/createResource`, createResourceRequest, {
+        headers: {
+            "X-Selected-Role": "RESPONDER"
+        },
+    });
 }
 
 export function getAllResources() {

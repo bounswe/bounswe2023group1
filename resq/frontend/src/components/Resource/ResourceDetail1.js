@@ -19,6 +19,16 @@ import {ResourceContext} from './ResourceContext';
 import {useQuery} from "@tanstack/react-query";
 import {getCategoryTree} from "../../AppService";
 
+const humanResources = [
+    'Doctor',
+    'Nurse',
+    'Translator',
+    'Rescue Team',
+    'Lorry Driver',
+    'Food Service',
+    'District Responsible',
+];
+
 export default function ResourceDetails1({resourceData, setResourceData}) {
 
     const ITEM_HEIGHT = 48;
@@ -57,7 +67,7 @@ export default function ResourceDetails1({resourceData, setResourceData}) {
 
     useEffect(() => {
         const description = {
-            categoryTreeId: (isMaterialResourceChecked && selectedMaterialValue) || '',
+            categoryTreeId: (isMaterialResourceChecked && selectedMaterialValue?.id) || '',
             //human: isHumanResourceChecked ? selectedHumanValues.join(', ') : '',
         };
         setResourceData({...resourceData, ...description});

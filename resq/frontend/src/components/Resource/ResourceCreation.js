@@ -48,7 +48,7 @@ const steps = ['Resource delivery address', 'Type of Resource', 'Resource Detail
 export default function Resource() {
     const [activeStep, setActiveStep] = React.useState(0);
     const [resourceData, setResourceData] = useState({
-        senderId: localStorage.getItem('userId'),
+        senderId: parseInt(localStorage.getItem('userId')),
         gender: "MALE"
     });
 
