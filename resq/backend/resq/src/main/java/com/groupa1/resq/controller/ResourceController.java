@@ -28,7 +28,7 @@ public class ResourceController {
         return resourceService.createResource(createResourceRequest);
     }
 
-    @PreAuthorize("hasRole('RESPONDER') or hasRole('COORDINATOR')")
+    @PreAuthorize("hasRole('RESPONDER') or hasRole('COORDINATOR') or hasRole('VICTIM')")
     @GetMapping("/viewResource")
     public ResponseEntity<ResourceDto> viewResource(@RequestParam Long resourceId) {
         log.info("Viewing resource with id: " + resourceId);
@@ -50,7 +50,7 @@ public class ResourceController {
     }
 
 
-    @PreAuthorize("hasRole('COORDINATOR')")
+    @PreAuthorize("hasRole('COORDINATOR') or hasRole('VICTIM') or hasRole('RESPONDER')")
     @GetMapping("/filterByDistance")
     public ResponseEntity<List<ResourceDto>> filterByDistance(@RequestParam
                                                    BigDecimal longitude, @RequestParam BigDecimal latitude, @RequestParam BigDecimal distance) {
@@ -58,7 +58,7 @@ public class ResourceController {
         return resourceService.filterByDistance(latitude, longitude, distance);
     }
 
-    @PreAuthorize("hasRole('COORDINATOR')")
+    @PreAuthorize("hasRole('COORDINATOR') or hasRole('VICTIM') or hasRole('RESPONDER')")
     @GetMapping("/filterByCategory")
     public ResponseEntity<List<ResourceDto>> filterByCategory(@RequestParam(required = false) String categoryTreeId,
                                                            @RequestParam(required = false) BigDecimal longitude,

@@ -9,6 +9,7 @@ import Account from "./pages/Account";
 import RoleRequest from "./pages/RoleRequest";
 import LogoutIcon from '@mui/icons-material/Logout';
 import Request from "./pages/RequestCreation";
+import Resource from "./pages/ResourceCreation";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
@@ -104,6 +105,11 @@ function App() {
                                                     <SmallRedCircle/>
                                                     <strong>Create Request</strong>
                                                 </Nav.Link>
+                                                <Nav.Link key={"/resourcecreation"} href={"/resourcecreation"}
+                                                          style={{"marginLeft": "auto"}}>
+                                                    <SmallRedCircle/>
+                                                    <strong>Create Resource</strong>
+                                                </Nav.Link>
                                                 <Nav.Link key={"signout"} href={"#"} onClick={signOut}
                                                           style={{"marginLeft": "auto"}}>
                                                     <LogoutIcon/>
@@ -138,6 +144,8 @@ function App() {
                                             <Route path="/account" state={{token, setToken}}
                                                    element={React.createElement(Account, {token, setToken})}/>
                                             <Route path="/requestcreation" state={{token, setToken}}
+                                                   element={React.createElement(Request, {token, setToken})}/>
+                                            <Route path="/resourcecreation" state={{token, setToken}}
                                                    element={React.createElement(Request, {token, setToken})}/>
                                         </>
                                         : <>

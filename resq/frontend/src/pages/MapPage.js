@@ -13,7 +13,8 @@ import {DatePicker} from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import {useQuery} from "@tanstack/react-query";
 import {getCategoryTree} from "../AppService";
-
+import AnnotationCard from "../components/AnnotationCard";
+import reverseGeocode from "../components/Geolocation";
 
 const customTheme = createTheme({
     palette: {
@@ -105,9 +106,11 @@ export default function MapPage({allMarkers}) {
 
 
     useEffect(() => {
-        if (selectedPoint)
-            setMapCenter([selectedPoint.latitude, selectedPoint.longitude])
-    }, [selectedPoint])
+        if (selectedPoint) {
+            setMapCenter([selectedPoint.latitude, selectedPoint.longitude]);
+        }
+    }, [selectedPoint]);
+
 
     useEffect(() => setShownMarkers(
         allMarkers
