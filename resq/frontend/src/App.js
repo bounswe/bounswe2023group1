@@ -25,11 +25,8 @@ const SmallRedCircle = () =>
 function App() {
     const [token, _setToken] = useState(localStorage.getItem("token"))
     const [role, setRole] = useState("")
-    // eslint-disable-next-line no-unused-vars
-    const [width, setWidth] = useState(window.innerWidth);
     const [height, setHeight] = useState(window.innerHeight);
     const updateDimensions = () => {
-        setWidth(window.innerWidth);
         setHeight(window.innerHeight);
     }
     useEffect(() => {

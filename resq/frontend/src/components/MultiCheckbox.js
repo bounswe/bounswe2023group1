@@ -1,9 +1,7 @@
 import {
     Button,
     Chip, DialogActions,
-    DialogContent, DialogContentText,
-    FormControl,
-    Input,
+    DialogContent, FormControl,
     InputLabel,
     MenuItem,
     OutlinedInput,
@@ -14,7 +12,6 @@ import * as React from "react";
 import {useEffect, useId, useState} from "react";
 import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
 
 function getDropDownStyles(name, personName, theme) {
     return {
@@ -95,10 +92,6 @@ export const AmountSelector = ({name, onChosenChanged}) => {
 
     const [min, setMin] = useState(null)
     const [max, setMax] = useState(null)
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
 
     const handleClose = () => {
         setOpen(false);

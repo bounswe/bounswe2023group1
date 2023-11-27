@@ -1,3 +1,5 @@
+// noinspection JSUnusedLocalSymbols
+
 import * as React from 'react';
 import {useEffect, useState} from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -101,6 +103,19 @@ const mock_markers = [
             },
         ],
     },
+    ...[...Array(20).keys()].map(i =>
+        [...Array(20).keys()].map(j => (
+            {
+                type: "Request",
+                latitude: 37 + 0.5 * i,
+                longitude: 31 + 0.5 * j,
+                requester: {
+                    name: "Müslüm",
+                    surname: "Ertürk"
+                },
+                urgency: "HIGH",
+                needs: []
+            }))).flat()
 ]
 
 function getAllCategories(item) {
@@ -152,20 +167,35 @@ const makeFilterByAmount = ([amount]) => {
 };
 
 const makeFilterByDateFrom = (dateFrom) => item => dateFrom === null || !dateFrom.isValid() || !(dateFrom > dayjs(item.date))
-const makeFilterByDateTo = (dateTo) => item => !(dateTo < dayjs(item.date))
+const makeFilterByDateTo = (dateTo) => item => dateTo === null || !dateTo.isValid() || !(dateTo < dayjs(item.date))
+
+const makeFilterByBounds = ({ne: [ne_lat, ne_lng], sw: [sw_lat, sw_lng]}) =>
+    function (item) {
+        return item.latitude <= ne_lat &&
+            item.longitude <= ne_lng &&
+            item.latitude >= sw_lat &&
+            item.longitude >= sw_lng;
+    }
+
 
 export default function MapDemo() {
     // eslint-disable-next-line no-unused-vars
     const [allMarkers, setAllMarkers] = useState(mock_markers)
     const [shownMarkers, setShownMarkers] = useState(allMarkers)
     const [selectedPoint, setSelectedPoint] = useState(null)
+    const [mapCenter, setMapCenter] = useState([39, 34.5])
 
     const [typeFilter, setTypeFilter] = useState([])
     const [dateFromFilter, setDateFromFilter] = useState(null)
     const [dateToFilter, setDateToFilter] = useState(null)
     const [amountFilter, setAmountFilter] = useState([])
     const [categoryFilter, setCategoryFilter] = useState([])
-    const [mapBounds, setMapBounds] = useState([])
+    const [mapBounds, setMapBounds] = useState({ne: [0, 0], sw: [0, 0]})
+
+    useEffect(() => {
+        if (selectedPoint)
+            setMapCenter([selectedPoint.latitude, selectedPoint.longitude])
+    }, [selectedPoint])
 
     useEffect(() => setShownMarkers(
         allMarkers
@@ -174,7 +204,8 @@ export default function MapDemo() {
             .filter(makeFilterByAmount(amountFilter))
             .filter(makeFilterByDateFrom(dateFromFilter))
             .filter(makeFilterByDateTo(dateToFilter))
-    ), [allMarkers, amountFilter, categoryFilter, dateFromFilter, dateToFilter, typeFilter])
+            .filter(makeFilterByBounds(mapBounds))
+    ), [allMarkers, amountFilter, categoryFilter, dateFromFilter, dateToFilter, mapBounds, typeFilter])
 
     // noinspection JSValidateTypes
     return (
@@ -223,20 +254,29 @@ export default function MapDemo() {
                     <Box sx={{
                         flexBasis: "33%",
                         flexShrink: 0,
-                        display: "flex",
-                        flexDirection: "column",
-                        rowGap: "16px"
+                        height: "100%",
+                        overflow: "scroll"
                     }}>
-                        {shownMarkers.map((marker) => {
-                            const SelectedCard = cards[marker.type]
-                            return < SelectedCard item={marker} onClick={() => setSelectedPoint(marker)}/>
-                        })}
+                        <Box sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            rowGap: "16px",
+                            height: "fit-content"
+                        }}>
+                            {shownMarkers.map((marker) => {
+                                const SelectedCard = cards[marker.type]
+                                return < SelectedCard item={marker} onClick={() => setSelectedPoint(marker)}/>
+                            })}
+                        </Box>
                     </Box>
                     <Box sx={{width: "36px"}}/>
                     <Box sx={{flexGrow: 100}}>
                         <DisasterMap markers={shownMarkers}
-                                     center={selectedPoint && [selectedPoint.latitude, selectedPoint.longitude]}
-                                     onPointSelected={setSelectedPoint}/>
+                                     mapCenter={mapCenter}
+                                     setMapCenter={setMapCenter}
+                                     onPointSelected={setSelectedPoint}
+                                     onBoundsChanged={setMapBounds}
+                        />
                     </Box>
                 </Box>
             </Container>
