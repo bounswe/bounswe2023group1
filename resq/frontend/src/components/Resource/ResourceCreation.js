@@ -15,6 +15,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 
 import { ResourceProvider, useResource } from './ResourceContext';
+import ResourceDetail1 from "./ResourceDetail1";
+import ResourceDetail2 from "./ResourceDetail2";
+import ResourceAddress from "./ResourceAddress";
 
 function Copyright(props) {
     return (

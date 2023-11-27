@@ -8,13 +8,17 @@ import MapPage from "./pages/MapPage";
 import Account from "./pages/Account";
 import RoleRequest from "./pages/RoleRequest";
 import LogoutIcon from '@mui/icons-material/Logout';
-import Request from "./pages/RequestCreation";
-import Resource from "./pages/ResourceCreation";
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import Request from "./components/Request/RequestCreation";
+import Resource from "./components/Resource/ResourceCreation";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import axios from "axios";
 import VictimMapPage from "./pages/VictimMapPage";
+import { Badge } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Notifications from "./pages/Notifications";
 
 const SmallRedCircle = () =>
     <svg
@@ -44,6 +48,17 @@ function App() {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
     }, [token])
 
+    const [notifications, setNotifications] = useState([
+        {
+            title: "Ongoing fire on Cami Sk.",
+            desc: "A fire has been reported on Rumeli Hisarı Mh, Cami Sk, Sarıyer/İstanbul.",
+            read: false
+        }, {
+            title: "New Soup Kitchen Near You",
+            desc: "A soup kitchen has opened on Etiler, Hisar Üstü Nispetiye Cd No:1, Beşiktaş/İstanbul.",
+            read: true
+        }
+    ])
     const setToken = t => {
         localStorage.setItem("token", t || "")
         _setToken(t)
@@ -70,6 +85,17 @@ function App() {
     }
 
     const ref = useRef(null)
+
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: "#ff0000"
+            },
+            secondary: {
+                main: '#00f0ff'
+            }
+        }
+    });
 
     return (
         <QueryClientProvider client={queryClient}>
