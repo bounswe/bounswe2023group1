@@ -35,16 +35,6 @@ export const mock_markers = [
     },
     {
         type: "Annotation",
-        latitude: 41.088,
-        longitude: 29.552,
-        category: "Rescue",
-        title: "Search and Rescue Team",
-        short_description: "Dedicated search and rescue team for disaster response.",
-        long_description: "Our Search and Rescue Team is on standby to locate and rescue individuals who may be trapped or in distress due to the disaster. We are equipped with specialized tools and trained personnel to conduct safe and efficient rescue operations. Saving lives is our top priority.",
-        date: "28/11/2023"
-    },
-    {
-        type: "Annotation",
         latitude: 40.092,
         longitude: 29.008,
         category: "Health",
