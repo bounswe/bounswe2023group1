@@ -6,9 +6,9 @@ import com.groupa1.resq.entity.Request;
 import com.groupa1.resq.entity.User;
 import com.groupa1.resq.repository.RequestRepository;
 import com.groupa1.resq.repository.UserRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class NeedConverter {
@@ -30,6 +30,7 @@ public class NeedConverter {
         needDto.setQuantity(need.getQuantity());
         needDto.setLatitude(need.getLatitude());
         needDto.setLongitude(need.getLongitude());
+        needDto.setCreatedDate(need.getCreatedAt());
         Request request = need.getRequest();
         if (request != null) {
             needDto.setRequestId(request.getId());
@@ -49,6 +50,7 @@ public class NeedConverter {
         need.setLatitude(needDto.getLatitude());
         need.setLongitude(needDto.getLongitude());
         need.setStatus(needDto.getStatus());
+        need.setCreatedAt(needDto.getCreatedDate());
         Request request = requestRepository.findById(needDto.getRequestId()).orElse(null);
         need.setRequest(request);
         return need;

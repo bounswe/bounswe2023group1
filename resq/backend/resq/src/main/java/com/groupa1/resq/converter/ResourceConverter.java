@@ -2,10 +2,10 @@ package com.groupa1.resq.converter;
 
 import com.groupa1.resq.dto.ResourceDto;
 import com.groupa1.resq.entity.Resource;
-import com.groupa1.resq.entity.User;
 import com.groupa1.resq.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class ResourceConverter {
@@ -25,6 +25,7 @@ public class ResourceConverter {
         resourceDto.setQuantity(resource.getQuantity());
         resourceDto.setLatitude(resource.getLatitude());
         resourceDto.setLongitude(resource.getLongitude());
+        resourceDto.setCreatedDate(resource.getCreatedAt());
         return resourceDto;
 
     }
@@ -45,6 +46,7 @@ public class ResourceConverter {
         resource.setQuantity(resourceDto.getQuantity());
         resource.setLatitude(resourceDto.getLatitude());
         resource.setLongitude(resourceDto.getLongitude());
+        resource.setCreatedAt(resourceDto.getCreatedDate());
         return resource;
     }
 }

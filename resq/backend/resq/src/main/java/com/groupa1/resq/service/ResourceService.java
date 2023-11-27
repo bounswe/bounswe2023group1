@@ -61,7 +61,6 @@ public class ResourceService {
         Resource resource = resourceRepository.findById(resourceId).orElseThrow(() -> new EntityNotFoundException("Resource not found with id: " + resourceId));
         resource.setGender(createResourceRequest.getGender());
         resource.setQuantity(createResourceRequest.getQuantity());
-        resource.setLongitude(createResourceRequest.getLongitude());
         resource.setLatitude(createResourceRequest.getLatitude());
         resource.setLongitude(createResourceRequest.getLongitude());
         resource.setCategoryTreeId(createResourceRequest.getCategoryTreeId());
