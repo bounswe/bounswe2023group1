@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -33,15 +34,20 @@ import com.cmpe451.resq.ui.theme.RequestColor
 import com.cmpe451.resq.ui.theme.ResourceColor
 import com.cmpe451.resq.utils.NavigationItem
 import com.cmpe451.resq.viewmodels.MapViewModel
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 fun MapScreen(navController: NavController, appContext: Context, mapViewModel: MapViewModel) {
     val userSessionManager = UserSessionManager.getInstance(appContext)
     val userRoles = userSessionManager.getUserRoles()
+
+
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -79,19 +85,38 @@ fun MapScreen(navController: NavController, appContext: Context, mapViewModel: M
             SearchBar(mapViewModel)
             val singapore = LatLng(41.086571, 29.046109)
             val cameraPositionState = rememberCameraPositionState {
-                position = CameraPosition.fromLatLngZoom(mapViewModel.lastKnownLocation.value?.latitude?.let { it1 ->
-                    mapViewModel.lastKnownLocation.value?.longitude?.let { it2 ->
-                        LatLng(
-                            it1,
-                            it2
-                        )
-                    }
+                position = CameraPosition.fromLatLngZoom(mapViewModel.lastKnownLocation.value?.let {
+                    LatLng(it.latitude, it.longitude)
                 } ?: singapore, 12f)
+            }
+            LaunchedEffect(Unit) {
+              //  mapViewModel.getNeedByDistance(appContext)
             }
             GoogleMap(
                 modifier = Modifier.fillMaxSize(),
                 cameraPositionState = cameraPositionState
             ) {
+                mapViewModel.lastKnownLocation.value?.let {
+                    val latLng = LatLng(it.latitude, it.longitude)
+                    cameraPositionState.position = CameraPosition.fromLatLngZoom(latLng, 12f)
+                }
+                mapViewModel.needMarkerList.value.forEach { need ->
+                    Marker(
+                        state = MarkerState(position = LatLng(need.latitude, need.longitude)),
+                        title = need.description,
+                        snippet = "Quantity: ${need.quantity}"
+                    )
+                }
+                Marker(
+                    state = MarkerState(position = LatLng(41.086571, 29.046109)),
+                )
+            }
+            LaunchedEffect(mapViewModel.needMarkerList.value) {
+                if (mapViewModel.needMarkerList.value.isNotEmpty()) {
+                    // Move camera to the first marker or any specific logic you want
+                    val firstNeed = mapViewModel.needMarkerList.value.first()
+                    cameraPositionState.move(CameraUpdateFactory.newLatLngZoom(LatLng(firstNeed.latitude, firstNeed.longitude), 12f))
+                }
             }
         }
     }
