@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Typography, Grid, FormControlLabel, Checkbox, FormControl, InputLabel, Select, MenuItem, OutlinedInput } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { Theme, useTheme } from '@mui/material/styles';
-import { useResource } from './ResourceContext';
-import { useContext } from 'react';
 import { ResourceContext } from './ResourceContext';
+import { useContext } from 'react';
 
 const customTheme = createTheme({
     palette: {
@@ -14,8 +13,8 @@ const customTheme = createTheme({
     },
 });
 
-export default function ResourceDetails1() {
-    const { resourceData, updateResourceData } = useContext(ResourceContext);
+export default function ResourceDetails1({ onDescriptionChange }) {
+    const { materialneeds, humanResources } = useContext(ResourceContext);
 
     const [isMaterialResourceChecked, setIsMaterialResourceChecked] = useState(false);
     const [isHumanResourceChecked, setIsHumanResourceChecked] = useState(false);
@@ -41,6 +40,14 @@ export default function ResourceDetails1() {
     };
 
     const theme = useTheme();
+
+    useEffect(() => {
+        const description = {
+            material: isMaterialResourceChecked ? selectedMaterialValues.join(', ') : '',
+            human: isHumanResourceChecked ? selectedHumanValues.join(', ') : '',
+        };
+        onDescriptionChange(description);
+    }, [isMaterialResourceChecked, selectedMaterialValues, isHumanResourceChecked, selectedHumanValues, onDescriptionChange]);
 
     return (
         <React.Fragment>
