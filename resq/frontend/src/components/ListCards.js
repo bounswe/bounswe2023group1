@@ -8,6 +8,8 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import styled from "styled-components";
 import {AnnotationIcon} from "./MapIcons";
+import {useQuery} from "@tanstack/react-query";
+import {getCategoryTree, getUserInfo} from "../AppService";
 
 const ExpandMore = styled(IconButton)`
   transform: ${({expand}) => !expand ? 'rotate(0deg)' : 'rotate(180deg)'};
@@ -34,7 +36,17 @@ async function getAddress(latitude, longitude) {
 }
 
 
-export const AnnotationCard = ({item: {title, short_description, long_description, latitude, longitude, category, date}}) => {
+export const AnnotationCard = ({
+                                   item: {
+                                       title,
+                                       short_description,
+                                       long_description,
+                                       latitude,
+                                       longitude,
+                                       category,
+                                       date
+                                   }
+                               }) => {
     const [expanded, setExpanded] = useState(false);
     const [locationName, setLocationName] = useState('');
 
@@ -140,8 +152,11 @@ export const RequestCard = ({item: {requester, urgency, needs, status, longitude
 }
 
 
-export const ResourceCard = ({item: {owner, urgency, resources, status, longitude, latitude}}) => {
-    const [expanded, setExpanded] = useState(false);
+export const ResourceCard = ({item: {senderId, quantity, categoryTreeId, longitude, latitude}}) => {
+    const categoryTree = useQuery({queryKey: ['categoryTree'],
+        queryFn: () => getCategoryTree()})
+    const owner = useQuery({queryKey: ['user', senderId], queryFn: () => getUserInfo(senderId)})
+
     const [locationName, setLocationName] = useState('');
 
     useEffect(() => {
@@ -157,45 +172,16 @@ export const ResourceCard = ({item: {owner, urgency, resources, status, longitud
                 </Avatar>
             }
             titleTypographyProps={{variant: 'h6'}}
-            title={resources.map(({name, quantity}) => `${quantity} ${name}`).join(", ")}
+            title={`${quantity} ${categoryTree?.data?.findCategoryWithId(parseInt(categoryTreeId))?.data || categoryTreeId}`}
         />
         <CardContent>
-            <Typography variant="body1" sx={{fontSize: '16px', fontWeight: 'bold'}}>
-                Urgency: <span style={{color: 'red', fontWeight: 'bold'}}>{urgency}</span> | Status: <span
-                style={{color: 'blue', fontWeight: 'bold'}}>{status}</span>
-            </Typography>
             <Typography variant="body2" color="text.primary" sx={{fontSize: '12px', fontWeight: 'bold'}}>
-                Owner: {owner.name} {owner.surname}
+                Owner: {owner?.data?.name} {owner?.data?.surname}
             </Typography>
             <Typography variant="body2" color="text.primary" sx={{fontSize: '12px', fontWeight: 'bold'}}>
                 Location: {`${locationName}`}
             </Typography>
         </CardContent>
-        <OffsetActions disableSpacing>
-            {/*<IconButton aria-label="add to favorites">
-                <FavoriteIcon/>
-            </IconButton>
-            <IconButton aria-label="share">
-                <ShareIcon/>
-            </IconButton>*/}
-            <ExpandMore
-                expand={expanded}
-                onClick={() => setExpanded(!expanded)}
-                aria-expanded={expanded}
-                aria-label="show more"
-            >
-                <ExpandMoreIcon/>
-            </ExpandMore>
-        </OffsetActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-                {resources.map(({name, description, quantity}) =>
-                    <Typography variant="body2" color="text.primary">
-                        {quantity} {name}: {description}
-                    </Typography>
-                )}
-            </CardContent>
-        </Collapse>
     </Card>;
 }
 export const cards = {

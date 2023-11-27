@@ -68,19 +68,19 @@ export const MultiCheckbox = ({name, choices, onChosenChanged}) => {
             renderValue={(selected) => (
                 <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
                     {selected.map((value) => (
-                        <Chip key={value} label={value}/>
+                        <Chip key={value.id} label={value.data}/>
                     ))}
                 </Box>
             )}
             MenuProps={MenuProps}
         >
-            {choices.map((name) => (
+            {choices.map((value) => (
                 <MenuItem
-                    key={name}
-                    value={name}
-                    style={getDropDownStyles(name, currentChoices, theme)}
+                    key={value.id}
+                    value={value}
+                    style={getDropDownStyles(value.id, currentChoices, theme)}
                 >
-                    {name}
+                    {value.data}
                 </MenuItem>
             ))}
         </Select>

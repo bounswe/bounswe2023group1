@@ -11,6 +11,8 @@ import {cards} from "../components/ListCards";
 import {AmountSelector, MultiCheckbox} from "../components/MultiCheckbox";
 import {DatePicker} from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import {useQuery} from "@tanstack/react-query";
+import {getCategoryTree} from "../AppService";
 
 
 const customTheme = createTheme({
@@ -21,16 +23,18 @@ const customTheme = createTheme({
     },
 });
 
-function getAllCategories(item) {
-    switch (item.type) {
-        case "Annotation":
-            return [item?.category]
-        case "Resource":
-            return item.resources.map(resource => resource?.category)
-        case "Request":
-            return item.needs.map(need => need?.category)
-        default:
-            return []
+const getAllCategories = categoryTree => {
+    if (categoryTree) {
+        return item => {
+            switch (item.type) {
+                case "Annotation":
+                    return [{id: item?.category, data: item?.category}]
+                default:
+                    return categoryTree.findCategoryWithId(parseInt(item.categoryTreeId))?.getAllParentCategories()
+            }
+        };
+    } else {
+        return () => ([]);
     }
 }
 
@@ -51,11 +55,15 @@ const applyFilterTo = (predicate) =>
 const makeFilterByCategory = categories => {
     if (categories.length === 0)
         return () => true
-    return applyFilterTo(
-        function (item) {
-            return categories.indexOf(item?.category) !== -1;
+
+    return item => {
+        switch (item.type) {
+            case "Annotation":
+                return categories.map(a=>a.id).indexOf(item?.category) !== -1;
+            default:
+                return !categories.every(a => !a.findCategoryWithId || !(a.findCategoryWithId(parseInt(item.categoryTreeId))))
         }
-    )
+    }
 };
 
 const makeFilterByType = (typeFilter) => item => typeFilter.length === 0 || typeFilter.indexOf(item.type) !== -1
@@ -93,6 +101,9 @@ export default function MapPage({allMarkers}) {
     const [categoryFilter, setCategoryFilter] = useState([])
     const [mapBounds, setMapBounds] = useState({ne: [0, 0], sw: [0, 0]})
 
+    const categoryTree = useQuery({queryKey: ['categoryTree'], queryFn: getCategoryTree})
+
+
     useEffect(() => {
         if (selectedPoint)
             setMapCenter([selectedPoint.latitude, selectedPoint.longitude])
@@ -108,6 +119,14 @@ export default function MapPage({allMarkers}) {
             .filter(makeFilterByBounds(mapBounds))
     ), [allMarkers, amountFilter, categoryFilter, dateFromFilter, dateToFilter, mapBounds, typeFilter])
 
+    const choices = new Map([
+        ...allMarkers
+            .map(getAllCategories(categoryTree?.data))
+            .flat(),
+        ...categoryFilter
+    ]
+        .filter(a=>a)
+        .map(a=>[a?.id, a]))
     // noinspection JSValidateTypes
     return (
         <ThemeProvider theme={customTheme}>
@@ -117,15 +136,11 @@ export default function MapPage({allMarkers}) {
                     display: "flex", flexDirection: "row", flexWrap: 'nowrap', margin: "12px", width: "100%",
                     justifyContent: "center"
                 }}>
-                    <MultiCheckbox name={"Type"} choices={["Annotation", "Resource", "Request"]}
+                    <MultiCheckbox name={"Type"}
+                                   choices={["Annotation", "Resource", "Request"].map(i => ({id: i, data: i}))}
                                    onChosenChanged={setTypeFilter}/>
                     <MultiCheckbox name={"Category"}
-                                   choices={[
-                                       ...allMarkers
-                                           .map(getAllCategories)
-                                           .flat(),
-                                       ...categoryFilter
-                                   ].filter((v, i, array) => v && array.indexOf(v) === i)}
+                                   choices={[...choices.values()]}
                                    onChosenChanged={setCategoryFilter}/>
                     <AmountSelector name={"Amount"}
                                     onChosenChanged={setAmountFilter}/>
