@@ -31,6 +31,7 @@ class ProfileViewModel() : ViewModel() {
         viewModelScope.launch {
             try {
                 val data = api.getUserInfo()
+                Log.d("Service", "getUserData: $data")
                 _profileData.value = data
             } catch (e: Exception) {
                 errorMessage.value = e.message
@@ -40,45 +41,19 @@ class ProfileViewModel() : ViewModel() {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun getupdateProfileResponse(profileData: ProfileData, appContext: Context): Result<String> {
-        val api = ResqService(appContext)
-
-        try {
-            val response = api.updateUserData(profileData)
-
-            // Log response details
-            Log.d("Network", "Response Code: ${response.code()}")
-            Log.d("Network", "Response Body: ${response.body()?.string()}")
-
-
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    return Result.success(it.string())
-                }
-            } else {
-                // Log error details
-                Log.e("Network", "Error Message: ${response.message()}")
-            }
-        } catch (e: Exception) {
-            // Log exception details
-            Log.e("Network", "Exception: ${e.message}", e)
-        }
-
-        return Result.failure(Throwable("Unexpected error occurred"))
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
     fun updateProfile(appContext: Context, profileData: ProfileData){
-
+        val api = ResqService(appContext)
         viewModelScope.launch {
             try {
-                val result = getupdateProfileResponse(profileData, appContext)
-                if (result.isSuccess) {
-                    _updateMessage.value = result.getOrNull()
+                Log.d("Update DATA", "")
+                val response = api.updateUserData(profileData)
+
+                if (response.isSuccessful) {
+                    _updateMessage.value = response.body()
                     _errorMessage.value = null
                 }
                 else {
-                    _errorMessage.value = result.exceptionOrNull()?.message
+                    _errorMessage.value = response.message()
                         ?: "Profile update failed. Please try again."
                 }
             } catch (e: Exception) {

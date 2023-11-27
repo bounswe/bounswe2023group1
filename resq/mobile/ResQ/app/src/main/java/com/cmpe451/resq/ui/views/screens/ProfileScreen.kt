@@ -2,6 +2,7 @@ package com.cmpe451.resq.ui.views.screens
 import android.content.Context
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -70,7 +71,6 @@ import com.cmpe451.resq.ui.theme.OngoingTasksColor
 import com.cmpe451.resq.ui.theme.RequestColor
 import com.cmpe451.resq.ui.theme.ResourceColor
 import com.cmpe451.resq.viewmodels.ProfileViewModel
-import java.time.Year
 @Composable
 fun ProfileButton(color: Color, text:String, route: String, navController: NavController) {
     Button(
@@ -191,7 +191,7 @@ fun ProfileScreen(navController: NavController, appContext: Context) {
             Text("Loading...")
         }
         else -> {
-            val userRoles = profileData!!.roles
+            val userRoles = UserSessionManager.getInstance(appContext).getUserRoles()
             if (userRoles != null) {
                 if (userRoles.contains("VICTIM") || userRoles.contains("RESPONDER") || userRoles.contains("FACILITATOR")) {
                     Profile(profileData = profileData!!, navController = navController, viewModel, appContext)
@@ -242,31 +242,24 @@ fun generateDays(month: String): List<String>{
 fun Profile(profileData:ProfileData, navController: NavController, viewModel: ProfileViewModel, appContext: Context) {
     val genders = listOf("Male", "Female")
     val bloodTypes = listOf("AB Rh+", "AB Rh-", "A Rh+", "A Rh-", "B Rh+", "B Rh-", "O Rh+", "O Rh-")
-    val years = generateYears(1900, Year.now().value)
-    val months = generateMonths()
     val userSessionManager = UserSessionManager.getInstance(appContext)
-    var selectedRole = { mutableStateOf(profileData.selectedRole ?: "") }
     var name by remember { mutableStateOf(profileData.name ?: "") }
     var surname by remember { mutableStateOf(profileData.surname ?: "") }
-    var year by remember { mutableStateOf(profileData.year ?: "") }
-    var month by remember { mutableStateOf(profileData.month ?: "") }
-    var day by remember { mutableStateOf(profileData.day ?: "") }
-    var email by remember { mutableStateOf(profileData.email ?: "") }
-    var weight by remember { mutableStateOf(profileData.weight ?: "") }
+    var weight by remember { mutableStateOf(profileData.weight?.toString() ?: "") }
     var gender by remember { mutableStateOf(profileData.gender ?: "") }
-    var height by remember { mutableStateOf(profileData.height ?: "") }
+    var height by remember { mutableStateOf(profileData.height?.toString() ?: "") }
     var country by remember { mutableStateOf(profileData.country ?: "") }
     var city by remember { mutableStateOf(profileData.city ?: "") }
     var state by remember { mutableStateOf(profileData.state ?: "") }
     var phoneNumber by remember { mutableStateOf(profileData.phoneNumber ?: "") }
     var bloodType by remember { mutableStateOf(profileData.bloodType ?: "") }
-    var isEmailValid by remember { mutableStateOf(false) }
     var isPhoneValid by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf("") }
     val snackbarHostState = remember { SnackbarHostState() }
 
     var profileColor = Color(0xFFFFFFFF)
-    when (selectedRole().value) {
+
+    when (userSessionManager.getSelectedRole()) {
         "VICTIM" -> {
             profileColor = RequestColor
         }
@@ -279,7 +272,6 @@ fun Profile(profileData:ProfileData, navController: NavController, viewModel: Pr
             profileColor = MyTasksColor
         }
     }
-
 
     Column(
         modifier = Modifier
@@ -323,8 +315,6 @@ fun Profile(profileData:ProfileData, navController: NavController, viewModel: Pr
                 )
             )
         }
-
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -368,63 +358,25 @@ fun Profile(profileData:ProfileData, navController: NavController, viewModel: Pr
                             )
                         )
 
-                            OutlinedTextField(
-                                value = surname,
-                                onValueChange = { surname = it.letterOrSpace() },
-                                label = { Text("Last Name") },
-                                shape = RoundedCornerShape(15),
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(4.dp)
-                                    .background(Color.White),
-                                keyboardOptions = KeyboardOptions.Default.copy(
-                                    keyboardType = KeyboardType.Text
-                                ),
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    containerColor = Color.White,
-                                    textColor = Color.Black,
-                                    cursorColor = Color.Black
-                                )
+                        OutlinedTextField(
+                            value = surname,
+                            onValueChange = { surname = it.letterOrSpace() },
+                            label = { Text("Last Name") },
+                            shape = RoundedCornerShape(15),
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(4.dp)
+                                .background(Color.White),
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                keyboardType = KeyboardType.Text
+                            ),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                containerColor = Color.White,
+                                textColor = Color.Black,
+                                cursorColor = Color.Black
                             )
-                        }
-
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(4.dp)
-
-                    ) {
-
-
-                            val isValidEmail = android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-                            isEmailValid = isValidEmail
-
-                            OutlinedTextField(
-                                value = email,
-                                onValueChange = {
-                                    email = it
-                                    isEmailValid =
-                                        android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()
-                                },
-                                label = { Text("Email") },
-                                shape = RoundedCornerShape(15),
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(4.dp)
-                                    .background(Color.White),
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    containerColor = Color.White,
-                                    textColor = Color.Black,
-                                    cursorColor = Color.Black,
-                                    focusedBorderColor = if (isEmailValid) Color.Black else Color.Red
-                                ),
-                                singleLine = true,
-                                keyboardOptions = KeyboardOptions.Default.copy(
-                                    keyboardType = KeyboardType.Email
-                                )
-                            )
-                        }
+                        )
+                    }
 
                     Row(
                         modifier = Modifier
@@ -434,138 +386,123 @@ fun Profile(profileData:ProfileData, navController: NavController, viewModel: Pr
 
                         isPhoneValid = android.util.Patterns.PHONE.matcher(phoneNumber).matches()
                         OutlinedTextField(
-                                value = phoneNumber,
-                                keyboardOptions = KeyboardOptions.Default.copy(
-                                    keyboardType = KeyboardType.Phone
-                                ),
-                                onValueChange = {
-                                    phoneNumber = it.isDigit()
-                                    isPhoneValid = android.util.Patterns.PHONE.matcher(it).matches()
-                                },
+                            value = phoneNumber,
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                keyboardType = KeyboardType.Phone
+                            ),
+                            onValueChange = {
+                                phoneNumber = it.isDigit()
+                                isPhoneValid = android.util.Patterns.PHONE.matcher(it).matches()
+                            },
 
-                                label = { Text("Phone Number") },
-                                shape = RoundedCornerShape(15),
+                            label = { Text("Phone Number") },
+                            shape = RoundedCornerShape(15),
 
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(4.dp)
-                                    .background(Color.White),
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    containerColor = Color.White,
-                                    textColor = Color.Black,
-                                    cursorColor = Color.Black,
-                                    focusedBorderColor = if (isPhoneValid) Color.Black else Color.Red
-                                )
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(4.dp)
+                                .background(Color.White),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                containerColor = Color.White,
+                                textColor = Color.Black,
+                                cursorColor = Color.Black,
+                                focusedBorderColor = if (isPhoneValid) Color.Black else Color.Red
                             )
-
+                        )
                     }
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(4.dp)
                     ) {
+                        OutlinedTextField(
+                            value = country,
+                            onValueChange = { country = it.letterOrSpace() },
+                            label = { Text("Country") },
+                            shape = RoundedCornerShape(15),
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(4.dp)
+                                .background(Color.White),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                containerColor = Color.White,
+                                textColor = Color.Black,
+                                cursorColor = Color.Black,
 
-
-                            OutlinedTextField(
-                                value = country,
-                                onValueChange = { country = it.letterOrSpace() },
-                                label = { Text("Country") },
-                                shape = RoundedCornerShape(15),
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(4.dp)
-                                    .background(Color.White),
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    containerColor = Color.White,
-                                    textColor = Color.Black,
-                                    cursorColor = Color.Black,
-
-                                    )
-                            )
-
-
-                            OutlinedTextField(
-                                value = city,
-                                onValueChange = { city = it.letterOrSpace() },
-                                label = { Text("City") },
-                                shape = RoundedCornerShape(15),
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(4.dp)
-                                    .background(Color.White),
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    containerColor = Color.White,
-                                    textColor = Color.Black,
-                                    cursorColor = Color.Black,
                                 )
+                        )
+                        OutlinedTextField(
+                            value = city,
+                            onValueChange = { city = it.letterOrSpace() },
+                            label = { Text("City") },
+                            shape = RoundedCornerShape(15),
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(4.dp)
+                                .background(Color.White),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                containerColor = Color.White,
+                                textColor = Color.Black,
+                                cursorColor = Color.Black,
                             )
-
-
-                            OutlinedTextField(
-                                value = state,
-                                onValueChange = { state = it.letterOrSpace() },
-                                label = { Text("State") },
-                                shape = RoundedCornerShape(15),
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(4.dp)
-                                    .background(Color.White),
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    containerColor = Color.White,
-                                    textColor = Color.Black,
-                                    cursorColor = Color.Black,
-                                )
+                        )
+                        OutlinedTextField(
+                            value = state,
+                            onValueChange = { state = it.letterOrSpace() },
+                            label = { Text("State") },
+                            shape = RoundedCornerShape(15),
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(4.dp)
+                                .background(Color.White),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                containerColor = Color.White,
+                                textColor = Color.Black,
+                                cursorColor = Color.Black,
                             )
-
-
-
+                        )
                     }
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(4.dp)
                     ) {
-
-
-                            OutlinedTextField(
-                                value = weight,
-                                keyboardOptions = KeyboardOptions.Default.copy(
-                                    keyboardType = KeyboardType.Number
-                                ),
-                                onValueChange = { weight = it.isDigit() },
-                                label = { Text("Weight (kg)") },
-                                shape = RoundedCornerShape(15),
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(4.dp)
-                                    .background(Color.White),
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    containerColor = Color.White,
-                                    textColor = Color.Black,
-                                    cursorColor = Color.Black
-                                )
+                        OutlinedTextField(
+                            value = weight,
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                keyboardType = KeyboardType.Number
+                            ),
+                            onValueChange = { weight = it.isDigit() },
+                            label = { Text("Weight (kg)") },
+                            shape = RoundedCornerShape(15),
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(4.dp)
+                                .background(Color.White),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                containerColor = Color.White,
+                                textColor = Color.Black,
+                                cursorColor = Color.Black,
                             )
-
-
-
-                            OutlinedTextField(
-                                value = height,
-                                keyboardOptions = KeyboardOptions.Default.copy(
-                                    keyboardType = KeyboardType.Number
-                                ),
-                                onValueChange = { height = it.isDigit() },
-                                label = { Text("Height (cm)") },
-                                shape = RoundedCornerShape(15),
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(4.dp)
-                                    .background(Color.White),
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    containerColor = Color.White,
-                                    textColor = Color.Black,
-                                    cursorColor = Color.Black,
-                                )
+                        )
+                        OutlinedTextField(
+                            value = height,
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                keyboardType = KeyboardType.Number
+                            ),
+                            onValueChange = { height = it.isDigit() },
+                            label = { Text("Height (cm)") },
+                            shape = RoundedCornerShape(15),
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(4.dp)
+                                .background(Color.White),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                containerColor = Color.White,
+                                textColor = Color.Black,
+                                cursorColor = Color.Black,
                             )
+                        )
                     }
                     Row(
                         modifier = Modifier
@@ -573,57 +510,21 @@ fun Profile(profileData:ProfileData, navController: NavController, viewModel: Pr
 
                         ) {
                         Column(modifier = Modifier.weight(1f)) {
-                                TextListSelectionWithColorChange(
-                                    items = genders,
-                                    selectedItem = gender,
-                                    onItemSelected = { gender = it },
-                                    label = "Gender",
-                                    color = profileColor
-                                )
-                            }
-
-
-                        Column(modifier = Modifier.weight(1f)) {
-                                TextListSelectionWithColorChange(
-                                    items = bloodTypes,
-                                    selectedItem = bloodType,
-                                    onItemSelected = { bloodType = it },
-                                    label = "Blood Type",
-                                    color = profileColor
-                                )
-                        }
-                    }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(4.dp)
-                    ) {
-                        Column(modifier = Modifier.weight(1f)) {
-                                TextListSelectionWithColorChange(
-                                    items = years,
-                                    selectedItem = year,
-                                    onItemSelected = { year = it },
-                                    label = "Year",
-                                    color = profileColor
-                                )
-                        }
-                        Column(modifier = Modifier.weight(1f)) {
                             TextListSelectionWithColorChange(
-                                items = months,
-                                selectedItem = month,
-                                onItemSelected = { month = it },
-                                label = "Month",
+                                items = genders,
+                                selectedItem = gender,
+                                onItemSelected = { gender = it },
+                                label = "Gender",
                                 color = profileColor
                             )
                         }
-                        Column(modifier = Modifier.weight(1f)) {
-                            val days = generateDays(month)
 
+                        Column(modifier = Modifier.weight(1f)) {
                             TextListSelectionWithColorChange(
-                                items = days,
-                                selectedItem = day,
-                                onItemSelected = { day = it },
-                                label = "Day",
+                                items = bloodTypes,
+                                selectedItem = bloodType,
+                                onItemSelected = { bloodType = it },
+                                label = "Blood Type",
                                 color = profileColor
                             )
                         }
@@ -631,7 +532,6 @@ fun Profile(profileData:ProfileData, navController: NavController, viewModel: Pr
                 }
             }
         }
-
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -642,7 +542,7 @@ fun Profile(profileData:ProfileData, navController: NavController, viewModel: Pr
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
 
-            when (selectedRole().value) {
+            when (UserSessionManager.getInstance(appContext).getSelectedRole()) {
                 "VICTIM" -> {
                     VictimProfileButtons(navController = navController)
                 }
@@ -667,18 +567,12 @@ fun Profile(profileData:ProfileData, navController: NavController, viewModel: Pr
                 ) {
                     Button(
                         onClick = {
-
-                            if (!isEmailValid and !isPhoneValid) {
-                                // @TO DO: Save details
-                                message = "Please check your email address and phone number."
-
-                            } else if (!isPhoneValid) {
+                            if (!isPhoneValid) {
                                 message = "Please check your phone number."
 
-                            } else if (!isEmailValid) {
-                                message = "Please check your email address."
                             } else {
                                 // @TO DO Handle Save Details button click
+                                Log.d("Save Details", "Save Details")
                                 viewModel.updateProfile(appContext, ProfileData(
                                     name = name,
                                     surname = surname,
@@ -686,16 +580,11 @@ fun Profile(profileData:ProfileData, navController: NavController, viewModel: Pr
                                     country = country,
                                     city = city,
                                     state = state,
-                                    year = year,
-                                    month = month,
-                                    day = day,
-                                    email = email,
-                                    gender = gender.uppercase(),
-                                    height = height,
-                                    weight = weight,
+                                    gender = gender.takeIf { it.isNotEmpty() } ,
+                                    height = height.takeIf { it.isNotEmpty() }?.toInt(),
+                                    weight = weight.takeIf { it.isNotEmpty() }?.toInt(),
                                     phoneNumber = phoneNumber,
-                                    selectedRole = selectedRole().value,
-                                    roles = userSessionManager.getUserRoles(),
+                                    birthdate = null
                                 ))
                                 if (viewModel.updateMessage.value != null) {
                                     message = "Details saved successfully."
@@ -786,7 +675,6 @@ fun FacilitatorProfileButtons(navController: NavController) {
             route = "OngoingTasks",
             navController = navController
         )
-
     }
 }
 
