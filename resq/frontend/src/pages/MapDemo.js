@@ -1,12 +1,30 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import disasterImage from '../disaster.png';
 import Container from '@mui/material/Container';
+import { useNavigate } from 'react-router-dom';
 import DisasterMap from "../components/DisasterMap";
-import {cards} from "./ListCards";
-import {MultiCheckbox} from "./MultiCheckbox";
+import { useState, useEffect } from 'react';
+import { Card, CardActions, CardContent, CardHeader, Collapse, IconButton } from "@mui/material";
+import { type_colors } from "../Colors";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import styled from "styled-components";
+import axios from 'axios';
+import Geocode from 'react-geocode';
+import MapDataGrid from '../components/MapDataGrid'
 
 
 const customTheme = createTheme({
@@ -18,20 +36,171 @@ const customTheme = createTheme({
 });
 
 
+const ExpandMore = styled(IconButton)`
+  transform: ${({ expand }) => !expand ? 'rotate(0deg)' : 'rotate(180deg)'};
+  margin-left: auto;
+  transition: transform 150ms;
+`
+
+const OffsetActions = styled(CardActions)`
+  transform: translate(-8px, -28px);
+  height: 0;
+  padding: 0;
+`
+
+const RequestCard = ({ request: { requester, urgency, needs, status, longitude, latitude } }) => {
+    const [expanded, setExpanded] = useState(false);
+    const [locationName, setLocationName] = useState('');
+    const [cityName, setCityName] = useState('');
+
+    useEffect(() => {
+        const reverseGeocode = async () => {
+            try {
+                const response = await axios.get(
+                    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCehlfJwJ-V_xOWZ9JK3s0rcjkV2ga0DVg`
+                );
+
+                const cityName = response.data.results[0]?.formatted_address || 'Unknown';
+                setLocationName(cityName);
+                setCityName(cityName);
+            } catch (error) {
+                console.error('Error fetching location name:', error);
+            }
+        };
+
+        reverseGeocode();
+    }, [latitude, longitude]);
+
+    return <Card variant="outlined">
+        <CardHeader
+            avatar={
+                <Avatar sx={{ bgcolor: type_colors["Request"] }} aria-label="Request">
+                    Rq
+                </Avatar>
+            }
+            titleTypographyProps={{ variant: 'h6' }}
+            title={needs.map(({ name, quantity }) => `${quantity} ${name}`).join(", ")}
+        />
+        <CardContent>
+            <Typography variant="body1" sx={{ fontSize: '16px', fontWeight: 'bold' }}>
+                Urgency: <span style={{ color: 'red', fontWeight: 'bold' }}>{urgency}</span> | Status: <span style={{ color: 'red', fontWeight: 'bold' }}>{status}</span>
+            </Typography>
+
+            <Typography variant="body2" color="text.primary" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
+                Made by: {requester.name} {requester.surname}
+            </Typography>
+            <Typography variant="body2" color="text.primary" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
+                Location: {`${cityName}`}
+            </Typography>
+        </CardContent>
+        <OffsetActions disableSpacing>
+            {/*<IconButton aria-label="add to favorites">
+                <FavoriteIcon/>
+            </IconButton>
+            <IconButton aria-label="share">
+                <ShareIcon/>
+            </IconButton>*/}
+            <ExpandMore
+                expand={expanded}
+                onClick={() => setExpanded(!expanded)}
+                aria-expanded={expanded}
+                aria-label="show more"
+            >
+                <ExpandMoreIcon />
+            </ExpandMore>
+        </OffsetActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+                {needs.map(({ name, description, quantity }) =>
+                    <Typography variant="body2" color="text.primary">
+                        {quantity} {name}: {description}
+                    </Typography>
+                )}
+            </CardContent>
+        </Collapse>
+    </Card>;
+}
+
+
+const ResourceCard = ({ request: { owner, urgency, resources, status, longitude, latitude } }) => {
+    const [expanded, setExpanded] = useState(false);
+    const [locationName, setLocationName] = useState('');
+    const [cityName, setCityName] = useState('');
+
+    useEffect(() => {
+        const reverseGeocode = async () => {
+            try {
+                const response = await axios.get(
+                    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCehlfJwJ-V_xOWZ9JK3s0rcjkV2ga0DVg`
+                );
+
+                const cityName = response.data.results[0]?.formatted_address || 'Unknown';
+                setLocationName(cityName);
+                setCityName(cityName);
+            } catch (error) {
+                console.error('Error fetching location name:', error);
+            }
+        };
+
+        reverseGeocode();
+    }, [latitude, longitude]);
+
+
+    return <Card variant="outlined">
+        <CardHeader
+            avatar={
+                <Avatar sx={{ bgcolor: type_colors["Resource"] }} aria-label="Resource">
+                    Rs
+                </Avatar>
+            }
+            titleTypographyProps={{ variant: 'h6' }}
+            title={resources.map(({ name, quantity }) => `${quantity} ${name}`).join(", ")}
+        />
+        <CardContent>
+            <Typography variant="body1" sx={{ fontSize: '16px', fontWeight: 'bold' }}>
+                Urgency: <span style={{ color: 'red', fontWeight: 'bold' }}>{urgency}</span> | Status: <span style={{ color: 'blue', fontWeight: 'bold' }}>{status}</span>
+            </Typography>
+            <Typography variant="body2" color="text.primary" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
+                Owner: {owner.name} {owner.surname}
+            </Typography>
+            <Typography variant="body2" color="text.primary" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
+                Location: {`${cityName}`}
+            </Typography>
+        </CardContent>
+        <OffsetActions disableSpacing>
+            {/*<IconButton aria-label="add to favorites">
+                <FavoriteIcon/>
+            </IconButton>
+            <IconButton aria-label="share">
+                <ShareIcon/>
+            </IconButton>*/}
+            <ExpandMore
+                expand={expanded}
+                onClick={() => setExpanded(!expanded)}
+                aria-expanded={expanded}
+                aria-label="show more"
+            >
+                <ExpandMoreIcon />
+            </ExpandMore>
+        </OffsetActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+                {resources.map(({ name, description, quantity }) =>
+                    <Typography variant="body2" color="text.primary">
+                        {quantity} {name}: {description}
+                    </Typography>
+                )}
+            </CardContent>
+        </Collapse>
+    </Card>;
+}
+
+const cards = {
+    "Resource": ResourceCard,
+    "Request": RequestCard
+}
+
 const mock_markers = [
-    {
-        type: "Annotation",
-        latitude: 41.089,
-        longitude: 29.053,
-        category: "health",
-        title: "First Aid Clinic",
-        short_description: "First aid clinic and emergency wound care. Open 24 hours.",
-        long_description: "Welcome to our First Aid Clinic, a dedicated facility committed to providing immediate and " +
-            "compassionate healthcare 24 hours a day. Our experienced team of healthcare professionals specializes in " +
-            "emergency wound care and first aid assistance, ensuring you receive prompt attention when you need it most. " +
-            "From minor cuts to more serious injuries, our clinic is equipped to handle a range of medical concerns, " +
-            "promoting healing and preventing complications."
-    },
     {
         type: "Request",
         latitude: 37.08,
@@ -67,7 +236,6 @@ const mock_markers = [
         needs: [
             {
                 name: "Power banks",
-                category: "Other",
                 description: "Power banks for the staff, preferably with cables included.",
                 quantity: 30
             },
@@ -86,117 +254,39 @@ const mock_markers = [
         resources: [
             {
                 name: "Bottled Water",
-                category: "Water",
                 description: "1.5 liters bottles",
                 quantity: 300,
-            },
-            {
-                name: "Canned Beans",
-                category: "Food",
-                description: "400 gram cans",
-                quantity: 500,
             },
         ],
         status: "READY"
     },
 ]
 
-function getAllCategories(item) {
-    switch (item.type) {
-        case "Annotation":
-            return [item?.category]
-        case "Resource":
-            return item.resources.map(resource => resource?.category)
-        case "Request":
-            return item.needs.map(need => need?.category)
-        default:
-            return []
-    }
-}
-
-const makeFilterByCategory = categories => {
-    if (categories.length === 0)
-        return () => true
-    return item => {
-        switch (item.type) {
-            case "Annotation":
-                return categories.indexOf(item?.category) !== -1
-            case "Resource":
-                return !item.resources.every(resource => categories.indexOf(resource?.category) === -1)
-            case "Request":
-                return !item.needs.every(need => categories.indexOf(need?.category) === -1)
-            default:
-                return false
-        }
-    }
-};
-
-const makeFilterByType = (typeFilter) => item => typeFilter.length === 0 || typeFilter.indexOf(item.type) !== -1
 
 export default function MapDemo() {
-    const [allMarkers, setAllMarkers] = useState(mock_markers)
-    const [shownMarkers, setShownMarkers] = useState(allMarkers)
+
+    const navigate = useNavigate();
     const [selectedPoint, setSelectedPoint] = useState(null)
-
-    const [typeFilter, setTypeFilter] = useState([])
-    const [timeFilter, setTimeFilter] = useState([])
-    const [amountFilter, setAmountFilter] = useState([])
-    const [categoryFilter, setCategoryFilter] = useState([])
-    const [mapBounds, setMapBounds] = useState([])
-
-    useEffect(() => setShownMarkers(
-        allMarkers
-            .filter(makeFilterByCategory(categoryFilter))
-            .filter(makeFilterByType(typeFilter))
-    ), [allMarkers, categoryFilter, typeFilter])
-
+    const SelectedCard = selectedPoint && cards[selectedPoint.type]
     // noinspection JSValidateTypes
     return (
         <ThemeProvider theme={customTheme}>
-            <Container maxWidth="100%" style={{height: "100%", display: "flex", flexDirection: "column"}}>
-                <CssBaseline/>
-                <Box sx={{display: "flex", flexDirection: "row", flexWrap: 'nowrap', margin: "12px", width: "100%"}}>
-                    <MultiCheckbox name={"Type"} choices={["Annotation", "Resource", "Request"]}
-                                   onChosenChanged={setTypeFilter}/>
-                    <MultiCheckbox name={"Category"}
-                                   choices={[
-                                       ...allMarkers
-                                           .map(getAllCategories)
-                                           .flat(),
-                                       ...categoryFilter
-                                   ].filter((v, i, array) => v && array.indexOf(v) === i)}
-                                   onChosenChanged={setCategoryFilter}/>
-                    <MultiCheckbox name={"Type"}
-                                   choices={["Annotation", "Resource", "Request"]}
-                                   onChosenChanged={setTypeFilter}/>
-                    <MultiCheckbox name={"Type"} choices={["Annotation", "Resource", "Request"]}
-                                   onChosenChanged={setTypeFilter}/>
-                </Box>
-                <Box sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    flexWrap: 'nowrap',
-                    margin: "12px",
-                    height: "100%",
-                    flexGrow: 100
-                }}>
-                    <Box sx={{
-                        flexBasis: "33%",
-                        flexShrink: 0,
-                        display: "flex",
-                        flexDirection: "column",
-                        rowGap: "16px"
-                    }}>
-                        {shownMarkers.map((marker) => {
-                            const SelectedCard = cards[marker.type]
-                            return < SelectedCard item={marker} onClick={() => setSelectedPoint(marker)}/>
-                        })}
-                    </Box>
-                    <Box sx={{width: "36px"}}/>
-                    <Box sx={{flexGrow: 100}}>
-                        <DisasterMap markers={shownMarkers}
-                                     center={selectedPoint && [selectedPoint.latitude, selectedPoint.longitude]}
-                                     onPointSelected={setSelectedPoint}/>
+            <Container component="main" maxWidth="100%">
+                <CssBaseline />
+                <Box sx={{ display: "flex", flexDirection: "row", flexWrap: 'nowrap', margin: "12px" }}>
+                    {selectedPoint && <>
+                        <Box sx={{ flexBasis: "33%", flexShrink: 0 }}>
+                            <SelectedCard request={selectedPoint} />
+                        </Box>
+                        <Box sx={{ width: "36px" }} />
+                    </>
+                    }
+                    {(!selectedPoint) && <>
+                        <MapDataGrid sx={{ flexBasis: "33%", flexShrink: 0, display: "flex", flexDirection: "row", flexWrap: 'nowrap', marginRight: "12px" }} />
+                        <Box sx={{ width: "46px" }} />
+                    </>}
+                    <Box sx={{ flexBasis: "66%", flexGrow: 100 }}>
+                        <DisasterMap markers={mock_markers} onPointSelected={setSelectedPoint} />
                     </Box>
                 </Box>
             </Container>
