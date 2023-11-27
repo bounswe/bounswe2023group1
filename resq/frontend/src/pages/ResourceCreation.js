@@ -15,8 +15,7 @@ import ResourceAddress from '../components/Resource/ResourceAddress';
 import ResourceDetail1 from '../components/Resource/ResourceDetail1';
 import ResourceDetail2 from '../components/Resource/ResourceDetail2';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { ResourceProvider } from '../components/Resource/ResourceContext';
-import { useResource } from './ResourceContext';
+import {ResourceProvider, useResource} from '../components/Resource/ResourceContext';
 import axios from 'axios';
 
 

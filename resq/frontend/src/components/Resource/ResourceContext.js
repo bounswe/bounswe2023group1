@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext } from 'react';
 
-const ResourceContext = createContext();
+export const ResourceContext = createContext({});
 
 export const useResource = () => useContext(ResourceContext);
 

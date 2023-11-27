@@ -39,7 +39,7 @@ export default function CreateResourceForm() {
             latitude: parseFloat(latitudeValue),
         });
     };
-
+/*
     const handleChange = (event) => {
         const { name, value } = event.target;
         setResource(prevState => ({
@@ -51,7 +51,7 @@ export default function CreateResourceForm() {
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(resource);
-    };
+    };*/
 
     return (
         <ThemeProvider theme={customTheme}>
