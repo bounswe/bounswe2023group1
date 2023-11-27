@@ -20,19 +20,20 @@ const customTheme = createTheme({
     },
 });
 
-export default function CreateRequestForm() {
-    const [request, setRequest] = useState({
+export default function CreateResourceForm() {
+    const [resource, setResource] = useState({
         type: '',
         status: '',
         urgency: '',
         location: '',
         quantity: '',
         description: '',
+        category: '',
     });
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setRequest(prevState => ({
+        setResource(prevState => ({
             ...prevState,
             [name]: value
         }));
@@ -40,7 +41,7 @@ export default function CreateRequestForm() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(request);
+        console.log(resource);
         //send this data to a backend server
     };
 
