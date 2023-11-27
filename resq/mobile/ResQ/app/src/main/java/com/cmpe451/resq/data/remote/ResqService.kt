@@ -5,8 +5,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.cmpe451.resq.data.Constants
 import com.cmpe451.resq.data.manager.UserSessionManager
-import com.cmpe451.resq.data.models.CategoryNode
+import com.cmpe451.resq.data.models.CategoryTreeNode
 import com.cmpe451.resq.data.models.CreateNeedRequestBody
+import com.cmpe451.resq.data.models.CreateResourceRequestBody
 import com.cmpe451.resq.data.models.LoginRequestBody
 import com.cmpe451.resq.data.models.LoginResponse
 import com.cmpe451.resq.data.models.ProfileData
@@ -26,9 +27,17 @@ interface CategoryTreeNodeService {
     suspend fun getMainCategories(
         @Header("Authorization") jwtToken: String,
         @Header("X-Selected-Role") role: String
-    ): Response<List<CategoryNode>>
+    ): Response<List<CategoryTreeNode>>
 }
 
+interface ResourceService {
+    @POST("resource/createResource")
+    suspend fun createResource(
+        @Header("Authorization") jwtToken: String,
+        @Header("X-Selected-Role") role: String,
+        @Body requestBody: CreateResourceRequestBody
+    ): Response<Int>
+}
 interface NeedService {
     @POST("need/createNeed")
     suspend fun createNeed(
@@ -74,6 +83,7 @@ class ResqService(appContext: Context) {
         .build()
 
     private val categoryTreeNodeService: CategoryTreeNodeService = retrofit.create(CategoryTreeNodeService::class.java)
+    private val resourceService: ResourceService = retrofit.create(ResourceService::class.java)
     private val needService: NeedService = retrofit.create(NeedService::class.java)
     private val authService: AuthService = retrofit.create(AuthService::class.java)
     private val profileService: ProfileService = retrofit.create(ProfileService::class.java)
@@ -81,7 +91,7 @@ class ResqService(appContext: Context) {
     private val userSessionManager: UserSessionManager = UserSessionManager.getInstance(appContext)
 
     // Category Tree Node methods
-    suspend fun getMainCategories(): Response<List<CategoryNode>> {
+    suspend fun getMainCategories(): Response<List<CategoryTreeNode>> {
         val token = userSessionManager.getUserToken() ?: ""
         val selectedRole = userSessionManager.getSelectedRole() ?: ""
 
@@ -91,16 +101,31 @@ class ResqService(appContext: Context) {
         )
     }
 
+    // Resource methods
+    suspend fun createResource(request: CreateResourceRequestBody): Response<Int> {
+        val userId = userSessionManager.getUserId()
+        val token = userSessionManager.getUserToken() ?: ""
+        // val selectedRole = userSessionManager.getSelectedRole() ?: ""
+
+        request.senderId = userId
+
+        return resourceService.createResource(
+            jwtToken = "Bearer $token",
+            role = "RESPONDER",
+            requestBody = request
+        )
+    }
+
     // Need methods
     suspend fun createNeed(request: CreateNeedRequestBody): Response<Int> {
         val userId = userSessionManager.getUserId()
         val token = userSessionManager.getUserToken() ?: ""
-        val selectedRole = userSessionManager.getSelectedRole() ?: ""
+        // val selectedRole = userSessionManager.getSelectedRole() ?: ""
 
         return needService.createNeed(
             userId = userId,
             jwtToken = "Bearer $token",
-            role = selectedRole,
+            role = "VICTIM",
             requestBody = request
         )
     }
