@@ -1,30 +1,16 @@
+// noinspection JSUnusedLocalSymbols
+
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
+import {useEffect, useState} from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import disasterImage from '../disaster.png';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 import Container from '@mui/material/Container';
-import { useNavigate } from 'react-router-dom';
 import DisasterMap from "../components/DisasterMap";
-import { useState, useEffect } from 'react';
-import { Card, CardActions, CardContent, CardHeader, Collapse, IconButton } from "@mui/material";
-import { type_colors } from "../Colors";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import styled from "styled-components";
-import axios from 'axios';
-import Geocode from 'react-geocode';
-import MapDataGrid from '../components/MapDataGrid'
+import {cards} from "../components/ListCards";
+import {AmountSelector, MultiCheckbox} from "../components/MultiCheckbox";
+import {DatePicker} from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 
 
 const customTheme = createTheme({
@@ -36,172 +22,21 @@ const customTheme = createTheme({
 });
 
 
-
-const ExpandMore = styled(IconButton)`
-  transform: ${({ expand }) => !expand ? 'rotate(0deg)' : 'rotate(180deg)'};
-  margin-left: auto;
-  transition: transform 150ms;
-`
-
-const OffsetActions = styled(CardActions)`
-  transform: translate(-8px, -28px);
-  height: 0;
-  padding: 0;
-`
-
-const RequestCard = ({ request: { requester, urgency, needs, status, longitude, latitude } }) => {
-    const [expanded, setExpanded] = useState(false);
-    const [locationName, setLocationName] = useState('');
-    const [cityName, setCityName] = useState('');
-
-    useEffect(() => {
-        const reverseGeocode = async () => {
-            try {
-                const response = await axios.get(
-                    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCehlfJwJ-V_xOWZ9JK3s0rcjkV2ga0DVg`
-                );
-
-                const cityName = response.data.results[0]?.formatted_address || 'Unknown';
-                setLocationName(cityName);
-                setCityName(cityName);
-            } catch (error) {
-                console.error('Error fetching location name:', error);
-            }
-        };
-
-        reverseGeocode();
-    }, [latitude, longitude]);
-
-    return <Card variant="outlined">
-        <CardHeader
-            avatar={
-                <Avatar sx={{ bgcolor: type_colors["Request"] }} aria-label="Request">
-                    Rq
-                </Avatar>
-            }
-            titleTypographyProps={{ variant: 'h6' }}
-            title={needs.map(({ name, quantity }) => `${quantity} ${name}`).join(", ")}
-        />
-        <CardContent>
-            <Typography variant="body1" sx={{ fontSize: '16px', fontWeight: 'bold' }}>
-                Urgency: <span style={{ color: 'red', fontWeight: 'bold' }}>{urgency}</span> | Status: <span style={{ color: 'red', fontWeight: 'bold' }}>{status}</span>
-            </Typography>
-
-            <Typography variant="body2" color="text.primary" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
-                Made by: {requester.name} {requester.surname}
-            </Typography>
-            <Typography variant="body2" color="text.primary" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
-                Location: {`${cityName}`}
-            </Typography>
-        </CardContent>
-        <OffsetActions disableSpacing>
-            {/*<IconButton aria-label="add to favorites">
-                <FavoriteIcon/>
-            </IconButton>
-            <IconButton aria-label="share">
-                <ShareIcon/>
-            </IconButton>*/}
-            <ExpandMore
-                expand={expanded}
-                onClick={() => setExpanded(!expanded)}
-                aria-expanded={expanded}
-                aria-label="show more"
-            >
-                <ExpandMoreIcon />
-            </ExpandMore>
-        </OffsetActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-                {needs.map(({ name, description, quantity }) =>
-                    <Typography variant="body2" color="text.primary">
-                        {quantity} {name}: {description}
-                    </Typography>
-                )}
-            </CardContent>
-        </Collapse>
-    </Card>;
-}
-
-
-const ResourceCard = ({ request: { owner, urgency, resources, status, longitude, latitude } }) => {
-    const [expanded, setExpanded] = useState(false);
-    const [locationName, setLocationName] = useState('');
-    const [cityName, setCityName] = useState('');
-
-    useEffect(() => {
-        const reverseGeocode = async () => {
-            try {
-                const response = await axios.get(
-                    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCehlfJwJ-V_xOWZ9JK3s0rcjkV2ga0DVg`
-                );
-
-                const cityName = response.data.results[0]?.formatted_address || 'Unknown';
-                setLocationName(cityName);
-                setCityName(cityName);
-            } catch (error) {
-                console.error('Error fetching location name:', error);
-            }
-        };
-
-        reverseGeocode();
-    }, [latitude, longitude]);
-
-
-    return <Card variant="outlined">
-        <CardHeader
-            avatar={
-                <Avatar sx={{ bgcolor: type_colors["Resource"] }} aria-label="Resource">
-                    Rs
-                </Avatar>
-            }
-            titleTypographyProps={{ variant: 'h6' }}
-            title={resources.map(({ name, quantity }) => `${quantity} ${name}`).join(", ")}
-        />
-        <CardContent>
-            <Typography variant="body1" sx={{ fontSize: '16px', fontWeight: 'bold' }}>
-                Urgency: <span style={{ color: 'red', fontWeight: 'bold' }}>{urgency}</span> | Status: <span style={{ color: 'blue', fontWeight: 'bold' }}>{status}</span>
-            </Typography>
-            <Typography variant="body2" color="text.primary" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
-                Owner: {owner.name} {owner.surname}
-            </Typography>
-            <Typography variant="body2" color="text.primary" sx={{ fontSize: '12px', fontWeight: 'bold' }}>
-                Location: {`${cityName}`}
-            </Typography>
-        </CardContent>
-        <OffsetActions disableSpacing>
-            {/*<IconButton aria-label="add to favorites">
-                <FavoriteIcon/>
-            </IconButton>
-            <IconButton aria-label="share">
-                <ShareIcon/>
-            </IconButton>*/}
-            <ExpandMore
-                expand={expanded}
-                onClick={() => setExpanded(!expanded)}
-                aria-expanded={expanded}
-                aria-label="show more"
-            >
-                <ExpandMoreIcon />
-            </ExpandMore>
-        </OffsetActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-                {resources.map(({ name, description, quantity }) =>
-                    <Typography variant="body2" color="text.primary">
-                        {quantity} {name}: {description}
-                    </Typography>
-                )}
-            </CardContent>
-        </Collapse>
-    </Card>;
-}
-
-const cards = {
-    "Resource": ResourceCard,
-    "Request": RequestCard
-}
-
 const mock_markers = [
+    {
+        type: "Annotation",
+        latitude: 41.089,
+        longitude: 29.053,
+        category: "Health",
+        title: "First Aid Clinic",
+        short_description: "First aid clinic and emergency wound care. Open 24 hours.",
+        long_description: "Welcome to our First Aid Clinic, a dedicated facility committed to providing immediate and " +
+            "compassionate healthcare 24 hours a day. Our experienced team of healthcare professionals specializes in " +
+            "emergency wound care and first aid assistance, ensuring you receive prompt attention when you need it most. " +
+            "From minor cuts to more serious injuries, our clinic is equipped to handle a range of medical concerns, " +
+            "promoting healing and preventing complications.",
+        date: "26/11/2023"
+    },
     {
         type: "Request",
         latitude: 37.08,
@@ -237,6 +72,7 @@ const mock_markers = [
         needs: [
             {
                 name: "Power banks",
+                category: "Other",
                 description: "Power banks for the staff, preferably with cables included.",
                 quantity: 30
             },
@@ -255,42 +91,181 @@ const mock_markers = [
         resources: [
             {
                 name: "Bottled Water",
+                category: "Water",
                 description: "1.5 liters bottles",
                 quantity: 300,
             },
+            {
+                name: "Canned Beans",
+                category: "Food",
+                description: "400 gram cans",
+                quantity: 500,
+            },
         ],
-        status: "READY"
-    },
+    }
 ]
+
+function getAllCategories(item) {
+    switch (item.type) {
+        case "Annotation":
+            return [item?.category]
+        case "Resource":
+            return item.resources.map(resource => resource?.category)
+        case "Request":
+            return item.needs.map(need => need?.category)
+        default:
+            return []
+    }
+}
+
+const applyFilterTo = (predicate) =>
+    item => {
+        switch (item.type) {
+            case "Annotation":
+                return predicate(item)
+            case "Resource":
+                return !item.resources.every(resource => !predicate(resource))
+            case "Request":
+                return !item.needs.every(need => !predicate(need))
+            default:
+                return false
+        }
+    }
+
+const makeFilterByCategory = categories => {
+    if (categories.length === 0)
+        return () => true
+    return applyFilterTo(
+        function (item) {
+            return categories.indexOf(item?.category) !== -1;
+        }
+    )
+};
+
+const makeFilterByType = (typeFilter) => item => typeFilter.length === 0 || typeFilter.indexOf(item.type) !== -1
+
+const makeFilterByAmount = ([amount]) => {
+    if (typeof amount !== "string" || amount.indexOf("-") === -1)
+        return () => true
+    const [min, max] = amount.split("-").map(i => parseInt(i))
+    return applyFilterTo(function (item) {
+        return item.quantity && item.quantity >= min && max >= item.quantity;
+    })
+};
+
+const makeFilterByDateFrom = (dateFrom) => item => dateFrom === null || !dateFrom.isValid() || !(dateFrom > dayjs(item.date))
+const makeFilterByDateTo = (dateTo) => item => dateTo === null || !dateTo.isValid() || !(dateTo < dayjs(item.date))
+
+const makeFilterByBounds = ({ne: [ne_lat, ne_lng], sw: [sw_lat, sw_lng]}) =>
+    function (item) {
+        return item.latitude <= ne_lat &&
+            item.longitude <= ne_lng &&
+            item.latitude >= sw_lat &&
+            item.longitude >= sw_lng;
+    }
 
 
 export default function MapDemo() {
-
-    const navigate = useNavigate();
+    // eslint-disable-next-line no-unused-vars
+    const [allMarkers, setAllMarkers] = useState(mock_markers)
+    const [shownMarkers, setShownMarkers] = useState(allMarkers)
     const [selectedPoint, setSelectedPoint] = useState(null)
-    const SelectedCard = selectedPoint && cards[selectedPoint.type]
+    const [mapCenter, setMapCenter] = useState([39, 34.5])
+
+    const [typeFilter, setTypeFilter] = useState([])
+    const [dateFromFilter, setDateFromFilter] = useState(null)
+    const [dateToFilter, setDateToFilter] = useState(null)
+    const [amountFilter, setAmountFilter] = useState([])
+    const [categoryFilter, setCategoryFilter] = useState([])
+    const [mapBounds, setMapBounds] = useState({ne: [0, 0], sw: [0, 0]})
+
+    useEffect(() => {
+        if (selectedPoint)
+            setMapCenter([selectedPoint.latitude, selectedPoint.longitude])
+    }, [selectedPoint])
+
+    useEffect(() => setShownMarkers(
+        allMarkers
+            .filter(makeFilterByCategory(categoryFilter))
+            .filter(makeFilterByType(typeFilter))
+            .filter(makeFilterByAmount(amountFilter))
+            .filter(makeFilterByDateFrom(dateFromFilter))
+            .filter(makeFilterByDateTo(dateToFilter))
+            .filter(makeFilterByBounds(mapBounds))
+    ), [allMarkers, amountFilter, categoryFilter, dateFromFilter, dateToFilter, mapBounds, typeFilter])
+
     // noinspection JSValidateTypes
     return (
         <ThemeProvider theme={customTheme}>
-            <Container component="main" maxWidth="100%">
-                <CssBaseline />
-                <Box sx={{ display: "flex", flexDirection: "row", flexWrap: 'nowrap', margin: "12px" }}>
-                    {selectedPoint && <>
-                        <Box sx={{ flexBasis: "33%", flexShrink: 0 }}>
-                            <SelectedCard request={selectedPoint} />
+            <Container maxWidth="100%" style={{height: "100%", display: "flex", flexDirection: "column"}}>
+                <CssBaseline/>
+                <Box sx={{
+                    display: "flex", flexDirection: "row", flexWrap: 'nowrap', margin: "12px", width: "100%",
+                    justifyContent: "center"
+                }}>
+                    <MultiCheckbox name={"Type"} choices={["Annotation", "Resource", "Request"]}
+                                   onChosenChanged={setTypeFilter}/>
+                    <MultiCheckbox name={"Category"}
+                                   choices={[
+                                       ...allMarkers
+                                           .map(getAllCategories)
+                                           .flat(),
+                                       ...categoryFilter
+                                   ].filter((v, i, array) => v && array.indexOf(v) === i)}
+                                   onChosenChanged={setCategoryFilter}/>
+                    <AmountSelector name={"Amount"}
+                                    onChosenChanged={setAmountFilter}/>
+                    <DatePicker
+                        sx={{m: 1}}
+                        label="From"
+                        format="DD/MM/YYYY"
+                        value={dateFromFilter}
+                        onChange={e => setDateFromFilter(e)}
+                    />
+                    <DatePicker
+                        sx={{m: 1}}
+                        label="To"
+                        format="DD/MM/YYYY"
+                        value={dateToFilter}
+                        onChange={e => setDateToFilter(e)}
+                    />
+                </Box>
+                <Box sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    flexWrap: 'nowrap',
+                    margin: "12px",
+                    height: "100%",
+                    flexGrow: 100
+                }}>
+                    <Box sx={{
+                        flexBasis: "33%",
+                        flexShrink: 0,
+                        height: "100%",
+                        overflow: "scroll"
+                    }}>
+                        <Box sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            rowGap: "16px",
+                            height: "fit-content"
+                        }}>
+                            {shownMarkers.map((marker) => {
+                                const SelectedCard = cards[marker.type]
+                                return < SelectedCard item={marker} onClick={() => setSelectedPoint(marker)}/>
+                            })}
                         </Box>
-                        <Box sx={{ width: "36px" }} />
-                    </>
-                    }
-                    {(!selectedPoint) && <>
-                        <MapDataGrid sx={{ flexBasis: "33%", flexShrink: 0, display: "flex", flexDirection: "row", flexWrap: 'nowrap', marginRight: "12px" }} />
-                        <Box sx={{ width: "46px" }} />
-                    </>}
-                    <Box sx={{ flexBasis: "66%", flexGrow: 100 }}>
-                        <DisasterMap markers={mock_markers} onPointSelected={setSelectedPoint} />
+                    </Box>
+                    <Box sx={{width: "36px"}}/>
+                    <Box sx={{flexGrow: 100}}>
+                        <DisasterMap markers={shownMarkers}
+                                     mapCenter={mapCenter}
+                                     setMapCenter={setMapCenter}
+                                     onPointSelected={setSelectedPoint}
+                                     onBoundsChanged={setMapBounds}
+                        />
                     </Box>
                 </Box>
-
             </Container>
         </ThemeProvider>
     );

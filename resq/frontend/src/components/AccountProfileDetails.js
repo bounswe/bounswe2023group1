@@ -1,6 +1,7 @@
-import React, {useCallback, useState} from 'react';
-import {Box, Card, CardContent, CardHeader, Divider, TextField} from '@mui/material';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
+import React, { useCallback, useState } from 'react';
+import { Box, Card, CardContent, CardHeader, Divider, TextField } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import UnstyledSelectRichOptions from './Countries';
 
 
 const states = [
@@ -37,7 +38,7 @@ function AccountProfileDetails() {
         email: 'meleknurturkoglu@gmail.com',
         phone: '05324054856',
         state: 'Izmir',
-        country: 'Turkey',
+        country: 'TR',
     });
 
     const handleChange = useCallback((event) => {
@@ -54,13 +55,13 @@ function AccountProfileDetails() {
     return (
         <ThemeProvider theme={customTheme}>
             <form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                <Card style={{width: '100%', maxWidth: '400px', height: '99.2%'}}>
-                    <CardHeader/>
-                    <CardContent sx={{pt: 0}}>
-                        <Box sx={{m: -1.5}}>
+                <Card style={{ width: '100%', maxWidth: '400px', height: '99.2%' }}>
+                    <CardHeader />
+                    <CardContent sx={{ pt: 0 }}>
+                        <Box sx={{ m: -1.5 }}>
                             <TextField
                                 fullWidth
-                                style={{marginBottom: '16px'}}
+                                style={{ marginBottom: '16px' }}
                                 label="First name"
                                 name="firstName"
                                 onChange={handleChange}
@@ -69,7 +70,7 @@ function AccountProfileDetails() {
                             />
                             <TextField
                                 fullWidth
-                                style={{marginBottom: '16px'}}
+                                style={{ marginBottom: '16px' }}
                                 label="Last name"
                                 name="lastName"
                                 onChange={handleChange}
@@ -78,7 +79,7 @@ function AccountProfileDetails() {
                             />
                             <TextField
                                 fullWidth
-                                style={{marginBottom: '16px'}}
+                                style={{ marginBottom: '16px' }}
                                 label="Email Address"
                                 name="email"
                                 onChange={handleChange}
@@ -87,31 +88,29 @@ function AccountProfileDetails() {
                             />
                             <TextField
                                 fullWidth
-                                style={{marginBottom: '16px'}}
+                                style={{ marginBottom: '16px' }}
                                 label="Phone Number"
                                 name="phone"
                                 onChange={handleChange}
                                 type="number"
                                 value={values.phone}
                             />
-                            <TextField
-                                fullWidth
-                                style={{marginBottom: '16px'}}
-                                label="Country"
+                            <UnstyledSelectRichOptions
                                 name="country"
-                                onChange={handleChange}
-                                required
                                 value={values.country}
+                                onChange={handleChange}
+                                label="Country"
+                                required
                             />
                             <TextField
                                 fullWidth
-                                style={{marginBottom: '16px'}}
+                                style={{ marginBottom: '16px' }}
                                 label="Select State"
                                 name="state"
                                 onChange={handleChange}
                                 required
                                 select
-                                SelectProps={{native: true}}
+                                SelectProps={{ native: true }}
                                 value={values.state}
                             >
                                 {states.map((option) => (
@@ -122,7 +121,7 @@ function AccountProfileDetails() {
                             </TextField>
                         </Box>
                     </CardContent>
-                    <Divider/>
+                    <Divider />
                 </Card>
             </form>
         </ThemeProvider>

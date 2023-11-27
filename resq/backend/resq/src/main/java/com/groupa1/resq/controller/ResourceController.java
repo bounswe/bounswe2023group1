@@ -1,6 +1,6 @@
 package com.groupa1.resq.controller;
 
-import com.groupa1.resq.entity.Resource;
+import com.groupa1.resq.dto.ResourceDto;
 import com.groupa1.resq.request.CreateResourceRequest;
 import com.groupa1.resq.service.ResourceService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,14 +23,14 @@ public class ResourceController {
 
     @PreAuthorize("hasRole('RESPONDER')")
     @PostMapping("/createResource")
-    public ResponseEntity<String> createResource(@RequestBody CreateResourceRequest createResourceRequest) {
+    public ResponseEntity<Object> createResource(@RequestBody CreateResourceRequest createResourceRequest) {
         log.info("Creating resource with request: " + createResourceRequest.toString());
         return resourceService.createResource(createResourceRequest);
     }
 
-    @PreAuthorize("hasRole('RESPONDER') or hasRole('COORDINATOR')")
+    @PreAuthorize("hasRole('RESPONDER') or hasRole('COORDINATOR') or hasRole('VICTIM')")
     @GetMapping("/viewResource")
-    public ResponseEntity<Resource> viewResource(@RequestParam Long resourceId) {
+    public ResponseEntity<ResourceDto> viewResource(@RequestParam Long resourceId) {
         log.info("Viewing resource with id: " + resourceId);
         return resourceService.viewResource(resourceId);
     }
@@ -50,17 +50,17 @@ public class ResourceController {
     }
 
 
-    @PreAuthorize("hasRole('COORDINATOR')")
-    @GetMapping("filterByDistance")
-    public ResponseEntity<List<Resource>> filterByDistance(@RequestParam
+    @PreAuthorize("hasRole('COORDINATOR') or hasRole('VICTIM') or hasRole('RESPONDER')")
+    @GetMapping("/filterByDistance")
+    public ResponseEntity<List<ResourceDto>> filterByDistance(@RequestParam
                                                    BigDecimal longitude, @RequestParam BigDecimal latitude, @RequestParam BigDecimal distance) {
         log.info("Filtering resources by distance");
-        return resourceService.filterByDistance(longitude, latitude, distance);
+        return resourceService.filterByDistance(latitude, longitude, distance);
     }
 
-    @PreAuthorize("hasRole('COORDINATOR')")
-    @GetMapping("filterByCategory")
-    public ResponseEntity<List<Resource>> filterByCategory(@RequestParam(required = false) String categoryTreeId,
+    @PreAuthorize("hasRole('COORDINATOR') or hasRole('VICTIM') or hasRole('RESPONDER')")
+    @GetMapping("/filterByCategory")
+    public ResponseEntity<List<ResourceDto>> filterByCategory(@RequestParam(required = false) String categoryTreeId,
                                                            @RequestParam(required = false) BigDecimal longitude,
                                                              @RequestParam(required = false) BigDecimal latitude,
                                                            @RequestParam(required = false) Long userId) {

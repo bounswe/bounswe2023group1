@@ -30,7 +30,7 @@ class ProfileViewModel() : ViewModel() {
 
         viewModelScope.launch {
             try {
-                val data = api.getUserData()
+                val data = api.getUserInfo()
                 _profileData.value = data
             } catch (e: Exception) {
                 errorMessage.value = e.message

@@ -7,13 +7,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.cmpe451.resq.domain.RegistrationUseCase
+import com.cmpe451.resq.data.models.RegisterRequestBody
+import com.cmpe451.resq.data.remote.ResqService
 import kotlinx.coroutines.launch
 
 class RegistrationViewModel() : ViewModel() {
-
-    private var registrationUseCase = RegistrationUseCase()
-
     private val _registerMessage = mutableStateOf<String?>(null)
     val registerMessage: State<String?> = _registerMessage
 
@@ -33,7 +31,7 @@ class RegistrationViewModel() : ViewModel() {
         if (validateRegistrationInputs(name, surname, email, password, confirmPassword, termsAccepted)) {
             viewModelScope.launch {
                 try {
-                    val result = registrationUseCase.execute(name, surname, email, password, appContext)
+                    val result = getRegisterResponse(name, surname, email, password, appContext)
                     if (result.isSuccess) {
                         _registerMessage.value = result.getOrNull()
                         _errorMessage.value = null
@@ -49,6 +47,18 @@ class RegistrationViewModel() : ViewModel() {
             }
         }
     }
+
+    suspend fun getRegisterResponse(name: String, surname: String, email: String, password: String, appContext: Context): Result<String> {
+        val api = ResqService(appContext)
+        val response = api.register(RegisterRequestBody(name, surname, email, password))
+        if (response.isSuccessful) {
+            response.body()?.let {
+                return Result.success(it.string())
+            }
+        }
+        return Result.failure(Throwable(response.message()))
+    }
+
     fun validateRegistrationInputs(name: String, surname: String, email: String, password: String, confirmPassword: String, termsAccepted: Boolean): Boolean {
         if (name.isBlank()) {
             _errorMessage.value = "Name cannot be empty."

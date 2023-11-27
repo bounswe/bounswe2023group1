@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.HashSet;
@@ -20,7 +19,7 @@ import java.util.Set;
         })
 @Data
 @EqualsAndHashCode(callSuper = true, exclude = {"userProfile", "requests", "needs", "resourcesReceived","resourcesSent", "tasksAssigned", "tasksAssignedTo", "feedbacks", "actions", "infos", "notifications"})
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"userProfile", "requests", "needs", "resourcesReceived","resourcesSent", "tasksAssigned", "tasksAssignedTo", "feedbacks", "actions", "infos", "notifications"})
 public class User extends BaseEntity {
 
     @NotBlank
