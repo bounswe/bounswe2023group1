@@ -183,7 +183,7 @@ export default function MapPage({allMarkers}) {
                         }}>
                             {shownMarkers.map((marker) => {
                                 const SelectedCard = cards[marker.type]
-                                return < SelectedCard item={marker} onClick={() => setSelectedPoint(marker)}/>
+                                return <div onClick={() => setSelectedPoint(marker)}>< SelectedCard item={marker}/></div>
                             })}
                         </Box>
                     </Box>
