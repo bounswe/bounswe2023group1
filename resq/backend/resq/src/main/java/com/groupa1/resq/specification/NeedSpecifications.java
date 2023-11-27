@@ -37,6 +37,18 @@ public class NeedSpecifications {
                 criteriaBuilder.equal(root.get("requester").get("id"), requesterId);
     }
 
+    public static Specification<Need> isWithinRectangleScope(BigDecimal longitude1, BigDecimal longitude2,
+                                                             BigDecimal latitude1, BigDecimal latitude2) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.and(
+                        criteriaBuilder.between(root.get("longitude"), longitude1, longitude2),
+                        criteriaBuilder.between(root.get("latitude"), latitude1, latitude2)
+                );
+    }
+
+
+
+
 
 
 

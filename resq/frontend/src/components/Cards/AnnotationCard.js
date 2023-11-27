@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Button, Chip, Dialog, DialogTitle, DialogContent, DialogContentText } from '@mui/material';
-import reverseGeocode from './Geolocation';
+import reverseGeocode from '../Geolocation';
 
-const AnnotationCard = ({ annotation }) => {
+const AnnotationCard = ({ item }) => {
     const [locationName, setLocationName] = useState('Unknown Location');
     const [open, setOpen] = useState(false); // Added for Dialog control
     const [longDescription, setLongDescription] = useState(''); // State to hold long description
 
     useEffect(() => {
-        if (annotation.latitude && annotation.longitude) {
-            reverseGeocode(annotation.latitude, annotation.longitude)
+        if (item.latitude && item.longitude) {
+            reverseGeocode(item.latitude, item.longitude)
                 .then((name) => setLocationName(name))
                 .catch((error) => console.error('Error fetching location name:', error));
         }
-    }, [annotation.latitude, annotation.longitude]);
+    }, [item.latitude, item.longitude]);
 
     const handleViewMore = () => {
-        setLongDescription(annotation.long_description || 'Long description not available.');
+        setLongDescription(item.long_description || 'Long description not available.');
         setOpen(true); // Open the dialog
     };
 
@@ -28,7 +28,7 @@ const AnnotationCard = ({ annotation }) => {
     // Dialog component to show long description
     const LongDescriptionDialog = () => (
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>{annotation.title}</DialogTitle>
+            <DialogTitle>{item.title}</DialogTitle>
             <DialogContent>
                 <DialogContentText>
                     {longDescription || 'Long description not available.'}
@@ -37,41 +37,39 @@ const AnnotationCard = ({ annotation }) => {
         </Dialog>
     );
 
-
     return (
         <Box
             padding={2}
             border={1}
             borderColor="grey.300"
             borderRadius={4}
-            marginY={2}
             display="flex"
             flexDirection="column"
         >
-            <Typography variant="h6">{annotation.title}</Typography>
+            <Typography variant="h6">{item.title}</Typography>
             <Typography variant="subtitle1" color="textSecondary">
-                {annotation.category}
+                {item.category}
             </Typography>
-            <Typography variant="body1">{annotation.short_description}</Typography>
+            <Typography variant="body1">{item.short_description}</Typography>
 
             {/* Date and Location Data */}
-            {annotation.date && (
-                <Typography variant="body2">Date: {new Date(annotation.date).toLocaleDateString()}</Typography>
+            {item.date && (
+                <Typography variant="body2">Date: {new Date(item.date).toLocaleDateString()}</Typography>
             )}
             {locationName !== 'Unknown Location' && (
                 <Typography variant="body2">Location: {locationName}</Typography>
             )}
 
             {/* Additional Metadata */}
-            {annotation.additionalMetadata && (
+            {item.additionalMetadata && (
                 <Box marginTop={1}>
-                    {Object.entries(annotation.additionalMetadata).map(([key, value]) => (
+                    {Object.entries(item.additionalMetadata).map(([key, value]) => (
                         <Chip key={key} label={`${key}: ${value}`} variant="outlined" size="small" />
                     ))}
                 </Box>
             )}
 
-            <Button color="primary" onClick={() => handleViewMore(annotation)}>
+            <Button color="primary" onClick={() => handleViewMore(item)}>
                 View More
             </Button>
 
