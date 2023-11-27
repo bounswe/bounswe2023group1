@@ -1,16 +1,17 @@
 // noinspection JSUnusedLocalSymbols
 
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import DisasterMap from "../components/DisasterMap";
-import {cards} from "../components/ListCards";
-import {AmountSelector, MultiCheckbox} from "../components/MultiCheckbox";
-import {DatePicker} from "@mui/x-date-pickers";
+import { cards } from "../components/ListCards";
+import { AmountSelector, MultiCheckbox } from "../components/MultiCheckbox";
+import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import AnnotationCard from "../components/AnnotationCard";
 
 
 const customTheme = createTheme({
@@ -119,17 +120,22 @@ const mock_markers = [
 ]
 
 function getAllCategories(item) {
+    // Extract categories based on the type of item
     switch (item.type) {
         case "Annotation":
-            return [item?.category]
+            // Annotations may have a single category
+            return [item?.category];
         case "Resource":
-            return item.resources.map(resource => resource?.category)
+            // Resources may have multiple categories
+            return item.resources.map(resource => resource?.category);
         case "Request":
-            return item.needs.map(need => need?.category)
+            // Requests may have multiple needs, each with its own category
+            return item.needs.map(need => need?.category);
         default:
-            return []
+            return [];
     }
 }
+
 
 const applyFilterTo = (predicate) =>
     item => {
@@ -169,7 +175,7 @@ const makeFilterByAmount = ([amount]) => {
 const makeFilterByDateFrom = (dateFrom) => item => dateFrom === null || !dateFrom.isValid() || !(dateFrom > dayjs(item.date))
 const makeFilterByDateTo = (dateTo) => item => dateTo === null || !dateTo.isValid() || !(dateTo < dayjs(item.date))
 
-const makeFilterByBounds = ({ne: [ne_lat, ne_lng], sw: [sw_lat, sw_lng]}) =>
+const makeFilterByBounds = ({ ne: [ne_lat, ne_lng], sw: [sw_lat, sw_lng] }) =>
     function (item) {
         return item.latitude <= ne_lat &&
             item.longitude <= ne_lng &&
@@ -190,7 +196,7 @@ export default function MapDemo() {
     const [dateToFilter, setDateToFilter] = useState(null)
     const [amountFilter, setAmountFilter] = useState([])
     const [categoryFilter, setCategoryFilter] = useState([])
-    const [mapBounds, setMapBounds] = useState({ne: [0, 0], sw: [0, 0]})
+    const [mapBounds, setMapBounds] = useState({ ne: [0, 0], sw: [0, 0] })
 
     useEffect(() => {
         if (selectedPoint)
@@ -210,33 +216,32 @@ export default function MapDemo() {
     // noinspection JSValidateTypes
     return (
         <ThemeProvider theme={customTheme}>
-            <Container maxWidth="100%" style={{height: "100%", display: "flex", flexDirection: "column"}}>
-                <CssBaseline/>
-                <Box sx={{
-                    display: "flex", flexDirection: "row", flexWrap: 'nowrap', margin: "12px", width: "100%",
-                    justifyContent: "center"
-                }}>
+            <Container maxWidth="100%" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+                <CssBaseline />
+                {/* Top Filter UI */}
+                <Box sx={{ display: "flex", flexDirection: "row", flexWrap: 'nowrap', margin: "12px", width: "100%", justifyContent: "center" }}>
+                    {/* Filter Components */}
                     <MultiCheckbox name={"Type"} choices={["Annotation", "Resource", "Request"]}
-                                   onChosenChanged={setTypeFilter}/>
+                        onChosenChanged={setTypeFilter} />
                     <MultiCheckbox name={"Category"}
-                                   choices={[
-                                       ...allMarkers
-                                           .map(getAllCategories)
-                                           .flat(),
-                                       ...categoryFilter
-                                   ].filter((v, i, array) => v && array.indexOf(v) === i)}
-                                   onChosenChanged={setCategoryFilter}/>
+                        choices={[
+                            ...allMarkers
+                                .map(getAllCategories)
+                                .flat(),
+                            ...categoryFilter
+                        ].filter((v, i, array) => v && array.indexOf(v) === i)}
+                        onChosenChanged={setCategoryFilter} />
                     <AmountSelector name={"Amount"}
-                                    onChosenChanged={setAmountFilter}/>
+                        onChosenChanged={setAmountFilter} />
                     <DatePicker
-                        sx={{m: 1}}
+                        sx={{ m: 1 }}
                         label="From"
                         format="DD/MM/YYYY"
                         value={dateFromFilter}
                         onChange={e => setDateFromFilter(e)}
                     />
                     <DatePicker
-                        sx={{m: 1}}
+                        sx={{ m: 1 }}
                         label="To"
                         format="DD/MM/YYYY"
                         value={dateToFilter}
@@ -244,38 +249,29 @@ export default function MapDemo() {
                     />
                 </Box>
                 <Box sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    flexWrap: 'nowrap',
-                    margin: "12px",
-                    height: "100%",
-                    flexGrow: 100
+                    display: "flex", flexDirection: "row", flexWrap: 'nowrap', margin: "12px", height: "100%", flexGrow: 100
                 }}>
-                    <Box sx={{
-                        flexBasis: "33%",
-                        flexShrink: 0,
-                        height: "100%",
-                        overflow: "scroll"
-                    }}>
-                        <Box sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            rowGap: "16px",
-                            height: "fit-content"
-                        }}>
-                            {shownMarkers.map((marker) => {
-                                const SelectedCard = cards[marker.type]
-                                return < SelectedCard item={marker} onClick={() => setSelectedPoint(marker)}/>
+                    <Box sx={{ flexBasis: "33%", flexShrink: 0, height: "100%", overflow: "scroll" }}>
+                        {/* Annotations Section */}
+                        {shownMarkers.filter(marker => marker.type === 'Annotation').map(annotation => (
+                            <AnnotationCard annotation={annotation} key={annotation.title} />
+                        ))}
+                        <Box sx={{ display: "flex", flexDirection: "column", rowGap: "16px", height: "fit-content" }}>
+                            {/* Cards Section */}
+                            {shownMarkers.filter(marker => marker.type !== 'Annotation').map((marker, index) => {
+                                const SelectedCard = cards[marker.type];
+                                const key = marker.id || `${marker.type}-${index}`;
+                                return <SelectedCard item={marker} onClick={() => setSelectedPoint(marker)} key={key} />;
                             })}
                         </Box>
                     </Box>
-                    <Box sx={{width: "36px"}}/>
-                    <Box sx={{flexGrow: 100}}>
+                    <Box sx={{ width: "36px" }} />
+                    <Box sx={{ flexGrow: 100 }}>
                         <DisasterMap markers={shownMarkers}
-                                     mapCenter={mapCenter}
-                                     setMapCenter={setMapCenter}
-                                     onPointSelected={setSelectedPoint}
-                                     onBoundsChanged={setMapBounds}
+                            mapCenter={mapCenter}
+                            setMapCenter={setMapCenter}
+                            onPointSelected={setSelectedPoint}
+                            onBoundsChanged={setMapBounds}
                         />
                     </Box>
                 </Box>
