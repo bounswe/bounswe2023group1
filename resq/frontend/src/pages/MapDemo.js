@@ -12,7 +12,7 @@ import { AmountSelector, MultiCheckbox } from "../components/MultiCheckbox";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import AnnotationCard from "../components/AnnotationCard";
-
+import reverseGeocode from "../components/Geolocation";
 
 const customTheme = createTheme({
     palette: {
@@ -38,37 +38,46 @@ const mock_markers = [
             "promoting healing and preventing complications.",
         date: "26/11/2023"
     },
-
     {
         type: "Annotation",
-        latitude: 40.089,
-        longitude: 29.053,
+        latitude: 41.085,
+        longitude: 29.056,
+        category: "Shelter",
+        title: "Temporary Shelter Camp",
+        short_description: "Temporary shelter camp for displaced individuals and families.",
+        long_description: "Our Temporary Shelter Camp offers a safe haven for individuals and families displaced by the disaster. We provide temporary accommodation, basic necessities, and support services. Our goal is to ensure the well-being and comfort of those affected by the disaster while they await further assistance.",
+        date: "27/11/2023"
+    },
+    {
+        type: "Annotation",
+        latitude: 41.099,
+        longitude: 29.047,
+        category: "Food",
+        title: "Food Distribution Center",
+        short_description: "Food distribution center providing meals to disaster survivors.",
+        long_description: "The Food Distribution Center is committed to providing nutritious meals to disaster survivors. We offer a variety of food options to meet the dietary needs of individuals and families affected by the disaster. Our team works tirelessly to ensure that no one goes hungry during these challenging times.",
+        date: "28/11/2023"
+    },
+    {
+        type: "Annotation",
+        latitude: 41.088,
+        longitude: 29.552,
+        category: "Rescue",
+        title: "Search and Rescue Team",
+        short_description: "Dedicated search and rescue team for disaster response.",
+        long_description: "Our Search and Rescue Team is on standby to locate and rescue individuals who may be trapped or in distress due to the disaster. We are equipped with specialized tools and trained personnel to conduct safe and efficient rescue operations. Saving lives is our top priority.",
+        date: "28/11/2023"
+    },
+    {
+        type: "Annotation",
+        latitude: 40.092,
+        longitude: 29.008,
         category: "Health",
-        title: "First Aid Clinic",
-        short_description: "Emergency wound care available 24/7.",
-        long_description: "Dedicated to prompt, compassionate care for all emergency first aid needs...",
-        date: "26/11/2023",
-        additionalMetadata: {
-            "Staff Expertise": "Trauma specialists for children",
-            "Contact Number": "+90 555 555 5555",
-        }
+        title: "Emergency Medical Center",
+        short_description: "Emergency medical center with specialized trauma care.",
+        long_description: "Our Emergency Medical Center is equipped with state-of-the-art facilities to provide specialized trauma care in the aftermath of a disaster. Our medical team is trained to handle critical injuries, perform life-saving procedures, and ensure the well-being of patients. We are available 24/7 to respond to emergencies and provide immediate medical assistance.",
+        date: "27/11/2023"
     },
-
-    {
-        type: "Annotation",
-        latitude: 40.789,
-        longitude: 29.053,
-        category: "Medical Facility",
-        title: "Emergency Response Clinic",
-        short_description: "Urgent medical care for disaster victims.",
-        long_description: "Providing immediate medical attention, trauma care, and emergency services...",
-        date: "01/10/2023",
-        additionalMetadata: {
-            "Services Offered": "Trauma care, Emergency surgery, First aid",
-            "Contact Info": "emergency.clinic@response.org"
-        }
-    },
-
 
     {
         type: "Request",
@@ -136,66 +145,6 @@ const mock_markers = [
             },
         ],
     },
-    {
-        type: "Annotation",
-        latitude: 40.7128,
-        longitude: 74.0060,
-        category: "Relief Center",
-        title: "Local Disaster Relief Hub",
-        short_description: "Central point for relief operations and support.",
-        long_description: "Coordinating relief efforts, providing shelter, food, water, and basic necessities...",
-        date: "02/10/2023",
-        additionalMetadata: {
-            "Aid Services": "Shelter, Food supplies, Clothing",
-            "Volunteer Coordination": "volunteer@reliefcenter.org"
-        }
-    },
-
-    {
-        type: "Annotation",
-        latitude: 51.5074,
-        longitude: -0.1278,
-        category: "Communication Hub",
-        title: "Emergency Communication Center",
-        short_description: "Communication hub for disaster response coordination.",
-        long_description: "Facilitating communication between various response teams, authorities, and the public...",
-        date: "03/10/2023",
-        additionalMetadata: {
-            "Communication Channels": "Radio, Satellite, Internet",
-            "Operational Hours": "24/7 during emergency"
-        }
-    },
-
-    {
-        type: "Annotation",
-        latitude: 48.8566,
-        longitude: 2.3522,
-        category: "Supply Point",
-        title: "Disaster Supply Depot",
-        short_description: "Distribution center for essential supplies and equipment.",
-        long_description: "Stocked with food, water, medical supplies, and emergency equipment for distribution...",
-        date: "04/10/2023",
-        additionalMetadata: {
-            "Available Supplies": "Water, Non-perishable food, Medical kits",
-            "Distribution Hours": "8am - 8pm"
-        }
-    },
-
-    {
-        type: "Annotation",
-        latitude: 41.9028,
-        longitude: 12.4964,
-        category: "Evacuation Zone",
-        title: "Safe Evacuation Area",
-        short_description: "Designated safe area for emergency evacuation.",
-        long_description: "A secured zone for the community to gather during evacuation, with access to emergency services...",
-        date: "05/10/2023",
-        additionalMetadata: {
-            "Capacity": "Up to 5000 individuals",
-            "Facilities": "Temporary shelters, Medical aid, Sanitation"
-        }
-    },
-
     ...[...Array(20).keys()].map(i =>
         [...Array(20).keys()].map(j => (
             {
@@ -283,12 +232,6 @@ export default function MapDemo() {
     const [selectedPoint, setSelectedPoint] = useState(null)
     const [mapCenter, setMapCenter] = useState([39, 34.5])
 
-    const [selectedAnnotation, setSelectedAnnotation] = useState(null);
-
-    const handleAnnotationSelect = (annotation) => {
-        setSelectedAnnotation(annotation);
-    };
-
     const [typeFilter, setTypeFilter] = useState([])
     const [dateFromFilter, setDateFromFilter] = useState(null)
     const [dateToFilter, setDateToFilter] = useState(null)
@@ -296,10 +239,39 @@ export default function MapDemo() {
     const [categoryFilter, setCategoryFilter] = useState([])
     const [mapBounds, setMapBounds] = useState({ ne: [0, 0], sw: [0, 0] })
 
+    const [locationNames, setLocationNames] = useState({});
+
     useEffect(() => {
-        if (selectedPoint)
-            setMapCenter([selectedPoint.latitude, selectedPoint.longitude])
-    }, [selectedPoint])
+        const fetchLocationNames = async () => {
+            const names = {};
+            for (const marker of mock_markers) {
+                const key = `${marker.latitude},${marker.longitude}`;
+                if (!names[key]) {
+                    const locationName = await reverseGeocode(marker.latitude, marker.longitude);
+                    names[key] = locationName;
+                }
+            }
+            setLocationNames(names);
+        };
+        fetchLocationNames();
+    }, []);
+
+
+    const [selectedAnnotation, setSelectedAnnotation] = useState(null);
+
+    const handlePointSelect = (point) => {
+        setSelectedPoint(point);
+        if (point && point.type === 'Annotation') {
+            setSelectedAnnotation(point);
+        }
+    };
+
+    useEffect(() => {
+        if (selectedPoint) {
+            setMapCenter([selectedPoint.latitude, selectedPoint.longitude]);
+        }
+    }, [selectedPoint]);
+
 
     useEffect(() => setShownMarkers(
         allMarkers
@@ -310,16 +282,6 @@ export default function MapDemo() {
             .filter(makeFilterByDateTo(dateToFilter))
             .filter(makeFilterByBounds(mapBounds))
     ), [allMarkers, amountFilter, categoryFilter, dateFromFilter, dateToFilter, mapBounds, typeFilter])
-
-    const fetchLocationName = async (latitude, longitude) => {
-        try {
-            const locationName = await reverseGeocode(latitude, longitude);
-            return locationName;
-        } catch (error) {
-            console.error('Error fetching location name:', error);
-            return 'Unknown Location';
-        }
-    };
 
     // noinspection JSValidateTypes
     return (
@@ -360,27 +322,30 @@ export default function MapDemo() {
                     display: "flex", flexDirection: "row", flexWrap: 'nowrap', margin: "12px", height: "100%", flexGrow: 100
                 }}>
                     <Box sx={{ flexBasis: "33%", flexShrink: 0, height: "100%", overflow: "scroll" }}>
-                        {/* Annotations Section */}
-                        {shownMarkers.filter(marker => marker.type === 'Annotation').map(async (annotation, index) => {
-                            const locationName = await fetchLocationName(annotation.latitude, annotation.longitude);
-                            return (
-                                <AnnotationCard
-                                    annotation={{ ...annotation, locationName }} // Include locationName
-                                    key={index}
-                                    onSelect={handleAnnotationSelect}
+                        {shownMarkers.filter(marker => marker.type === 'Annotation').map((annotation, index) => (
+                            <AnnotationCard
+                                annotation={{ ...annotation, locationName: locationNames[`${annotation.latitude},${annotation.longitude}`] || 'Loading...' }}
+                                key={`annotation-${index}`}
+                                isSelected={selectedAnnotation && annotation.id === selectedAnnotation.id}
+                                onSelect={() => handlePointSelect(annotation)}
+                            />
+                        ))}
+
+
+                        {/* Other Markers Section (Request and Resource) */}
+                        {shownMarkers.filter(marker => marker.type !== 'Annotation').map((marker, index) => {
+                            const SelectedCard = cards[marker.type];
+                            const locationName = locationNames[`${marker.latitude},${marker.longitude}`] || 'Loading...';
+                            return ( // Add this return statement
+                                <SelectedCard
+                                    item={{ ...marker, locationName }}
+                                    onClick={() => setSelectedPoint(marker)}
+                                    key={`${marker.type}-${index}`}
                                 />
                             );
                         })}
-                        <Box sx={{ display: "flex", flexDirection: "column", rowGap: "16px", height: "fit-content" }}>
-                            {/* Cards Section */}
-                            {shownMarkers.filter(marker => marker.type !== 'Annotation').map((marker, index) => {
-                                const SelectedCard = cards[marker.type];
-                                const key = marker.id || `${marker.type}-${index}`;
-                                return <SelectedCard item={marker} onClick={() => setSelectedPoint(marker)} key={key} />;
-                            })}
-                        </Box>
-                    </Box>
 
+                    </Box>
                     <Box sx={{ width: "36px" }} />
                     <Box sx={{ flexGrow: 100 }}>
                         <DisasterMap markers={shownMarkers}
@@ -389,14 +354,10 @@ export default function MapDemo() {
                             onPointSelected={setSelectedPoint}
                             onBoundsChanged={setMapBounds}
                         />
-                        {/* AnnotationCard Component */}
-                        {selectedAnnotation && selectedAnnotation.type === 'Annotation' && (
-                            <AnnotationCard annotation={selectedAnnotation} />
-                        )}
                     </Box>
                 </Box>
             </Container>
-        </ThemeProvider>
+        </ThemeProvider >
     );
 }
 

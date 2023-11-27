@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Button, Chip } from '@mui/material';
-import { reverseGeocode } from './Geolocation'; // Import reverseGeocode function
+import reverseGeocode from './Geolocation';
 
 const AnnotationCard = ({ annotation }) => {
     const [locationName, setLocationName] = useState('Unknown Location');
 
     useEffect(() => {
-        // Use reverseGeocode to fetch location name based on latitude and longitude
         if (annotation.latitude && annotation.longitude) {
             reverseGeocode(annotation.latitude, annotation.longitude)
                 .then((name) => setLocationName(name))
@@ -15,7 +14,6 @@ const AnnotationCard = ({ annotation }) => {
     }, [annotation.latitude, annotation.longitude]);
 
     const handleViewMore = (annotationData) => {
-        // Handle the View More button click
     };
 
     return (
