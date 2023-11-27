@@ -89,13 +89,13 @@ class ResqService(appContext: Context) {
     suspend fun createResource(request: CreateResourceRequestBody): Response<Int> {
         val userId = userSessionManager.getUserId()
         val token = userSessionManager.getUserToken() ?: ""
-        val selectedRole = userSessionManager.getSelectedRole() ?: ""
+        // val selectedRole = userSessionManager.getSelectedRole() ?: ""
 
         request.senderId = userId
 
         return resourceService.createResource(
             jwtToken = "Bearer $token",
-            role = selectedRole,
+            role = "RESPONDER",
             requestBody = request
         )
     }
@@ -104,12 +104,12 @@ class ResqService(appContext: Context) {
     suspend fun createNeed(request: CreateNeedRequestBody): Response<Int> {
         val userId = userSessionManager.getUserId()
         val token = userSessionManager.getUserToken() ?: ""
-        val selectedRole = userSessionManager.getSelectedRole() ?: ""
+        // val selectedRole = userSessionManager.getSelectedRole() ?: ""
 
         return needService.createNeed(
             userId = userId,
             jwtToken = "Bearer $token",
-            role = selectedRole,
+            role = "VICTIM",
             requestBody = request
         )
     }
