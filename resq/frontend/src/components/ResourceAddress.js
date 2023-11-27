@@ -20,19 +20,20 @@ const customTheme = createTheme({
     },
 });
 
-export default function CreateRequestForm() {
-    const [request, setRequest] = useState({
+export default function CreateResourceForm() {
+    const [resource, setResource] = useState({
         type: '',
         status: '',
         urgency: '',
         location: '',
         quantity: '',
         description: '',
+        category: '',
     });
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setRequest(prevState => ({
+        setResource(prevState => ({
             ...prevState,
             [name]: value
         }));
@@ -40,7 +41,7 @@ export default function CreateRequestForm() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(request);
+        console.log(resource);
         //send this data to a backend server
     };
 
@@ -58,32 +59,10 @@ export default function CreateRequestForm() {
                 >
 
                     <Typography component="h1" variant="h5" sx={{ color: 'red', fontWeight: 'bold', margin: '0' }}>
-                        Create Request
+                        Resource Delivery Address
                     </Typography>
                     <React.Fragment>
                         <Grid container spacing={3}>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    id="firstName"
-                                    name="firstName"
-                                    label="First name"
-                                    fullWidth
-                                    autoComplete="given-name"
-                                    variant="standard"
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    id="lastName"
-                                    name="lastName"
-                                    label="Last name"
-                                    fullWidth
-                                    autoComplete="family-name"
-                                    variant="standard"
-                                />
-                            </Grid>
                             <Grid item xs={12}>
                                 <TextField
                                     required
@@ -91,7 +70,7 @@ export default function CreateRequestForm() {
                                     name="address1"
                                     label="Address line 1"
                                     fullWidth
-                                    autoComplete="address1"
+                                    autoComplete="shipping address-line1"
                                     variant="standard"
                                 />
                             </Grid>
@@ -101,7 +80,7 @@ export default function CreateRequestForm() {
                                     name="address2"
                                     label="Address line 2"
                                     fullWidth
-                                    autoComplete="address2"
+                                    autoComplete="shipping address-line2"
                                     variant="standard"
                                 />
                             </Grid>
@@ -112,7 +91,7 @@ export default function CreateRequestForm() {
                                     name="city"
                                     label="City"
                                     fullWidth
-                                    autoComplete="city"
+                                    autoComplete="shipping address-level2"
                                     variant="standard"
                                 />
                             </Grid>
@@ -128,17 +107,6 @@ export default function CreateRequestForm() {
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     required
-                                    id="zip"
-                                    name="zip"
-                                    label="Zip / Postal code"
-                                    fullWidth
-                                    autoComplete="shipping postal-code"
-                                    variant="standard"
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
                                     id="country"
                                     name="country"
                                     label="Country"
@@ -147,10 +115,21 @@ export default function CreateRequestForm() {
                                     variant="standard"
                                 />
                             </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    id="nameofplace"
+                                    name="nameofplace"
+                                    label="Name of the Delivery Place"
+                                    fullWidth
+                                    autoComplete="delivery place"
+                                    variant="standard"
+                                />
+                            </Grid>
                             <Grid item xs={12}>
                                 <FormControlLabel
                                     control={<Checkbox color="error" name="saveAddress" value="yes" />}
-                                    label="Use this address for my request"
+                                    label="Use this address for my delivery"
                                 />
                             </Grid>
                         </Grid>
