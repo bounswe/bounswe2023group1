@@ -38,6 +38,38 @@ const mock_markers = [
             "promoting healing and preventing complications.",
         date: "26/11/2023"
     },
+
+    {
+        type: "Annotation",
+        latitude: 40.089,
+        longitude: 29.053,
+        category: "Health",
+        title: "First Aid Clinic",
+        short_description: "Emergency wound care available 24/7.",
+        long_description: "Dedicated to prompt, compassionate care for all emergency first aid needs...",
+        date: "26/11/2023",
+        additionalMetadata: {
+            "Staff Expertise": "Trauma specialists for children",
+            "Contact Number": "+90 555 555 5555",
+        }
+    },
+
+    {
+        type: "Annotation",
+        latitude: 40.789,
+        longitude: 29.053,
+        category: "Medical Facility",
+        title: "Emergency Response Clinic",
+        short_description: "Urgent medical care for disaster victims.",
+        long_description: "Providing immediate medical attention, trauma care, and emergency services...",
+        date: "01/10/2023",
+        additionalMetadata: {
+            "Services Offered": "Trauma care, Emergency surgery, First aid",
+            "Contact Info": "emergency.clinic@response.org"
+        }
+    },
+
+
     {
         type: "Request",
         latitude: 37.08,
@@ -104,6 +136,66 @@ const mock_markers = [
             },
         ],
     },
+    {
+        type: "Annotation",
+        latitude: 40.7128,
+        longitude: 74.0060,
+        category: "Relief Center",
+        title: "Local Disaster Relief Hub",
+        short_description: "Central point for relief operations and support.",
+        long_description: "Coordinating relief efforts, providing shelter, food, water, and basic necessities...",
+        date: "02/10/2023",
+        additionalMetadata: {
+            "Aid Services": "Shelter, Food supplies, Clothing",
+            "Volunteer Coordination": "volunteer@reliefcenter.org"
+        }
+    },
+
+    {
+        type: "Annotation",
+        latitude: 51.5074,
+        longitude: -0.1278,
+        category: "Communication Hub",
+        title: "Emergency Communication Center",
+        short_description: "Communication hub for disaster response coordination.",
+        long_description: "Facilitating communication between various response teams, authorities, and the public...",
+        date: "03/10/2023",
+        additionalMetadata: {
+            "Communication Channels": "Radio, Satellite, Internet",
+            "Operational Hours": "24/7 during emergency"
+        }
+    },
+
+    {
+        type: "Annotation",
+        latitude: 48.8566,
+        longitude: 2.3522,
+        category: "Supply Point",
+        title: "Disaster Supply Depot",
+        short_description: "Distribution center for essential supplies and equipment.",
+        long_description: "Stocked with food, water, medical supplies, and emergency equipment for distribution...",
+        date: "04/10/2023",
+        additionalMetadata: {
+            "Available Supplies": "Water, Non-perishable food, Medical kits",
+            "Distribution Hours": "8am - 8pm"
+        }
+    },
+
+    {
+        type: "Annotation",
+        latitude: 41.9028,
+        longitude: 12.4964,
+        category: "Evacuation Zone",
+        title: "Safe Evacuation Area",
+        short_description: "Designated safe area for emergency evacuation.",
+        long_description: "A secured zone for the community to gather during evacuation, with access to emergency services...",
+        date: "05/10/2023",
+        additionalMetadata: {
+            "Capacity": "Up to 5000 individuals",
+            "Facilities": "Temporary shelters, Medical aid, Sanitation"
+        }
+    },
+
     ...[...Array(20).keys()].map(i =>
         [...Array(20).keys()].map(j => (
             {
@@ -191,6 +283,12 @@ export default function MapDemo() {
     const [selectedPoint, setSelectedPoint] = useState(null)
     const [mapCenter, setMapCenter] = useState([39, 34.5])
 
+    const [selectedAnnotation, setSelectedAnnotation] = useState(null);
+
+    const handleAnnotationSelect = (annotation) => {
+        setSelectedAnnotation(annotation);
+    };
+
     const [typeFilter, setTypeFilter] = useState([])
     const [dateFromFilter, setDateFromFilter] = useState(null)
     const [dateToFilter, setDateToFilter] = useState(null)
@@ -273,6 +371,10 @@ export default function MapDemo() {
                             onPointSelected={setSelectedPoint}
                             onBoundsChanged={setMapBounds}
                         />
+                        {/* AnnotationCard Component */}
+                        {selectedAnnotation && selectedAnnotation.type === 'Annotation' && (
+                            <AnnotationCard annotation={selectedAnnotation} />
+                        )}
                     </Box>
                 </Box>
             </Container>
