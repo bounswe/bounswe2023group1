@@ -3,33 +3,25 @@ package com.cmpe451.resq.data.models
 data class ProfileData(
     var name: String?,
     var surname: String?,
-    var birthdate: String?,
-    var gender:String?,
-    var bloodType: String?,
+    var email: String?,
+    var roles: List<String>?,
+    var selectedRole: String?,
     var phoneNumber: String?,
     var country: String?,
     var city: String?,
     var state: String?,
-    var weight: Int?,
-    var height: Int?,
-    val emailConfirmed: Boolean? = false,
-    val privacyPolicyAccepted: Boolean? = false,
-)
-
-
-data class UserInfoRequest(
-    var name: String?,
-    var surname: String?,
-    var birthdate: String?,
-    var gender:String?,
     var bloodType: String?,
-    var phoneNumber: String?,
-    var country: String?,
-    var city: String?,
-    var state: String?,
-    var weight: Int?,
-    var height: Int?,
-    val emailConfirmed: Boolean? = false,
-    val privacyPolicyAccepted: Boolean? = false,
+    var weight: String?,
+    var gender:String?,
+    var height: String?,
+    var year: String?,
+    var month: String?,
+    var day: String?
 )
 
+data class UserInfoResponse(
+    val name: String,
+    val surname: String,
+    val email: String,
+    val roles: List<String>
+)
