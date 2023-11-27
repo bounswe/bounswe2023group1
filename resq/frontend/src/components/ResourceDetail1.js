@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography, Grid, FormControlLabel, Checkbox, FormControl, InputLabel, Select, MenuItem, OutlinedInput } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { Theme, useTheme } from '@mui/material/styles';
@@ -15,16 +15,8 @@ const customTheme = createTheme({
 });
 
 export default function ResourceDetails1() {
-    const { resourceData, setResourceData } = useContext(ResourceContext);
+    const { resourceData, updateResourceData } = useContext(ResourceContext);
 
-    const handleDescriptionChange = (descriptionValue) => {
-        setResourceData({
-            ...resourceData,
-            description: descriptionValue,
-        });
-    };
-
-    const { updateResourceData } = useResource();
     const [isMaterialResourceChecked, setIsMaterialResourceChecked] = useState(false);
     const [isHumanResourceChecked, setIsHumanResourceChecked] = useState(false);
 
@@ -41,6 +33,28 @@ export default function ResourceDetails1() {
         };
     };
 
+    useEffect(() => {
+        // Update the description whenever any relevant data changes
+        handleDescriptionChange();
+    }, [isMaterialResourceChecked, selectedMaterialValues, isHumanResourceChecked, selectedHumanValues]);
+
+    const handleDescriptionChange = () => {
+        let description = "Description:\n";
+
+        if (isMaterialResourceChecked) {
+            description += "Material Resources: " + selectedMaterialValues.join(', ') + "\n";
+        }
+
+        if (isHumanResourceChecked) {
+            description += "Human Resources: " + selectedHumanValues.join(', ') + "\n";
+        }
+
+        updateResourceData({
+            ...resourceData,
+            description: description,
+        });
+    };
+
     const handleMaterialChange = (event) => {
         setSelectedMaterialValues(event.target.value);
     };
@@ -49,44 +63,9 @@ export default function ResourceDetails1() {
         setSelectedHumanValues(event.target.value);
     };
 
-    const materialneeds = [
-        'Food',
-        'Water',
-        'Shelter',
-        'Tent',
-        'Medicine',
-        'Animal Food',
-        'Clothing',
-        'Baby Food',
-        'Chocolate',
-        'Diapers',
-    ];
-
-    const humanResources = [
-        'Doctor',
-        'Nurse',
-        'Translator',
-        'Rescue Team',
-        'Lorry Driver',
-        'Food Service',
-        'District Responsible',
-    ];
-
-    const ITEM_HEIGHT = 48;
-    const ITEM_PADDING_TOP = 8;
-    const MenuProps = {
-        PaperProps: {
-            style: {
-                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-                width: 250,
-            },
-        },
-    };
-
     const theme = useTheme();
 
     return (
-
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
                 Resource Type
