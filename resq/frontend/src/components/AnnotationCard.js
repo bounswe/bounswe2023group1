@@ -1,8 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, Button, Chip } from '@mui/material';
+import { reverseGeocode } from './Geolocation'; // Import reverseGeocode function
 
 const AnnotationCard = ({ annotation }) => {
+    const [locationName, setLocationName] = useState('Unknown Location');
+
+    useEffect(() => {
+        // Use reverseGeocode to fetch location name based on latitude and longitude
+        if (annotation.latitude && annotation.longitude) {
+            reverseGeocode(annotation.latitude, annotation.longitude)
+                .then((name) => setLocationName(name))
+                .catch((error) => console.error('Error fetching location name:', error));
+        }
+    }, [annotation.latitude, annotation.longitude]);
+
     const handleViewMore = (annotationData) => {
+        // Handle the View More button click
     };
 
     return (
@@ -11,12 +24,12 @@ const AnnotationCard = ({ annotation }) => {
             <Typography variant="subtitle1" color="textSecondary">{annotation.category}</Typography>
             <Typography variant="body1">{annotation.short_description}</Typography>
 
-            {/* Date and Geographical Data */}
+            {/* Date and Location Data */}
             {annotation.date && (
                 <Typography variant="body2">Date: {new Date(annotation.date).toLocaleDateString()}</Typography>
             )}
-            {annotation.latitude && annotation.longitude && (
-                <Typography variant="body2">Location: {annotation.latitude}, {annotation.longitude}</Typography>
+            {locationName !== 'Unknown Location' && (
+                <Typography variant="body2">Location: {locationName}</Typography>
             )}
 
             {/* Additional Metadata */}

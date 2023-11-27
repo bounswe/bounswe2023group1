@@ -311,6 +311,16 @@ export default function MapDemo() {
             .filter(makeFilterByBounds(mapBounds))
     ), [allMarkers, amountFilter, categoryFilter, dateFromFilter, dateToFilter, mapBounds, typeFilter])
 
+    const fetchLocationName = async (latitude, longitude) => {
+        try {
+            const locationName = await reverseGeocode(latitude, longitude);
+            return locationName;
+        } catch (error) {
+            console.error('Error fetching location name:', error);
+            return 'Unknown Location';
+        }
+    };
+
     // noinspection JSValidateTypes
     return (
         <ThemeProvider theme={customTheme}>
@@ -351,9 +361,16 @@ export default function MapDemo() {
                 }}>
                     <Box sx={{ flexBasis: "33%", flexShrink: 0, height: "100%", overflow: "scroll" }}>
                         {/* Annotations Section */}
-                        {shownMarkers.filter(marker => marker.type === 'Annotation').map(annotation => (
-                            <AnnotationCard annotation={annotation} key={annotation.title} />
-                        ))}
+                        {shownMarkers.filter(marker => marker.type === 'Annotation').map(async (annotation, index) => {
+                            const locationName = await fetchLocationName(annotation.latitude, annotation.longitude);
+                            return (
+                                <AnnotationCard
+                                    annotation={{ ...annotation, locationName }} // Include locationName
+                                    key={index}
+                                    onSelect={handleAnnotationSelect}
+                                />
+                            );
+                        })}
                         <Box sx={{ display: "flex", flexDirection: "column", rowGap: "16px", height: "fit-content" }}>
                             {/* Cards Section */}
                             {shownMarkers.filter(marker => marker.type !== 'Annotation').map((marker, index) => {
@@ -363,6 +380,7 @@ export default function MapDemo() {
                             })}
                         </Box>
                     </Box>
+
                     <Box sx={{ width: "36px" }} />
                     <Box sx={{ flexGrow: 100 }}>
                         <DisasterMap markers={shownMarkers}
