@@ -1,3 +1,5 @@
+// noinspection JSUnusedLocalSymbols
+
 import * as React from 'react';
 import {useEffect, useState} from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -5,8 +7,10 @@ import Box from '@mui/material/Box';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import DisasterMap from "../components/DisasterMap";
-import {cards} from "./ListCards";
-import {MultiCheckbox} from "./MultiCheckbox";
+import {cards} from "../components/ListCards";
+import {AmountSelector, MultiCheckbox} from "../components/MultiCheckbox";
+import {DatePicker} from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 
 
 const customTheme = createTheme({
@@ -23,14 +27,15 @@ const mock_markers = [
         type: "Annotation",
         latitude: 41.089,
         longitude: 29.053,
-        category: "health",
+        category: "Health",
         title: "First Aid Clinic",
         short_description: "First aid clinic and emergency wound care. Open 24 hours.",
         long_description: "Welcome to our First Aid Clinic, a dedicated facility committed to providing immediate and " +
             "compassionate healthcare 24 hours a day. Our experienced team of healthcare professionals specializes in " +
             "emergency wound care and first aid assistance, ensuring you receive prompt attention when you need it most. " +
             "From minor cuts to more serious injuries, our clinic is equipped to handle a range of medical concerns, " +
-            "promoting healing and preventing complications."
+            "promoting healing and preventing complications.",
+        date: "26/11/2023"
     },
     {
         type: "Request",
@@ -97,8 +102,20 @@ const mock_markers = [
                 quantity: 500,
             },
         ],
-        status: "READY"
     },
+    ...[...Array(20).keys()].map(i =>
+        [...Array(20).keys()].map(j => (
+            {
+                type: "Request",
+                latitude: 37 + 0.5 * i,
+                longitude: 31 + 0.5 * j,
+                requester: {
+                    name: "Müslüm",
+                    surname: "Ertürk"
+                },
+                urgency: "HIGH",
+                needs: []
+            }))).flat()
 ]
 
 function getAllCategories(item) {
@@ -114,48 +131,91 @@ function getAllCategories(item) {
     }
 }
 
-const makeFilterByCategory = categories => {
-    if (categories.length === 0)
-        return () => true
-    return item => {
+const applyFilterTo = (predicate) =>
+    item => {
         switch (item.type) {
             case "Annotation":
-                return categories.indexOf(item?.category) !== -1
+                return predicate(item)
             case "Resource":
-                return !item.resources.every(resource => categories.indexOf(resource?.category) === -1)
+                return !item.resources.every(resource => !predicate(resource))
             case "Request":
-                return !item.needs.every(need => categories.indexOf(need?.category) === -1)
+                return !item.needs.every(need => !predicate(need))
             default:
                 return false
         }
     }
+
+const makeFilterByCategory = categories => {
+    if (categories.length === 0)
+        return () => true
+    return applyFilterTo(
+        function (item) {
+            return categories.indexOf(item?.category) !== -1;
+        }
+    )
 };
 
 const makeFilterByType = (typeFilter) => item => typeFilter.length === 0 || typeFilter.indexOf(item.type) !== -1
 
+const makeFilterByAmount = ([amount]) => {
+    if (typeof amount !== "string" || amount.indexOf("-") === -1)
+        return () => true
+    const [min, max] = amount.split("-").map(i => parseInt(i))
+    return applyFilterTo(function (item) {
+        return item.quantity && item.quantity >= min && max >= item.quantity;
+    })
+};
+
+const makeFilterByDateFrom = (dateFrom) => item => dateFrom === null || !dateFrom.isValid() || !(dateFrom > dayjs(item.date))
+const makeFilterByDateTo = (dateTo) => item => dateTo === null || !dateTo.isValid() || !(dateTo < dayjs(item.date))
+
+const makeFilterByBounds = ({ne: [ne_lat, ne_lng], sw: [sw_lat, sw_lng]}) =>
+    function (item) {
+        return item.latitude <= ne_lat &&
+            item.longitude <= ne_lng &&
+            item.latitude >= sw_lat &&
+            item.longitude >= sw_lng;
+    }
+
+
 export default function MapDemo() {
+    // eslint-disable-next-line no-unused-vars
     const [allMarkers, setAllMarkers] = useState(mock_markers)
     const [shownMarkers, setShownMarkers] = useState(allMarkers)
     const [selectedPoint, setSelectedPoint] = useState(null)
+    const [mapCenter, setMapCenter] = useState([39, 34.5])
 
     const [typeFilter, setTypeFilter] = useState([])
-    const [timeFilter, setTimeFilter] = useState([])
+    const [dateFromFilter, setDateFromFilter] = useState(null)
+    const [dateToFilter, setDateToFilter] = useState(null)
     const [amountFilter, setAmountFilter] = useState([])
     const [categoryFilter, setCategoryFilter] = useState([])
-    const [mapBounds, setMapBounds] = useState([])
+    const [mapBounds, setMapBounds] = useState({ne: [0, 0], sw: [0, 0]})
+
+    useEffect(() => {
+        if (selectedPoint)
+            setMapCenter([selectedPoint.latitude, selectedPoint.longitude])
+    }, [selectedPoint])
 
     useEffect(() => setShownMarkers(
         allMarkers
             .filter(makeFilterByCategory(categoryFilter))
             .filter(makeFilterByType(typeFilter))
-    ), [allMarkers, categoryFilter, typeFilter])
+            .filter(makeFilterByAmount(amountFilter))
+            .filter(makeFilterByDateFrom(dateFromFilter))
+            .filter(makeFilterByDateTo(dateToFilter))
+            .filter(makeFilterByBounds(mapBounds))
+    ), [allMarkers, amountFilter, categoryFilter, dateFromFilter, dateToFilter, mapBounds, typeFilter])
 
     // noinspection JSValidateTypes
     return (
         <ThemeProvider theme={customTheme}>
             <Container maxWidth="100%" style={{height: "100%", display: "flex", flexDirection: "column"}}>
                 <CssBaseline/>
-                <Box sx={{display: "flex", flexDirection: "row", flexWrap: 'nowrap', margin: "12px", width: "100%"}}>
+                <Box sx={{
+                    display: "flex", flexDirection: "row", flexWrap: 'nowrap', margin: "12px", width: "100%",
+                    justifyContent: "center"
+                }}>
                     <MultiCheckbox name={"Type"} choices={["Annotation", "Resource", "Request"]}
                                    onChosenChanged={setTypeFilter}/>
                     <MultiCheckbox name={"Category"}
@@ -166,11 +226,22 @@ export default function MapDemo() {
                                        ...categoryFilter
                                    ].filter((v, i, array) => v && array.indexOf(v) === i)}
                                    onChosenChanged={setCategoryFilter}/>
-                    <MultiCheckbox name={"Type"}
-                                   choices={["Annotation", "Resource", "Request"]}
-                                   onChosenChanged={setTypeFilter}/>
-                    <MultiCheckbox name={"Type"} choices={["Annotation", "Resource", "Request"]}
-                                   onChosenChanged={setTypeFilter}/>
+                    <AmountSelector name={"Amount"}
+                                    onChosenChanged={setAmountFilter}/>
+                    <DatePicker
+                        sx={{m: 1}}
+                        label="From"
+                        format="DD/MM/YYYY"
+                        value={dateFromFilter}
+                        onChange={e => setDateFromFilter(e)}
+                    />
+                    <DatePicker
+                        sx={{m: 1}}
+                        label="To"
+                        format="DD/MM/YYYY"
+                        value={dateToFilter}
+                        onChange={e => setDateToFilter(e)}
+                    />
                 </Box>
                 <Box sx={{
                     display: "flex",
@@ -183,20 +254,29 @@ export default function MapDemo() {
                     <Box sx={{
                         flexBasis: "33%",
                         flexShrink: 0,
-                        display: "flex",
-                        flexDirection: "column",
-                        rowGap: "16px"
+                        height: "100%",
+                        overflow: "scroll"
                     }}>
-                        {shownMarkers.map((marker) => {
-                            const SelectedCard = cards[marker.type]
-                            return < SelectedCard item={marker} onClick={() => setSelectedPoint(marker)}/>
-                        })}
+                        <Box sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            rowGap: "16px",
+                            height: "fit-content"
+                        }}>
+                            {shownMarkers.map((marker) => {
+                                const SelectedCard = cards[marker.type]
+                                return < SelectedCard item={marker} onClick={() => setSelectedPoint(marker)}/>
+                            })}
+                        </Box>
                     </Box>
                     <Box sx={{width: "36px"}}/>
                     <Box sx={{flexGrow: 100}}>
                         <DisasterMap markers={shownMarkers}
-                                     center={selectedPoint && [selectedPoint.latitude, selectedPoint.longitude]}
-                                     onPointSelected={setSelectedPoint}/>
+                                     mapCenter={mapCenter}
+                                     setMapCenter={setMapCenter}
+                                     onPointSelected={setSelectedPoint}
+                                     onBoundsChanged={setMapBounds}
+                        />
                     </Box>
                 </Box>
             </Container>
