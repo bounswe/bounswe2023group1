@@ -1,21 +1,26 @@
-import React, { useState } from 'react';
-import { Typography, Grid, FormControlLabel, Checkbox, FormControl, InputLabel, Select, MenuItem, OutlinedInput } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
-import { Theme, useTheme } from '@mui/material/styles';
-import { useResource } from './ResourceContext';
-import { useContext } from 'react';
-import { ResourceContext } from './ResourceContext';
-
-const customTheme = createTheme({
-    palette: {
-        primary: {
-            main: '#FF0000',
-        },
-    },
-});
+import React, {useState} from 'react';
+import {
+    Typography,
+    Grid,
+    FormControlLabel,
+    Checkbox,
+    FormControl,
+    Select,
+    MenuItem,
+    OutlinedInput,
+    Autocomplete, TextField
+} from '@mui/material';
+import {createTheme} from '@mui/material/styles';
+import {useTheme} from '@mui/material/styles';
+import {useResource} from './ResourceContext';
+import {useContext} from 'react';
+import {ResourceContext} from './ResourceContext';
+import {useQuery} from "@tanstack/react-query";
+import {getCategoryTree} from "../../AppService";
 
 export default function ResourceDetails1() {
-    const { resourceData, setResourceData } = useContext(ResourceContext);
+    const {resourceData, setResourceData} = useContext(ResourceContext);
+    const categoryTree = useQuery({queryKey: ['categoryTree'], queryFn: getCategoryTree})
 
     const handleDescriptionChange = (descriptionValue) => {
         setResourceData({
@@ -24,11 +29,11 @@ export default function ResourceDetails1() {
         });
     };
 
-    const { updateResourceData } = useResource();
+    const {updateResourceData} = useResource();
     const [isMaterialResourceChecked, setIsMaterialResourceChecked] = useState(false);
     const [isHumanResourceChecked, setIsHumanResourceChecked] = useState(false);
 
-    const [selectedMaterialValues, setSelectedMaterialValues] = useState([]);
+    const [selectedMaterialValue, setSelectedMaterial] = useState(null);
     const [selectedHumanValues, setSelectedHumanValues] = useState([]);
 
     // Define the getStyles function here
@@ -41,26 +46,9 @@ export default function ResourceDetails1() {
         };
     };
 
-    const handleMaterialChange = (event) => {
-        setSelectedMaterialValues(event.target.value);
-    };
-
     const handleHumanChange = (event) => {
         setSelectedHumanValues(event.target.value);
     };
-
-    const materialneeds = [
-        'Food',
-        'Water',
-        'Shelter',
-        'Tent',
-        'Medicine',
-        'Animal Food',
-        'Clothing',
-        'Baby Food',
-        'Chocolate',
-        'Diapers',
-    ];
 
     const humanResources = [
         'Doctor',
@@ -85,6 +73,13 @@ export default function ResourceDetails1() {
 
     const theme = useTheme();
 
+    const comboBoxItems = (categoryTree.data?.getLeafCategories() || [])
+        .map(cat => ({label: cat.data, id: cat.id}))
+        .sort((a, b) => {
+            if (a.label === b.label) return 0;
+            return a.label > b.label ? 1 : -1;
+        });
+
     return (
 
         <React.Fragment>
@@ -94,58 +89,43 @@ export default function ResourceDetails1() {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <FormControlLabel
-                        control={<Checkbox color="primary" name="materialresource" checked={isMaterialResourceChecked} onChange={(e) => setIsMaterialResourceChecked(e.target.checked)} />}
+                        control={<Checkbox color="primary" name="materialresource" checked={isMaterialResourceChecked}
+                                           onChange={(e) => setIsMaterialResourceChecked(e.target.checked)}/>}
                         label="Material Resource"
                     />
                     {isMaterialResourceChecked && (
                         <>
-                            <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
-                                <Select
-                                    multiple
-                                    displayEmpty
-                                    value={selectedMaterialValues}
-                                    onChange={handleMaterialChange}
-                                    input={<OutlinedInput />}
-                                    renderValue={(selected) => {
-                                        if (selected.length === 0) {
-                                            return <em>Choose provided resource</em>;
-                                        }
-                                        return selected.join(', ');
+                            <FormControl sx={{m: 1, width: 300, mt: 3}}>
+                                <Autocomplete
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    options={comboBoxItems}
+                                    value={selectedMaterialValue}
+                                    onChange={(event, newValue) => {
+                                        setSelectedMaterial(newValue);
                                     }}
-                                    MenuProps={MenuProps}
-                                    inputProps={{ 'aria-label': 'Without label' }}
-                                >
-                                    <MenuItem disabled value="">
-                                        <em>Placeholder</em>
-                                    </MenuItem>
-                                    {materialneeds.map((materialneed) => (
-                                        <MenuItem
-                                            key={materialneed}
-                                            value={materialneed}
-                                            style={getStyles(materialneed, selectedMaterialValues, theme)}
-                                        >
-                                            {materialneed}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
+                                    sx={{width: 300}}
+                                    renderInput={(params) => <TextField {...params} label="Movie"/>}
+                                />
                             </FormControl>
                         </>
                     )}
                 </Grid>
                 <Grid item xs={12}>
                     <FormControlLabel
-                        control={<Checkbox color="primary" name="humanresource" checked={isHumanResourceChecked} onChange={(e) => setIsHumanResourceChecked(e.target.checked)} />}
+                        control={<Checkbox color="primary" name="humanresource" checked={isHumanResourceChecked}
+                                           onChange={(e) => setIsHumanResourceChecked(e.target.checked)}/>}
                         label="Human Resource"
                     />
                     {isHumanResourceChecked && (
                         <>
-                            <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
+                            <FormControl sx={{m: 1, width: 300, mt: 3}}>
                                 <Select
                                     multiple
                                     displayEmpty
                                     value={selectedHumanValues}
                                     onChange={handleHumanChange}
-                                    input={<OutlinedInput />}
+                                    input={<OutlinedInput/>}
                                     renderValue={(selected) => {
                                         if (selected.length === 0) {
                                             return <em>Choose human resource type</em>;
@@ -153,7 +133,7 @@ export default function ResourceDetails1() {
                                         return selected.join(', ');
                                     }}
                                     MenuProps={MenuProps}
-                                    inputProps={{ 'aria-label': 'Without label' }}
+                                    inputProps={{'aria-label': 'Without label'}}
                                 >
                                     <MenuItem disabled value="">
                                         <em>Choose human resource type</em>
