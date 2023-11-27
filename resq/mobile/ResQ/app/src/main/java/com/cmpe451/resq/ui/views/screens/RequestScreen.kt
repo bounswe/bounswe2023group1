@@ -2,7 +2,6 @@ package com.cmpe451.resq.ui.views.screens
 
 import android.content.Context
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,13 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
@@ -24,8 +20,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -42,9 +36,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.cmpe451.resq.data.models.CategoryNode
+import com.cmpe451.resq.data.models.CategoryTreeNode
 import com.cmpe451.resq.ui.theme.LightGreen
 import com.cmpe451.resq.ui.theme.RequestColor
+import com.cmpe451.resq.ui.views.components.DropdownMenuComponent
 import com.cmpe451.resq.viewmodels.RequestViewModel
 
 @Composable
@@ -100,7 +95,7 @@ fun RequestScreen(
                 DropdownMenuComponent(
                     label = "Category",
                     items = categories,
-                    selectedItem = selectedCategoryState.value ?: CategoryNode(-1, "Select a Category", emptyList()),
+                    selectedItem = selectedCategoryState.value ?: CategoryTreeNode(-1, "Select a Category", emptyList()),
                     itemToString = { it.data },
                     onItemSelected = { category ->
                         viewModel.updateCategory(category)
@@ -112,7 +107,7 @@ fun RequestScreen(
                 DropdownMenuComponent(
                     label = "Type",
                     items = viewModel.types.value,
-                    selectedItem = viewModel.selectedType.value ?: CategoryNode(-1, "Select a Type", emptyList()),
+                    selectedItem = viewModel.selectedType.value ?: CategoryTreeNode(-1, "Select a Type", emptyList()),
                     itemToString = { it.data },
                     onItemSelected = { type ->
                         viewModel.updateType(type)
@@ -125,7 +120,7 @@ fun RequestScreen(
                 DropdownMenuComponent(
                     label = "Item",
                     items = viewModel.items.value,
-                    selectedItem = viewModel.selectedItem.value ?: CategoryNode(-1, "Select an Item", emptyList()),
+                    selectedItem = viewModel.selectedItem.value ?: CategoryTreeNode(-1, "Select an Item", emptyList()),
                     itemToString = { it.data },
                     onItemSelected = { item ->
                         viewModel.updateItem(item)
@@ -174,52 +169,5 @@ fun RequestScreen(
             }
         }
         SnackbarHost(hostState = snackbarHostState)
-    }
-}
-
-@Composable
-fun <T> DropdownMenuComponent(
-    label: String,
-    items: List<T>,
-    selectedItem: T,
-    itemToString: (T) -> String,
-    onItemSelected: (T) -> Unit
-) {
-    var expandState by remember { mutableStateOf(false) }
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentWidth(Alignment.Start)
-    ) {
-        OutlinedTextField(
-            value = itemToString(selectedItem),
-            onValueChange = {},
-            label = { Text(label) },
-            readOnly = true,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { expandState = true },
-            trailingIcon = {
-                Icon(
-                    imageVector = if (expandState) Icons.Filled.KeyboardArrowUp else Icons.Filled.ArrowDropDown,
-                    contentDescription = "Dropdown Icon",
-                    modifier = Modifier.clickable { expandState = !expandState }
-                )
-            }
-        )
-        DropdownMenu(
-            expanded = expandState,
-            onDismissRequest = { expandState = false },
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            items.forEach { item ->
-                DropdownMenuItem(onClick = {
-                    onItemSelected(item)
-                    expandState = false
-                }) {
-                    Text(text = itemToString(item))
-                }
-            }
-        }
     }
 }

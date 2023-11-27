@@ -5,47 +5,44 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cmpe451.resq.data.models.CategoryNode
+import com.cmpe451.resq.data.models.CategoryTreeNode
 import com.cmpe451.resq.data.models.CreateNeedRequestBody
-import com.cmpe451.resq.data.models.LoginRequestBody
-import com.cmpe451.resq.data.models.LoginResponse
 import com.cmpe451.resq.data.remote.ResqService
-import com.cmpe451.resq.utils.NavigationItem
 import kotlinx.coroutines.launch
 
 class RequestViewModel : ViewModel() {
-    private val _selectedCategory = mutableStateOf<CategoryNode?>(null)
-    val selectedCategory: State<CategoryNode?> = _selectedCategory
+    private val _selectedCategory = mutableStateOf<CategoryTreeNode?>(null)
+    val selectedCategory: State<CategoryTreeNode?> = _selectedCategory
 
-    private val _selectedType = mutableStateOf<CategoryNode?>(null)
-    val selectedType: State<CategoryNode?> = _selectedType
+    private val _selectedType = mutableStateOf<CategoryTreeNode?>(null)
+    val selectedType: State<CategoryTreeNode?> = _selectedType
 
-    private val _selectedItem = mutableStateOf<CategoryNode?>(null)
-    val selectedItem: State<CategoryNode?> = _selectedItem
+    private val _selectedItem = mutableStateOf<CategoryTreeNode?>(null)
+    val selectedItem: State<CategoryTreeNode?> = _selectedItem
 
-    private val _categories = mutableStateOf<List<CategoryNode>>(emptyList())
-    val categories: State<List<CategoryNode>> = _categories
+    private val _categories = mutableStateOf<List<CategoryTreeNode>>(emptyList())
+    val categories: State<List<CategoryTreeNode>> = _categories
 
-    private val _types = mutableStateOf<List<CategoryNode>>(emptyList())
-    val types: State<List<CategoryNode>> = _types
+    private val _types = mutableStateOf<List<CategoryTreeNode>>(emptyList())
+    val types: State<List<CategoryTreeNode>> = _types
 
-    private val _items = mutableStateOf<List<CategoryNode>>(emptyList())
-    val items: State<List<CategoryNode>> = _items
+    private val _items = mutableStateOf<List<CategoryTreeNode>>(emptyList())
+    val items: State<List<CategoryTreeNode>> = _items
 
     private val _createNeedResponse = mutableStateOf<String?>(null)
     val createNeedResponse: State<String?> = _createNeedResponse
 
-    fun updateCategory(category: CategoryNode) {
+    fun updateCategory(category: CategoryTreeNode) {
         _selectedCategory.value = category
         fetchTypesForCategory(category.id)
     }
 
-    fun updateType(type: CategoryNode) {
+    fun updateType(type: CategoryTreeNode) {
         _selectedType.value = type
         fetchItemsForType(type.id)
     }
 
-    fun updateItem(item: CategoryNode) {
+    fun updateItem(item: CategoryTreeNode) {
         _selectedItem.value = item
     }
 
