@@ -12,11 +12,13 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import ResourceAddress from '../components/ResourceAddress';
-//import RequestDetails1 from '../components/RequestDetails1';
-//import RequestDetails2 from '../components/RequestDetails2';
-//import RequestDetails3 from '../components/RequestDetails3';
-//import RequestReview from '../components/RequestReview';
+import ResourceDetail1 from '../components/ResourceDetail1';
+import ResourceDetail2 from '../components/ResourceDetail2';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ResourceProvider } from '../components/ResourceContext';
+import { useResource } from './ResourceContext';
+import axios from 'axios';
+
 
 function Copyright(props) {
     return (
@@ -42,13 +44,16 @@ const customTheme = createTheme({
 });
 
 
-const steps = ['Resource delivery address'];
+const steps = ['Resource delivery address', 'Type of Resource', 'Resource Details'];
 
 function getStepContent(step) {
     switch (step) {
         case 0:
             return <ResourceAddress />;
-
+        case 1:
+            return <ResourceDetail1 />;
+        case 2:
+            return <ResourceDetail2 />;
         default:
             throw new Error('Unknown step');
     }
@@ -56,70 +61,103 @@ function getStepContent(step) {
 
 export default function Resource() {
     const [activeStep, setActiveStep] = React.useState(0);
+    const { resourceData } = useResource();
+
+    const handleSubmit = () => {
+        const url = 'http://api.resq.org.tr/resq/api/v1/need/createNeed';
+        const userId = localStorage.getItem('userId');
+
+        axios.post(`${url}?userId=${userId}`, resourceData, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    console.log('Resource created successfully:', response.data);
+                    alert('Resource created successfully!');
+                } else {
+                    console.error('Error creating resource:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error('Error creating resource:', error);
+            });
+    };
+
 
     const handleNext = () => {
-        setActiveStep(activeStep + 1);
+        if (activeStep === steps.length - 1) {
+            handleSubmit();
+        } else {
+            setActiveStep(activeStep + 1);
+        }
     };
+
 
     const handleBack = () => {
         setActiveStep(activeStep - 1);
     };
 
-    return (
-        <React.Fragment>
-            <ThemeProvider theme={customTheme}>
-                <CssBaseline />
-                <AppBar
-                    position="absolute"
-                    color="default"
-                    elevation={0}
-                    sx={{
-                        position: 'relative',
-                        borderBottom: (t) => `1px solid ${t.palette.divider}`,
-                    }}
-                >
-                </AppBar>
-                <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-                    <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-                        <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
-                            {steps.map((label) => (
-                                <Step key={label}>
-                                    <StepLabel>{label}</StepLabel>
-                                </Step>
-                            ))}
-                        </Stepper>
-                        {activeStep === steps.length ? (
-                            <React.Fragment>
-                                <Typography variant="h5" gutterBottom>
-                                    Your request is saved.
-                                </Typography>
-                                <Typography variant="subtitle1">
-                                    Your request has been successfully created. We will process it promptly. You can track the status of your request on your profile page.                            </Typography>
-                            </React.Fragment>
-                        ) : (
-                            <React.Fragment>
-                                {getStepContent(activeStep)}
-                                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                    {activeStep !== 0 && (
-                                        <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                                            Back
-                                        </Button>
-                                    )}
 
-                                    <Button
-                                        variant="contained"
-                                        onClick={handleNext}
-                                        sx={{ mt: 3, ml: 1 }}
-                                    >
-                                        {activeStep === steps.length - 1 ? 'Proceed' : 'Next'}
-                                    </Button>
-                                </Box>
-                            </React.Fragment>
-                        )}
-                    </Paper>
-                    <Copyright />
-                </Container>
-            </ThemeProvider>
-        </React.Fragment>
+    return (
+        <ResourceProvider>
+            <React.Fragment>
+                <ThemeProvider theme={customTheme}>
+                    <CssBaseline />
+                    <AppBar
+                        position="absolute"
+                        color="default"
+                        elevation={0}
+                        sx={{
+                            position: 'relative',
+                            borderBottom: (t) => `1px solid ${t.palette.divider}`,
+                        }}
+                    >
+                    </AppBar>
+                    <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+                        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+                            <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+                                {steps.map((label) => (
+                                    <Step key={label}>
+                                        <StepLabel>{label}</StepLabel>
+                                    </Step>
+                                ))}
+                            </Stepper>
+                            {activeStep === steps.length ? (
+                                <React.Fragment>
+                                    <Typography variant="h5" gutterBottom>
+                                        Resource is on its way!
+                                    </Typography>
+                                    <Typography variant="subtitle1">
+                                        Resource is saved with the details.
+                                    </Typography>
+                                </React.Fragment>
+                            ) : (
+                                <React.Fragment>
+                                    {getStepContent(activeStep)}
+                                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                        {activeStep !== 0 && (
+                                            <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                                                Back
+                                            </Button>
+                                        )}
+
+                                        <Button
+                                            variant="contained"
+                                            onClick={handleNext}
+                                            sx={{ mt: 3, ml: 1 }}
+                                        >
+                                            {activeStep === steps.length - 1 ? 'Proceed' : 'Next'}
+                                        </Button>
+                                    </Box>
+                                </React.Fragment>
+                            )}
+                        </Paper>
+                        <Copyright />
+                    </Container>
+                </ThemeProvider>
+            </React.Fragment>
+        </ResourceProvider>
     );
 }

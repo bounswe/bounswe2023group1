@@ -154,12 +154,40 @@ function App() {
                                             <Route path="/signup" state={{token, setToken}}
                                                    element={React.createElement(SignUp, {token, setToken})}/>
                                         </>
-                                }
-                            </Routes>
-                        </main>
-                    </div>
-                </Router>
-            </LocalizationProvider>
+                                    }
+                                </Nav>
+                            </Navbar.Collapse>
+                        </Container>
+                    </Navbar>
+                    <main style={{ height: `${height - 57}px` }}>
+                        <Routes>
+                            {navLinks.map(({ path, component }) => (
+                                <Route key={path} path={path}
+                                    element={React.createElement(component, { token, setToken, role, setRole })} />
+                            ))}
+                            <Route path="/" element={<Navigate to="/map" />} />
+                            <Route path="/rolerequest" state={{ token, setToken }}
+                                element={React.createElement(RoleRequest, { token, setToken })} />
+                            {
+                                token ? <>
+                                    <Route path="/account" state={{ token, setToken }}
+                                        element={React.createElement(Account, { token, setToken })} />
+                                    <Route path="/requestcreation" state={{ token, setToken }}
+                                        element={React.createElement(Request, { token, setToken })} />
+                                    <Route path="/resourcecreation" state={{ token, setToken }}
+                                        element={React.createElement(Resource, { token, setToken })} />
+                                </>
+                                    : <>
+                                        <Route path="/signin" state={{ token, setToken }}
+                                            element={React.createElement(SignIn, { token, setToken })} />
+                                        <Route path="/signup" state={{ token, setToken }}
+                                            element={React.createElement(SignUp, { token, setToken })} />
+                                    </>
+                            }
+                        </Routes>
+                    </main>
+                </div>
+            </Router>
         </QueryClientProvider>
     );
 }

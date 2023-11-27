@@ -10,6 +10,8 @@ import disasterImage from '../disaster.png';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
+import { ResourceContext } from './ResourceContext';
+import { useContext } from 'react';
 
 
 const customTheme = createTheme({
@@ -21,15 +23,22 @@ const customTheme = createTheme({
 });
 
 export default function CreateResourceForm() {
-    const [resource, setResource] = useState({
-        type: '',
-        status: '',
-        urgency: '',
-        location: '',
-        quantity: '',
-        description: '',
-        category: '',
-    });
+
+    const { resourceData, setResourceData } = useContext(ResourceContext);
+
+    const handleLongitudeChange = (longitudeValue) => {
+        setResourceData({
+            ...resourceData,
+            longitude: parseFloat(longitudeValue),
+        });
+    };
+
+    const handleLatitudeChange = (latitudeValue) => {
+        setResourceData({
+            ...resourceData,
+            latitude: parseFloat(latitudeValue),
+        });
+    };
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -42,7 +51,6 @@ export default function CreateResourceForm() {
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(resource);
-        //send this data to a backend server
     };
 
     return (
@@ -129,7 +137,7 @@ export default function CreateResourceForm() {
                             <Grid item xs={12}>
                                 <FormControlLabel
                                     control={<Checkbox color="error" name="saveAddress" value="yes" />}
-                                    label="Use this address for my delivery"
+                                    label="I have delivered my resources to the above mentioned address."
                                 />
                             </Grid>
                         </Grid>
