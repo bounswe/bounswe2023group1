@@ -2,6 +2,7 @@ package com.groupa1.resq.service;
 
 import com.groupa1.resq.auth.UserDetailsImpl;
 import com.groupa1.resq.entity.User;
+import com.groupa1.resq.entity.UserProfile;
 import com.groupa1.resq.entity.enums.EUserRole;
 import com.groupa1.resq.request.LoginUserRequest;
 import com.groupa1.resq.request.RegisterUserRequest;
@@ -40,6 +41,9 @@ class AuthServiceTest {
     private AuthenticationManager authenticationManager;
 
     @Mock
+    private UserProfileService userProfileService;
+
+    @Mock
     private PasswordEncoder encoder;
 
     @Mock
@@ -75,11 +79,17 @@ class AuthServiceTest {
         mockUser.setEmail("test-email");
         mockUser.setPassword(encodedPassword);
 
+        UserProfile mockUserProfile = new UserProfile();
+        mockUserProfile.setName("test-name");
+        mockUserProfile.setSurname("test-surname");
+        mockUserProfile.setUser(mockUser);
+
         mockUser.setRoles(Set.of(EUserRole.VICTIM));
 
         // when
         when(userService.existsByEmail("test-email")).thenReturn(false);
         when(encoder.encode("test-password")).thenReturn(encodedPassword);
+        when(userProfileService.saveProfile(mockUserProfile)).thenReturn(mockUserProfile);
         when(userService.save(mockUser)).thenReturn(mockUser);
 
         // then
