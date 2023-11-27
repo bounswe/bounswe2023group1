@@ -15,7 +15,7 @@ export default function VictimMapPage() {
     const resources = useQuery({queryKey: ['getAllResources'], queryFn: getAllResources})
 
     const resourceMarkers = (resources.data?.data || []).map(a => ({...a, type: "Resource"}))
-    const allMarkers = [...resourceMarkers, ...mock_markers]
+    const allMarkers = [...mock_markers, ...resourceMarkers]
     /*/ Mutations
     const mutation = useMutation({
         mutationFn: postTodo,

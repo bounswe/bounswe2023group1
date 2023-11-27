@@ -12,5 +12,45 @@ export const mock_markers = [
             "From minor cuts to more serious injuries, our clinic is equipped to handle a range of medical concerns, " +
             "promoting healing and preventing complications.",
         date: "26/11/2023"
+    },
+    {
+        type: "Annotation",
+        latitude: 41.085,
+        longitude: 29.056,
+        category: "Shelter",
+        title: "Temporary Shelter Camp",
+        short_description: "Temporary shelter camp for displaced individuals and families.",
+        long_description: "Our Temporary Shelter Camp offers a safe haven for individuals and families displaced by the disaster. We provide temporary accommodation, basic necessities, and support services. Our goal is to ensure the well-being and comfort of those affected by the disaster while they await further assistance.",
+        date: "27/11/2023"
+    },
+    {
+        type: "Annotation",
+        latitude: 41.099,
+        longitude: 29.047,
+        category: "Food",
+        title: "Food Distribution Center",
+        short_description: "Food distribution center providing meals to disaster survivors.",
+        long_description: "The Food Distribution Center is committed to providing nutritious meals to disaster survivors. We offer a variety of food options to meet the dietary needs of individuals and families affected by the disaster. Our team works tirelessly to ensure that no one goes hungry during these challenging times.",
+        date: "28/11/2023"
+    },
+    {
+        type: "Annotation",
+        latitude: 41.088,
+        longitude: 29.552,
+        category: "Rescue",
+        title: "Search and Rescue Team",
+        short_description: "Dedicated search and rescue team for disaster response.",
+        long_description: "Our Search and Rescue Team is on standby to locate and rescue individuals who may be trapped or in distress due to the disaster. We are equipped with specialized tools and trained personnel to conduct safe and efficient rescue operations. Saving lives is our top priority.",
+        date: "28/11/2023"
+    },
+    {
+        type: "Annotation",
+        latitude: 40.092,
+        longitude: 29.008,
+        category: "Health",
+        title: "Emergency Medical Center",
+        short_description: "Emergency medical center with specialized trauma care.",
+        long_description: "Our Emergency Medical Center is equipped with state-of-the-art facilities to provide specialized trauma care in the aftermath of a disaster. Our medical team is trained to handle critical injuries, perform life-saving procedures, and ensure the well-being of patients. We are available 24/7 to respond to emergencies and provide immediate medical assistance.",
+        date: "27/11/2023"
     }
 ]

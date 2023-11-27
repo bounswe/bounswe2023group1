@@ -7,14 +7,12 @@ import Box from '@mui/material/Box';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import DisasterMap from "../components/DisasterMap";
-import {cards} from "../components/ListCards";
+import {cards} from "../components/Cards/ListCards";
 import {AmountSelector, MultiCheckbox} from "../components/MultiCheckbox";
 import {DatePicker} from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import {useQuery} from "@tanstack/react-query";
 import {getCategoryTree} from "../AppService";
-import AnnotationCard from "../components/AnnotationCard";
-import reverseGeocode from "../components/Geolocation";
 
 const customTheme = createTheme({
     palette: {
@@ -60,7 +58,7 @@ const makeFilterByCategory = categories => {
     return item => {
         switch (item.type) {
             case "Annotation":
-                return categories.map(a=>a.id).indexOf(item?.category) !== -1;
+                return categories.map(a => a.id).indexOf(item?.category) !== -1;
             default:
                 return !categories.every(a => !a.findCategoryWithId || !(a.findCategoryWithId(parseInt(item.categoryTreeId))))
         }
@@ -111,6 +109,7 @@ export default function MapPage({allMarkers}) {
         }
     }, [selectedPoint]);
 
+    useEffect(() => setShownMarkers(allMarkers), [allMarkers])
 
     useEffect(() => setShownMarkers(
         allMarkers
@@ -128,8 +127,8 @@ export default function MapPage({allMarkers}) {
             .flat(),
         ...categoryFilter
     ]
-        .filter(a=>a)
-        .map(a=>[a?.id, a]))
+        .filter(a => a)
+        .map(a => [a?.id, a]))
     // noinspection JSValidateTypes
     return (
         <ThemeProvider theme={customTheme}>
@@ -167,7 +166,7 @@ export default function MapPage({allMarkers}) {
                     flexDirection: "row",
                     flexWrap: 'nowrap',
                     margin: "12px",
-                    height: "100%",
+                    height: "100px",
                     flexGrow: 100
                 }}>
                     <Box sx={{
