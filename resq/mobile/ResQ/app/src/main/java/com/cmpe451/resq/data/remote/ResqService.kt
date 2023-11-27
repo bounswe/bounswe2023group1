@@ -49,6 +49,14 @@ interface ProfileService {
         @Header("Authorization") jwtToken: String,
         @Header("X-Selected-Role") role: String
     ): Response<UserInfoResponse>
+
+    @POST("user/requestRole")
+    suspend fun selectRole(
+        @Query("userId") userId: Int,
+        @Query("role") requestedRole: String,
+        @Header("Authorization") jwtToken: String,
+        @Header("X-Selected-Role") role: String
+    ): Response<String>
 }
 
 class ResqService(appContext: Context) {
@@ -114,5 +122,20 @@ class ResqService(appContext: Context) {
             gender = "Female", bloodType = "0 rh-", height = "180", weight = "80",
             phoneNumber = "05321234567", state = "Kadikoy",
         )
+    }
+
+    suspend fun selectRole(requestedRole: String): Response<String> {
+        val userId = userSessionManager.getUserId()
+        val token = userSessionManager.getUserToken() ?: ""
+        val role = userSessionManager.getSelectedRole() ?: ""
+
+        val response = profileService.selectRole(
+            userId = userId,
+            requestedRole = requestedRole,
+            jwtToken = "Bearer $token",
+            role = requestedRole
+        )
+
+        return response
     }
 }
