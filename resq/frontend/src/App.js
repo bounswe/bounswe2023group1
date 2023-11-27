@@ -4,7 +4,7 @@ import {Navbar, Container, Nav} from 'react-bootstrap';
 import UserRoles from "./pages/UserRoles";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import MapDemo from "./pages/MapDemo";
+import MapPage from "./pages/MapPage";
 import Account from "./pages/Account";
 import RoleRequest from "./pages/RoleRequest";
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -40,7 +40,7 @@ function App() {
     }
 
     const navLinks = [
-        {path: '/map', label: <strong>Map Demo</strong>, component: MapDemo, icon: <SmallRedCircle/>},
+        {path: '/map', label: <strong>Map Demo</strong>, component: MapPage, icon: <SmallRedCircle/>},
         token && {
             path: '/userroles',
             label: <strong>User Roles</strong>,
