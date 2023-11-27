@@ -26,7 +26,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -93,7 +92,7 @@ fun LoginScreen(navController: NavController, appContext: Context) {
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = DeepBlue,
-                textColor = Color.White,
+                focusedTextColor = Color.White,
                 cursorColor = Color.White
             )
         )
@@ -110,7 +109,7 @@ fun LoginScreen(navController: NavController, appContext: Context) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = DeepBlue,
-                textColor = Color.White,
+                focusedTextColor = Color.White,
                 cursorColor = Color.White
             )
         )

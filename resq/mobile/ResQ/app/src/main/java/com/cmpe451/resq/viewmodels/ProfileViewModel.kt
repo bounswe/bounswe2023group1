@@ -9,6 +9,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cmpe451.resq.data.manager.UserSessionManager
 import com.cmpe451.resq.data.models.ProfileData
 import com.cmpe451.resq.data.remote.ResqService
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +32,6 @@ class ProfileViewModel() : ViewModel() {
         viewModelScope.launch {
             try {
                 val data = api.getUserInfo()
-                Log.d("Service", "getUserData: $data")
                 _profileData.value = data
             } catch (e: Exception) {
                 errorMessage.value = e.message
@@ -45,7 +45,6 @@ class ProfileViewModel() : ViewModel() {
         val api = ResqService(appContext)
         viewModelScope.launch {
             try {
-                Log.d("Update DATA", "")
                 val response = api.updateUserData(profileData)
 
                 if (response.isSuccessful) {

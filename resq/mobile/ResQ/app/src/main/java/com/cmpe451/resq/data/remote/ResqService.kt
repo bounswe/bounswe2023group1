@@ -5,13 +5,16 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.cmpe451.resq.data.Constants
 import com.cmpe451.resq.data.manager.UserSessionManager
-import com.cmpe451.resq.data.models.CategoryNode
+import com.cmpe451.resq.data.models.CategoryTreeNode
 import com.cmpe451.resq.data.models.CreateNeedRequestBody
+import com.cmpe451.resq.data.models.CreateResourceRequestBody
 import com.cmpe451.resq.data.models.LoginRequestBody
 import com.cmpe451.resq.data.models.LoginResponse
+import com.cmpe451.resq.data.models.Need
 import com.cmpe451.resq.data.models.ProfileData
 import com.cmpe451.resq.data.models.RegisterRequestBody
 import com.cmpe451.resq.data.models.UserInfoRequest
+
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -25,9 +28,17 @@ interface CategoryTreeNodeService {
     suspend fun getMainCategories(
         @Header("Authorization") jwtToken: String,
         @Header("X-Selected-Role") role: String
-    ): Response<List<CategoryNode>>
+    ): Response<List<CategoryTreeNode>>
 }
 
+interface ResourceService {
+    @POST("resource/createResource")
+    suspend fun createResource(
+        @Header("Authorization") jwtToken: String,
+        @Header("X-Selected-Role") role: String,
+        @Body requestBody: CreateResourceRequestBody
+    ): Response<Int>
+}
 interface NeedService {
     @POST("need/createNeed")
     suspend fun createNeed(
@@ -36,6 +47,17 @@ interface NeedService {
         @Header("X-Selected-Role") role: String,
         @Body requestBody: CreateNeedRequestBody
     ): Response<Int>
+
+
+
+    @GET("need/filterByDistance")
+    fun filterNeedByDistance(
+        @Query("latitude") latitude: Double,
+        @Query("longitude") longitude: Double,
+        @Query("distance") distance: Double,
+        @Header("Authorization") jwtToken: String,
+        @Header("X-Selected-Role") role: String,
+    ): Response<List<Need>>
 
 }
 
@@ -53,7 +75,18 @@ interface ProfileService {
         @Query("userId") userId: Int,
         @Header("Authorization") jwtToken: String,
         @Header("X-Selected-Role") role: String
+
     ): Response<ProfileData>
+
+
+
+    @POST("user/requestRole")
+    suspend fun selectRole(
+        @Query("userId") userId: Int,
+        @Query("role") requestedRole: String,
+        @Header("Authorization") jwtToken: String,
+        @Header("X-Selected-Role") role: String
+    ): Response<String>
 
 
 
@@ -73,6 +106,7 @@ class ResqService(appContext: Context) {
         .build()
 
     private val categoryTreeNodeService: CategoryTreeNodeService = retrofit.create(CategoryTreeNodeService::class.java)
+    private val resourceService: ResourceService = retrofit.create(ResourceService::class.java)
     private val needService: NeedService = retrofit.create(NeedService::class.java)
     private val authService: AuthService = retrofit.create(AuthService::class.java)
     private val profileService: ProfileService = retrofit.create(ProfileService::class.java)
@@ -80,7 +114,7 @@ class ResqService(appContext: Context) {
     private val userSessionManager: UserSessionManager = UserSessionManager.getInstance(appContext)
 
     // Category Tree Node methods
-    suspend fun getMainCategories(): Response<List<CategoryNode>> {
+    suspend fun getMainCategories(): Response<List<CategoryTreeNode>> {
         val token = userSessionManager.getUserToken() ?: ""
         val selectedRole = userSessionManager.getSelectedRole() ?: ""
 
@@ -90,17 +124,48 @@ class ResqService(appContext: Context) {
         )
     }
 
+    // Resource methods
+    suspend fun createResource(request: CreateResourceRequestBody): Response<Int> {
+        val userId = userSessionManager.getUserId()
+        val token = userSessionManager.getUserToken() ?: ""
+        // val selectedRole = userSessionManager.getSelectedRole() ?: ""
+
+        request.senderId = userId
+
+        return resourceService.createResource(
+            jwtToken = "Bearer $token",
+            role = "RESPONDER",
+            requestBody = request
+        )
+    }
+
     // Need methods
     suspend fun createNeed(request: CreateNeedRequestBody): Response<Int> {
         val userId = userSessionManager.getUserId()
         val token = userSessionManager.getUserToken() ?: ""
-        val selectedRole = userSessionManager.getSelectedRole() ?: ""
+        // val selectedRole = userSessionManager.getSelectedRole() ?: ""
 
         return needService.createNeed(
             userId = userId,
             jwtToken = "Bearer $token",
-            role = selectedRole,
+            role = "VICTIM",
             requestBody = request
+        )
+    }
+
+    suspend fun filterNeedByDistance(
+        latitude: Double,
+        longitude: Double,
+        distance: Double
+    ): Response<List<Need>> {
+        val selectedRole = userSessionManager.getSelectedRole() ?: ""
+        val token = userSessionManager.getUserToken() ?: ""
+        return needService.filterNeedByDistance(
+            latitude = latitude,
+            longitude = longitude,
+            distance = distance,
+            role = selectedRole,
+            jwtToken = "Bearer $token"
         )
     }
 
@@ -182,5 +247,26 @@ class ResqService(appContext: Context) {
             role = selectedRole,
             request = request
         )
+        val response = profileService.updateProfile(
+            userId = userId,
+            jwtToken = "Bearer $token",
+            role = selectedRole,
+            request = request
+        )
+        return response
+    }
+    
+    suspend fun selectRole(requestedRole: String): Response<String> {
+        val userId = userSessionManager.getUserId()
+        val token = userSessionManager.getUserToken() ?: ""
+        val role = userSessionManager.getSelectedRole() ?: ""
+
+        val response = profileService.selectRole(
+            userId = userId,
+            requestedRole = requestedRole,
+            jwtToken = "Bearer $token",
+            role = requestedRole
+        )
+        return response
     }
 }

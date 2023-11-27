@@ -25,10 +25,15 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
@@ -36,6 +41,7 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -122,6 +128,10 @@ fun ProfilePhoto() {
     // TO DO: Add deletion option
 }
 
+import java.time.Year
+import androidx.compose.material.MaterialTheme.typography
+import kotlinx.coroutines.launch
+import androidx.compose.material.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextListSelectionWithColorChange(
@@ -177,12 +187,17 @@ fun TextListSelectionWithColorChange(
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ProfileScreen(navController: NavController, appContext: Context) {
     val viewModel: ProfileViewModel = viewModel()
 
     viewModel.getUserData(appContext)
+
+    val allRoles = listOf("VICTIM", "RESPONDER", "FACILITATOR")
+    val userRoles = UserSessionManager.getInstance(appContext).getUserRoles()
+    val availableRoles = allRoles.filter { !userRoles.contains(it) }
 
     val profileData by viewModel.profile
     when (profileData) {
@@ -195,6 +210,7 @@ fun ProfileScreen(navController: NavController, appContext: Context) {
             if (userRoles != null) {
                 if (userRoles.contains("VICTIM") || userRoles.contains("RESPONDER") || userRoles.contains("FACILITATOR")) {
                     Profile(profileData = profileData!!, navController = navController, viewModel, appContext)
+
                 } else {
 
                     Text("Unknown Role")
@@ -237,7 +253,7 @@ fun generateDays(month: String): List<String>{
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun Profile(profileData:ProfileData, navController: NavController, viewModel: ProfileViewModel, appContext: Context) {
     val genders = listOf("Male", "Female")
@@ -318,26 +334,64 @@ fun Profile(profileData:ProfileData, navController: NavController, viewModel: Pr
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.White)
+                .verticalScroll(rememberScrollState())
+                .background(Color.White)
         ) {
-            Column(
+            TopAppBar(
+                navigationIcon = {
+                    IconButton(onClick = { navController.navigateUp() }) {
+                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                title = {
+                    Text(
+                        text = "Account",
+                        style = TextStyle(
+                            fontSize = 25.sp,
+                            color = Color(0xFF224957),
+                            textAlign = TextAlign.Center
+                        ),
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    )
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    Icons.Default.AccountCircle,
+                    contentDescription = "User Profile",
+                    modifier = Modifier
+                        .size(150.dp)
+                        .weight(1f)
+                )
+                Text(
+                    text = "$name $surname",
+                    modifier = Modifier.weight(1f),
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp
+                    )
+                )
+            }
+
+
+            Box(
                 modifier = Modifier
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .fillMaxSize()
+                    .background(color = Color.White)
             ) {
-
-                Spacer(modifier = Modifier.height(16.dp))
-
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
+                        .fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Row(
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(4.dp)
-                            .background(Color.White)
+                            .padding(16.dp)
                     ) {
                         OutlinedTextField(
                             value = name,
@@ -518,6 +572,22 @@ fun Profile(profileData:ProfileData, navController: NavController, viewModel: Pr
                                 color = profileColor
                             )
                         }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+
+                            ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                gender?.let {
+                                    TextListSelectionWithColorChange(
+                                        items = genders,
+                                        selectedItem = gender,
+                                        onItemSelected = { gender = it },
+                                        label = "Gender",
+                                        color = Color(0xFFB356AF)
+                                    )
+                                }
+                            }
 
                         Column(modifier = Modifier.weight(1f)) {
                             TextListSelectionWithColorChange(
@@ -531,7 +601,6 @@ fun Profile(profileData:ProfileData, navController: NavController, viewModel: Pr
                     }
                 }
             }
-        }
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -561,9 +630,7 @@ fun Profile(profileData:ProfileData, navController: NavController, viewModel: Pr
                 modifier = Modifier.align(Alignment.Start)
             ) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(4.dp)
+                    modifier = Modifier.align(Alignment.Start)
                 ) {
                     Button(
                         onClick = {
@@ -600,10 +667,11 @@ fun Profile(profileData:ProfileData, navController: NavController, viewModel: Pr
                             }
 
                         },
-                        colors = ButtonDefaults.buttonColors(Color(0xFF224957)),
-                        modifier = Modifier.size(170.dp, 60.dp)
+                        colors = ButtonDefaults.buttonColors(Color(0xFFB356AF)),
+                        modifier = Modifier
+                            .size(170.dp, 60.dp)
                     ) {
-                        Text(text = "Save Details")
+                        Text(text = "My Requests")
                     }
 
                     Spacer(modifier = Modifier.width(30.dp))
@@ -612,22 +680,68 @@ fun Profile(profileData:ProfileData, navController: NavController, viewModel: Pr
                             //@ TO DO Handle button click
                         },
                         colors = ButtonDefaults.buttonColors(Color(0xFF224957)),
+
                         modifier = Modifier
-                            .size(170.dp, 60.dp)
+                            .fillMaxWidth()
+                            .padding(4.dp)
                     ) {
-                        Text(text = "Request Role")
+                        Button(
+                            onClick = {
+
+                                if (!isEmailValid and !isPhoneValid) {
+                                    // @TO DO: Save details
+                                    message = "Please check your email address and phone number."
+
+                                } else if (!isPhoneValid) {
+                                    message = "Please check your phone number."
+
+                                } else if (!isEmailValid) {
+                                    message = "Please check your email address."
+                                } else {
+                                    // @TO DO Handle Save Details button click
+                                    message = "Details saved successfully."
+                                }
+
+                            },
+                            colors = ButtonDefaults.buttonColors(Color(0xFF224957)),
+                            modifier = Modifier.size(170.dp, 60.dp)
+                        ) {
+                            Text(text = "Save Details")
+                        }
+
+                        Spacer(modifier = Modifier.width(25.dp))
+                        Button(
+                            onClick = {
+                                //@ TO DO Handle button click
+                                coroutineScope.launch {
+                                    modalBottomSheetState.show()
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(Color(0xFF224957)),
+                            modifier = Modifier
+                                .size(170.dp, 60.dp)
+                        ) {
+                            Text(text = "Request Role")
+                        }
                     }
                 }
+
             }
 
         }
-
-    }
-    LaunchedEffect(key1 = message) {
-        if (message.isNotEmpty()) {
-            snackbarHostState.showSnackbar(message, duration = SnackbarDuration.Short)
+        LaunchedEffect(key1 = message) {
+            if (message.isNotEmpty()) {
+                snackbarHostState.showSnackbar(message, duration = SnackbarDuration.Short)
+            }
         }
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        )
     }
+
     SnackbarHost(
         hostState = snackbarHostState,
         modifier = Modifier
@@ -678,6 +792,7 @@ fun FacilitatorProfileButtons(navController: NavController) {
     }
 }
 
+
 @Composable
 fun ResponderProfileButtons(navController: NavController) {
     Row(
@@ -719,5 +834,25 @@ fun VictimProfileButtons(navController: NavController) {
             route = "",
             navController = navController
         )
+    }
+}
+
+@Composable
+fun BottomSheetContent(availableRoles: List<String>, onRoleSelected: (String) -> Unit) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text("Select a Role", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(16.dp))
+        Divider()
+        // List the available roles for the user to choose
+        availableRoles.forEach { role ->
+            TextButton(
+                onClick = { onRoleSelected(role) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                Text(role, style = MaterialTheme.typography.bodyMedium)
+            }
+            Divider()
+        }
     }
 }
