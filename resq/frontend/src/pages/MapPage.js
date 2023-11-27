@@ -65,7 +65,7 @@ const makeFilterByCategory = categories => {
     }
 };
 
-const makeFilterByType = (typeFilter) => item => typeFilter.length === 0 || typeFilter.indexOf(item.type) !== -1
+const makeFilterByType = (typeFilter) => item => typeFilter.length === 0 || typeFilter.map(t=>t.id).indexOf(item.type) !== -1
 
 const makeFilterByAmount = ([amount]) => {
     if (typeof amount !== "string" || amount.indexOf("-") === -1)
@@ -123,6 +123,7 @@ export default function MapPage({allMarkers}) {
 
     const choices = new Map([
         ...allMarkers
+            .filter(makeFilterByBounds(mapBounds))
             .map(getAllCategories(categoryTree?.data))
             .flat(),
         ...categoryFilter
