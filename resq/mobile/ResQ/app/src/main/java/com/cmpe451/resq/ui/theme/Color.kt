@@ -17,4 +17,5 @@ val ResourceColor = Color(0xFF397FE7)
 val RequestColor = Color(0xFFB356AF)
 
 val MyTasksColor = Color(0XFFE7A139)
+val OngoingTasksColor = Color(0xFFE16834)
 val BackgroundColor = Color(0xFFEFEFEF)
