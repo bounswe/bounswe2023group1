@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material';
+import React, {useState, useEffect} from 'react';
+import {TextField, Button, FormControl, InputLabel, Select, MenuItem, Box} from '@mui/material';
 import '@fontsource/inter';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
-import { ResourceContext } from './ResourceContext';
-import { useContext } from 'react';
+import {ResourceContext} from './ResourceContext';
+import {useContext} from 'react';
 
 const customTheme = createTheme({
     palette: {
@@ -19,13 +19,17 @@ const customTheme = createTheme({
     },
 });
 
-export default function ResourceAddress() {
-    const { resourceData, setResourceData } = useContext(ResourceContext);
-    const [latitude, setLatitude] = useState('');
-    const [longitude, setLongitude] = useState('');
+export default function ResourceAddress({resourceData, setResourceData}) {
+    const [address1, setAddress1] = useState("")
+    const [address2, setAddress2] = useState("")
+    const [city, setCity] = useState("")
+    const [state, setState] = useState("")
+    const [country, setCountry] = useState("")
+    const [nop, setNop] = useState("")
+
 
     const handleGeocode = async () => {
-        const address = `${resourceData.address1}, ${resourceData.city}, ${resourceData.state}, ${resourceData.country}`;
+        const address = `${address1}, ${address2}, ${city}, ${state}, ${country}`;
         const apiKey = 'AIzaSyCehlfJwJ-V_xOWZ9JK3s0rcjkV2ga0DVg';
 
         try {
@@ -39,8 +43,9 @@ export default function ResourceAddress() {
                 const data = await response.json();
                 if (data.results && data.results.length > 0) {
                     const location = data.results[0].geometry.location;
-                    setLatitude(location.lat);
-                    setLongitude(location.lng);
+                    setResourceData(
+                        {...resourceData, latitude: location.lat, longitude: location.lng}
+                    )
                 } else {
                     console.error('Geocoding failed: No results found');
                 }
@@ -54,20 +59,12 @@ export default function ResourceAddress() {
 
     useEffect(() => {
         handleGeocode();
-    }, [resourceData.address1, resourceData.city, resourceData.state, resourceData.country]);
-
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setResourceData((prevResourceData) => ({
-            ...prevResourceData,
-            [name]: value,
-        }));
-    };
+    }, [address1, address2, city, state, country, nop]);
 
     return (
         <ThemeProvider theme={customTheme}>
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
+                <CssBaseline/>
                 <Box
                     sx={{
                         marginTop: 1,
@@ -79,7 +76,7 @@ export default function ResourceAddress() {
                     <Typography
                         component="h1"
                         variant="h5"
-                        sx={{ color: 'red', fontWeight: 'bold', margin: '0' }}
+                        sx={{color: 'red', fontWeight: 'bold', margin: '0'}}
                     >
                         Resource Delivery Address
                     </Typography>
@@ -95,7 +92,8 @@ export default function ResourceAddress() {
                                         fullWidth
                                         autoComplete="shipping address-line1"
                                         variant="standard"
-                                        onChange={handleChange}
+                                        value={address1}
+                                        onChange={(e) => setAddress1(e.target.value)}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -106,7 +104,8 @@ export default function ResourceAddress() {
                                         fullWidth
                                         autoComplete="shipping address-line2"
                                         variant="standard"
-                                        onChange={handleChange}
+                                        value={address2}
+                                        onChange={(e) => setAddress2(e.target.value)}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -118,7 +117,8 @@ export default function ResourceAddress() {
                                         fullWidth
                                         autoComplete="shipping address-level2"
                                         variant="standard"
-                                        onChange={handleChange}
+                                        value={city}
+                                        onChange={(e) => setCity(e.target.value)}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -128,7 +128,8 @@ export default function ResourceAddress() {
                                         label="State/Province/Region"
                                         fullWidth
                                         variant="standard"
-                                        onChange={handleChange}
+                                        value={state}
+                                        onChange={(e) => setState(e.target.value)}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -140,7 +141,8 @@ export default function ResourceAddress() {
                                         fullWidth
                                         autoComplete="shipping country"
                                         variant="standard"
-                                        onChange={handleChange}
+                                        value={country}
+                                        onChange={(e) => setCountry(e.target.value)}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -152,7 +154,8 @@ export default function ResourceAddress() {
                                         fullWidth
                                         autoComplete="delivery place"
                                         variant="standard"
-                                        onChange={handleChange}
+                                        value={nop}
+                                        onChange={(e) => setNop(e.target.value)}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -166,16 +169,6 @@ export default function ResourceAddress() {
                                         }
                                         label="I have delivered my resources to the above mentioned address."
                                     />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        color="primary"
-                                        fullWidth
-                                    >
-                                        Submit
-                                    </Button>
                                 </Grid>
                             </Grid>
                         </form>
