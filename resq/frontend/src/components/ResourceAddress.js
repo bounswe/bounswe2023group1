@@ -10,6 +10,8 @@ import disasterImage from '../disaster.png';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
+import { ResourceContext } from './ResourceContext';
+import { useContext } from 'react';
 
 
 const customTheme = createTheme({
@@ -21,15 +23,22 @@ const customTheme = createTheme({
 });
 
 export default function CreateResourceForm() {
-    const [resource, setResource] = useState({
-        type: '',
-        status: '',
-        urgency: '',
-        location: '',
-        quantity: '',
-        description: '',
-        category: '',
-    });
+
+    const { resourceData, setResourceData } = useContext(ResourceContext);
+
+    const handleLongitudeChange = (longitudeValue) => {
+        setResourceData({
+            ...resourceData,
+            longitude: parseFloat(longitudeValue),
+        });
+    };
+
+    const handleLatitudeChange = (latitudeValue) => {
+        setResourceData({
+            ...resourceData,
+            latitude: parseFloat(latitudeValue),
+        });
+    };
 
     const handleChange = (event) => {
         const { name, value } = event.target;

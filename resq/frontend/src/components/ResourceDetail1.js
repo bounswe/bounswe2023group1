@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Typography, Grid, FormControlLabel, Checkbox, FormControl, InputLabel, Select, MenuItem, OutlinedInput } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { Theme, useTheme } from '@mui/material/styles';
+import { useResource } from './ResourceContext';
+import { useContext } from 'react';
+import { ResourceContext } from './ResourceContext';
 
 const customTheme = createTheme({
     palette: {
@@ -12,6 +15,16 @@ const customTheme = createTheme({
 });
 
 export default function ResourceDetails1() {
+    const { resourceData, setResourceData } = useContext(ResourceContext);
+
+    const handleDescriptionChange = (descriptionValue) => {
+        setResourceData({
+            ...resourceData,
+            description: descriptionValue,
+        });
+    };
+
+    const { updateResourceData } = useResource();
     const [isMaterialResourceChecked, setIsMaterialResourceChecked] = useState(false);
     const [isHumanResourceChecked, setIsHumanResourceChecked] = useState(false);
 
@@ -73,6 +86,7 @@ export default function ResourceDetails1() {
     const theme = useTheme();
 
     return (
+
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
                 Resource Type

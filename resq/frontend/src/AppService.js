@@ -76,7 +76,7 @@ export function getSubCategoryByName(name) {
 }
 
 export function viewNeedsByFilter(filterParams) {
-    return axios.get(`${NEED_API_BASE_URL}/viewNeedsByFilter`, {params: filterParams});
+    return axios.get(`${NEED_API_BASE_URL}/viewNeedsByFilter`, { params: filterParams });
 }
 
 export function createNeed(userId, createNeedRequest) {
