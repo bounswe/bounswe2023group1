@@ -133,7 +133,7 @@ function App() {
                                     <Route path="/requestcreation" state={{ token, setToken }}
                                         element={React.createElement(Request, { token, setToken })} />
                                     <Route path="/resourcecreation" state={{ token, setToken }}
-                                        element={React.createElement(Request, { token, setToken })} />
+                                        element={React.createElement(Resource, { token, setToken })} />
                                 </>
                                     : <>
                                         <Route path="/signin" state={{ token, setToken }}

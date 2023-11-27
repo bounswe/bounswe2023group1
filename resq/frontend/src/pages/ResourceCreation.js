@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import ResourceAddress from '../components/ResourceAddress';
-//import RequestDetails1 from '../components/RequestDetails1';
+import ResourceDetail1 from '../components/ResourceDetail1';
 //import RequestDetails2 from '../components/RequestDetails2';
 //import RequestDetails3 from '../components/RequestDetails3';
 //import RequestReview from '../components/RequestReview';
@@ -42,13 +42,14 @@ const customTheme = createTheme({
 });
 
 
-const steps = ['Resource delivery address'];
+const steps = ['Resource delivery address', 'Type of Resource'];
 
 function getStepContent(step) {
     switch (step) {
         case 0:
             return <ResourceAddress />;
-
+        case 1:
+            return <ResourceDetail1 />;
         default:
             throw new Error('Unknown step');
     }
@@ -91,10 +92,11 @@ export default function Resource() {
                         {activeStep === steps.length ? (
                             <React.Fragment>
                                 <Typography variant="h5" gutterBottom>
-                                    Your request is saved.
+                                    Resource is on its way!
                                 </Typography>
                                 <Typography variant="subtitle1">
-                                    Your request has been successfully created. We will process it promptly. You can track the status of your request on your profile page.                            </Typography>
+                                    Your resource will be delivered from the address you provided.
+                                </Typography>
                             </React.Fragment>
                         ) : (
                             <React.Fragment>

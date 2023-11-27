@@ -42,7 +42,6 @@ export default function CreateResourceForm() {
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(resource);
-        //send this data to a backend server
     };
 
     return (
@@ -129,7 +128,7 @@ export default function CreateResourceForm() {
                             <Grid item xs={12}>
                                 <FormControlLabel
                                     control={<Checkbox color="error" name="saveAddress" value="yes" />}
-                                    label="Use this address for my delivery"
+                                    label="I have delivered my resources to the above mentioned address."
                                 />
                             </Grid>
                         </Grid>
