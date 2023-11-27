@@ -65,8 +65,8 @@ export default function SignIn({ token, setToken }) {
 
                 if (response?.data?.jwt) {
                     setToken(response.data.jwt);
-                    localStorage.setItem('userId', response.data.userId);
-                    navigate('/userroles');
+                    localStorage.setItem('userId', response.data.id);
+                    navigate('/');
                 } else {
                     alert('Signin failed. Please check your credentials.');
                 }

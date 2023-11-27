@@ -21,7 +21,7 @@ export class Node {
         if (this.id === id) {
             return this
         } else {
-            for(const child of this.children){
+            for (const child of this.children) {
                 let cat = child.findCategoryWithId(id)
                 if (cat)
                     return cat
@@ -35,6 +35,14 @@ export class Node {
             return true
         } else {
             return !this.children.every(child => !child.isChildCategory(id))
+        }
+    }
+
+    getLeafCategories() {
+        if (this.children.length === 0) {
+            return [this]
+        } else {
+            return this.children.map(e => e.getLeafCategories()).flat()
         }
     }
 

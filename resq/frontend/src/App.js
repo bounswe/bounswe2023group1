@@ -1,16 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 import {Navbar, Container, Nav} from 'react-bootstrap';
-import UserRoles from "./pages/UserRoles";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import MapPage from "./pages/MapPage";
 import Account from "./pages/Account";
 import RoleRequest from "./pages/RoleRequest";
 import LogoutIcon from '@mui/icons-material/Logout';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import Request from "./pages/RequestCreation";
-import Resource from "./pages/ResourceCreation";
+import Request from "./components/Request/RequestCreation";
+import Resource from "./components/Resource/ResourceCreation";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
@@ -65,13 +63,7 @@ function App() {
     }
 
     const navLinks = [
-        {path: '/map', label: <strong>Map Demo</strong>, component: VictimMapPage, icon: <SmallRedCircle/>},
-        token && {
-            path: '/userroles',
-            label: <strong>User Roles</strong>,
-            component: UserRoles,
-            icon: <SmallRedCircle/>
-        },
+        {path: '/map', label: <strong>Victim Map</strong>, component: VictimMapPage, icon: <SmallRedCircle/>},
         (role === "responder") && {
             path: '/responder',
             label: <strong>Responder Panel</strong>,

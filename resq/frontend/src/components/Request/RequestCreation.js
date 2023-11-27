@@ -11,11 +11,11 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import RequestAddress from '../components/Request/RequestAddress';
-import RequestDetails1 from '../components/Request/RequestDetails1';
-import RequestDetails2 from '../components/Request/RequestDetails2';
-import RequestDetails3 from '../components/Request/RequestDetails3';
-import RequestReview from '../components/Request/RequestReview';
+import RequestAddress from './RequestAddress';
+import RequestDetails1 from './RequestDetails1';
+import RequestDetails2 from './RequestDetails2';
+import RequestDetails3 from './RequestDetails3';
+import RequestReview from './RequestReview';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function Copyright(props) {
