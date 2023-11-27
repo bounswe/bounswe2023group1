@@ -1,5 +1,7 @@
 package com.groupa1.resq.service;
 
+import com.groupa1.resq.converter.NeedConverter;
+import com.groupa1.resq.dto.NeedDto;
 import com.groupa1.resq.entity.Need;
 import com.groupa1.resq.entity.User;
 import com.groupa1.resq.entity.enums.ENeedStatus;
@@ -29,8 +31,22 @@ public class NeedService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    NeedConverter needConverter;
 
-    public ResponseEntity<String> save(Long userId, CreateNeedRequest createNeedRequest) {
+    public void setNeedConverter(NeedConverter needConverter) {
+        this.needConverter = needConverter;
+    }
+
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public void setNeedRepository(NeedRepository needRepository) {
+        this.needRepository = needRepository;
+    }
+
+    public Long save(Long userId, CreateNeedRequest createNeedRequest) {
         User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Need need = new Need();
         need.setRequester(requester);
@@ -40,26 +56,29 @@ public class NeedService {
         need.setQuantity(createNeedRequest.getQuantity());
         need.setCategoryTreeId(createNeedRequest.getCategoryTreeId());
         need.setStatus(ENeedStatus.NOT_INVOLVED);
-        needRepository.save(need);
-        return ResponseEntity.ok("Need created successfully");
+        return needRepository.save(need).getId();
+
     }
 
-    public ResponseEntity<List<Need>> viewAllNeeds() {
-        return ResponseEntity.ok(needRepository.findAll());
+    public ResponseEntity<List<NeedDto>> viewAllNeeds() {
+        List<Need> needs = needRepository.findAll();
+        List<NeedDto> needDtos= needs.stream().map(need -> needConverter.convertToDto(need)).toList();
+        return ResponseEntity.ok(needDtos);
     }
 
-    public ResponseEntity<List<Need>> viewNeedsByUserId(Long userId) {
+    public ResponseEntity<List<NeedDto>> viewNeedsByUserId(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
-        return ResponseEntity.ok(needRepository.findByRequester(user));
+        List<NeedDto> needDtos = needRepository.findByRequester(user).stream().map(need -> needConverter.convertToDto(need)).toList();
+        return ResponseEntity.ok(needDtos);
     }
 
-    public ResponseEntity<Need> viewNeed(Long userId, Long needId) {
+    public ResponseEntity<NeedDto> viewNeed(Long userId, Long needId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Need need = needRepository.findById(needId).orElseThrow(() -> new EntityNotFoundException("Need not found"));
         if(need.getRequester().getId() != user.getId()) {
             throw new NotOwnerException("User is not the owner of the need");
         }
-        return ResponseEntity.ok(need);
+        return ResponseEntity.ok(needConverter.convertToDto(need));
     }
 
     public ResponseEntity<String> deleteNeed(Long userId, Long needId) {
@@ -88,13 +107,13 @@ public class NeedService {
     }
 
 
-    public ResponseEntity<List<Need>> viewNeedsByFilter(BigDecimal longitude, BigDecimal latitude, String categoryTreeId, Long userId) {
+    public ResponseEntity<List<NeedDto>> viewNeedsByFilter(BigDecimal longitude1, BigDecimal latitude1, BigDecimal longitude2, BigDecimal latitude2, String categoryTreeId, Long userId) {
 
         Specification<Need> spec = Specification.where(null);
 
-        if (longitude != null && latitude != null) {
-            spec = spec.and(NeedSpecifications.hasLongitude(longitude));
-            spec = spec.and(NeedSpecifications.hasLatitude(latitude));
+        if (longitude1 != null && latitude1 != null && longitude2 != null && latitude2 != null) {
+            spec = spec.and(NeedSpecifications.isWithinRectangleScope(longitude1, longitude2, latitude1, latitude2));
+
         }
         if (categoryTreeId != null) {
             spec = spec.and(NeedSpecifications.hasCategoryTreeId(categoryTreeId));
@@ -103,7 +122,7 @@ public class NeedService {
             User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
             spec = spec.and(NeedSpecifications.hasRequester(userId));
         }
-        return ResponseEntity.ok(needRepository.findAll(spec));
+        return ResponseEntity.ok(needRepository.findAll(spec).stream().map(need -> needConverter.convertToDto(need)).toList());
 
     }
 
@@ -114,9 +133,9 @@ public class NeedService {
         return ResponseEntity.ok("Need cancelled successfully");
     }
 
-    public ResponseEntity<List<Need>> filterByDistance(BigDecimal longitude,
+    public ResponseEntity<List<NeedDto>> filterByDistance(BigDecimal longitude,
                                                        BigDecimal latitude,
                                                        BigDecimal distance) {
-        return ResponseEntity.ok(needRepository.filterByDistance(longitude, latitude, distance));
+        return ResponseEntity.ok(needRepository.filterByDistance(longitude, latitude, distance).stream().map(need -> needConverter.convertToDto(need)).toList());
     }
 }

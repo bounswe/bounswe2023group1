@@ -1,5 +1,8 @@
 package com.groupa1.resq.service;
 
+import com.groupa1.resq.converter.RequestConverter;
+import com.groupa1.resq.dto.NeedDto;
+import com.groupa1.resq.dto.RequestDto;
 import com.groupa1.resq.entity.Need;
 import com.groupa1.resq.entity.Request;
 import com.groupa1.resq.entity.User;
@@ -18,6 +21,7 @@ import com.groupa1.resq.util.NotificationMessages;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -41,7 +45,26 @@ public class RequestService {
     @Autowired
     NotificationService notificationService;
 
-    public void save(Long userId, CreateReqRequest createReqRequest) {
+    @Autowired
+    RequestConverter requestConverter;
+
+    public void setNeedRepository(NeedRepository needRepository) {
+        this.needRepository = needRepository;
+    }
+
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public void setRequestRepository(RequestRepository requestRepository) {
+        this.requestRepository = requestRepository;
+    }
+
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
+
+    public Long save(Long userId, CreateReqRequest createReqRequest) {
         User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Request request = new Request();
         request.setRequester(requester);
@@ -53,7 +76,7 @@ public class RequestService {
 
         Set<Need> needSet = new HashSet<>(needRepository.findAllById(createReqRequest.getNeedIds()));
         request.setNeeds(needSet);
-        requestRepository.save(request);
+        Long requestId = requestRepository.save(request).getId();
 
         needSet.forEach(
                 need ->
@@ -64,19 +87,19 @@ public class RequestService {
                 }
         );
         needRepository.saveAll(needSet);
+        return requestId;
     }
 
-    public List<Request> viewAllRequests() {
-        return requestRepository.findAll();
+    public List<RequestDto> viewAllRequests() {
+        return requestRepository.findAll().stream().map(request -> requestConverter.convertToDto(request)).toList();
     }
 
-    public List<Request> viewRequestsByFilter(BigDecimal longitude, BigDecimal latitude, EStatus status, EUrgency urgency, Long userId) {
+    public List<RequestDto> viewRequestsByFilter(BigDecimal longitude1, BigDecimal latitude1, BigDecimal longitude2, BigDecimal latitude2, EStatus status, EUrgency urgency, Long userId) {
 
         Specification<Request> spec = Specification.where(null);
 
-        if (longitude != null && latitude != null) {
-            spec = spec.and(RequestSpecifications.hasLongitude(longitude));
-            spec = spec.and(RequestSpecifications.hasLatitude(latitude));
+        if (longitude1 != null && latitude1 != null && longitude2 != null && latitude2 != null) {
+            spec = spec.and(RequestSpecifications.isWithinRectangleScope(longitude1, longitude2, latitude1, latitude2));
         }
         if (status != null) {
             spec = spec.and(RequestSpecifications.hasStatus(status));
@@ -88,7 +111,7 @@ public class RequestService {
             User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
             spec = spec.and(RequestSpecifications.hasRequester(userId));
         }
-        return requestRepository.findAll(spec);
+        return requestRepository.findAll(spec).stream().map(request -> requestConverter.convertToDto(request)).toList();
     }
 
     public void update(UpdateReqRequest updateReqRequest, Long userId, Long requestId) {
@@ -112,6 +135,12 @@ public class RequestService {
             throw new NotOwnerException("User is not the owner of the request");
         }
         requestRepository.deleteById(needId);
+    }
+
+    public ResponseEntity<List<RequestDto>> filterByDistance(BigDecimal longitude,
+                                                          BigDecimal latitude,
+                                                          BigDecimal distance) {
+        return ResponseEntity.ok(requestRepository.filterByDistance(longitude, latitude, distance).stream().map(request -> requestConverter.convertToDto(request)).toList());
     }
 
 }

@@ -1,6 +1,8 @@
 package com.groupa1.resq.controller;
 
 import com.groupa1.resq.config.ResqAppProperties;
+import com.groupa1.resq.dto.NeedDto;
+import com.groupa1.resq.dto.RequestDto;
 import com.groupa1.resq.entity.Need;
 import com.groupa1.resq.entity.Request;
 import com.groupa1.resq.entity.enums.EStatus;
@@ -10,6 +12,7 @@ import com.groupa1.resq.request.UpdateReqRequest;
 import com.groupa1.resq.service.RequestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,27 +33,29 @@ public class RequestController {
 
     @GetMapping("/viewRequestsByFilter")
     @PreAuthorize("hasRole('FACILITATOR')")
-    public List<Request> viewRequestsByFilter(@RequestParam(required = false) BigDecimal longitude,
-                                        @RequestParam(required = false) BigDecimal latitude,
-                                        @RequestParam(required = false) EStatus status,
-                                        @RequestParam(required = false) EUrgency urgency,
-                                        @RequestParam(required = false) Long userId) {
-        log.info("Viewing requests for location: {}, {}, status: {}, urgency: {}, user: {}", longitude, latitude, status, urgency, userId);
-        return requestService.viewRequestsByFilter(longitude, latitude, status, urgency, userId);
+    public List<RequestDto> viewRequestsByFilter(@RequestParam(required = false) BigDecimal longitude1,
+                                                 @RequestParam(required = false) BigDecimal latitude1,
+                                                 @RequestParam(required = false) BigDecimal longitude2,
+                                                 @RequestParam(required = false) BigDecimal latitude2,
+                                                 @RequestParam(required = false) EStatus status,
+                                                 @RequestParam(required = false) EUrgency urgency,
+                                                 @RequestParam(required = false) Long userId) {
+        log.info("Viewing requests for location: {}-{} / {}-{}, status: {}, urgency: {}, user: {}", longitude1, latitude1, longitude2, latitude2, status, urgency, userId);
+        return requestService.viewRequestsByFilter(longitude1, latitude1, longitude2, latitude2, status, urgency, userId);
     }
 
 
     @PostMapping("/createRequest")
     @PreAuthorize("hasRole('FACILITATOR')")
-    public String createRequest(@RequestParam Long userId, @RequestBody CreateReqRequest createReqRequest) {
+    public Long createRequest(@RequestParam Long userId, @RequestBody CreateReqRequest createReqRequest) {
         log.info("Creating request for user: {}", userId);
-        requestService.save(userId, createReqRequest);
-        return "Request successfully created.";
+        return requestService.save(userId, createReqRequest);
+
     }
 
     @GetMapping("/viewAllRequests")
-    @PreAuthorize("hasRole('FACILITATOR')")
-    public List<Request> viewAllRequests() {
+    @PreAuthorize("hasRole('FACILITATOR') or hasRole('COORDINATOR')")
+    public List<RequestDto> viewAllRequests() {
         log.info("Viewing all requests");
         return requestService.viewAllRequests();
     }
@@ -69,6 +74,15 @@ public class RequestController {
         log.info("Deleting request for user: {}, request: {}", userId, requestId);
         requestService.deleteRequest(userId, requestId);
         return "Request successfully deleted.";
+    }
+
+    @GetMapping("/filterByDistance")
+    @PreAuthorize("hasRole('FACILITATOR') or hasRole('COORDINATOR')")
+    public ResponseEntity<List<RequestDto>> filterByDistance(@RequestParam BigDecimal longitude,
+                                                          @RequestParam BigDecimal latitude,
+                                                          @RequestParam BigDecimal distance) {
+        log.info("Filtering requests by distance");
+        return requestService.filterByDistance(longitude, latitude, distance);
     }
 
 

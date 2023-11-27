@@ -12,3 +12,10 @@ val Pink40 = Color(0xFF7D5260)
 
 val DeepBlue = Color(0xff224957)
 val LightGreen = Color(0xff20df7f)
+
+val ResourceColor = Color(0xFF397FE7)
+val RequestColor = Color(0xFFB356AF)
+
+val MyTasksColor = Color(0XFFE7A139)
+val OngoingTasksColor = Color(0xFFE16834)
+val BackgroundColor = Color(0xFFEFEFEF)

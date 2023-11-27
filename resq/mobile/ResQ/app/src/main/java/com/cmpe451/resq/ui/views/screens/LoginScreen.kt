@@ -1,5 +1,6 @@
 package com.cmpe451.resq.ui.views.screens
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -47,8 +48,7 @@ private val lexendDecaFont = FontFamily(Font(R.font.lexend_deca))
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(navController: NavController) {
-
+fun LoginScreen(navController: NavController, appContext: Context) {
     val viewModel: LoginViewModel = viewModel()
 
     var email by remember { mutableStateOf("") }
@@ -56,7 +56,6 @@ fun LoginScreen(navController: NavController) {
     var rememberMe by remember { mutableStateOf(false) }
 
     val snackbarHostState = remember { SnackbarHostState() }
-
 
     Column(
         modifier = Modifier
@@ -66,13 +65,13 @@ fun LoginScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = "App Logo",
-            modifier = Modifier.size(150.dp)
-        )
+    Image(
+        painter = painterResource(id = R.drawable.logo),
+        contentDescription = "App Logo",
+        modifier = Modifier.size(150.dp)
+    )
 
-        Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(16.dp))
 
         // Sign in text
         Text(
@@ -93,7 +92,7 @@ fun LoginScreen(navController: NavController) {
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = DeepBlue,
-                textColor = Color.White,
+                focusedTextColor = Color.White,
                 cursorColor = Color.White
             )
         )
@@ -110,7 +109,7 @@ fun LoginScreen(navController: NavController) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = DeepBlue,
-                textColor = Color.White,
+                focusedTextColor = Color.White,
                 cursorColor = Color.White
             )
         )
@@ -157,14 +156,14 @@ fun LoginScreen(navController: NavController) {
 
         // Login button
         Button(
-            onClick = { viewModel.login(email, password, navController) },
+            onClick = { viewModel.login(email, password, navController, appContext) },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 containerColor = LightGreen
             )
         ) {
             Text(
-                "Login",
+                "Sign in",
                 color = DeepBlue,
                 fontSize = 16.sp
             )
@@ -179,7 +178,7 @@ fun LoginScreen(navController: NavController) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Not Registered Yet? ",
+                text = "Don't have an account? ",
                 style = MaterialTheme.typography.bodySmall,
                 fontSize = 14.sp
                 )
@@ -187,7 +186,7 @@ fun LoginScreen(navController: NavController) {
                 navController.navigate(NavigationItem.Register.route)
             }) {
                 Text(
-                    text = "Create an account",
+                    text = "Sign Up",
                     style = MaterialTheme.typography.bodySmall,
                     color = DeepBlue,
                     fontWeight = FontWeight.Medium,
@@ -200,7 +199,7 @@ fun LoginScreen(navController: NavController) {
         if (viewModel.loginResponse.value != null) {
             LaunchedEffect(key1 = viewModel.loginResponse.value) {
                 snackbarHostState.showSnackbar(
-                    message = "Login success",
+                    message = "Sign in success",
                     duration = SnackbarDuration.Short
                 )
             }
@@ -209,13 +208,11 @@ fun LoginScreen(navController: NavController) {
         if (viewModel.errorMessage.value != null) {
             LaunchedEffect(key1 = viewModel.errorMessage.value) {
                 snackbarHostState.showSnackbar(
-                    message = "Login failed: ${viewModel.errorMessage.value}",
+                    message = "Sign in failed: ${viewModel.errorMessage.value}",
                     duration = SnackbarDuration.Short
                 )
             }
         }
-
         SnackbarHost(hostState = snackbarHostState)
-
     }
 }

@@ -1,5 +1,6 @@
     package com.cmpe451.resq.ui.views.screens
     
+    import android.content.Context
     import com.cmpe451.resq.R
     import androidx.compose.runtime.Composable
     import androidx.compose.ui.Alignment
@@ -41,7 +42,7 @@
     
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun RegistrationScreen(navController: NavController) {
+    fun RegistrationScreen(navController: NavController, appContext: Context) {
     
         val viewModel: RegistrationViewModel = viewModel()
 
@@ -87,7 +88,7 @@
                     modifier = Modifier.weight(1f).padding(end = 8.dp), // half width and add some padding
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = DeepBlue,
-                        textColor = Color.White,
+                        focusedTextColor = Color.White,
                         cursorColor = Color.White
                     )
                 )
@@ -99,7 +100,7 @@
                     modifier = Modifier.weight(1f).padding(start = 8.dp), // half width and add some padding
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = DeepBlue,
-                        textColor = Color.White,
+                        focusedTextColor = Color.White,
                         cursorColor = Color.White
                     )
                 )
@@ -115,7 +116,7 @@
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = DeepBlue,
-                    textColor = Color.White,
+                    focusedTextColor = Color.White,
                     cursorColor = Color.White
                 )
             )
@@ -132,7 +133,7 @@
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = DeepBlue,
-                    textColor = Color.White,
+                    focusedTextColor = Color.White,
                     cursorColor = Color.White
                 )
             )
@@ -149,7 +150,7 @@
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = DeepBlue,
-                    textColor = Color.White,
+                    focusedTextColor = Color.White,
                     cursorColor = Color.White
                 )
             )
@@ -190,7 +191,8 @@
                         password,
                         confirmPassword,
                         termsAccepted,
-                        navController
+                        navController,
+                        appContext
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -199,7 +201,7 @@
                 )
             ) {
                 Text(
-                    text = "Create account",
+                    text = "Sign Up",
                     color = DeepBlue,
                     fontSize = 16.sp
                 )
@@ -223,7 +225,7 @@
                     navController.navigate("login")
                 }) {
                     Text(
-                        text = "Log in",
+                        text = "Sign in",
                         style = MaterialTheme.typography.bodySmall,
                         color = DeepBlue,
                         fontWeight = FontWeight.Medium,

@@ -13,10 +13,7 @@ import com.groupa1.resq.response.ActionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -90,7 +87,8 @@ public class ActionService {
                         .setStartLongitude(action.getStartLongitude())
                         .setEndLatitude(action.getEndLatitude())
                         .setEndLongitude(action.getEndLongitude())
-                        .setDueDate(action.getDueDate());
+                        .setDueDate(action.getDueDate())
+                        .setCreatedDate(action.getCreatedAt());
                 actionResponses.add(actionResponse);
             });
             return ResponseEntity.ok(actionResponses);

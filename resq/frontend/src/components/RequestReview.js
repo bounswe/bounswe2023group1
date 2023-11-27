@@ -5,22 +5,30 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 
-const needs = [
-  { name: 'Food', desc: '5 people - 1 diabetic' },
-  { name: 'Water', desc: '5 people - 1 cow' },
-  // Only the last 'desc' will be used; if multiple descriptions are needed, consider using an array or separate objects
-  { name: 'Clothing', desc: '3 Women - 2L 1M, 1 Man - 1L, 1 Child - 15 yrs girl' },
-  { name: 'Medicine', desc: 'Diabetic - 1' },
-  { name: 'Shelter', desc: '5 people' },
-  { name: 'Animal Feed', desc: '1 cow' },
+const primaryNeeds = [
+  { name: 'Food', desc: '5 people - Vegetarian, Gluten-Free' },
+  { name: 'Water', desc: 'Daily requirement: 15 liters' },
+  { name: 'Shelter', desc: 'Tent for 5 people' },
 ];
 
-const addresses = ['Kurttepe Caddesi', 'Cukurova', 'Adana', '01170', 'Turkey'];
+const secondaryNeeds = [
+  { name: 'Clothing', desc: '3 Women - 2L, 1M; 2 Men - 1L, 1M; 2 Children' },
+  { name: 'Medicine', desc: 'Diabetes, Asthma, Heart Disease' },
+  { name: 'Heater', desc: '1 Heater needed' },
+];
+
+const address = {
+  street: 'Kurttepe Caddesi',
+  city: 'Cukurova',
+  region: 'Adana',
+  zip: '01170',
+  country: 'Turkey'
+};
 
 const recurrentNeeds = [
-  { name: 'Food', detail: 'max 4 days' },
-  { name: 'Water', detail: 'max 2 days' },
-  { name: 'Medicine', detail: 'max 2 weeks' }, // Corrected 'week' to 'weeks'
+  { name: 'Food', detail: '4 days' },
+  { name: 'Water', detail: '2 days' },
+  { name: 'Medicine', detail: '2 weeks' },
 ];
 
 export default function Review() {
@@ -29,39 +37,46 @@ export default function Review() {
       <Typography variant="h6" gutterBottom>
         Request Details
       </Typography>
-      <List disablePadding>
-        {needs.map((need) => (
-          <ListItem key={need.name} sx={{ py: 1, px: 0 }}>
-            <ListItemText primary={need.name} secondary={need.desc} />
-            {/* Include any additional information like 'price' here if applicable */}
-          </ListItem>
-        ))}
-      </List>
+      <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <Typography variant="subtitle2" gutterBottom>
+            Primary Needs
+          </Typography>
+          {primaryNeeds.map((need, index) => (
+            <Typography key={index} variant="body2" gutterBottom>
+              {need.name}: {need.desc}
+            </Typography>
+          ))}
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="subtitle2" gutterBottom>
+            Secondary Needs
+          </Typography>
+          {secondaryNeeds.map((need, index) => (
+            <Typography key={index} variant="body2" gutterBottom>
+              {need.name}: {need.desc}
+            </Typography>
+          ))}
+        </Grid>
+      </Grid>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Address
           </Typography>
-          <Typography gutterBottom>{addresses.join(', ')}</Typography>
+          <Typography gutterBottom>{`${address.street}, ${address.city}, ${address.region}, ${address.zip}, ${address.country}`}</Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Recurrent Needs
           </Typography>
-          <Grid container>
-            {recurrentNeeds.map((recurrentNeed) => (
-              <React.Fragment key={recurrentNeed.name}>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{recurrentNeed.name}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{recurrentNeed.detail}</Typography>
-                </Grid>
-              </React.Fragment>
-            ))}
-          </Grid>
+          {recurrentNeeds.map((recurrentNeed, index) => (
+            <Typography key={index} gutterBottom>
+              {recurrentNeed.name}: {recurrentNeed.detail}
+            </Typography>
+          ))}
         </Grid>
       </Grid>
-    </React.Fragment >
+    </React.Fragment>
   );
 }
