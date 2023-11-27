@@ -68,7 +68,7 @@ fun ResourceScreen(
     ) {
         // Top Bar with back button and title
         TopAppBar(
-            title = { Text(text = "Request", color = ResourceColor) },
+            title = { Text(text = "Resource", color = ResourceColor) },
             navigationIcon = {
                 IconButton(onClick = { navController.navigateUp() }) {
                     Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
