@@ -4,6 +4,18 @@ import { ResourceContext } from './ResourceContext';
 import { useContext } from 'react';
 
 export default function ResourceDetail2({ onQuantityChange }) {
+
+    const ITEM_HEIGHT = 48;
+    const ITEM_PADDING_TOP = 8;
+    const MenuProps = {
+        PaperProps: {
+            style: {
+                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+                width: 250,
+            },
+        },
+    };
+
     const { resourceData } = useContext(ResourceContext);
 
     const [materialQuantity, setMaterialQuantity] = useState('');

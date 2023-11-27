@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Typography,
     Grid,
@@ -16,12 +16,24 @@ import { Theme, useTheme } from '@mui/material/styles';
 import { useResource } from './ResourceContext';
 import { useContext } from 'react';
 import { ResourceContext } from './ResourceContext';
-import {useQuery} from "@tanstack/react-query";
-import {getCategoryTree} from "../../AppService";
+import { useQuery } from "@tanstack/react-query";
+import { getCategoryTree } from "../../AppService";
 
 export default function ResourceDetails1({ onDescriptionChange }) {
+
+    const ITEM_HEIGHT = 48;
+    const ITEM_PADDING_TOP = 8;
+    const MenuProps = {
+        PaperProps: {
+            style: {
+                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+                width: 250,
+            },
+        },
+    };
+
     const { materialneeds, humanResources } = useContext(ResourceContext);
-    const categoryTree = useQuery({queryKey: ['categoryTree'], queryFn: getCategoryTree})
+    const categoryTree = useQuery({ queryKey: ['categoryTree'], queryFn: getCategoryTree })
 
     const [isMaterialResourceChecked, setIsMaterialResourceChecked] = useState(false);
     const [isHumanResourceChecked, setIsHumanResourceChecked] = useState(false);
@@ -53,7 +65,7 @@ export default function ResourceDetails1({ onDescriptionChange }) {
     }, [isMaterialResourceChecked, selectedMaterialValues, isHumanResourceChecked, selectedHumanValues, onDescriptionChange]);
 
     const comboBoxItems = (categoryTree.data?.getLeafCategories() || [])
-        .map(cat => ({label: cat.data, id: cat.id}))
+        .map(cat => ({ label: cat.data, id: cat.id }))
         .sort((a, b) => {
             if (a.label === b.label) return 0;
             return a.label > b.label ? 1 : -1;
@@ -72,7 +84,7 @@ export default function ResourceDetails1({ onDescriptionChange }) {
                     />
                     {isMaterialResourceChecked && (
                         <>
-                            <FormControl sx={{m: 1, width: 300, mt: 3}}>
+                            <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
                                 <Autocomplete
                                     disablePortal
                                     id="combo-box-demo"
@@ -81,8 +93,8 @@ export default function ResourceDetails1({ onDescriptionChange }) {
                                     onChange={(event, newValue) => {
                                         setSelectedMaterial(newValue);
                                     }}
-                                    sx={{width: 300}}
-                                    renderInput={(params) => <TextField {...params} label="Movie"/>}
+                                    sx={{ width: 300 }}
+                                    renderInput={(params) => <TextField {...params} label="Movie" />}
                                 />
                             </FormControl>
                         </>
