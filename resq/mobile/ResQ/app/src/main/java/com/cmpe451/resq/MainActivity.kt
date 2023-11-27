@@ -81,7 +81,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val appContext = applicationContext
             ResQTheme {
-                MainScreen(appContext)
+                MainScreen(appContext, mapViewModel)
             }
         }
     }
@@ -90,7 +90,7 @@ class MainActivity : ComponentActivity() {
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(appContext: Context) {
+fun MainScreen(appContext: Context, mapViewModel: MapViewModel) {
     val navController = rememberNavController()
 
     Scaffold(
@@ -103,7 +103,8 @@ fun MainScreen(appContext: Context) {
             ) {
                 NavGraph(
                     navController = navController,
-                    appContext = appContext
+                    appContext = appContext,
+                    mapViewModel = mapViewModel
                 )
             }
         },)
@@ -113,7 +114,8 @@ fun MainScreen(appContext: Context) {
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    appContext: Context
+    appContext: Context,
+    mapViewModel: MapViewModel,
 ) {
     NavHost(
         navController = navController,
@@ -126,7 +128,7 @@ fun NavGraph(
             LoginScreen(navController, appContext)
         }
         composable(NavigationItem.Map.route) {
-            MapScreen(navController, appContext)
+            MapScreen(navController, appContext, mapViewModel)
         }
         composable(NavigationItem.Request.route) {
             RequestScreen(navController, appContext)
