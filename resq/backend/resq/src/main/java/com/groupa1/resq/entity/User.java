@@ -68,6 +68,9 @@ public class User extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "assignee")
     private Set<Task> tasksAssignedTo;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reporter")
+    private Set<Event> reportedEvents;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "creator")
     private Set<Feedback> feedbacks;
 
