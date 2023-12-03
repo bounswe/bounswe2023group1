@@ -1,5 +1,6 @@
 package com.cmpe451.resq.ui.views.screens
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
@@ -23,7 +25,12 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,24 +42,30 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.cmpe451.resq.data.models.CategoryNode
 import com.cmpe451.resq.ui.theme.LightGreen
+import com.cmpe451.resq.ui.theme.RequestColor
 import com.cmpe451.resq.viewmodels.RequestViewModel
 
 @Composable
 fun RequestScreen(
     navController: NavController,
+    appContext: Context
 ) {
     val viewModel: RequestViewModel = viewModel()
-    // Variables for dropdown menu
-    var typeExpanded by remember { mutableStateOf(false) }
-    val types = listOf("Food", "Water", "Medicine")
-    var selectedType by remember { mutableStateOf(types[0]) }
 
-    var priorityExpanded by remember { mutableStateOf(false) }
-    val priorities = listOf("High", "Medium", "Low")
-    var selectedPriority by remember { mutableStateOf(priorities[0]) }
+    LaunchedEffect(key1 = true) {
+        viewModel.fetchMainCategories(appContext)
+    }
 
+    val selectedCategoryState = viewModel.selectedCategory
+    val categories = viewModel.categories.value
+
+    var description by remember { mutableStateOf("") }
     var quantity by remember { mutableStateOf("") }
+
+    val snackbarHostState = remember { SnackbarHostState() }
+
     Column(
         modifier = Modifier
             .background(Color.White)
@@ -61,8 +74,7 @@ fun RequestScreen(
     ) {
         // Top Bar with back button and title
         TopAppBar(
-            title = { Text(text = "Request",
-                color = Color(0xFFB356AF)) },
+            title = { Text(text = "Request", color = RequestColor) },
             navigationIcon = {
                 IconButton(onClick = { navController.navigateUp() }) {
                     Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
@@ -82,29 +94,59 @@ fun RequestScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally) {
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                DropdownMenuComponent(
+                    label = "Category",
+                    items = categories,
+                    selectedItem = selectedCategoryState.value ?: CategoryNode(-1, "Select a Category", emptyList()),
+                    itemToString = { it.data },
+                    onItemSelected = { category ->
+                        viewModel.updateCategory(category)
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 DropdownMenuComponent(
                     label = "Type",
-                    items = listOf("Food", "Water", "Medicine"),
-                    selectedItem = selectedType,
-                    expanded = false
-                ) { selectedType = it }
+                    items = viewModel.types.value,
+                    selectedItem = viewModel.selectedType.value ?: CategoryNode(-1, "Select a Type", emptyList()),
+                    itemToString = { it.data },
+                    onItemSelected = { type ->
+                        viewModel.updateType(type)
+                        viewModel.fetchItemsForType(type.id)
+                    }
+                )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 DropdownMenuComponent(
-                    label = "Priority",
-                    items = listOf("High", "Medium", "Low"),
-                    selectedItem = selectedPriority,
-                    expanded = false
-                ) { selectedPriority = it }
+                    label = "Item",
+                    items = viewModel.items.value,
+                    selectedItem = viewModel.selectedItem.value ?: CategoryNode(-1, "Select an Item", emptyList()),
+                    itemToString = { it.data },
+                    onItemSelected = { item ->
+                        viewModel.updateItem(item)
+                    }
+                )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text("Description") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
 
                 OutlinedTextField(
-                    value = quantity, // you can bind this to a state variable to store the quantity
-                    onValueChange = { quantity= it },
+                    value = quantity,
+                    onValueChange = { quantity = it },
                     label = { Text("Quantity") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth()
@@ -114,7 +156,7 @@ fun RequestScreen(
 
                 // Enter Button
                 Button(
-                    onClick = { viewModel.onEnter() },
+                    onClick = { viewModel.onEnter(description, quantity, appContext) },
                     colors = ButtonDefaults.buttonColors(backgroundColor = LightGreen),
                     shape = RoundedCornerShape(50)
                 ) {
@@ -122,40 +164,60 @@ fun RequestScreen(
                 }
             }
         }
+        // Success and Error messages
+        if (viewModel.createNeedResponse.value != null) {
+            LaunchedEffect(key1 = viewModel.createNeedResponse.value) {
+                snackbarHostState.showSnackbar(
+                    message = "Need created successfully.",
+                    duration = SnackbarDuration.Long
+                )
+            }
+        }
+        SnackbarHost(hostState = snackbarHostState)
     }
 }
 
 @Composable
-fun DropdownMenuComponent(
+fun <T> DropdownMenuComponent(
     label: String,
-    items: List<String>,
-    selectedItem: String,
-    expanded: Boolean,
-    onItemSelected: (String) -> Unit
+    items: List<T>,
+    selectedItem: T,
+    itemToString: (T) -> String,
+    onItemSelected: (T) -> Unit
 ) {
-    var expandState by remember { mutableStateOf(expanded) }
-    Box(modifier = Modifier.fillMaxWidth()) {
+    var expandState by remember { mutableStateOf(false) }
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentWidth(Alignment.Start)
+    ) {
         OutlinedTextField(
-            value = selectedItem,
+            value = itemToString(selectedItem),
             onValueChange = {},
             label = { Text(label) },
             readOnly = true,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { expandState = true },
             trailingIcon = {
                 Icon(
-                    imageVector = Icons.Default.ArrowDropDown,
+                    imageVector = if (expandState) Icons.Filled.KeyboardArrowUp else Icons.Filled.ArrowDropDown,
                     contentDescription = "Dropdown Icon",
                     modifier = Modifier.clickable { expandState = !expandState }
                 )
             }
         )
-        DropdownMenu(expanded = expandState, onDismissRequest = { expandState = false }) {
+        DropdownMenu(
+            expanded = expandState,
+            onDismissRequest = { expandState = false },
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
             items.forEach { item ->
                 DropdownMenuItem(onClick = {
                     onItemSelected(item)
                     expandState = false
                 }) {
-                    Text(text = item)
+                    Text(text = itemToString(item))
                 }
             }
         }

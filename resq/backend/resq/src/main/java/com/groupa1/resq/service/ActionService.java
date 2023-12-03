@@ -123,7 +123,8 @@ public class ActionService {
                         .setStartLongitude(action.getStartLongitude())
                         .setEndLatitude(action.getEndLatitude())
                         .setEndLongitude(action.getEndLongitude())
-                        .setDueDate(action.getDueDate());
+                        .setDueDate(action.getDueDate())
+                        .setCreatedDate(action.getCreatedAt());
                 actionResponses.add(actionResponse);
             });
             return ResponseEntity.ok(actionResponses);

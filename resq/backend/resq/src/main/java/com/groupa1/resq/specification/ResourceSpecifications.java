@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class ResourceSpecifications {
 
     public static Specification<Resource> hasOwnerId(Long ownerId) {
-        return (root, query, builder) -> builder.equal(root.get("ownerId"), ownerId);
+        return (root, query, builder) -> builder.equal(root.get("sender").get("id"), ownerId);
     }
 
     public static Specification<Resource> hasCategoryTreeId(String categoryTreeId) {

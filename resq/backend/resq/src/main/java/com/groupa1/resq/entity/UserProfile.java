@@ -22,7 +22,7 @@ public class UserProfile extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private EGender gender;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -31,6 +31,18 @@ public class UserProfile extends BaseEntity{
     private String phoneNumber;
 
     private boolean isPrivacyPolicyAccepted;
+
+    private String Country;
+
+    private String City;
+
+    private String State;
+
+    private String bloodType;
+
+    private Integer weight;
+
+    private Integer height;
 
 
 }
