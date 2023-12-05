@@ -103,14 +103,10 @@
 | Write summary of the project status for ML2 Report | [#516](https://github.com/bounswe/bounswe2023group1/issues/516) | Kübra | 28.11.2023 | No PR |
 
 
-
-
-
 ## Planned vs. Actual
-Too many things were completed even if they were not planned. Planning should be done more comprehensive and carefully.  
+Too many tasks were completed even if they were not planned. Planning should be done more comprehensive and carefully.  
 Postponed - [#426](https://github.com/bounswe/bounswe2023group1/issues/426)  
-Handling the Notification Cases - [#427](https://github.com/bounswe/bounswe2023group1/issues/427)
-
+Postponed - [#427](https://github.com/bounswe/bounswe2023group1/issues/427)
 
 
 ## Your plans for the next week
@@ -125,16 +121,20 @@ Handling the Notification Cases - [#427](https://github.com/bounswe/bounswe2023g
 | Continue - Mobile Settings and Notification Pages | [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Elif | 28.11.2023 | 2hr |
 | Continue - Event creation service  | [#379](https://github.com/bounswe/bounswe2023group1/issues/379) | Türker | 28.11.2023 | 3hr |
 | Continue - Develop map based interfaces for warnings, disaster occurrences, and actions | [#425](https://github.com/bounswe/bounswe2023group1/issues/425) | Furkan | 28.11.2023 | 8hr |
-| x. | [#545](https://github.com/bounswe/bounswe2023group1/issues/545) | x | 12.12.2023 | x |
-
+| My Resources Page implementation | [#545](https://github.com/bounswe/bounswe2023group1/issues/545) | Alperen | 12.12.2023 | 8hr |
+| My Requests Page implementation | [#546](https://github.com/bounswe/bounswe2023group1/issues/546) | Çağrı | 12.12.2023 | 8hr |
+| Task Creation Implementation | [#547](https://github.com/bounswe/bounswe2023group1/issues/547) | Harun | 12.12.2023 | 8hr |
 | Finalize API endpoints for map interactions, including updating, adding, and removing locations. | [#538](https://github.com/bounswe/bounswe2023group1/issues/538) | Furkan | 12.12.2023 | 3hr |
 | Implementing information/event functionalities | [#539](https://github.com/bounswe/bounswe2023group1/issues/539) | Türker | 12.12.2023 | 4hr |
 | Resolve the authorization issue on backend | [#540](https://github.com/bounswe/bounswe2023group1/issues/540) | Furkan | 12.12.2023 | 3hr |
 | Research/start on annotation for backend | [#544](https://github.com/bounswe/bounswe2023group1/issues/544) | Backend | 12.12.2023 | 10hr |
+| Implement annotation rendering for frontend | [#541](https://github.com/bounswe/bounswe2023group1/issues/541) | Ilgaz | 12.12.2023 | 12hr |
+| Implement annotation creation for frontend | [#542](https://github.com/bounswe/bounswe2023group1/issues/542) | Ilgaz | 12.12.2023 | 12hr |
+| Investigate annotations and decide on annotation format | [#543](https://github.com/bounswe/bounswe2023group1/issues/543) | Ilgaz | 12.12.2023 | 12hr |
 
 
 ## Risks
-*  We need to speed up in order to finalize the project.
+*  In order to complete the project on time, we must complete the tasks on time and speed up.
 
 ## Additional Notes
 
