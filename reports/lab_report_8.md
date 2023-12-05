@@ -136,7 +136,28 @@ Postponed - [#427](https://github.com/bounswe/bounswe2023group1/issues/427)
 ## Risks
 *  In order to complete the project on time, we must complete the tasks on time and speed up.
 
-## Additional Notes
+## Ranking of the Requirements
+
+1. **Map-Based Operations (1.2.7):** This is crucial as it provides a visual representation of resources, requests, and tasks, which is key for efficient coordination and response in disaster management.
+
+2. **Actions (1.2.4):** The creation, assignment, prioritization, and tracking of actions are central to the system’s ability to respond effectively to disasters. This includes task assignment and progress tracking.
+
+3. **Resource Management (1.2.3):** Efficient management and categorization of resources are vital for ensuring they are effectively utilized and distributed during a disaster.
+
+4. **Request Management (Part of 1.2.4 and 1.2.3):** This is important for understanding and addressing the needs of those affected by disasters.
+
+5. **Role Implementation (1.1.2 & 1.1.4):** Proper definition and functioning of roles such as victims, responders, facilitators, coordinators, and administrators are essential for a structured and effective response.
+
+6. **User Registration and Role Request (1.1.1):** These are important for user engagement and ensuring that users can access role-specific functionalities.
+
+7. **Disaster Reporting (1.1.5):** Allows users to add and view warnings, which is important for situational awareness.
+
+8. **Security and Privacy (2.1):** While not directly related to the primary criteria, these are essential for user trust and legal compliance.
+
+9. **Multilingual Support (1.2.2):** Enhances accessibility for a diverse user base. Having lower priority right now.
+
+10. **Multi-hazard Support (1.2.1):** This makes the system adaptable to various types of disasters, increasing its versatility. If we can present a broad-scale category tree, it will cover different disasters.
+
 
 ## Participants
 - Alperen Dağı
