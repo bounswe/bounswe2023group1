@@ -16,7 +16,7 @@
 | Continue - Creation of My Task screen | [#390](https://github.com/bounswe/bounswe2023group1/issues/390) | Harun | 28.11.2023 | - | 1hr | 6hr |
 | Continue - Improving API's to provide admin related service | [#395](https://github.com/bounswe/bounswe2023group1/issues/395) | Volkan | 28.11.2023 | - | 1hr | 3hr |
 | Continue - Improving API's to provide coordinator related service | [#397](https://github.com/bounswe/bounswe2023group1/issues/397) | Volkan | 28.11.2023 | - | 1hr | 3hr |
-| Continue - Update User Profile Pages of Our Mobile Application According to New Mockups | [#360](https://github.com/bounswe/bounswe2023group1/issues/360) | Çağrı | 28.11.2023 | - | 1hr | 2hr |
+| Continue - Update User Profile Pages of Our Mobile Application According to New Mockups | [#360](https://github.com/bounswe/bounswe2023group1/issues/360) | Çağrı | 28.11.2023 | - | 2hr | 2hr |
 | Continue - Create Responder Main Page and Resource Page | [#381](https://github.com/bounswe/bounswe2023group1/issues/381) | Orkan | 28.11.2023 | - | 0hr | 3hr |
 | Continue - Event creation service  | [#379](https://github.com/bounswe/bounswe2023group1/issues/379) | Türker | 28.11.2023 | - | 4hr | 4hr |
 | Continue - Frontend Tie Map to Backend | [#374](https://github.com/bounswe/bounswe2023group1/issues/374) | Ilgaz | 28.11.2023 | [#493](https://github.com/bounswe/bounswe2023group1/pull/493) | 2hr | 2hr |
