@@ -26,7 +26,7 @@
 | Continue - Mobile- Map Screen Implementation | [#324](https://github.com/bounswe/bounswe2023group1/issues/324) | Alperen | 28.11.2023 | - | 2hr | 2hr |
 | Continue - Mobile Settings and Notification Pages | [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Elif | 28.11.2023 | - | 3hr | 3hr |
 | Further Implementation for Request Creation Workflow with Respect to Customer Meeting | [#421](https://github.com/bounswe/bounswe2023group1/issues/421) | Kübra | 28.11.2023 | [#462](https://github.com/bounswe/bounswe2023group1/pull/462) | 8hr | 8hr |
-| Implementation of Responder Resource Creation Workflow | [#422](https://github.com/bounswe/bounswe2023group1/issues/422) | Kübra | 28.11.2023 | - | 10hr | 10hr |
+| Implementation of Responder Resource Creation Workflow | [#422](https://github.com/bounswe/bounswe2023group1/issues/422) | Kübra | 28.11.2023 | [#488](https://github.com/bounswe/bounswe2023group1/pull/488) and [#495](https://github.com/bounswe/bounswe2023group1/pull/495) | 10hr | 10hr |
 | Frontend - Request and resources list | [#413](https://github.com/bounswe/bounswe2023group1/issues/413) | Orkan | 28.11.2023 | - | 0hr | 8hr |
 | Implement List View and Filtering for Map | [#414](https://github.com/bounswe/bounswe2023group1/issues/414) | Ilgaz | 28.11.2023 | [#461](https://github.com/bounswe/bounswe2023group1/pull/461) | 8hr | 8hr |
 | Frontend - Action and task box | [#415](https://github.com/bounswe/bounswe2023group1/issues/415) | Orkan | 28.11.2023 | - | 0hr | 8hr |
@@ -131,10 +131,12 @@ Postponed - [#427](https://github.com/bounswe/bounswe2023group1/issues/427)
 | Implement annotation rendering for frontend | [#541](https://github.com/bounswe/bounswe2023group1/issues/541) | Ilgaz | 12.12.2023 | 12hr |
 | Implement annotation creation for frontend | [#542](https://github.com/bounswe/bounswe2023group1/issues/542) | Ilgaz | 12.12.2023 | 12hr |
 | Investigate annotations and decide on annotation format | [#543](https://github.com/bounswe/bounswe2023group1/issues/543) | Ilgaz | 12.12.2023 | 12hr |
-
+| Request Creation Integration with Backend | [#548](https://github.com/bounswe/bounswe2023group1/issues/548) | Kübra | 12.12.2023 | 12hr |
+| Customer Request - Add Components as Images To be Annotated to Resources | [#549](https://github.com/bounswe/bounswe2023group1/issues/549) | Kübra | 12.12.2023 | 4hr |
+| Create Customized Responder Map Page for Responders | [#550](https://github.com/bounswe/bounswe2023group1/issues/550) | Kübra | 12.12.2023 | 10hr |
 
 ## Risks
-*  In order to complete the project on time, we must complete the tasks on time and speed up.
+*  In order to complete the project on time, we must complete the tasks on time and speed up. Since our final product delivery is very soon and we still have many requirements to complete, in order to make our customer satisfied, we should increase our speed of development. 
 
 ## Ranking of the Requirements
 
