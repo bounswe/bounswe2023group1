@@ -1,11 +1,11 @@
 # Project Development Weekly Progress Report
 
 **Team Name:** ResQ (Disaster Response Platform)  
-**Date:** 21.11.2023
+**Date:** 05.12.2023
 
 ## Progress Summary
-**This week** We worked according to our project plan. The team focused on adding some functionalities mainly related to the victim, responder, and facilitator. We fixed some small problems such as login/web exit problem etc. In addition, we started the implementation of Notification system.
-**Our objective for the following week** is to continue on our project, developing and finalizing various aspects for preparation for Milestone 2. 
+**This week** This week marked a significant achievement in our project plan, as we successfully completed Milestone 2. The team diligently focused on enhancing key functionalities concerning the victim, responder, and facilitator roles. Notably, we resolved crucial issues including the login/web exit problem.
+**Our objective for the following week** We will concentrate on optimizing the existing features and embark on the development of new functionalities, ensuring our readiness for the upcoming milestones.
 
 ## What was planned for the week? How did it go?
 
