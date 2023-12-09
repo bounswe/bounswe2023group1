@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Table( name = "EVENT")
 @Data
 @EqualsAndHashCode(callSuper = true, exclude = {"reporter"})
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"reporter"})
 public class Event extends BaseEntity {
 
     //@Enumerated(EnumType.STRING)

@@ -1,6 +1,8 @@
 package com.groupa1.resq.service;
 
 import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;
+import com.groupa1.resq.dto.EventDto;
+import com.groupa1.resq.dto.NeedDto;
 import com.groupa1.resq.entity.Event;
 import com.groupa1.resq.entity.Event;
 import com.groupa1.resq.entity.Task;
@@ -51,6 +53,8 @@ public class EventService {
         eventEntity.setEventLatitude(startLatitude);
         eventEntity.setEventLongitude(startLongitude);
         eventEntity.setCreatedAt(LocalDateTime.now());
+        eventEntity.setModifiedAt(LocalDateTime.now());
+        eventEntity.setReportDate(LocalDateTime.now());
         
         
         eventRepository.save(eventEntity);
@@ -59,27 +63,29 @@ public class EventService {
     }
 
     public ResponseEntity<List<EventResponse>> viewEvents(Long reporterId){
-        Optional<User> reporter = userRepository.findById(reporterId);
+        User reporter = userRepository.findById(reporterId).orElseThrow(()-> new EntityNotFoundException("No user found"));
+
+        List<Event> events = eventRepository.findByReporter(reporter);
 
         List<EventResponse> eventResponses = new ArrayList<>();
-        if (reporter.isPresent()) {
-            Set<Event> events = reporter.get().getReportedEvents();
-            events.forEach(event -> {
-                EventResponse eventResponse = new EventResponse();
-                eventResponse.setId(event.getId())
-                        .setReporterId(event.getReporter().getId())
-                        .setDescription(event.getDescription())
-                        .setCompleted(event.isVerified())
-                        .setEventLatitude(event.getEventLatitude())
-                        .setEventLongitude(event.getEventLongitude())
-                        .setReportDate(event.getReportDate());
-                eventResponses.add(eventResponse);
-            });
-            return ResponseEntity.ok(eventResponses);
-        } else {
-            log.error("No user found with id: {}", reporterId);
-            return null;
-        }
+//        Set<Event> events = reporter.getReportedEvents();
+
+
+        System.out.println(reporter);
+        System.out.println(reporter.getReportedEvents());
+        events.forEach(event -> {
+            EventResponse eventResponse = new EventResponse();
+            eventResponse.setId(event.getId())
+                    .setReporterId(event.getReporter().getId())
+                    .setDescription(event.getDescription())
+                    .setCompleted(event.isVerified())
+                    .setEventLatitude(event.getEventLatitude())
+                    .setEventLongitude(event.getEventLongitude())
+                    .setReportDate(LocalDateTime.now());
+            eventResponses.add(eventResponse);
+        });
+        System.out.println(eventResponses.get(0));
+        return ResponseEntity.ok(eventResponses);
     }
 
 
