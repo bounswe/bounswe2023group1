@@ -1,11 +1,13 @@
-import {Cancel, LocalFireDepartment, LocalHospital} from "@mui/icons-material";
+import {Cancel, Home, LocalFireDepartment, LocalHospital, SoupKitchen} from "@mui/icons-material";
 import * as React from "react";
 
 export const AnnotationIcon = ({icon, color}) =>
     ({
         Fire: <LocalFireDepartment style={{pointerEvents: "auto", height: "38.6px"}}/>,
         Health: <LocalHospital style={{pointerEvents: "auto", height: "38.6px", color: color || "#e00000"}}/>,
-        "Road Closure": <Cancel style={{pointerEvents: "auto", height: "38.6px"}}/>
+        "Road Closure": <Cancel style={{pointerEvents: "auto", height: "38.6px"}}/>,
+        Shelter: <Home style={{pointerEvents: "auto", height: "38.6px"}}/>,
+        Food: <SoupKitchen style={{pointerEvents: "auto", height: "38.6px"}}/>
     })[icon]
 export const MarkerIcon = ({color}) => (
     <svg

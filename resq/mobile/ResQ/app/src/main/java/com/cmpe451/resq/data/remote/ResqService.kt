@@ -5,14 +5,15 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.cmpe451.resq.data.Constants
 import com.cmpe451.resq.data.manager.UserSessionManager
-import com.cmpe451.resq.data.models.CategoryNode
+import com.cmpe451.resq.data.models.CategoryTreeNode
 import com.cmpe451.resq.data.models.CreateNeedRequestBody
+import com.cmpe451.resq.data.models.CreateResourceRequestBody
 import com.cmpe451.resq.data.models.LoginRequestBody
 import com.cmpe451.resq.data.models.LoginResponse
+import com.cmpe451.resq.data.models.Need
 import com.cmpe451.resq.data.models.ProfileData
 import com.cmpe451.resq.data.models.RegisterRequestBody
 import com.cmpe451.resq.data.models.UserInfoRequest
-import com.cmpe451.resq.data.models.UserInfo
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -26,9 +27,17 @@ interface CategoryTreeNodeService {
     suspend fun getMainCategories(
         @Header("Authorization") jwtToken: String,
         @Header("X-Selected-Role") role: String
-    ): Response<List<CategoryNode>>
+    ): Response<List<CategoryTreeNode>>
 }
 
+interface ResourceService {
+    @POST("resource/createResource")
+    suspend fun createResource(
+        @Header("Authorization") jwtToken: String,
+        @Header("X-Selected-Role") role: String,
+        @Body requestBody: CreateResourceRequestBody
+    ): Response<Int>
+}
 interface NeedService {
     @POST("need/createNeed")
     suspend fun createNeed(
@@ -37,6 +46,16 @@ interface NeedService {
         @Header("X-Selected-Role") role: String,
         @Body requestBody: CreateNeedRequestBody
     ): Response<Int>
+
+
+    @GET("need/filterByDistance")
+    fun filterNeedByDistance(
+        @Query("latitude") latitude: Double,
+        @Query("longitude") longitude: Double,
+        @Query("distance") distance: Double,
+        @Header("Authorization") jwtToken: String,
+        @Header("X-Selected-Role") role: String,
+    ): Response<List<Need>>
 
 }
 
@@ -49,13 +68,20 @@ interface AuthService {
 }
 
 interface ProfileService {
-    @GET("user/getUserInfo")
+    @GET("profile/getProfileInfo")
     suspend fun getUserInfo(
         @Query("userId") userId: Int,
         @Header("Authorization") jwtToken: String,
         @Header("X-Selected-Role") role: String
-    ): Response<UserInfo>
+    ): Response<ProfileData>
 
+    @POST("user/requestRole")
+    suspend fun selectRole(
+        @Query("userId") userId: Int,
+        @Query("role") requestedRole: String,
+        @Header("Authorization") jwtToken: String,
+        @Header("X-Selected-Role") role: String
+    ): Response<String>
 
 
     @POST("profile/updateProfile")
@@ -64,7 +90,8 @@ interface ProfileService {
         @Header("Authorization") jwtToken: String,
         @Header("X-Selected-Role") role: String,
         @Body request: UserInfoRequest
-    ): Response<ResponseBody>
+    ): Response<String>
+
 }
 
 class ResqService(appContext: Context) {
@@ -74,6 +101,7 @@ class ResqService(appContext: Context) {
         .build()
 
     private val categoryTreeNodeService: CategoryTreeNodeService = retrofit.create(CategoryTreeNodeService::class.java)
+    private val resourceService: ResourceService = retrofit.create(ResourceService::class.java)
     private val needService: NeedService = retrofit.create(NeedService::class.java)
     private val authService: AuthService = retrofit.create(AuthService::class.java)
     private val profileService: ProfileService = retrofit.create(ProfileService::class.java)
@@ -81,7 +109,7 @@ class ResqService(appContext: Context) {
     private val userSessionManager: UserSessionManager = UserSessionManager.getInstance(appContext)
 
     // Category Tree Node methods
-    suspend fun getMainCategories(): Response<List<CategoryNode>> {
+    suspend fun getMainCategories(): Response<List<CategoryTreeNode>> {
         val token = userSessionManager.getUserToken() ?: ""
         val selectedRole = userSessionManager.getSelectedRole() ?: ""
 
@@ -91,17 +119,48 @@ class ResqService(appContext: Context) {
         )
     }
 
+    // Resource methods
+    suspend fun createResource(request: CreateResourceRequestBody): Response<Int> {
+        val userId = userSessionManager.getUserId()
+        val token = userSessionManager.getUserToken() ?: ""
+        // val selectedRole = userSessionManager.getSelectedRole() ?: ""
+
+        request.senderId = userId
+
+        return resourceService.createResource(
+            jwtToken = "Bearer $token",
+            role = "RESPONDER",
+            requestBody = request
+        )
+    }
+
     // Need methods
     suspend fun createNeed(request: CreateNeedRequestBody): Response<Int> {
         val userId = userSessionManager.getUserId()
         val token = userSessionManager.getUserToken() ?: ""
-        val selectedRole = userSessionManager.getSelectedRole() ?: ""
+        // val selectedRole = userSessionManager.getSelectedRole() ?: ""
 
         return needService.createNeed(
             userId = userId,
             jwtToken = "Bearer $token",
-            role = selectedRole,
+            role = "VICTIM",
             requestBody = request
+        )
+    }
+
+    suspend fun filterNeedByDistance(
+        latitude: Double,
+        longitude: Double,
+        distance: Double
+    ): Response<List<Need>> {
+        val selectedRole = userSessionManager.getSelectedRole() ?: ""
+        val token = userSessionManager.getUserToken() ?: ""
+        return needService.filterNeedByDistance(
+            latitude = latitude,
+            longitude = longitude,
+            distance = distance,
+            role = selectedRole,
+            jwtToken = "Bearer $token"
         )
     }
 
@@ -116,7 +175,7 @@ class ResqService(appContext: Context) {
             return null
         }
 
-        try {
+        return try {
             val date = LocalDate.parse(birthDate)
             val year = date.year.toString()
             val month = date.monthValue.toString()
@@ -125,7 +184,7 @@ class ResqService(appContext: Context) {
             return Triple(year, month, day)
         } catch (e: DateTimeParseException) {
             //TO DO Handle parsing error if needed
-            return null
+           null
         }
     }
 
@@ -142,54 +201,61 @@ class ResqService(appContext: Context) {
             role = selectedRole
         )
 
-        val parsedDate = parseBirthDate(response.body()?.birth_date)
-        val (parsedYear, parsedMonth, parsedDay) = parsedDate ?: Triple("", "", "")
-        val profileData = ProfileData(
-            name = response.body()?.name, surname = response.body()?.surname,
-            email = response.body()?.email,
-            roles = response.body()?.roles, selectedRole = selectedRole,
-            year = parsedYear, month = parsedMonth, day = parsedDay,
-            city = response.body()?.city, country = response.body()?.country,
-            gender = response.body()?.gender, bloodType = response.body()?.bloodType, height = response.body()?.height.toString(), weight = response.body()?.weight.toString(),
-            phoneNumber = response.body()?.phoneNumber, state = response.body()?.state,
-            emailConfirmed = response.body()?.emailConfirmed, privacyPolicyAccepted = response.body()?.privacyPolicyAccepted
-
+        return ProfileData(
+            name = response.body()?.name,
+            surname = response.body()?.surname,
+            city = response.body()?.city,
+            country = response.body()?.country,
+            gender = response.body()?.gender,
+            bloodType = response.body()?.bloodType,
+            height = response.body()?.height,
+            weight = response.body()?.weight,
+            phoneNumber = response.body()?.phoneNumber,
+            state = response.body()?.state,
+            emailConfirmed = response.body()?.emailConfirmed,
+            privacyPolicyAccepted = response.body()?.privacyPolicyAccepted,
+            birthdate = response.body()?.birthdate.toString(),
         )
-        return profileData
     }
-
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun updateUserData(profileData: ProfileData): Response<ResponseBody>{
+    suspend fun updateUserData(profileData: ProfileData): Response<String> {
         val token = userSessionManager.getUserToken() ?: ""
         val userId = userSessionManager.getUserId()
         val selectedRole = userSessionManager.getSelectedRole() ?: ""
-        val formattedBirthDate = profileData.getFormattedBirthDate()
+
         val request = UserInfoRequest(
-            name =  profileData.name ?: "",
+            name = profileData.name ?: "",
             surname = profileData.surname ?: "",
-            email = profileData.email ?: "",
-            roles = profileData.roles ?: listOf(),
-            birth_date = formattedBirthDate,
+            birthdate = null,
             country = profileData.country ?: "",
             city = profileData.city ?: "",
             state = profileData.state ?: "",
             bloodType = profileData.bloodType ?: "",
-            height = profileData.height?.toIntOrNull(),
-            weight = profileData.weight?.toIntOrNull(),
+            height = profileData.height,
+            weight = profileData.weight,
             gender = profileData.gender ?: "",
             phoneNumber = profileData.phoneNumber ?: "",
         )
-        val response = profileService.updateProfile(
+        return profileService.updateProfile(
             userId = userId,
             jwtToken = "Bearer $token",
             role = selectedRole,
             request = request
         )
-        return response
-
-
-
     }
 
+    suspend fun selectRole(requestedRole: String): Response<String> {
+        val userId = userSessionManager.getUserId()
+        val token = userSessionManager.getUserToken() ?: ""
+        val role = userSessionManager.getSelectedRole() ?: ""
 
+        val response = profileService.selectRole(
+            userId = userId,
+            requestedRole = requestedRole,
+            jwtToken = "Bearer $token",
+            role = requestedRole
+        )
+
+        return response
+    }
 }
