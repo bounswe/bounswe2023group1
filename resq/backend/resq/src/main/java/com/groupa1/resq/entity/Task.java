@@ -5,7 +5,6 @@ import com.groupa1.resq.entity.enums.EUrgency;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.HashSet;
@@ -41,8 +40,7 @@ public class Task extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private EStatus status;
 
-    @Lob
-    @Column(length = 3000)
+    @Column(length = 2048)
     private String description;
 
     public Task() {

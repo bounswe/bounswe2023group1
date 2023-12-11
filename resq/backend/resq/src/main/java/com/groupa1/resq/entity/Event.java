@@ -1,6 +1,5 @@
 package com.groupa1.resq.entity;
 
-import com.groupa1.resq.entity.enums.EEventType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,8 +24,7 @@ public class Event extends BaseEntity {
     @JoinColumn(name = "reporter_id")
     private User reporter;
 
-    @Lob
-    @Column(length = 3000)
+    @Column(length = 2048)
     private String description;
 
     private LocalDateTime reportDate;

@@ -44,7 +44,8 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Set<EUserRole> roles = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_profile_id", referencedColumnName = "id")
     private UserProfile userProfile;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy="requester")

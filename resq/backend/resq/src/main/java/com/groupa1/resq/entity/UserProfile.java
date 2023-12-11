@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Entity
 @Table( name = "USER_PROFILE")
 @Data
-@EqualsAndHashCode(exclude = {"user"})
+@EqualsAndHashCode(callSuper = true, exclude = {"user"})
 @ToString(exclude = {"user"})
 public class UserProfile extends BaseEntity{
 
@@ -26,8 +26,7 @@ public class UserProfile extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private EGender gender;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", unique = true)
+    @OneToOne(mappedBy = "userProfile")
     private User user;
 
     private boolean isEmailConfirmed;
