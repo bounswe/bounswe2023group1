@@ -1,12 +1,12 @@
 package com.groupa1.resq.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.groupa1.resq.entity.enums.EGender;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 import java.time.LocalDate;
 
 
@@ -26,7 +26,9 @@ public class UserProfile extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private EGender gender;
 
-    @OneToOne(mappedBy = "userProfile")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     private boolean isEmailConfirmed;

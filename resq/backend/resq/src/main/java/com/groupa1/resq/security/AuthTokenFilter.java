@@ -1,7 +1,6 @@
 package com.groupa1.resq.security;
 
 import com.groupa1.resq.auth.UserDetailsServiceImpl;
-import com.groupa1.resq.entity.enums.EUserRole;
 import com.groupa1.resq.security.jwt.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -34,10 +33,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
-                String selectedRole = request.getHeader("X-Selected-Role");
-                EUserRole userRole = EUserRole.getEnumByStr(selectedRole.toUpperCase()); // If not found, throws error.
 
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username, selectedRole);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
                         userDetails.getAuthorities());
