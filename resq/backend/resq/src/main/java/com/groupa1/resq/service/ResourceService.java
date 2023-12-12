@@ -4,6 +4,7 @@ import com.groupa1.resq.converter.ResourceConverter;
 import com.groupa1.resq.dto.ResourceDto;
 import com.groupa1.resq.entity.Resource;
 import com.groupa1.resq.entity.User;
+import com.groupa1.resq.entity.enums.ESize;
 import com.groupa1.resq.exception.EntityNotFoundException;
 import com.groupa1.resq.repository.ResourceRepository;
 import com.groupa1.resq.request.CreateResourceRequest;
@@ -54,6 +55,7 @@ public class ResourceService {
         resource.setLatitude(createResourceRequest.getLatitude());
         resource.setQuantity(createResourceRequest.getQuantity());
         resource.setCategoryTreeId(createResourceRequest.getCategoryTreeId());
+        resource.setSize(ESize.valueOf(createResourceRequest.getSize()));
         Long resourceId = resourceRepository.save(resource).getId();
         return ResponseEntity.ok(resourceId);
     }
@@ -64,6 +66,7 @@ public class ResourceService {
         resource.setLatitude(createResourceRequest.getLatitude());
         resource.setLongitude(createResourceRequest.getLongitude());
         resource.setCategoryTreeId(createResourceRequest.getCategoryTreeId());
+        resource.setSize(ESize.valueOf(createResourceRequest.getSize()));
         resourceRepository.save(resource);
         return ResponseEntity.ok("Resource updated successfully");
     }

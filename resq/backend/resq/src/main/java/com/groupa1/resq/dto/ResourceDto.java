@@ -17,4 +17,5 @@ public class ResourceDto {
     private BigDecimal latitude;
     private BigDecimal longitude;
     private LocalDateTime createdDate;
+    private String size;
 }
