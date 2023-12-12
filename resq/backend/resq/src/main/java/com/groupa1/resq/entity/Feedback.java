@@ -24,7 +24,6 @@ public class Feedback extends BaseEntity {
     @JoinColumn(name = "creator_id")
     private User creator;
 
-    @Lob
-    @Column(length = 3000)
+    @Column(length = 2048)
     private String message;
 }

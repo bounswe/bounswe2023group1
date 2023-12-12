@@ -1,6 +1,7 @@
 package com.groupa1.resq.dto;
 
 import com.groupa1.resq.entity.enums.ENeedStatus;
+import com.groupa1.resq.entity.enums.ESize;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -18,4 +19,5 @@ public class NeedDto {
     private Long requestId;
     private ENeedStatus status;
     private LocalDateTime createdDate;
+    private ESize size;
 }

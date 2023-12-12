@@ -3,7 +3,9 @@ package com.groupa1.resq.entity;
 import com.groupa1.resq.entity.enums.EGender;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -12,6 +14,8 @@ import java.time.LocalDate;
 @Entity
 @Table( name = "USER_PROFILE")
 @Data
+@EqualsAndHashCode(callSuper = true, exclude = {"user"})
+@ToString(exclude = {"user"})
 public class UserProfile extends BaseEntity{
 
     private String name;
@@ -22,8 +26,7 @@ public class UserProfile extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private EGender gender;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @OneToOne(mappedBy = "userProfile")
     private User user;
 
     private boolean isEmailConfirmed;

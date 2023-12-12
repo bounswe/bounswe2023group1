@@ -31,6 +31,7 @@ public class NeedConverter {
         needDto.setLatitude(need.getLatitude());
         needDto.setLongitude(need.getLongitude());
         needDto.setCreatedDate(need.getCreatedAt());
+        needDto.setSize(need.getSize());
         Request request = need.getRequest();
         if (request != null) {
             needDto.setRequestId(request.getId());
@@ -51,6 +52,7 @@ public class NeedConverter {
         need.setLongitude(needDto.getLongitude());
         need.setStatus(needDto.getStatus());
         need.setCreatedAt(needDto.getCreatedDate());
+        need.setSize(needDto.getSize());
         Request request = requestRepository.findById(needDto.getRequestId()).orElse(null);
         need.setRequest(request);
         return need;
