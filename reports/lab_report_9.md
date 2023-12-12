@@ -37,9 +37,12 @@
 
 
 ## Completed tasks that were not planned for the week
-| Description  | Issue | Assignee | Due | PR |
-| -------- | ----- | -------- | --- | --- |
 
+| Description | Issue | Assignee | Due | PR |  
+| --- | --- | --- | --- | --- |
+| Bug: @Lob annotated fields in backend | [#551](https://github.com/bounswe/bounswe2023group1/issues/551), [#379](https://github.com/bounswe/bounswe2023group1/issues/379) | Ali, Türker | 12.12.2023 | [#554](https://github.com/bounswe/bounswe2023group1/pull/554) |
+| Need and Resource entity consistency | [#552](https://github.com/bounswe/bounswe2023group1/issues/552) | Ali | 12.12.2023 | [#554](https://github.com/bounswe/bounswe2023group1/pull/554) |
+| Implementation of size & age categorization for Needs and Resources | [#553](https://github.com/bounswe/bounswe2023group1/issues/553) | Ali | 12.12.2023 | [#554](https://github.com/bounswe/bounswe2023group1/pull/554) |
 
 ## Planned vs. Actual
 Postponed - [#426](https://github.com/bounswe/bounswe2023group1/issues/426)  
@@ -47,9 +50,9 @@ Postponed - [#427](https://github.com/bounswe/bounswe2023group1/issues/427)
 
 
 ## Your plans for the next week
-| Description | Issue | Assignee | Due | Estimated Duration |
-| --- | --- | --- | --- | --- |
 
+| Description | Issue | Assignee | Due | Estimated Duration |  
+| --- | --- | --- | --- | --- |
 | Continue - Mobile Settings and Notification Pages | [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Elif | 28.11.2023 |  --- | 2hr |2hr |
 | Continue - Improving API's to provide admin related service | [#395](https://github.com/bounswe/bounswe2023group1/issues/395) | Volkan | 28.11.2023 | --- | 2hr | 2hr |
 | Continue - Improving API's to provide coordinator related service | [#397](https://github.com/bounswe/bounswe2023group1/issues/397) | Volkan | 28.11.2023 |  --- | 1hr |2hr |
@@ -71,10 +74,9 @@ Postponed - [#427](https://github.com/bounswe/bounswe2023group1/issues/427)
 | Request Creation Integration with Backend | [#548](https://github.com/bounswe/bounswe2023group1/issues/548) | Kübra | 12.12.2023 | --- | 12hr | 12hr |
 | Customer Request - Add Components as Images To be Annotated to Resources | [#549](https://github.com/bounswe/bounswe2023group1/issues/549) | Kübra | 12.12.2023 | --- | 4hr | 4hr |
 | Create Customized Responder Map Page for Responders | [#550](https://github.com/bounswe/bounswe2023group1/issues/550) | Kübra | 12.12.2023 | --- | 10hr | 10hr |
-| Need and Resource entity consistency | [#552](https://github.com/bounswe/bounswe2023group1/issues/552) | Ali | 19.12.2023 | 3hr |
-| Implementation of size & age categorization for Needs and Resources | [#553](https://github.com/bounswe/bounswe2023group1/issues/553) | Ali | 19.12.2023 | 3hr |
-| Refactoring some API endpoints in backend | [#555](https://github.com/bounswe/bounswe2023group1/issues/555) | Ali | 19.12.2023 | 3hr |
-| Recurrent Need Implementation | [#559](https://github.com/bounswe/bounswe2023group1/issues/559) | Ali | 19.12.2023 | 3hr |
+| Refactoring some API endpoints in backend | [#555](https://github.com/bounswe/bounswe2023group1/issues/555) | Ali | 19.12.2023 | 2hr |
+| Recurrent Need Implementation | [#559](https://github.com/bounswe/bounswe2023group1/issues/559) | Ali | 19.12.2023 | 6hr |
+| Matching Resources to Requests | [#561](https://github.com/bounswe/bounswe2023group1/issues/561) | Ali | 19.12.2023 | 6hr | 
 | Frontend - Multilingual Support | [#560](https://github.com/bounswe/bounswe2023group1/issues/560) | Orkan | 19.12.2023 | 4hr | 
 
 
