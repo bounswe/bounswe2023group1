@@ -4,8 +4,8 @@
 **Date:** 12.12.2023
 
 ## Progress Summary
-**This week** This week marked a significant achievement in our project plan, as we successfully completed Milestone 2. The team diligently focused on enhancing key functionalities concerning the victim, responder, and facilitator roles. Notably, we resolved crucial issues including the login/web exit problem.
-**Our objective for the following week** We will concentrate on optimizing the existing features and embark on the development of new functionalities, ensuring our readiness for the upcoming milestones.
+**This week** We have last two weeks until the final presentation. The team diligently focused on enhancing key functionalities concerning the victim, responder, and facilitator roles. We also kept working more on APIs, tasks and map features.
+**Our objective for the following week** We will concentrate on optimizing the existing features and embark on the development of new functionalities, ensuring our readiness for the upcoming milestones. The annotations also become a more important priority as the final presentation comes closer.
 
 ## What was planned for the week? How did it go?
 
@@ -71,9 +71,6 @@ Postponed - [#427](https://github.com/bounswe/bounswe2023group1/issues/427)
 | Request Creation Integration with Backend | [#548](https://github.com/bounswe/bounswe2023group1/issues/548) | Kübra | 12.12.2023 | --- | 12hr | 12hr |
 | Customer Request - Add Components as Images To be Annotated to Resources | [#549](https://github.com/bounswe/bounswe2023group1/issues/549) | Kübra | 12.12.2023 | --- | 4hr | 4hr |
 | Create Customized Responder Map Page for Responders | [#550](https://github.com/bounswe/bounswe2023group1/issues/550) | Kübra | 12.12.2023 | --- | 10hr | 10hr |
-
-
-
 | Need and Resource entity consistency | [#552](https://github.com/bounswe/bounswe2023group1/issues/552) | Ali | 19.12.2023 | 3hr |
 | Implementation of size & age categorization for Needs and Resources | [#553](https://github.com/bounswe/bounswe2023group1/issues/553) | Ali | 19.12.2023 | 3hr |
 | Refactoring some API endpoints in backend | [#555](https://github.com/bounswe/bounswe2023group1/issues/555) | Ali | 19.12.2023 | 3hr |
