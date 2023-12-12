@@ -50,7 +50,10 @@ public class UserProfileService {
         UserProfile updatedProfile = profileConverter.convertToEntity(updatedProfileDto);
         beanUtils.copyProperties(userProfile, updatedProfile);
         user.setUserProfile(userProfile);
+        user.setName(userProfile.getName());
+        user.setSurname(userProfile.getSurname());
         userRepository.save(user);
+
         return "Profile successfully updated.";
 
     }
