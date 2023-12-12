@@ -5,6 +5,7 @@ import com.groupa1.resq.dto.NeedDto;
 import com.groupa1.resq.entity.Need;
 import com.groupa1.resq.entity.User;
 import com.groupa1.resq.entity.enums.ENeedStatus;
+import com.groupa1.resq.entity.enums.ESize;
 import com.groupa1.resq.exception.EntityNotFoundException;
 import com.groupa1.resq.exception.NotOwnerException;
 import com.groupa1.resq.repository.NeedRepository;
@@ -34,6 +35,17 @@ public class NeedService {
     @Autowired
     NeedConverter needConverter;
 
+    public void setNeedConverter(NeedConverter needConverter) {
+        this.needConverter = needConverter;
+    }
+
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public void setNeedRepository(NeedRepository needRepository) {
+        this.needRepository = needRepository;
+    }
 
     public Long save(Long userId, CreateNeedRequest createNeedRequest) {
         User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
@@ -44,6 +56,7 @@ public class NeedService {
         need.setLatitude(createNeedRequest.getLatitude());
         need.setQuantity(createNeedRequest.getQuantity());
         need.setCategoryTreeId(createNeedRequest.getCategoryTreeId());
+        need.setSize(ESize.valueOf(createNeedRequest.getSize()));
         need.setStatus(ENeedStatus.NOT_INVOLVED);
         return needRepository.save(need).getId();
 
@@ -91,18 +104,19 @@ public class NeedService {
         need.setLatitude(updateNeedRequest.getLatitude());
         need.setQuantity(updateNeedRequest.getQuantity());
         need.setCategoryTreeId(updateNeedRequest.getCategoryTreeId());
+        need.setSize(ESize.valueOf(updateNeedRequest.getSize()));
         needRepository.save(need);
         return ResponseEntity.ok("Need updated successfully");
     }
 
 
-    public ResponseEntity<List<NeedDto>> viewNeedsByFilter(BigDecimal longitude, BigDecimal latitude, String categoryTreeId, Long userId) {
+    public ResponseEntity<List<NeedDto>> viewNeedsByFilter(BigDecimal longitude1, BigDecimal latitude1, BigDecimal longitude2, BigDecimal latitude2, String categoryTreeId, Long userId) {
 
         Specification<Need> spec = Specification.where(null);
 
-        if (longitude != null && latitude != null) {
-            spec = spec.and(NeedSpecifications.hasLongitude(longitude));
-            spec = spec.and(NeedSpecifications.hasLatitude(latitude));
+        if (longitude1 != null && latitude1 != null && longitude2 != null && latitude2 != null) {
+            spec = spec.and(NeedSpecifications.isWithinRectangleScope(longitude1, longitude2, latitude1, latitude2));
+
         }
         if (categoryTreeId != null) {
             spec = spec.and(NeedSpecifications.hasCategoryTreeId(categoryTreeId));

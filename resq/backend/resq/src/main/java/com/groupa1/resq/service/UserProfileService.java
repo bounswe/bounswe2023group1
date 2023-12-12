@@ -37,8 +37,8 @@ public class UserProfileService {
 
 
 
-    public void saveProfile(UserProfile userProfile) {
-        userProfileRepository.save(userProfile);
+    public UserProfile saveProfile(UserProfile userProfile) {
+        return userProfileRepository.save(userProfile);
     }
 
     public String updateProfile(Long userId, ProfileDto profileDto)

@@ -52,8 +52,8 @@ export const MultiCheckbox = ({name, choices, onChosenChanged}) => {
     };
 
     useEffect(() => {
-        onChosenChanged && onChosenChanged(currentChoices)
-    }, [onChosenChanged, currentChoices])
+        onChosenChanged && onChosenChanged(choices.filter(a => currentChoices.indexOf(a.id) !== -1))
+    }, [onChosenChanged, currentChoices, choices])
 
     return <FormControl sx={{m: 1}}>
         <InputLabel id={label_id}>{name}</InputLabel>
@@ -67,20 +67,20 @@ export const MultiCheckbox = ({name, choices, onChosenChanged}) => {
             input={<OutlinedInput id={input_id} label={name}/>}
             renderValue={(selected) => (
                 <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
-                    {selected.map((value) => (
-                        <Chip key={value} label={value}/>
+                    {choices.filter(a => selected.indexOf(a.id) !== -1).map((value) => (
+                        <Chip key={value.id} label={value.data}/>
                     ))}
                 </Box>
             )}
             MenuProps={MenuProps}
         >
-            {choices.map((name) => (
+            {choices.map((value) => (
                 <MenuItem
-                    key={name}
-                    value={name}
-                    style={getDropDownStyles(name, currentChoices, theme)}
+                    key={value.id}
+                    value={value.id}
+                    style={getDropDownStyles(value.id, currentChoices, theme)}
                 >
-                    {name}
+                    {value.data}
                 </MenuItem>
             ))}
         </Select>

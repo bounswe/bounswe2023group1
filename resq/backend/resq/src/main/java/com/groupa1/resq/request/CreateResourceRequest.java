@@ -15,5 +15,5 @@ public class CreateResourceRequest {
     private BigDecimal latitude;
     private BigDecimal longitude;
     private EGender gender;
-
+    private String size;
 }

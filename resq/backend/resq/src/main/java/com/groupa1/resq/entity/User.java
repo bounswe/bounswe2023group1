@@ -18,8 +18,9 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "email")
         })
 @Data
-@EqualsAndHashCode(callSuper = true, exclude = {"userProfile", "requests", "needs", "resourcesReceived","resourcesSent", "tasksAssigned", "tasksAssignedTo", "feedbacks", "actions", "infos", "notifications"})
-@ToString(callSuper = true, exclude = {"userProfile"})
+@EqualsAndHashCode(callSuper = true, exclude = {"userProfile", "requests", "needs", "resourcesReceived","resourcesSent", "tasksAssigned", "tasksAssignedTo", "feedbacks", "actions", "infos", "notifications", "reportedEvents"})
+@ToString(callSuper = true, exclude = {"userProfile", "requests", "needs", "resourcesReceived","resourcesSent", "tasksAssigned", "tasksAssignedTo", "feedbacks", "actions", "infos", "notifications", "reportedEvents"})
+
 public class User extends BaseEntity {
 
     @NotBlank
@@ -46,6 +47,7 @@ public class User extends BaseEntity {
 
     @OneToOne(fetch= FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
+
     private UserProfile userProfile;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy="requester")
@@ -68,6 +70,9 @@ public class User extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "assignee")
     private Set<Task> tasksAssignedTo;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reporter")
+    private Set<Event> reportedEvents;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "creator")
     private Set<Feedback> feedbacks;
@@ -100,5 +105,6 @@ public class User extends BaseEntity {
         this.actions = new HashSet<>();
         this.infos = new HashSet<>();
         this.notifications = new HashSet<>();
+        this.reportedEvents = new HashSet<>();
     }
 }

@@ -28,12 +28,14 @@ public class NeedController {
 
     @GetMapping("/viewNeedsByFilter")
     @PreAuthorize("hasRole('FACILITATOR') or hasRole('COORDINATOR')")
-    public ResponseEntity<List<NeedDto>> viewNeedsByFilter(@RequestParam(required = false) BigDecimal longitude,
-                                                           @RequestParam(required = false) BigDecimal latitude,
+    public ResponseEntity<List<NeedDto>> viewNeedsByFilter(@RequestParam(required = false) BigDecimal longitude1,
+                                                           @RequestParam(required = false) BigDecimal latitude1,
+                                                           @RequestParam(required = false) BigDecimal longitude2,
+                                                           @RequestParam(required = false) BigDecimal latitude2,
                                                            @RequestParam(required = false) String categoryTreeId,
                                                            @RequestParam(required = false) Long userId) {
-        log.info("Viewing needs for location: {}, {}, category: {}, user: {}", longitude, latitude, categoryTreeId, userId);
-        return needService.viewNeedsByFilter(longitude, latitude, categoryTreeId, userId);
+        log.info("Viewing needs for location: {}-{} / {}-{}, category: {}, user: {}", longitude1, latitude1, longitude2, latitude2, categoryTreeId, userId);
+        return needService.viewNeedsByFilter(longitude1, latitude1, longitude2, latitude2, categoryTreeId, userId);
     }
 
     @PostMapping("/createNeed")

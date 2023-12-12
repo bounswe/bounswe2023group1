@@ -29,6 +29,16 @@ services:
       - POSTGRES_PASSWORD=compose-postgres
     networks:
       - app_network
+    
+  frontend:
+    container_name: frontend
+    image: frontend:latest
+    build:
+      context: ../../frontend
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
       
 networks:
   app_network:
