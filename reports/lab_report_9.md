@@ -43,7 +43,7 @@
 | Bug: @Lob annotated fields in backend | [#551](https://github.com/bounswe/bounswe2023group1/issues/551), [#379](https://github.com/bounswe/bounswe2023group1/issues/379) | Ali, Türker | 12.12.2023 | [#554](https://github.com/bounswe/bounswe2023group1/pull/554) |
 | Need and Resource entity consistency | [#552](https://github.com/bounswe/bounswe2023group1/issues/552) | Ali | 12.12.2023 | [#554](https://github.com/bounswe/bounswe2023group1/pull/554) |
 | Implementation of size & age categorization for Needs and Resources | [#553](https://github.com/bounswe/bounswe2023group1/issues/553) | Ali | 12.12.2023 | [#554](https://github.com/bounswe/bounswe2023group1/pull/554) |
-| Frontend specific tasks were created | -- | Kübra | -- | -- |
+| Frontend specific labels were created | -- | Kübra | -- | -- |
 
 ## Planned vs. Actual
 Postponed - [#426](https://github.com/bounswe/bounswe2023group1/issues/426)  
