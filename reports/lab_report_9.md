@@ -30,8 +30,8 @@
 | My Resources Page implementation | [#545](https://github.com/bounswe/bounswe2023group1/issues/545) | Alperen | 12.12.2023 | --- | 4hr | 8hr |
 | My Requests Page implementation | [#546](https://github.com/bounswe/bounswe2023group1/issues/546) | Çağrı | 12.12.2023 | --- | 2hr | 8hr |
 | Task Creation Implementation | [#547](https://github.com/bounswe/bounswe2023group1/issues/547) | Harun | 12.12.2023 | --- | --- | 8hr |
-| Request Creation Integration with Backend | [#548](https://github.com/bounswe/bounswe2023group1/issues/548) | Kübra | 12.12.2023 | --- | 12hr | 12hr |
-| Customer Request - Add Components as Images To be Annotated to Resources | [#549](https://github.com/bounswe/bounswe2023group1/issues/549) | Kübra | 12.12.2023 | --- | 4hr | 4hr |
+| Request Creation Integration with Backend | [#548](https://github.com/bounswe/bounswe2023group1/issues/548) - was onhold, continue this week | Kübra | 12.12.2023 | --- | 12hr | 12hr |
+| Customer Request - Add Components as Images To be Annotated to Resources - first draft implemented. | [#549](https://github.com/bounswe/bounswe2023group1/issues/549) | Kübra | 12.12.2023 | [#562](https://github.com/bounswe/bounswe2023group1/pull/562) | 4hr | 4hr |
 | Create Customized Responder Map Page for Responders | [#550](https://github.com/bounswe/bounswe2023group1/issues/550) | Kübra | 12.12.2023 | [#557](https://github.com/bounswe/bounswe2023group1/pull/557) | 4hr | 10hr |
 
 
@@ -72,8 +72,7 @@ Postponed - [#427](https://github.com/bounswe/bounswe2023group1/issues/427)
 | My Requests Page implementation | [#546](https://github.com/bounswe/bounswe2023group1/issues/546) | Çağrı | 12.12.2023 | --- | 2hr | 8hr |
 | Task Creation Implementation | [#547](https://github.com/bounswe/bounswe2023group1/issues/547) | Harun | 12.12.2023 | --- | --- | 8hr |
 | Request Creation Integration with Backend | [#548](https://github.com/bounswe/bounswe2023group1/issues/548) | Kübra | 12.12.2023 | --- | 12hr | 12hr |
-| Customer Request - Add Components as Images To be Annotated to Resources | [#549](https://github.com/bounswe/bounswe2023group1/issues/549) | Kübra | 12.12.2023 | --- | 4hr | 4hr |
-| Create Customized Responder Map Page for Responders - continue | [#550](https://github.com/bounswe/bounswe2023group1/issues/550) | Kübra | 12.12.2023 | 6hr | 4hr | 6hr |
+| Create Customized Responder Map Page for Responders - continue | [#550](https://github.com/bounswe/bounswe2023group1/issues/550) | Kübra | 12.12.2023 | 6hr | 
 | Refactoring some API endpoints in backend | [#555](https://github.com/bounswe/bounswe2023group1/issues/555) | Ali | 19.12.2023 | 2hr |
 | Recurrent Need Implementation | [#559](https://github.com/bounswe/bounswe2023group1/issues/559) | Ali | 19.12.2023 | 6hr |
 | Matching Resources to Requests | [#561](https://github.com/bounswe/bounswe2023group1/issues/561) | Ali | 19.12.2023 | 6hr | 
