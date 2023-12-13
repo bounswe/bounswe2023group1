@@ -80,7 +80,9 @@ Postponed - [#427](https://github.com/bounswe/bounswe2023group1/issues/427)
 
 
 ## Risks
-*  In order to complete the project on time, we must complete the tasks on time and speed up. Since our final product delivery is very soon and we still have many requirements to complete, in order to make our customer satisfied, we should increase our speed of development. 
+*  In order to complete the project on time, we must complete the tasks on time and speed up. Since our final product delivery is very soon and we still have many requirements to complete, in order to make our customer satisfied, we should increase our speed of development.
+*  Since time is so limited thus precious, we should make prioritaziton between requirements and related implementations. We have to be careful about time management for ourselves and within team.
+*  Team must be more in touch and add additional meetings to keep up and be in control of the project planning. 
 
 ## Ranking of the Requirements
 
