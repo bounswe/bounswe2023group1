@@ -21,8 +21,7 @@ public class Notification extends BaseEntity{
 
     private String title;
 
-    @Lob
-    @Column(length = 1000)
+    @Column(length = 2048)
     private String body;
 
     private boolean isRead;

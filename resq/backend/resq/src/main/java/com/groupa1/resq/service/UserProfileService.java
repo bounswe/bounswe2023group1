@@ -37,8 +37,8 @@ public class UserProfileService {
 
 
 
-    public void saveProfile(UserProfile userProfile) {
-        userProfileRepository.save(userProfile);
+    public UserProfile saveProfile(UserProfile userProfile) {
+        return userProfileRepository.save(userProfile);
     }
 
     public String updateProfile(Long userId, ProfileDto profileDto)
@@ -50,7 +50,10 @@ public class UserProfileService {
         UserProfile updatedProfile = profileConverter.convertToEntity(updatedProfileDto);
         beanUtils.copyProperties(userProfile, updatedProfile);
         user.setUserProfile(userProfile);
+        user.setName(userProfile.getName());
+        user.setSurname(userProfile.getSurname());
         userRepository.save(user);
+
         return "Profile successfully updated.";
 
     }

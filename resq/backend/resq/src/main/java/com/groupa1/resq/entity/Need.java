@@ -1,6 +1,8 @@
 package com.groupa1.resq.entity;
 
+import com.groupa1.resq.entity.enums.EGender;
 import com.groupa1.resq.entity.enums.ENeedStatus;
+import com.groupa1.resq.entity.enums.ESize;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -33,6 +35,13 @@ public class Need extends BaseEntity{
 
     private BigDecimal latitude;
     private BigDecimal longitude;
+
+    @Enumerated(EnumType.STRING)
+    private EGender gender;
+
+    // These field only for clothing
+    @Enumerated(EnumType.STRING)
+    private ESize size;
 
     @ManyToOne
     @JoinColumn(name = "request_id")

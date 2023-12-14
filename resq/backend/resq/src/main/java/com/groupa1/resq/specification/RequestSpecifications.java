@@ -1,5 +1,6 @@
 package com.groupa1.resq.specification;
 
+import com.groupa1.resq.entity.Need;
 import com.groupa1.resq.entity.Request;
 import com.groupa1.resq.entity.enums.EStatus;
 import com.groupa1.resq.entity.enums.EUrgency;
@@ -33,6 +34,18 @@ public class RequestSpecifications {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("requester").get("id"), requesterId);
     }
+
+    public static Specification<Request> isWithinRectangleScope(BigDecimal longitude1, BigDecimal longitude2,
+                                                             BigDecimal latitude1, BigDecimal latitude2) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.and(
+                        criteriaBuilder.between(root.get("longitude"), longitude1, longitude2),
+                        criteriaBuilder.between(root.get("latitude"), latitude1, latitude2)
+                );
+    }
+
+
+
 
 
 

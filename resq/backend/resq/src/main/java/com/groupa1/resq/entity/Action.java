@@ -25,8 +25,7 @@ public class Action extends BaseEntity {
     @JoinColumn(name = "verifier_id")
     private User verifier;
 
-    @Lob
-    @Column(length = 3000)
+    @Column(length = 2048)
     private String description;
 
     private LocalDateTime dueDate;

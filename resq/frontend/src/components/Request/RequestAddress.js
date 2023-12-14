@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import disasterImage from '../disaster.png';
+import disasterImage from '../../disaster.png';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
@@ -91,7 +91,7 @@ export default function CreateRequestForm() {
                                     name="address1"
                                     label="Address line 1"
                                     fullWidth
-                                    autoComplete="shipping address-line1"
+                                    autoComplete="address1"
                                     variant="standard"
                                 />
                             </Grid>
@@ -101,7 +101,7 @@ export default function CreateRequestForm() {
                                     name="address2"
                                     label="Address line 2"
                                     fullWidth
-                                    autoComplete="shipping address-line2"
+                                    autoComplete="address2"
                                     variant="standard"
                                 />
                             </Grid>
@@ -112,7 +112,7 @@ export default function CreateRequestForm() {
                                     name="city"
                                     label="City"
                                     fullWidth
-                                    autoComplete="shipping address-level2"
+                                    autoComplete="city"
                                     variant="standard"
                                 />
                             </Grid>

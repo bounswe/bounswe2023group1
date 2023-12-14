@@ -40,8 +40,7 @@ public class Task extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private EStatus status;
 
-    @Lob
-    @Column(length = 3000)
+    @Column(length = 2048)
     private String description;
 
     public Task() {

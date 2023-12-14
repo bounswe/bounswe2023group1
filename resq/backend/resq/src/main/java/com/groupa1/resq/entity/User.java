@@ -1,5 +1,6 @@
 package com.groupa1.resq.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.groupa1.resq.entity.enums.EUserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -7,9 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,8 +18,9 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "email")
         })
 @Data
-@EqualsAndHashCode(callSuper = true, exclude = {"userProfile", "requests", "needs", "resourcesReceived","resourcesSent", "tasksAssigned", "tasksAssignedTo", "feedbacks", "actions", "infos", "notifications"})
-@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"userProfile", "requests", "needs", "resourcesReceived","resourcesSent", "tasksAssigned", "tasksAssignedTo", "feedbacks", "actions", "infos", "notifications", "reportedEvents"})
+@ToString(callSuper = true, exclude = {"userProfile", "requests", "needs", "resourcesReceived","resourcesSent", "tasksAssigned", "tasksAssignedTo", "feedbacks", "actions", "infos", "notifications", "reportedEvents"})
+
 public class User extends BaseEntity {
 
     @NotBlank
@@ -45,7 +45,9 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Set<EUserRole> roles = new HashSet<>();
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(fetch= FetchType.LAZY, mappedBy = "user")
+    @JsonManagedReference
+
     private UserProfile userProfile;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy="requester")
@@ -68,6 +70,9 @@ public class User extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "assignee")
     private Set<Task> tasksAssignedTo;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reporter")
+    private Set<Event> reportedEvents;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "creator")
     private Set<Feedback> feedbacks;
@@ -100,5 +105,6 @@ public class User extends BaseEntity {
         this.actions = new HashSet<>();
         this.infos = new HashSet<>();
         this.notifications = new HashSet<>();
+        this.reportedEvents = new HashSet<>();
     }
 }

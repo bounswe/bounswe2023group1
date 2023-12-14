@@ -1,10 +1,8 @@
 package com.groupa1.resq.entity;
 
 import com.groupa1.resq.entity.enums.EGender;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.groupa1.resq.entity.enums.ESize;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -31,6 +29,10 @@ public class Resource extends BaseEntity {
     private String categoryTreeId;
 
     private EGender gender;
+
+    // These field only for clothing
+    @Enumerated(EnumType.STRING)
+    private ESize size;
 
     private Integer quantity;
 

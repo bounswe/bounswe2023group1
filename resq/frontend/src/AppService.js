@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {RootNode} from "./CategoryTree";
 
 const API_BASE_URL = 'https://api.resq.org.tr'
 const USER_API_BASE_URL = API_BASE_URL + '/resq/api/v1/user';
@@ -19,8 +20,13 @@ export function postRequestRole(userId, role) {
     return axios.post(`${USER_API_BASE_URL}/requestRole`, requestBody);
 }
 
-export function getUserInfo(userId) {
-    return axios.get(`${USER_API_BASE_URL}/getUserInfo?userId=${userId}`);
+export async function getUserInfo(userId) {
+    const {data} = await axios.get(`${USER_API_BASE_URL}/getUserInfo?userId=${userId}`, {
+        headers: {
+            "X-Selected-Role": "VICTIM"
+        },
+    });
+    return data
 }
 
 export function getAllAccess() {
@@ -76,7 +82,7 @@ export function getSubCategoryByName(name) {
 }
 
 export function viewNeedsByFilter(filterParams) {
-    return axios.get(`${NEED_API_BASE_URL}/viewNeedsByFilter`, {params: filterParams});
+    return axios.get(`${NEED_API_BASE_URL}/viewNeedsByFilter`, { params: filterParams });
 }
 
 export function createNeed(userId, createNeedRequest) {
@@ -120,7 +126,29 @@ export function viewAllRequests() {
 }
 
 export function createResource(createResourceRequest) {
-    return axios.post(`${RESOURCE_API_BASE_URL}/createResource`, createResourceRequest);
+    return axios.post(`${RESOURCE_API_BASE_URL}/createResource`, createResourceRequest, {
+        headers: {
+            "X-Selected-Role": "RESPONDER"
+        },
+    });
+}
+
+export function getAllResources() {
+    return axios.get(`${RESOURCE_API_BASE_URL}/filterByDistance?latitude=39.5&longitude=34.5&distance=10000`, {
+        headers: {
+            "X-Selected-Role": "COORDINATOR"
+        },
+    });
+}
+
+export async function getCategoryTree() {
+    const {data} = await axios.get(`${CATEGORY_API_BASE_URL}/getMainCategories`, {
+        headers: {
+            "X-Selected-Role": "VICTIM"
+        },
+    });
+
+    return new RootNode(data)
 }
 
 export function createTask(createTaskRequest) {

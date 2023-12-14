@@ -1,7 +1,6 @@
 package com.cmpe451.resq.ui.views.screens
 
 import android.content.Context
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,26 +22,32 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.cmpe451.resq.R
 import com.cmpe451.resq.data.manager.UserSessionManager
 import com.cmpe451.resq.ui.theme.DeepBlue
 import com.cmpe451.resq.ui.theme.RequestColor
 import com.cmpe451.resq.ui.theme.ResourceColor
 import com.cmpe451.resq.utils.NavigationItem
 import com.cmpe451.resq.viewmodels.MapViewModel
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
-fun MapScreen(navController: NavController, appContext: Context) {
-    val viewModel: MapViewModel = viewModel()
+fun MapScreen(navController: NavController, appContext: Context, mapViewModel: MapViewModel) {
     val userSessionManager = UserSessionManager.getInstance(appContext)
     val userRoles = userSessionManager.getUserRoles()
+
+
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -77,12 +82,42 @@ fun MapScreen(navController: NavController, appContext: Context) {
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-            SearchBar(viewModel)
-            Image(
-                painter = painterResource(id = R.drawable.mock_map),
-                contentDescription = "Mock Map",
-                modifier = Modifier.fillMaxSize()
-            )
+            SearchBar(mapViewModel)
+            val singapore = LatLng(41.086571, 29.046109)
+            val cameraPositionState = rememberCameraPositionState {
+                position = CameraPosition.fromLatLngZoom(mapViewModel.lastKnownLocation.value?.let {
+                    LatLng(it.latitude, it.longitude)
+                } ?: singapore, 12f)
+            }
+            LaunchedEffect(Unit) {
+              //  mapViewModel.getNeedByDistance(appContext)
+            }
+            GoogleMap(
+                modifier = Modifier.fillMaxSize(),
+                cameraPositionState = cameraPositionState
+            ) {
+                mapViewModel.lastKnownLocation.value?.let {
+                    val latLng = LatLng(it.latitude, it.longitude)
+                    cameraPositionState.position = CameraPosition.fromLatLngZoom(latLng, 12f)
+                }
+                mapViewModel.needMarkerList.value.forEach { need ->
+                    Marker(
+                        state = MarkerState(position = LatLng(need.latitude, need.longitude)),
+                        title = need.description,
+                        snippet = "Quantity: ${need.quantity}"
+                    )
+                }
+                Marker(
+                    state = MarkerState(position = LatLng(41.086571, 29.046109)),
+                )
+            }
+            LaunchedEffect(mapViewModel.needMarkerList.value) {
+                if (mapViewModel.needMarkerList.value.isNotEmpty()) {
+                    // Move camera to the first marker or any specific logic you want
+                    val firstNeed = mapViewModel.needMarkerList.value.first()
+                    cameraPositionState.move(CameraUpdateFactory.newLatLngZoom(LatLng(firstNeed.latitude, firstNeed.longitude), 12f))
+                }
+            }
         }
     }
 }
