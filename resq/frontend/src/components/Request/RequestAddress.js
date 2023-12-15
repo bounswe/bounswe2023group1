@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState, useEffect} from 'react';
 import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material';
 import '@fontsource/inter';
 import Grid from '@mui/material/Grid';
@@ -61,7 +61,7 @@ export default function CreateRequestForm({requestData, setRequestData}) {
 
     useEffect(() => {
         handleGeocode();
-    }, [address1, address2, city, state, country, nop]);
+    }, [address1, address2, city, state, country, zip, fname, lname]);
 
     return (
         <ThemeProvider theme={customTheme}>
