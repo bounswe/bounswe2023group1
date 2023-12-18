@@ -67,4 +67,16 @@ public class ResourceController {
         log.info("Filtering resources by category");
         return resourceService.filterResource(latitude, longitude, categoryTreeId, userId);
     }
+
+    @PreAuthorize("hasRole('COORDINATOR') or hasRole('VICTIM') or hasRole('RESPONDER')")
+    @GetMapping("/filterByCategoryRectangularScope")
+    public ResponseEntity<List<ResourceDto>> filterByCategoryRectangularScope(@RequestParam(required = false) String categoryTreeId,
+                                                           @RequestParam(required = false) BigDecimal longitude1,
+                                                             @RequestParam(required = false) BigDecimal latitude1,
+                                                             @RequestParam(required = false) BigDecimal longitude2,
+                                                             @RequestParam(required = false) BigDecimal latitude2,
+                                                           @RequestParam(required = false) Long userId) {
+        log.info("Filtering resources by category, rectangular scope");
+        return resourceService.filterResourceRectangularScope(latitude1, longitude1, latitude2, longitude2, categoryTreeId, userId);
+    }
 }
