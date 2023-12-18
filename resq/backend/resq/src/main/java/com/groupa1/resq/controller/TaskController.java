@@ -1,14 +1,17 @@
 package com.groupa1.resq.controller;
 
-import com.groupa1.resq.entity.Task;
-import com.groupa1.resq.request.CreateFeedbackRequest;
+import com.groupa1.resq.auth.UserDetailsImpl;
+import com.groupa1.resq.entity.enums.EStatus;
+import com.groupa1.resq.request.AddResourceToTaskRequest;
 import com.groupa1.resq.request.CreateTaskRequest;
-import com.groupa1.resq.response.TaskResponse;
+import com.groupa1.resq.dto.TaskDto;
+import com.groupa1.resq.request.UpdateTaskRequest;
 import com.groupa1.resq.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @RestController
@@ -30,7 +31,7 @@ public class TaskController {
 
     @PreAuthorize("hasRole('COORDINATOR')")
     @PostMapping("/createTask")
-    public ResponseEntity<String> createTask(@RequestBody CreateTaskRequest createTaskRequest) {
+    public ResponseEntity<Object> createTask(@RequestBody CreateTaskRequest createTaskRequest) {
         return taskService.createTask(createTaskRequest);
     }
 
@@ -51,8 +52,8 @@ public class TaskController {
 
     @PreAuthorize("hasRole('RESPONDER') or hasRole('COORDINATOR')")
     @GetMapping("/viewTasks")
-    public ResponseEntity<List<TaskResponse>> viewAllTasks(@RequestParam Long userId) {
-        return taskService.viewAllTasks(userId);
+    public ResponseEntity<List<TaskDto>> viewTasks(@RequestParam Long userId) {
+        return taskService.viewTasks(userId);
     }
 
     @PreAuthorize("hasRole('COORDINATOR')")
@@ -64,9 +65,8 @@ public class TaskController {
     @PreAuthorize("hasRole('COORDINATOR')")
     @PatchMapping("/updateTask")
     public ResponseEntity<String> updateTask(@RequestBody
-                                             Task newTask, @RequestParam Long taskId)
-            throws InvocationTargetException, IllegalAccessException {
-        return taskService.updateTask(newTask, taskId);
+                                                 UpdateTaskRequest updateTaskRequest, @RequestParam Long taskId){
+        return taskService.updateTask(updateTaskRequest, taskId);
     }
 
     @PreAuthorize("hasRole('COORDINATOR')")
@@ -82,17 +82,35 @@ public class TaskController {
     }
 
 
-    @PreAuthorize("hasRole('RESPPONDER')")
+    @PreAuthorize("hasRole('RESPONDER')")
     @PostMapping("/completeTask")
-    public ResponseEntity<String> completeTask(@RequestParam Long taskId, @RequestParam Long userId) {
+    public ResponseEntity<String> completeTask(@RequestParam Long taskId, Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
         return taskService.completeTask(taskId, userId);
     }
 
-    @PreAuthorize("hasRole('RESPONDER')")
-    @PostMapping("/giveFeedback")
-    public ResponseEntity<String> giveFeedback(CreateFeedbackRequest feedback) {
-        return taskService.giveFeedback(feedback);
+    @PreAuthorize("hasRole('COORDINATOR')")
+    @PostMapping("/addResources")
+    public ResponseEntity<String> addResources(@RequestBody AddResourceToTaskRequest addResourceToTaskRequest) {
+        return taskService.addResources(addResourceToTaskRequest);
     }
+
+
+    @PreAuthorize("hasRole('COORDINATOR')")
+    @PostMapping("/removeResources")
+    public ResponseEntity<String> removeResources(AddResourceToTaskRequest addResourceToTaskRequest) {
+        return taskService.removeResources(addResourceToTaskRequest);
+    }
+
+
+    @PreAuthorize("hasRole('COORDINATOR') or hasRole('RESPONDER')")
+    @GetMapping("/viewTaskByFilter")
+    public ResponseEntity<List<TaskDto>> viewTaskByFilter( @RequestParam(required = false) EStatus status, @RequestParam(required=false) Long assignerId,  @RequestParam(required=false) Long assigneeId) {
+        return taskService.viewTasksByFilter(assignerId,assigneeId, status);
+    }
+
+
 
 
 
