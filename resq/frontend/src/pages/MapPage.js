@@ -88,38 +88,37 @@ const makeFilterByBounds = ({ ne: [ne_lat, ne_lng], sw: [sw_lat, sw_lng] }) =>
     }
 
 
-export default function MapPage({ allMarkers }) {
-    const [shownMarkers, setShownMarkers] = useState(allMarkers)
-    const [selectedPoint, setSelectedPoint] = useState(null)
-    const [mapCenter, setMapCenter] = useState([39, 34.5])
+const MapPage = ({ allMarkers }) => {
+    const [shownMarkers, setShownMarkers] = useState(allMarkers);
+    const [selectedPoint, setSelectedPoint] = useState(null);
+    const [mapCenter, setMapCenter] = useState([39, 34.5]);
 
-    const [typeFilter, setTypeFilter] = useState([])
-    const [dateFromFilter, setDateFromFilter] = useState(null)
-    const [dateToFilter, setDateToFilter] = useState(null)
-    const [amountFilter, setAmountFilter] = useState([])
-    const [categoryFilter, setCategoryFilter] = useState([])
-    const [mapBounds, setMapBounds] = useState({ ne: [0, 0], sw: [0, 0] })
+    const [typeFilter, setTypeFilter] = useState([]);
+    const [dateFromFilter, setDateFromFilter] = useState(null);
+    const [dateToFilter, setDateToFilter] = useState(null);
+    const [amountFilter, setAmountFilter] = useState([]);
+    const [categoryFilter, setCategoryFilter] = useState([]);
+    const [mapBounds, setMapBounds] = useState({ ne: [0, 0], sw: [0, 0] });
 
-    const categoryTree = useQuery({ queryKey: ['categoryTree'], queryFn: getCategoryTree })
+    const categoryTree = useQuery({ queryKey: ['categoryTree'], queryFn: getCategoryTree });
 
 
     useEffect(() => {
         if (selectedPoint) {
             setMapCenter([selectedPoint.latitude, selectedPoint.longitude]);
         }
-    }, [selectedPoint]);
 
-    useEffect(() => setShownMarkers(allMarkers), [allMarkers])
-
-    useEffect(() => setShownMarkers(
-        allMarkers
+        const filteredMarkers = allMarkers
             .filter(makeFilterByCategory(categoryFilter))
             .filter(makeFilterByType(typeFilter))
             .filter(makeFilterByAmount(amountFilter))
             .filter(makeFilterByDateFrom(dateFromFilter))
             .filter(makeFilterByDateTo(dateToFilter))
-            .filter(makeFilterByBounds(mapBounds))
-    ), [allMarkers, amountFilter, categoryFilter, dateFromFilter, dateToFilter, mapBounds, typeFilter])
+            .filter(makeFilterByBounds(mapBounds));
+
+        setShownMarkers(filteredMarkers);
+    }, [selectedPoint, allMarkers, amountFilter, categoryFilter, dateFromFilter, dateToFilter, mapBounds, typeFilter]);
+
 
     const choices = new Map([
         ...allMarkers

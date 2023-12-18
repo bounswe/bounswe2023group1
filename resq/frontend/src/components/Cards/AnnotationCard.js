@@ -4,8 +4,8 @@ import reverseGeocode from '../Geolocation';
 
 const AnnotationCard = ({ item }) => {
     const [locationName, setLocationName] = useState('Unknown Location');
-    const [open, setOpen] = useState(false); // Added for Dialog control
-    const [longDescription, setLongDescription] = useState(''); // State to hold long description
+    const [open, setOpen] = useState(false);
+    const [longDescription, setLongDescription] = useState('');
 
     useEffect(() => {
         if (item.latitude && item.longitude) {
@@ -13,10 +13,11 @@ const AnnotationCard = ({ item }) => {
                 .then((name) => setLocationName(name))
                 .catch((error) => console.error('Error fetching location name:', error));
         }
-    }, [item.latitude, item.longitude]);
-
-    const handleViewMore = () => {
         setLongDescription(item.long_description || 'Long description not available.');
+    }, [item]);
+
+    const handleViewMore = (e) => {
+        e.stopPropagation();
         setOpen(true);
     };
 
@@ -68,7 +69,6 @@ const AnnotationCard = ({ item }) => {
                     </DialogContentText>
                 </DialogContent>
             </Dialog>
-
         </Box>
     );
 };
