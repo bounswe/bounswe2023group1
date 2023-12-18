@@ -1,6 +1,7 @@
 package com.groupa1.resq.service;
 
 
+import com.groupa1.resq.converter.ActionConverter;
 import com.groupa1.resq.entity.Action;
 import com.groupa1.resq.entity.Comment;
 import com.groupa1.resq.entity.Task;
@@ -13,11 +14,13 @@ import com.groupa1.resq.repository.TaskRepository;
 import com.groupa1.resq.repository.UserRepository;
 import com.groupa1.resq.request.CreateCommentRequest;
 import com.groupa1.resq.request.CreateActionRequest;
-import com.groupa1.resq.response.ActionResponse;
+import com.groupa1.resq.dto.ActionDto;
+import com.groupa1.resq.specification.ActionSpecifications;
 import com.groupa1.resq.util.NotificationMessages;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
@@ -43,8 +46,13 @@ public class ActionService {
     @Autowired
     private NotificationService notificationService;
 
+    @Autowired
+    private ActionConverter actionConverter;
 
-    public ResponseEntity<String> createAction(CreateActionRequest createActionRequest) {
+
+
+
+    public ResponseEntity<Object> createAction(CreateActionRequest createActionRequest) {
         if (!taskRepository.existsById(createActionRequest.getTaskId())){
             return ResponseEntity.badRequest().body("No task found");
         }
@@ -71,8 +79,7 @@ public class ActionService {
         Task task = taskRepository.findById(createActionRequest.getTaskId()).orElseThrow(()-> new EntityNotFoundException("No task found"));
         task.getActions().add(actionEntity);
         actionEntity.setTask(task);
-        actionRepository.save(actionEntity);
-        return ResponseEntity.ok("Action saved successfully!");
+        return ResponseEntity.ok(actionRepository.save(actionEntity).getId());
 
 
     }
@@ -91,7 +98,6 @@ public class ActionService {
     public ResponseEntity<String> updateAction(CreateActionRequest createActionRequest, Long actionId){
         Action action = actionRepository.findById(actionId).orElseThrow(()-> new EntityNotFoundException("No action found"));
         User verifier = userRepository.findById(createActionRequest.getVerifierId()).orElseThrow(()-> new EntityNotFoundException("No user found"));
-        action.setTask(taskRepository.findById(createActionRequest.getTaskId()).orElseThrow(()-> new EntityNotFoundException("No task found")));
         action.setVerifier(verifier);
         action.setDescription(createActionRequest.getDescription());
         action.setCompleted(createActionRequest.isCompleted());
@@ -107,13 +113,13 @@ public class ActionService {
 
     }
 
-    public ResponseEntity<List<ActionResponse>> viewActions(Long taskId){
+    public ResponseEntity<List<ActionDto>> viewActions(Long taskId){
         Optional<Task> task = taskRepository.findById(taskId);
-        List<ActionResponse> actionResponses = new ArrayList<>();
+        List<ActionDto> actionResponses = new ArrayList<>();
         if (task.isPresent()) {
             Set<Action> actions = task.get().getActions();
             actions.forEach(action -> {
-                ActionResponse actionResponse = new ActionResponse();
+                ActionDto actionResponse = new ActionDto();
                 actionResponse.setId(action.getId())
                         .setTaskId(action.getTask().getId())
                         .setVerifierId(action.getVerifier().getId())
@@ -217,14 +223,29 @@ public class ActionService {
     action.getComments().add(comment);
     return ResponseEntity.ok("Comment added successfully");
 
-}
+    }
+
+    public ResponseEntity<List<ActionDto>> viewActionsByFilter(Long verifierId, Boolean isCompleted, LocalDateTime latestDueDate, LocalDateTime earliestDueDate) {
+        Specification<Action> spec = Specification.where(null);
+
+        if (verifierId != null) {
+            spec = spec.and(ActionSpecifications.hasVerifier(verifierId));
+        }
+
+        if (isCompleted != null) {
+            spec = spec.and(ActionSpecifications.hasCompleted(isCompleted));
+        }
+
+        if (latestDueDate != null) {
+            spec = spec.and(ActionSpecifications.hasLatestDueDate(latestDueDate));
+        }
+
+        if (earliestDueDate != null) {
+            spec = spec.and(ActionSpecifications.hasEarliestDueDate(earliestDueDate));
+        }
+        return ResponseEntity.ok(actionRepository.findAll(spec).stream().map(action -> actionConverter.convertToDto(action)).toList());
 
 
-
-
-
-
-
-
+    }
 
 }

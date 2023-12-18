@@ -2,7 +2,7 @@ package com.groupa1.resq.controller;
 
 import com.groupa1.resq.request.CreateCommentRequest;
 import com.groupa1.resq.request.CreateActionRequest;
-import com.groupa1.resq.response.ActionResponse;
+import com.groupa1.resq.dto.ActionDto;
 import com.groupa1.resq.service.ActionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -26,13 +27,13 @@ public class ActionController {
 
     @PreAuthorize("hasRole('COORDINATOR')")
     @PostMapping("/createAction")
-    public ResponseEntity<String> createAction(@RequestBody CreateActionRequest createActionRequest){
+    public ResponseEntity<Object> createAction(@RequestBody CreateActionRequest createActionRequest){
         return actionService.createAction(createActionRequest);
     }
 
     @PreAuthorize("hasRole('RESPONDER') or hasRole('COORDINATOR')")
     @GetMapping("/viewActions")
-    public ResponseEntity<List<ActionResponse>> viewActions(@RequestParam Long taskId) {
+    public ResponseEntity<List<ActionDto>> viewActions(@RequestParam Long taskId) {
         return actionService.viewActions( taskId);
     }
 
@@ -66,6 +67,16 @@ public class ActionController {
     public ResponseEntity<String> verifyAction(@RequestBody
                                                CreateCommentRequest commentActionRequest){
         return actionService.commentAction(commentActionRequest);
+    }
+
+    @PreAuthorize("hasRole('COORDINATOR') or hasRole('FACILITATOR')")
+    @GetMapping("/filterAction")
+    public ResponseEntity<List<ActionDto>> viewActionsByFilter(@RequestParam(required = false) Long verifierId,
+                                                               @RequestParam(required = false) Boolean isCompleted,
+                                                               @RequestParam(required = false) LocalDateTime latestDueDate,
+                                                               @RequestParam(required = false) LocalDateTime earliestDueDate){
+
+        return actionService.viewActionsByFilter(verifierId, isCompleted, latestDueDate, earliestDueDate);
     }
 
 
