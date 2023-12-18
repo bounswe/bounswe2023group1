@@ -51,7 +51,6 @@ export default function ResourceDetails1({ resourceData, setResourceData }) {
         queryKey: 'categoryTree',
         queryFn: getCategoryTree
     });
-
     const [isMaterialResourceChecked, setIsMaterialResourceChecked] = useState(false);
     const [isHumanResourceChecked, setIsHumanResourceChecked] = useState(false);
 
@@ -126,12 +125,12 @@ export default function ResourceDetails1({ resourceData, setResourceData }) {
                                 input={<OutlinedInput label="Material Resource" />}
                                 MenuProps={MenuProps}
                             >
-                                {!isCategoryTreeLoading && categoryTreeData.map((materialResource) => (
+                                {materialResources.map((materialResource) => (
                                     <MenuItem
-                                        key={materialResource.id}
-                                        value={materialResource.id}
+                                        key={materialResource}
+                                        value={materialResource}
                                     >
-                                        {materialResource.name}
+                                        {materialResource}
                                     </MenuItem>
                                 ))}
                             </Select>
