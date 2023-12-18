@@ -17,25 +17,12 @@ const AnnotationCard = ({ item }) => {
 
     const handleViewMore = () => {
         setLongDescription(item.long_description || 'Long description not available.');
-        setOpen(true); // Open the dialog
+        setOpen(true);
     };
-
 
     const handleClose = () => {
-        setOpen(false); // Close the dialog
+        setOpen(false);
     };
-
-    // Dialog component to show long description
-    const LongDescriptionDialog = () => (
-        <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>{item.title}</DialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                    {longDescription || 'Long description not available.'}
-                </DialogContentText>
-            </DialogContent>
-        </Dialog>
-    );
 
     return (
         <Box
@@ -69,12 +56,19 @@ const AnnotationCard = ({ item }) => {
                 </Box>
             )}
 
-            <Button color="primary" onClick={() => handleViewMore(item)}>
+            <Button color="primary" onClick={handleViewMore}>
                 View More
             </Button>
 
-            {/* Long Description Dialog */}
-            <LongDescriptionDialog />
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>{item.title}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        {longDescription}
+                    </DialogContentText>
+                </DialogContent>
+            </Dialog>
+
         </Box>
     );
 };

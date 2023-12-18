@@ -1,15 +1,15 @@
-import React, {useState, useEffect} from 'react';
-import {TextField, Button, FormControl, InputLabel, Select, MenuItem, Box} from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material';
 import '@fontsource/inter';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
-import {ResourceContext} from './ResourceContext';
-import {useContext} from 'react';
+import { ResourceContext } from './ResourceContext';
+import { useContext } from 'react';
 
 const customTheme = createTheme({
     palette: {
@@ -19,7 +19,7 @@ const customTheme = createTheme({
     },
 });
 
-export default function ResourceAddress({resourceData, setResourceData}) {
+export default function ResourceAddress({ resourceData, setResourceData }) {
     const [address1, setAddress1] = useState("")
     const [address2, setAddress2] = useState("")
     const [city, setCity] = useState("")
@@ -44,7 +44,7 @@ export default function ResourceAddress({resourceData, setResourceData}) {
                 if (data.results && data.results.length > 0) {
                     const location = data.results[0].geometry.location;
                     setResourceData(
-                        {...resourceData, latitude: location.lat, longitude: location.lng}
+                        { ...resourceData, latitude: location.lat, longitude: location.lng }
                     )
                 } else {
                     console.error('Geocoding failed: No results found');
@@ -64,7 +64,7 @@ export default function ResourceAddress({resourceData, setResourceData}) {
     return (
         <ThemeProvider theme={customTheme}>
             <Container component="main" maxWidth="xs">
-                <CssBaseline/>
+                <CssBaseline />
                 <Box
                     sx={{
                         marginTop: 1,
@@ -76,7 +76,7 @@ export default function ResourceAddress({resourceData, setResourceData}) {
                     <Typography
                         component="h1"
                         variant="h5"
-                        sx={{color: 'red', fontWeight: 'bold', margin: '0'}}
+                        sx={{ color: 'red', fontWeight: 'bold', margin: '0' }}
                     >
                         Resource Delivery Address
                     </Typography>

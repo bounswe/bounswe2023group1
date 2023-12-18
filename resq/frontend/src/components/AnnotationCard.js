@@ -13,17 +13,20 @@ const AnnotationCard = ({ annotation }) => {
                 .then((name) => setLocationName(name))
                 .catch((error) => console.error('Error fetching location name:', error));
         }
-    }, [annotation.latitude, annotation.longitude]);
+        console.log(annotation);
+
+        setLongDescription(annotation.long_description || 'Long description not available.');
+    }, [annotation]);
 
     const handleViewMore = () => {
-        setLongDescription(annotation.long_description || 'Long description not available.');
+        setLongDescription(item.long_description || 'Long description not available.');
         setOpen(true);
     };
-
 
     const handleClose = () => {
         setOpen(false);
     };
+
 
     const LongDescriptionDialog = () => (
         <Dialog open={open} onClose={handleClose}>
@@ -70,11 +73,10 @@ const AnnotationCard = ({ annotation }) => {
                 </Box>
             )}
 
-            <Button color="primary" onClick={() => handleViewMore(annotation)}>
+            <Button color="primary" onClick={handleViewMore}>
                 View More
             </Button>
 
-            {/* Long Description Dialog */}
             <LongDescriptionDialog />
         </Box>
     );
