@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Typography,
     Grid,
@@ -11,13 +11,23 @@ import {
     OutlinedInput,
     Autocomplete, TextField
 } from '@mui/material';
-import {createTheme} from '@mui/material/styles';
-import {Theme, useTheme} from '@mui/material/styles';
-import {useResource} from './ResourceContext';
-import {useContext} from 'react';
-import {ResourceContext} from './ResourceContext';
-import {useQuery} from "@tanstack/react-query";
-import {getCategoryTree} from "../../AppService";
+import { createTheme } from '@mui/material/styles';
+import { Theme, useTheme } from '@mui/material/styles';
+import { useResource } from './ResourceContext';
+import { useContext } from 'react';
+import { ResourceContext } from './ResourceContext';
+import { useQuery } from "@tanstack/react-query";
+import { getCategoryTree } from "../../AppService";
+
+const materialResources = [
+    'Food',
+    'Diapers',
+    'Hygene Products',
+    'Water',
+    'Shelter',
+    'Tent',
+    'Clothing',
+];
 
 const humanResources = [
     'Doctor',
@@ -29,7 +39,7 @@ const humanResources = [
     'District Responsible',
 ];
 
-export default function ResourceDetails1({resourceData, setResourceData}) {
+export default function ResourceDetails1({ resourceData, setResourceData }) {
 
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
@@ -42,7 +52,7 @@ export default function ResourceDetails1({resourceData, setResourceData}) {
         },
     };
 
-    const categoryTree = useQuery({queryKey: ['categoryTree'], queryFn: getCategoryTree})
+    const categoryTree = useQuery({ queryKey: ['categoryTree'], queryFn: getCategoryTree })
 
     const [isMaterialResourceChecked, setIsMaterialResourceChecked] = useState(false);
     const [isHumanResourceChecked, setIsHumanResourceChecked] = useState(false);
@@ -70,11 +80,11 @@ export default function ResourceDetails1({resourceData, setResourceData}) {
             categoryTreeId: (isMaterialResourceChecked && selectedMaterialValue?.id) || '',
             //human: isHumanResourceChecked ? selectedHumanValues.join(', ') : '',
         };
-        setResourceData({...resourceData, ...description});
+        setResourceData({ ...resourceData, ...description });
     }, [isMaterialResourceChecked, selectedMaterialValue, setResourceData, resourceData]);
 
     const comboBoxItems = (categoryTree.data?.getLeafCategories() || [])
-        .map(cat => ({label: cat.data, id: cat.id}))
+        .map(cat => ({ label: cat.data, id: cat.id }))
         .sort((a, b) => {
             if (a.label === b.label) return 0;
             return a.label > b.label ? 1 : -1;
@@ -88,24 +98,41 @@ export default function ResourceDetails1({resourceData, setResourceData}) {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <FormControlLabel
-                        control={<Checkbox color="primary" name="materialresource" checked={isMaterialResourceChecked}
-                                           onChange={(e) => setIsMaterialResourceChecked(e.target.checked)}/>}
+                        control={<Checkbox color="primary" name="materialResource" checked={isMaterialResourceChecked}
+                            onChange={(e) => setIsMaterialResourceChecked(e.target.checked)} />}
                         label="Material Resource"
                     />
                     {isMaterialResourceChecked && (
                         <>
-                            <FormControl sx={{m: 1, width: 300, mt: 3}}>
-                                <Autocomplete
-                                    disablePortal
-                                    id="combo-box-demo"
-                                    options={comboBoxItems}
+                            <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
+                                <Select
+                                    multiple
+                                    displayEmpty
                                     value={selectedMaterialValue}
-                                    onChange={(event, newValue) => {
-                                        setSelectedMaterial(newValue);
+                                    onChange={handleMaterialChange}
+                                    input={<OutlinedInput />}
+                                    renderValue={(selected) => {
+                                        if (selected.length === 0) {
+                                            return <em>Choose material resource type</em>;
+                                        }
+                                        return selected.join(', ');
                                     }}
-                                    sx={{width: 300}}
-                                    renderInput={(params) => <TextField {...params} label="Movie"/>}
-                                />
+                                    MenuProps={MenuProps}
+                                    inputProps={{ 'aria-label': 'Without label' }}
+                                >
+                                    <MenuItem disabled value="">
+                                        <em>Choose material resource type</em>
+                                    </MenuItem>
+                                    {materialResources.map((materialResource) => (
+                                        <MenuItem
+                                            key={materialResource}
+                                            value={materialResource}
+                                            style={getStyles(materialResource, selectedMaterialValue, theme)}
+                                        >
+                                            {materialResource}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
                             </FormControl>
                         </>
                     )}
@@ -113,18 +140,18 @@ export default function ResourceDetails1({resourceData, setResourceData}) {
                 <Grid item xs={12}>
                     <FormControlLabel
                         control={<Checkbox color="primary" name="humanresource" checked={isHumanResourceChecked}
-                                           onChange={(e) => setIsHumanResourceChecked(e.target.checked)}/>}
+                            onChange={(e) => setIsHumanResourceChecked(e.target.checked)} />}
                         label="Human Resource"
                     />
                     {isHumanResourceChecked && (
                         <>
-                            <FormControl sx={{m: 1, width: 300, mt: 3}}>
+                            <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
                                 <Select
                                     multiple
                                     displayEmpty
                                     value={selectedHumanValues}
                                     onChange={handleHumanChange}
-                                    input={<OutlinedInput/>}
+                                    input={<OutlinedInput />}
                                     renderValue={(selected) => {
                                         if (selected.length === 0) {
                                             return <em>Choose human resource type</em>;
@@ -132,7 +159,7 @@ export default function ResourceDetails1({resourceData, setResourceData}) {
                                         return selected.join(', ');
                                     }}
                                     MenuProps={MenuProps}
-                                    inputProps={{'aria-label': 'Without label'}}
+                                    inputProps={{ 'aria-label': 'Without label' }}
                                 >
                                     <MenuItem disabled value="">
                                         <em>Choose human resource type</em>
