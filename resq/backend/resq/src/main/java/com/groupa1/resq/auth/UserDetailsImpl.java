@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.groupa1.resq.entity.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -41,21 +40,7 @@ public class UserDetailsImpl implements UserDetails {
 
     public static UserDetailsImpl build(User user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.name()))
-                .collect(Collectors.toList());
-
-        return new UserDetailsImpl(user.getId(),
-                user.getName(),
-                user.getSurname(),
-                user.getEmail(),
-                user.getPassword(),
-                authorities);
-    }
-
-    public static UserDetailsImpl build(User user, String userRole) {
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-                .filter(role -> role.name().toUpperCase().equals(userRole.toUpperCase()))
-                .map(role -> new SimpleGrantedAuthority("ROLE_"+role.name()))
+                .map(role ->new SimpleGrantedAuthority("ROLE_"+role.name()))
                 .collect(Collectors.toList());
 
         return new UserDetailsImpl(user.getId(),

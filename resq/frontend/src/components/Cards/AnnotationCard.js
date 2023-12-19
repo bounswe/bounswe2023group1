@@ -4,8 +4,8 @@ import reverseGeocode from '../Geolocation';
 
 const AnnotationCard = ({ item }) => {
     const [locationName, setLocationName] = useState('Unknown Location');
-    const [open, setOpen] = useState(false); // Added for Dialog control
-    const [longDescription, setLongDescription] = useState(''); // State to hold long description
+    const [open, setOpen] = useState(false);
+    const [longDescription, setLongDescription] = useState('');
 
     useEffect(() => {
         if (item.latitude && item.longitude) {
@@ -13,29 +13,17 @@ const AnnotationCard = ({ item }) => {
                 .then((name) => setLocationName(name))
                 .catch((error) => console.error('Error fetching location name:', error));
         }
-    }, [item.latitude, item.longitude]);
-
-    const handleViewMore = () => {
         setLongDescription(item.long_description || 'Long description not available.');
-        setOpen(true); // Open the dialog
-    };
+    }, [item]);
 
+    const handleViewMore = (e) => {
+        e.stopPropagation();
+        setOpen(true);
+    };
 
     const handleClose = () => {
-        setOpen(false); // Close the dialog
+        setOpen(false);
     };
-
-    // Dialog component to show long description
-    const LongDescriptionDialog = () => (
-        <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>{item.title}</DialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                    {longDescription || 'Long description not available.'}
-                </DialogContentText>
-            </DialogContent>
-        </Dialog>
-    );
 
     return (
         <Box
@@ -69,12 +57,18 @@ const AnnotationCard = ({ item }) => {
                 </Box>
             )}
 
-            <Button color="primary" onClick={() => handleViewMore(item)}>
+            <Button color="primary" onClick={handleViewMore}>
                 View More
             </Button>
 
-            {/* Long Description Dialog */}
-            <LongDescriptionDialog />
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>{item.title}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        {longDescription}
+                    </DialogContentText>
+                </DialogContent>
+            </Dialog>
         </Box>
     );
 };
