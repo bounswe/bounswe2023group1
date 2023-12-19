@@ -13,8 +13,8 @@
 | Description | Issue | Assignee | Due  | PR | Actual Duration |Estimated Duration |  
 | --- | --- | --- | --- | --- | ---  | --- |
 | Continue - Mobile Settings and Notification Pages | [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Elif | 28.11.2023  | ---  | 2hr | 2hr |
-| Continue - Improving API's to provide admin related service | [#395](https://github.com/bounswe/bounswe2023group1/issues/395) | Volkan | 28.11.2023  | [#577](https://github.com/bounswe/bounswe2023group1/pull/577)  | 5hr | 2hr |
-| Continue - Improving API's to provide coordinator related service | [#397](https://github.com/bounswe/bounswe2023group1/issues/397) | Volkan | 28.11.2023  | [#571](https://github.com/bounswe/bounswe2023group1/pull/571)  | 2hr |2hr |
+| Continue - Improving API's to provide admin related service | [#395](https://github.com/bounswe/bounswe2023group1/issues/395) | Volkan | 28.11.2023  | [#577](https://github.com/bounswe/bounswe2023group1/pull/577)  | 2hr | 2hr |
+| Continue - Improving API's to provide coordinator related service | [#397](https://github.com/bounswe/bounswe2023group1/issues/397) | Volkan | 28.11.2023  | [#571](https://github.com/bounswe/bounswe2023group1/pull/571)  | 5hr |2hr |
 | Continue - Creation of Notification Screen | [#394](https://github.com/bounswe/bounswe2023group1/issues/394) | Alperen | 28.11.2023 | -- | 1hr | 1hr |
 | Continue - Creation of My Task screen | [#390](https://github.com/bounswe/bounswe2023group1/issues/390) | Harun | 28.11.2023| -- | 3hr | 3hr |
 | Continue - Update User Profile Pages of Our Mobile Application According to New Mockups | [#360](https://github.com/bounswe/bounswe2023group1/issues/360) | Çağrı | 28.11.2023  | --- |  --- |  2hr |
