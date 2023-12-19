@@ -12,4 +12,5 @@ public class UpdateNeedRequest {
     private String categoryTreeId;
     private Integer quantity;
     private String size;
+    private Boolean isRecurent;
 }
