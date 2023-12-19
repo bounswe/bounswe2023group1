@@ -2,7 +2,9 @@ package com.groupa1.resq.controller;
 
 import com.groupa1.resq.entity.Need;
 import com.groupa1.resq.entity.Notification;
+import com.groupa1.resq.entity.enums.ENotificationEntityType;
 import com.groupa1.resq.service.NotificationService;
+import com.groupa1.resq.util.NotificationMessages;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,4 +35,15 @@ public class NotificationController {
         log.info("Viewing notification with id: {}, user id: {}", notificationId, userId);
         return notificationService.viewNotificationById(userId, notificationId);
     }
+
+    @PostMapping("/sendNotification")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void sendSystemNotification(@RequestParam String title, @RequestParam Long userId,
+                                       @RequestParam Long relatedEntityId, @RequestParam ENotificationEntityType notificationType) {
+        String body = String.format(NotificationMessages.SYSTEM_MESSAGE, userId, relatedEntityId);
+        log.info("Sending notification with title: {}, body: {}, user id: {}, related entity id: {}, notification type: {}"
+                , title, body, userId, relatedEntityId, notificationType);
+        notificationService.sendNotification(title, body, userId, relatedEntityId, notificationType);
+    }
+
 }

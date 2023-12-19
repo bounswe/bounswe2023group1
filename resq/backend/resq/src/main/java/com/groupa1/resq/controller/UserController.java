@@ -33,6 +33,22 @@ public class UserController {
         return "Role successfully inserted to " + user.getName() + ".";
     }
 
+    @PostMapping("/assignRole")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COORDINATOR') or hasRole('FACILITATOR')")
+    public String assignRole(@RequestParam Long assignerId, @RequestParam Long assigneeId, @RequestParam String role) {
+        log.info("Requested role: {} requested for user: {}", role, assigneeId);
+        User user = userService.assignRole(assignerId, assigneeId, role);
+        return "Role successfully inserted to " + user.getName() + ".";
+    }
+
+    @PostMapping("/removeRole")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COORDINATOR') or hasRole('FACILITATOR')")
+    public String removeRole(@RequestParam Long assignerId, @RequestParam Long assigneeId, @RequestParam String role) {
+        log.info("Requested role to be removed: {} requested for user: {}", role, assigneeId);
+        User user = userService.removeRole(assignerId, assigneeId, role);
+        return "Role successfully removed from " + user.getName() + ".";
+    }
+
     @GetMapping("/getUserInfo")
     @PreAuthorize("hasRole('ADMIN') or hasRole('COORDINATOR') or hasRole('FACILITATOR') or hasRole('RESPONDER') or hasRole('VICTIM')")
     public UserDto getUserInfo(@RequestParam Long userId) {
