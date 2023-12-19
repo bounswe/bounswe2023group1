@@ -38,13 +38,17 @@ public class TaskController {
 
     @PreAuthorize("hasRole('RESPONDER')")
     @PostMapping("/acceptTask")
-    public ResponseEntity<String> acceptTask(@RequestParam Long taskId, @RequestParam Long userId) {
+    public ResponseEntity<String> acceptTask(@RequestParam Long taskId, Authentication authentication){
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
         return taskService.acceptTask(taskId, userId);
     }
 
     @PreAuthorize("hasRole('RESPONDER')")
     @PostMapping("/declineTask")
-    public ResponseEntity<String> declineTask(@RequestParam Long taskId, @RequestParam Long userId) {
+    public ResponseEntity<String> declineTask(@RequestParam Long taskId, Authentication authentication){
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
         return taskService.declineTask(taskId, userId);
     }
 
@@ -77,7 +81,7 @@ public class TaskController {
 
     @PreAuthorize("hasRole('COORDINATOR')")
     @PostMapping("/unassignTask")
-    public ResponseEntity<String> unassignTask(@RequestParam Long taskId, @RequestParam Long userId) {
+    public ResponseEntity<String> unassignTask(@RequestParam Long taskId) {
         return taskService.unassignTask(taskId);
     }
 
