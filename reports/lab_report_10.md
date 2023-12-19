@@ -62,6 +62,7 @@
 | Missing Unit Tests for ResourceController | [#573](https://github.com/bounswe/bounswe2023group1/issues/573) | Volkan | 26.12.2023 | 1hr |
 | Missing Unit Tests for TaskController | [#574](https://github.com/bounswe/bounswe2023group1/issues/574) | Volkan | 26.12.2023 | 1hr |
 | Missing Unit Tests for ActionController | [#572](https://github.com/bounswe/bounswe2023group1/issues/572) | Volkan | 26.12.2023 | 1hr |
+| Improving Resource Categorization | [#586](https://github.com/bounswe/bounswe2023group1/issues/586) | Volkan | 26.12.2023 | 4hr |
 
 
 ## Risks
