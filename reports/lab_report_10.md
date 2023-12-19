@@ -10,32 +10,32 @@
 
 ## What was planned for the week? How did it go?
 
-| Description | Issue | Assignee | Due | Estimated Duration |  
-| --- | --- | --- | --- | --- |
-| Continue - Mobile Settings and Notification Pages | [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Elif | 28.11.2023 |  --- | 2hr |2hr |
-| Continue - Improving API's to provide admin related service | [#395](https://github.com/bounswe/bounswe2023group1/issues/395) | Volkan | 28.11.2023 | --- | 2hr | 2hr |
-| Continue - Improving API's to provide coordinator related service | [#397](https://github.com/bounswe/bounswe2023group1/issues/397) | Volkan | 28.11.2023 |  --- | 1hr |2hr |
-| Continue - Creation of Notification Screen | [#394](https://github.com/bounswe/bounswe2023group1/issues/394) | Alperen | 28.11.2023 | --- | 1hr | 1hr |
-| Continue - Creation of My Task screen | [#390](https://github.com/bounswe/bounswe2023group1/issues/390) | Harun | 28.11.2023 | 3hr |
-| Continue - Update User Profile Pages of Our Mobile Application According to New Mockups | [#360](https://github.com/bounswe/bounswe2023group1/issues/360) | Çağrı | 28.11.2023 |  2hr |
+| Description | Issue | Assignee | Due |  Actual Duration |Estimated Duration |  
+| --- | --- | --- | --- | --- | --- |
+| Continue - Mobile Settings and Notification Pages | [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Elif | 28.11.2023  | 2hr | 2hr |
+| Continue - Improving API's to provide admin related service | [#395](https://github.com/bounswe/bounswe2023group1/issues/395) | Volkan | 28.11.2023  | 2hr | 2hr |
+| Continue - Improving API's to provide coordinator related service | [#397](https://github.com/bounswe/bounswe2023group1/issues/397) | Volkan | 28.11.2023  | 1hr |2hr |
+| Continue - Creation of Notification Screen | [#394](https://github.com/bounswe/bounswe2023group1/issues/394) | Alperen | 28.11.2023  | 1hr | 1hr |
+| Continue - Creation of My Task screen | [#390](https://github.com/bounswe/bounswe2023group1/issues/390) | Harun | 28.11.2023 | 3hr | 3hr |
+| Continue - Update User Profile Pages of Our Mobile Application According to New Mockups | [#360](https://github.com/bounswe/bounswe2023group1/issues/360) | Çağrı | 28.11.2023 |  --- |  2hr |
 | Continue - Mobile- Map Screen Implementation | [#324](https://github.com/bounswe/bounswe2023group1/issues/324) | Alperen | 28.11.2023 | --- | 2hr | 2hr |
-| Continue - Event creation service  | [#379](https://github.com/bounswe/bounswe2023group1/issues/379) | Türker | 28.11.2023 |  --- | 3hr |3hr |
-| Continue - Develop map based interfaces for warnings, disaster occurrences, and actions | [#425](https://github.com/bounswe/bounswe2023group1/issues/425) | Furkan | 28.11.2023 | --- | 2hr | 8hr |
-| Continue - Finalize API endpoints for map interactions, including updating, adding, and removing locations. | [#538](https://github.com/bounswe/bounswe2023group1/issues/538) | Furkan | 12.12.2023 | --- | 2hr | 3hr |
-| Continue - Implementing information/event functionalities | [#539](https://github.com/bounswe/bounswe2023group1/issues/539) | Türker | 12.12.2023 | --- | 3hr | 4hr |
-| Continue - Implement annotation rendering for frontend | [#541](https://github.com/bounswe/bounswe2023group1/issues/541) | Ilgaz | 12.12.2023 | --- | 4hr | 12hr |
-| Continue - Implement annotation creation for frontend | [#542](https://github.com/bounswe/bounswe2023group1/issues/542) | Ilgaz | 12.12.2023 | --- | 4hr | 12hr |
-| Continue - Investigate annotations and decide on annotation format | [#543](https://github.com/bounswe/bounswe2023group1/issues/543) | Ilgaz | 12.12.2023 | --- | 9hr | 12hr |
-| Research/start on annotation for backend | [#544](https://github.com/bounswe/bounswe2023group1/issues/544) | Backend | 12.12.2023 | 7hr |
-| My Resources Page implementation | [#545](https://github.com/bounswe/bounswe2023group1/issues/545) | Alperen | 12.12.2023 | --- | 4hr | 8hr |
-| My Requests Page implementation | [#546](https://github.com/bounswe/bounswe2023group1/issues/546) | Çağrı | 12.12.2023 | 6hr |
-| Task Creation Implementation | [#547](https://github.com/bounswe/bounswe2023group1/issues/547) | Harun | 12.12.2023 | 5hr |
-| Request Creation Integration with Backend | [#548](https://github.com/bounswe/bounswe2023group1/issues/548) | Kübra | 12.12.2023 | 12hr | 
-| Create Customized Responder Map Page for Responders - continue | [#550](https://github.com/bounswe/bounswe2023group1/issues/550) | Kübra | 12.12.2023 | 6hr | 
-| Refactoring some API endpoints in backend | [#555](https://github.com/bounswe/bounswe2023group1/issues/555) | Ali | 19.12.2023 | 2hr |
-| Recurrent Need Implementation | [#559](https://github.com/bounswe/bounswe2023group1/issues/559) | Ali | 19.12.2023 | 6hr |
-| Matching Resources to Requests | [#561](https://github.com/bounswe/bounswe2023group1/issues/561) | Ali | 19.12.2023 | 6hr | 
-| Frontend - Multilingual Support | [#560](https://github.com/bounswe/bounswe2023group1/issues/560) | Orkan | 19.12.2023 | 4hr | 
+| Continue - Event creation service  | [#379](https://github.com/bounswe/bounswe2023group1/issues/379) | Türker | 28.11.2023 |  --- | 3hr | 3hr |
+| Continue - Develop map based interfaces for warnings, disaster occurrences, and actions | [#425](https://github.com/bounswe/bounswe2023group1/issues/425) | Furkan | 28.11.2023 | 2hr | 8hr |
+| Continue - Finalize API endpoints for map interactions, including updating, adding, and removing locations. | [#538](https://github.com/bounswe/bounswe2023group1/issues/538) | Furkan | 12.12.2023 | 2hr | 3hr |
+| Continue - Implementing information/event functionalities | [#539](https://github.com/bounswe/bounswe2023group1/issues/539) | Türker | 12.12.2023 | 3hr | 4hr |
+| Continue - Implement annotation rendering for frontend | [#541](https://github.com/bounswe/bounswe2023group1/issues/541) | Ilgaz | 12.12.2023 | 4hr | 12hr |
+| Continue - Implement annotation creation for frontend | [#542](https://github.com/bounswe/bounswe2023group1/issues/542) | Ilgaz | 12.12.2023  | 4hr | 12hr |
+| Continue - Investigate annotations and decide on annotation format | [#543](https://github.com/bounswe/bounswe2023group1/issues/543) | Ilgaz | 12.12.2023  | 9hr | 12hr |
+| Research/start on annotation for backend | [#544](https://github.com/bounswe/bounswe2023group1/issues/544) | Backend | 12.12.2023 |  --- | 7hr |
+| My Resources Page implementation | [#545](https://github.com/bounswe/bounswe2023group1/issues/545) | Alperen | 12.12.2023 |  4hr | 8hr |
+| My Requests Page implementation | [#546](https://github.com/bounswe/bounswe2023group1/issues/546) | Çağrı | 12.12.2023 |  --- |  6hr |
+| Task Creation Implementation | [#547](https://github.com/bounswe/bounswe2023group1/issues/547) | Harun | 12.12.2023 |   --- | 5hr |
+| Request Creation Integration with Backend | [#548](https://github.com/bounswe/bounswe2023group1/issues/548) | Kübra | 12.12.2023 |  --- | 12hr | 
+| Create Customized Responder Map Page for Responders - continue | [#550](https://github.com/bounswe/bounswe2023group1/issues/550) | Kübra | 12.12.2023 |  --- | 6hr | 
+| Refactoring some API endpoints in backend | [#555](https://github.com/bounswe/bounswe2023group1/issues/555) | Ali | 19.12.2023 |  --- | 2hr |
+| Recurrent Need Implementation | [#559](https://github.com/bounswe/bounswe2023group1/issues/559) | Ali | 19.12.2023 |  --- | 6hr |
+| Matching Resources to Requests | [#561](https://github.com/bounswe/bounswe2023group1/issues/561) | Ali | 19.12.2023 |  --- | 6hr | 
+| Frontend - Multilingual Support | [#560](https://github.com/bounswe/bounswe2023group1/issues/560) | Orkan | 19.12.2023 |  --- |4hr | 
 
 
 
@@ -46,6 +46,7 @@
 
 
 ## Planned vs. Actual
+
 
 
 
