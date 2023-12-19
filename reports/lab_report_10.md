@@ -30,8 +30,8 @@
 | My Resources Page implementation | [#545](https://github.com/bounswe/bounswe2023group1/issues/545) | Alperen | 12.12.2023 | ---  |  4hr | 8hr |
 | My Requests Page implementation | [#546](https://github.com/bounswe/bounswe2023group1/issues/546) | Çağrı | 12.12.2023  | --- |  6hr |  6hr |
 | Task Creation Implementation | [#547](https://github.com/bounswe/bounswe2023group1/issues/547) | Harun | 12.12.2023  | --- |   --- | 5hr |
-| Request Creation Integration with Backend | [#548](https://github.com/bounswe/bounswe2023group1/issues/548) | Kübra | 12.12.2023  | --- |  --- | 12hr | 
-| Create Customized Responder Map Page for Responders - continue | [#550](https://github.com/bounswe/bounswe2023group1/issues/550) | Kübra | 12.12.2023  | --- |  --- | 6hr | 
+| Request Creation Integration with Backend | [#548](https://github.com/bounswe/bounswe2023group1/issues/548) | Kübra | 19.12.2023  | [#568](https://github.com/bounswe/bounswe2023group1/pull/568) |  2hr | 10hr | 
+| Create Customized Responder Map Page for Responders - continue | [#550](https://github.com/bounswe/bounswe2023group1/issues/550), [#580](https://github.com/bounswe/bounswe2023group1/issues/580) | Kübra | 19.12.2023  | [#575](https://github.com/bounswe/bounswe2023group1/pull/575) |  6hr | 6hr | 
 | Refactoring some API endpoints in backend | [#555](https://github.com/bounswe/bounswe2023group1/issues/555) | Ali | 19.12.2023 | [#558](https://github.com/bounswe/bounswe2023group1/pull/558) | 3hr | 2hr |
 | Recurrent Need Implementation | [#559](https://github.com/bounswe/bounswe2023group1/issues/559) | Ali | 19.12.2023  | [#576](https://github.com/bounswe/bounswe2023group1/pull/576) |  5hr | 6hr |
 | Continue - Matching Resources to Requests | [#561](https://github.com/bounswe/bounswe2023group1/issues/561) | Ali | 19.12.2023  | --- |  2hr | 6hr | 
@@ -41,13 +41,12 @@
 
 ## Completed tasks that were not planned for the week
 
-| Description | Issue | Assignee | Due | PR |  
-| --- | --- | --- | --- | --- |
+| Description | Issue | Assignee | Duration | PR |  
+| Integration of Category Tree Data for Both Material and Human Resources | [#570](https://github.com/bounswe/bounswe2023group1/issues/570) | Kübra | 4hr | [#569](https://github.com/bounswe/bounswe2023group1/pull/569) |
+| Fix Unresponsiveness on Map Page and Enhance Annotation Card Functionality | [#565](https://github.com/bounswe/bounswe2023group1/issues/565) | Kübra | 6hr | [#564](https://github.com/bounswe/bounswe2023group1/pull/564) |
 
 
 ## Planned vs. Actual
-
-
 
 
 ## Your plans for the next week
@@ -64,6 +63,10 @@
 | Missing Unit Tests for ActionController | [#572](https://github.com/bounswe/bounswe2023group1/issues/572) | Volkan | 26.12.2023 | 1hr |
 | Improving Resource Categorization | [#586](https://github.com/bounswe/bounswe2023group1/issues/586) | Volkan | 26.12.2023 | 4hr |
 | Meeting with the backend team for Annotation plan | [#587](https://github.com/bounswe/bounswe2023group1/issues/587) | Backend Team | 26.12.2023 | 2hr |
+| Continue-Request Creation Integration with Backend | [#548](https://github.com/bounswe/bounswe2023group1/issues/548) | Kübra | 26.12.2023 |  10hr | 
+| Frontend - Facilitator Main Page | [#588](https://github.com/bounswe/bounswe2023group1/issues/588) | Kübra | 26.12.2023 |  12hr | 
+| Responder-Task Page | [#420](https://github.com/bounswe/bounswe2023group1/issues/420), [#415](https://github.com/bounswe/bounswe2023group1/issues/415) | Ilgaz | 26.12.2023 |  8hr | 
+| Frontend- Coordinator | [#589](https://github.com/bounswe/bounswe2023group1/issues/589) | Kübra, Ilgaz | 26.12.2023 |  16hr | 
 
 
 ## Risks
