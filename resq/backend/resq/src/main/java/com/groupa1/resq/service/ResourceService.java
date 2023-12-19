@@ -101,4 +101,22 @@ public class ResourceService {
     public ResponseEntity<List<ResourceDto>> filterByDistance(BigDecimal latitude, BigDecimal longitude, BigDecimal distance){
         return ResponseEntity.ok(resourceRepository.filterByDistance(latitude, longitude, distance).stream().map(resource -> resourceConverter.convertToDto(resource)).toList());
     }
+
+    public ResponseEntity<List<ResourceDto>> filterResourceRectangularScope(BigDecimal latitude1, BigDecimal longitude1, BigDecimal latitude2, BigDecimal longitude2, String categoryTreeId, Long userId){
+        Specification<Resource> spec = Specification.where(null);
+
+        if (longitude1 != null && latitude1 != null && longitude2 != null && latitude2 != null) {
+
+            spec = spec.and(ResourceSpecifications.isWithinRectangleScope(longitude1, longitude2, latitude1, latitude2));
+
+        }
+        if (categoryTreeId != null) {
+            spec = spec.and(ResourceSpecifications.hasCategoryTreeId(categoryTreeId));
+        }
+        if (userId != null) {
+            spec = spec.and(ResourceSpecifications.hasOwnerId(userId));
+        }
+        return ResponseEntity.ok(resourceRepository.findAll(spec).stream().map(resource -> resourceConverter.convertToDto(resource)).toList());
+
+    }
 }

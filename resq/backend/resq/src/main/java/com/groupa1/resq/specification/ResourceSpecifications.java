@@ -1,5 +1,6 @@
 package com.groupa1.resq.specification;
 
+import com.groupa1.resq.entity.Need;
 import com.groupa1.resq.entity.Resource;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -21,6 +22,15 @@ public class ResourceSpecifications {
 
     public static Specification<Resource> hasLongitude(BigDecimal longitude) {
         return (root, query, builder) -> builder.equal(root.get("longitude"), longitude);
+    }
+
+    public static Specification<Resource> isWithinRectangleScope(BigDecimal longitude1, BigDecimal longitude2,
+                                                             BigDecimal latitude1, BigDecimal latitude2) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.and(
+                        criteriaBuilder.between(root.get("longitude"), longitude1, longitude2),
+                        criteriaBuilder.between(root.get("latitude"), latitude1, latitude2)
+                );
     }
 
 }

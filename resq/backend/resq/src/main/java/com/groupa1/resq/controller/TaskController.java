@@ -1,6 +1,9 @@
 package com.groupa1.resq.controller;
 
+import com.groupa1.resq.entity.enums.EStatus;
+import com.groupa1.resq.entity.enums.EUrgency;
 import com.groupa1.resq.request.CreateTaskRequest;
+import com.groupa1.resq.request.UpdateTaskRequest;
 import com.groupa1.resq.response.TaskResponse;
 import com.groupa1.resq.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +45,19 @@ public class TaskController {
     @GetMapping("/viewTasks")
     public ResponseEntity<List<TaskResponse>> viewAllTasks(@RequestParam Long userId) {
         return taskService.viewAllTasks(userId);
+    }
+
+    @PreAuthorize("hasRole('COORDINATOR')")
+    @PostMapping("/updateTask")
+    public ResponseEntity<String> updateTask(@RequestParam Long taskId, @RequestBody UpdateTaskRequest updateTaskRequest) {
+        return taskService.updateTask(taskId, updateTaskRequest);
+    }
+
+    @PreAuthorize("hasRole('COORDINATOR')")
+    @PostMapping("/viewTaskByFilter")
+    public ResponseEntity<List<TaskResponse>> viewTaskByFilter(@RequestParam Long assignerId, @RequestParam Long assigneeId,
+                                                               @RequestParam EUrgency urgency, @RequestParam EStatus status) {
+        return taskService.viewTaskByFilter(assignerId, assigneeId, urgency, status);
     }
 
 
