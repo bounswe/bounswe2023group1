@@ -8,26 +8,31 @@ import { Add } from "@mui/icons-material";
 
 
 export default function ResponderMapPage() {
+    const navigate = useNavigate();
+    const { data, isError, isLoading, error } = useQuery(['viewAllTasks'], () => viewAllTasks(userId));
 
-    //const queryClient = useQueryClient()
+    if (isLoading) {
+        return <div>Loading tasks...</div>;
+    }
 
-    const navigate = useNavigate()
-    const resources = useQuery({ queryKey: ['viewAllTasks'], queryFn: viewAllTasks })
+    if (isError) {
+        console.error('Error fetching tasks:', error);
+        return <div>Error fetching tasks.</div>;
+    }
 
-    const mytaskMarkers = (resources.data?.data || []).map(a => ({ ...a, type: "My Tasks" }))
-    const allMarkers = [...mock_markers, ...mytaskMarkers]
-    /*/ Mutations
-    const mutation = useMutation({
-        mutationFn: postTodo,
-        onSuccess: () => {
-            // Invalidate and refetch
-            queryClient.invalidateQueries({queryKey: ['todos']})
-        },
-    })*/
+    console.log('Tasks data:', data);
+
+    const taskMarkers = data?.map(task => ({
+        lat: task.startLatitude,
+        lng: task.startLongitude,
+        title: task.description,
+        dueDate: task.dueDate,
+        isCompleted: task.completed,
+    }));
 
     return (
         <>
-            <MapPage allMarkers={allMarkers} />
+            <MapPage allMarkers={taskMarkers || []} />
             <Fab color="primary" variant="extended" onClick={() => navigate("/account")} sx={{
                 position: 'absolute',
                 bottom: 32,
@@ -37,7 +42,5 @@ export default function ResponderMapPage() {
                 My Tasks
             </Fab>
         </>
-
-    )
-
+    );
 }
