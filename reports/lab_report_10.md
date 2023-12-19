@@ -54,7 +54,8 @@
 
 | Description | Issue | Assignee | Due | Estimated Duration |  
 | --- | --- | --- | --- | --- |
-|TASK | [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Elif | 28.11.2023 |  --- | 2hr |2hr |
+| Implement annotation rendering for mobile | [#581](https://github.com/bounswe/bounswe2023group1/issues/581) | Mobile Team | 26.12.2023 | 10hr |
+| Implement annotation creation for mobile | [#582](https://github.com/bounswe/bounswe2023group1/issues/582) | Mobile Team | 26.12.2023 | 10hr |
 
 
 ## Risks
