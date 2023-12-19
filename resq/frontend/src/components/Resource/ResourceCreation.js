@@ -1,4 +1,4 @@
-import React, {createContext, useState, useContext} from 'react';
+import React, { createContext, useState, useContext } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -11,22 +11,22 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 
-import {ResourceContext, ResourceProvider, useResource} from './ResourceContext';
+import { ResourceContext, ResourceProvider, useResource } from './ResourceContext';
 import ResourceDetail1 from "./ResourceDetail1";
 import ResourceDetail2 from "./ResourceDetail2";
 import ResourceAddress from "./ResourceAddress";
-import {createResource} from "../../AppService";
+import { createResource } from "../../AppService";
 
 function Copyright(props) {
     return (
-        <div style={{position: 'fixed', bottom: 0, width: '100%'}}>
+        <div style={{ position: 'fixed', bottom: 0, width: '100%' }}>
             <Typography variant="body2" color="text.secondary" align="center" {...props}>
                 {'Copyright © '}
                 <Link color="inherit" href="https://github.com/bounswe/bounswe2023group1">
-                    <span style={{fontWeight: 'bold'}}>ResQ</span>
+                    <span style={{ fontWeight: 'bold' }}>ResQ</span>
                 </Link>{' '}
                 {new Date().getFullYear()}
                 {'.'}
@@ -55,11 +55,11 @@ export default function Resource() {
     function getStepContent(step) {
         switch (step) {
             case 0:
-                return <ResourceAddress resourceData={resourceData} setResourceData={setResourceData}/>;
+                return <ResourceAddress resourceData={resourceData} setResourceData={setResourceData} />;
             case 1:
-                return <ResourceDetail1 resourceData={resourceData} setResourceData={setResourceData}/>;
+                return <ResourceDetail1 resourceData={resourceData} setResourceData={setResourceData} />;
             case 2:
-                return <ResourceDetail2 resourceData={resourceData} setResourceData={setResourceData}/>;
+                return <ResourceDetail2 resourceData={resourceData} setResourceData={setResourceData} />;
             default:
                 throw new Error('Unknown step');
         }
@@ -82,7 +82,7 @@ export default function Resource() {
         <ResourceProvider>
             <React.Fragment>
                 <ThemeProvider theme={customTheme}>
-                    <CssBaseline/>
+                    <CssBaseline />
                     <AppBar
                         position="absolute"
                         color="default"
@@ -93,9 +93,9 @@ export default function Resource() {
                         }}
                     >
                     </AppBar>
-                    <Container component="main" maxWidth="sm" sx={{mb: 4}}>
-                        <Paper variant="outlined" sx={{my: {xs: 3, md: 6}, p: {xs: 2, md: 3}}}>
-                            <Stepper activeStep={activeStep} sx={{pt: 3, pb: 5}}>
+                    <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+                        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+                            <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
                                 {steps.map((label) => (
                                     <Step key={label}>
                                         <StepLabel>{label}</StepLabel>
@@ -114,9 +114,9 @@ export default function Resource() {
                             ) : (
                                 <React.Fragment>
                                     {getStepContent(activeStep)}
-                                    <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
+                                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                                         {activeStep !== 0 && (
-                                            <Button onClick={handleBack} sx={{mt: 3, ml: 1}}>
+                                            <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
                                                 Back
                                             </Button>
                                         )}
@@ -124,7 +124,7 @@ export default function Resource() {
                                         <Button
                                             variant="contained"
                                             onClick={handleNext}
-                                            sx={{mt: 3, ml: 1}}
+                                            sx={{ mt: 3, ml: 1 }}
                                         >
                                             {activeStep === steps.length - 1 ? 'Proceed' : 'Next'}
                                         </Button>
@@ -132,7 +132,7 @@ export default function Resource() {
                                 </React.Fragment>
                             )}
                         </Paper>
-                        <Copyright/>
+                        <Copyright />
                     </Container>
                 </ThemeProvider>
             </React.Fragment>
