@@ -57,6 +57,7 @@
 | Implement annotation rendering for mobile | [#581](https://github.com/bounswe/bounswe2023group1/issues/581) | Mobile Team | 26.12.2023 | 10hr |
 | Implement annotation creation for mobile | [#582](https://github.com/bounswe/bounswe2023group1/issues/582) | Mobile Team | 26.12.2023 | 10hr |
 | Implement on annotation for backend | [#544](https://github.com/bounswe/bounswe2023group1/issues/544) | Backend Team | 26.12.2023 | 12hr |
+| Missing endpoints task-action, resolve issues | [#583](https://github.com/bounswe/bounswe2023group1/issues/583) | Furkan | 26.12.2023 | 3hr |
 
 
 ## Risks
