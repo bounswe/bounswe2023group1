@@ -1,15 +1,19 @@
 import MapPage from "./MapPage";
 import { useQuery } from "@tanstack/react-query";
-import { getAllResources } from "../AppService";
-import { mock_markers } from "./Mock_markers";
+import { viewAllTasks } from "../AppService";
 import { Fab } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Add } from "@mui/icons-material";
 
-
 export default function ResponderMapPage() {
     const navigate = useNavigate();
-    const { data, isError, isLoading, error } = useQuery(['viewAllTasks'], () => viewAllTasks(userId));
+
+    const userId = parseInt(localStorage.getItem('userId'));
+
+    const { data, isError, isLoading, error } = useQuery(
+        ['viewAllTasks', userId],
+        () => viewAllTasks(userId),
+    );
 
     if (isLoading) {
         return <div>Loading tasks...</div>;
