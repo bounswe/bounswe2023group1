@@ -32,9 +32,9 @@
 | Task Creation Implementation | [#547](https://github.com/bounswe/bounswe2023group1/issues/547) | Harun | 12.12.2023  | --- |   --- | 5hr |
 | Request Creation Integration with Backend | [#548](https://github.com/bounswe/bounswe2023group1/issues/548) | Kübra | 12.12.2023  | --- |  --- | 12hr | 
 | Create Customized Responder Map Page for Responders - continue | [#550](https://github.com/bounswe/bounswe2023group1/issues/550) | Kübra | 12.12.2023  | --- |  --- | 6hr | 
-| Refactoring some API endpoints in backend | [#555](https://github.com/bounswe/bounswe2023group1/issues/555) | Ali | 19.12.2023 | --- | --- | 2hr |
-| Recurrent Need Implementation | [#559](https://github.com/bounswe/bounswe2023group1/issues/559) | Ali | 19.12.2023  | --- |  --- | 6hr |
-| Matching Resources to Requests | [#561](https://github.com/bounswe/bounswe2023group1/issues/561) | Ali | 19.12.2023  | --- |  --- | 6hr | 
+| Refactoring some API endpoints in backend | [#555](https://github.com/bounswe/bounswe2023group1/issues/555) | Ali | 19.12.2023 | [#558](https://github.com/bounswe/bounswe2023group1/pull/558) | 3hr | 2hr |
+| Recurrent Need Implementation | [#559](https://github.com/bounswe/bounswe2023group1/issues/559) | Ali | 19.12.2023  | [#576](https://github.com/bounswe/bounswe2023group1/pull/576) |  5hr | 6hr |
+| Continue - Matching Resources to Requests | [#561](https://github.com/bounswe/bounswe2023group1/issues/561) | Ali | 19.12.2023  | --- |  2hr | 6hr | 
 | Frontend - Multilingual Support | [#560](https://github.com/bounswe/bounswe2023group1/issues/560) | Orkan | 19.12.2023 | ---  |  --- |4hr | 
 
 
