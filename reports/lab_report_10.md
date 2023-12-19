@@ -42,6 +42,7 @@
 ## Completed tasks that were not planned for the week
 
 | Description | Issue | Assignee | Duration | PR |  
+| --- | --- | --- | --- | --- | 
 | Integration of Category Tree Data for Both Material and Human Resources | [#570](https://github.com/bounswe/bounswe2023group1/issues/570) | Kübra | 4hr | [#569](https://github.com/bounswe/bounswe2023group1/pull/569) |
 | Fix Unresponsiveness on Map Page and Enhance Annotation Card Functionality | [#565](https://github.com/bounswe/bounswe2023group1/issues/565) | Kübra | 6hr | [#564](https://github.com/bounswe/bounswe2023group1/pull/564) |
 
