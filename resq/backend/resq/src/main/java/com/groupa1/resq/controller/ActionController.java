@@ -1,5 +1,6 @@
 package com.groupa1.resq.controller;
 
+import com.groupa1.resq.auth.UserDetailsImpl;
 import com.groupa1.resq.request.CreateCommentRequest;
 import com.groupa1.resq.request.CreateActionRequest;
 import com.groupa1.resq.dto.ActionDto;
@@ -7,6 +8,7 @@ import com.groupa1.resq.service.ActionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,12 +55,16 @@ public class ActionController {
 
     @PreAuthorize("hasRole('RESPONDER')")
     @PostMapping("/completeAction")
-    public ResponseEntity<String> completeAction(@RequestParam Long actionId, @RequestParam Long userId) {
+    public ResponseEntity<String> completeAction(@RequestParam Long actionId, Authentication authentication){
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
         return actionService.completeAction(actionId, userId);
     }
     @PreAuthorize("hasRole('FACILITATOR')")
     @PostMapping("/verifyAction")
-    public ResponseEntity<String> verifyAction(@RequestParam Long actionId, @RequestParam Long userId){
+    public ResponseEntity<String> verifyAction(@RequestParam Long actionId, Authentication authentication){
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
         return actionService.verifyAction(actionId, userId);
     }
 
