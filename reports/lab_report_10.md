@@ -6,7 +6,7 @@
 ## Progress Summary
 **This week:**  This week's progress development of Mobile Settings, Notification Pages, and APIs for admin and coordinator and facilitator related services. Key achievements include the creation of Notification and My Task screens, as well as updates to User Profile Pages in alignment with new mockups. Refactorization on the endpoints required accordingly. Backend and client teams started to learn/implement annotations.  Looking ahead, the team is on schedule to meet upcoming deadlines, reflecting effective collaboration and consistent project advancement.
 
-**Our objective for the following week:**We have left one week until the final presentation of the application. We will finish the annotations since customer indicated that they are a critical feature for the application. Also, we will do our best to cover the significant requirements.
+**Our objective for the following week:** We have left one week until the final presentation of the application. We will finish the annotations since customer indicated that they are a critical feature for the application. Also, we will do our best to cover the significant requirements.
 
 ## What was planned for the week? How did it go?
 
