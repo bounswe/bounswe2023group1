@@ -48,7 +48,8 @@
 
 
 ## Planned vs. Actual
-
+Frontend and Mobile Development: Tasks related to user interface design, such as the creation of Notification and My Task screens, were completed on schedule. The mobile team effectively implemented the settings and notification pages. Complex features like map integrations and annotation functionalities are still in progress, with some tasks taking longer than anticipated. At frontend, there were problems that needed to be fixed to further progress(can be visible above at completed tasks that were not planned for the week), thus, backend integration of request creation is still in progress. Since tasks are too much for the next week, all of the frontend team should focus to not having similar problems again this week.
+Backend Development: Backend tasks, including API enhancements and endpoint refactorization, were largely completed within the estimated timeframes. However, the development of annotations on the backend is progressing slower than planned and needs accelerated efforts.
 
 ## Your plans for the next week
 
@@ -71,9 +72,10 @@
 
 
 ## Risks
-*  In order to complete the project on time, we must complete the tasks on time and speed up. Since our final product delivery is very soon and we still have many requirements to complete, in order to make our customer satisfied, we should increase our speed of development.
+* Time Management:  In order to complete the project on time, we must complete the tasks on time and speed up. Since our final product delivery is very soon and we still have many requirements to complete, in order to make our customer satisfied, we should increase our speed of development.The impending final delivery deadline presents a risk of incomplete features, notably the critical annotations. This necessitates efficient time management and possible task reprioritization.
 * We may have to hurry up to finish the annotation since we have moved a little slow especially on the backend.
-
+* Complex Feature Completion: The development of sophisticated features, especially annotations and map-based interfaces, is more time-intensive than initially estimated, potentially impacting the final product's timeline and quality.
+* Inter-team Coordination: Effective collaboration between frontend, backend, and mobile teams is crucial. Delays or miscommunication in one team can adversely affect the overall project progress, necessitating enhanced coordination and communication strategies.
 
 ## Participants
 - Alperen Dağı
