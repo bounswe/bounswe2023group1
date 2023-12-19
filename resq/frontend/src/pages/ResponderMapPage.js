@@ -10,10 +10,10 @@ export default function ResponderMapPage() {
 
     const userId = parseInt(localStorage.getItem('userId'));
 
-    const { data, isError, isLoading, error } = useQuery(
-        ['viewAllTasks', userId],
-        () => viewAllTasks(userId),
-    );
+    const { data, isError, isLoading, error } = useQuery({
+        queryKey: ['viewAllTasks', userId],
+        queryFn: () => viewAllTasks(userId),
+    });
 
     if (isLoading) {
         return <div>Loading tasks...</div>;
