@@ -13,8 +13,8 @@
 | Description | Issue | Assignee | Due  | PR | Actual Duration |Estimated Duration |  
 | --- | --- | --- | --- | --- | ---  | --- |
 | Continue - Mobile Settings and Notification Pages | [#280](https://github.com/bounswe/bounswe2023group1/issues/280) | Elif | 28.11.2023  | ---  | 2hr | 2hr |
-| Continue - Improving API's to provide admin related service | [#395](https://github.com/bounswe/bounswe2023group1/issues/395) | Volkan | 28.11.2023  | ---  | 2hr | 2hr |
-| Continue - Improving API's to provide coordinator related service | [#397](https://github.com/bounswe/bounswe2023group1/issues/397) | Volkan | 28.11.2023  | ---  | 1hr |2hr |
+| Continue - Improving API's to provide admin related service | [#395](https://github.com/bounswe/bounswe2023group1/issues/395) | Volkan | 28.11.2023  | [#577](https://github.com/bounswe/bounswe2023group1/pull/577)  | 5hr | 2hr |
+| Continue - Improving API's to provide coordinator related service | [#397](https://github.com/bounswe/bounswe2023group1/issues/397) | Volkan | 28.11.2023  | [#571](https://github.com/bounswe/bounswe2023group1/pull/571)  | 2hr |2hr |
 | Continue - Creation of Notification Screen | [#394](https://github.com/bounswe/bounswe2023group1/issues/394) | Alperen | 28.11.2023 | -- | 1hr | 1hr |
 | Continue - Creation of My Task screen | [#390](https://github.com/bounswe/bounswe2023group1/issues/390) | Harun | 28.11.2023| -- | 3hr | 3hr |
 | Continue - Update User Profile Pages of Our Mobile Application According to New Mockups | [#360](https://github.com/bounswe/bounswe2023group1/issues/360) | Çağrı | 28.11.2023  | --- |  --- |  2hr |
@@ -58,6 +58,10 @@
 | Implement annotation creation for mobile | [#582](https://github.com/bounswe/bounswe2023group1/issues/582) | Mobile Team | 26.12.2023 | 10hr |
 | Implement on annotation for backend | [#544](https://github.com/bounswe/bounswe2023group1/issues/544) | Backend Team | 26.12.2023 | 12hr |
 | Missing endpoints task-action, resolve issues | [#583](https://github.com/bounswe/bounswe2023group1/issues/583) | Furkan | 26.12.2023 | 3hr |
+| Missing Unit Tests for NotificationController | [#579](https://github.com/bounswe/bounswe2023group1/issues/579) | Volkan | 26.12.2023 | 1hr |
+| Missing Unit Tests for ResourceController | [#573](https://github.com/bounswe/bounswe2023group1/issues/573) | Volkan | 26.12.2023 | 1hr |
+| Missing Unit Tests for TaskController | [#574](https://github.com/bounswe/bounswe2023group1/issues/574) | Volkan | 26.12.2023 | 1hr |
+| Missing Unit Tests for ActionController | [#572](https://github.com/bounswe/bounswe2023group1/issues/572) | Volkan | 26.12.2023 | 1hr |
 
 
 ## Risks
