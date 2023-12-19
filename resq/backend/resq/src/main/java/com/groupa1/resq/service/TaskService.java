@@ -186,7 +186,7 @@ public class TaskService {
                 task.getResources().forEach(resource -> {
 
                 resourceResponse.setId(resource.getId())
-                        .setSender(resource.getSender()) // may change to resource.getOwner().getId()
+                        .setSenderId(resource.getSender().getId()) // may change to resource.getOwner().getId()
                         .setQuantity(resource.getQuantity())
                         .setGender(resource.getGender())
                         .setCategoryId(resource.getCategoryTreeId())
@@ -331,7 +331,7 @@ public class TaskService {
             resources.forEach( resource -> {
                 ResourceResponse resourceResponse = new ResourceResponse();
                 resourceResponse.setId(resource.getId())
-                        .setSender(resource.getSender())
+                        .setSenderId(resource.getSender().getId())
                         .setQuantity(resource.getQuantity())
                         .setCategoryId(resource.getCategoryTreeId())
                         .setGender(resource.getGender())

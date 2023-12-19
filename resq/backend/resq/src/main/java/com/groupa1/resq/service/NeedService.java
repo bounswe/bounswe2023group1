@@ -58,6 +58,7 @@ public class NeedService {
         need.setCategoryTreeId(createNeedRequest.getCategoryTreeId());
         need.setSize(ESize.valueOf(createNeedRequest.getSize()));
         need.setStatus(ENeedStatus.NOT_INVOLVED);
+        need.setIsRecurrent(createNeedRequest.getIsRecurrent());
         return needRepository.save(need).getId();
 
     }
@@ -105,6 +106,7 @@ public class NeedService {
         need.setQuantity(updateNeedRequest.getQuantity());
         need.setCategoryTreeId(updateNeedRequest.getCategoryTreeId());
         need.setSize(ESize.valueOf(updateNeedRequest.getSize()));
+        need.setIsRecurrent(updateNeedRequest.getIsRecurent());
         needRepository.save(need);
         return ResponseEntity.ok("Need updated successfully");
     }
