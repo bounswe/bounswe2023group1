@@ -1,8 +1,8 @@
 package com.groupa1.resq.entity.enums;
 
 public enum EGender {
-    MAN,
-    WOMAN,
+    MALE,
+    FEMALE,
     CHILDREN_BOY, CHILDREN_GIRL,
     BABY
 }
