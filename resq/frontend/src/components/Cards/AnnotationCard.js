@@ -45,6 +45,9 @@ const AnnotationCard = ({ item }) => {
             borderRadius={4}
             display="flex"
             flexDirection="column"
+            key={item.type+item.id}
+            id={item.type+item.id}
+            className={"anno-root"}
         >
             <Typography variant="h6">{item.title}</Typography>
             <Typography variant="subtitle1" color="textSecondary">

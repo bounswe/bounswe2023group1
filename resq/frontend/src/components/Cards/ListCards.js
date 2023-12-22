@@ -95,7 +95,7 @@ export const RequestCard = ({item: {requester, urgency, needs, status, longitude
 }
 
 
-export const ResourceCard = ({item: {senderId, quantity, categoryTreeId, longitude, latitude}}) => {
+export const ResourceCard = ({item: {type, id, senderId, quantity, categoryTreeId, longitude, latitude}}) => {
     const categoryTree = useQuery({
         queryKey: ['categoryTree'],
         queryFn: () => getCategoryTree()
@@ -109,7 +109,7 @@ export const ResourceCard = ({item: {senderId, quantity, categoryTreeId, longitu
     }, [latitude, longitude]);
 
 
-    return <Card variant="outlined">
+    return <Card variant="outlined" key={type+id} id={type+id} className={"anno-root"}>
         <CardHeader
             avatar={
                 <Avatar sx={{bgcolor: type_colors["Resource"]}} aria-label="Resource">

@@ -21,11 +21,7 @@ export function postRequestRole(userId, role) {
 }
 
 export async function getUserInfo(userId) {
-    const {data} = await axios.get(`${USER_API_BASE_URL}/getUserInfo?userId=${userId}`, {
-        headers: {
-            "X-Selected-Role": "VICTIM"
-        },
-    });
+    const {data} = await axios.get(`${USER_API_BASE_URL}/getUserInfo?userId=${userId}`);
     return data
 }
 
@@ -126,27 +122,15 @@ export function viewAllRequests() {
 }
 
 export function createResource(createResourceRequest) {
-    return axios.post(`${RESOURCE_API_BASE_URL}/createResource`, createResourceRequest, {
-        headers: {
-            "X-Selected-Role": "RESPONDER"
-        },
-    });
+    return axios.post(`${RESOURCE_API_BASE_URL}/createResource`, createResourceRequest);
 }
 
 export function getAllResources() {
-    return axios.get(`${RESOURCE_API_BASE_URL}/filterByDistance?latitude=39.5&longitude=34.5&distance=10000`, {
-        headers: {
-            "X-Selected-Role": "COORDINATOR"
-        },
-    });
+    return axios.get(`${RESOURCE_API_BASE_URL}/filterByDistance?latitude=39.5&longitude=34.5&distance=10000`);
 }
 
 export async function getCategoryTree() {
-    const {data} = await axios.get(`${CATEGORY_API_BASE_URL}/getMainCategories`, {
-        headers: {
-            "X-Selected-Role": "VICTIM"
-        },
-    });
+    const {data} = await axios.get(`${CATEGORY_API_BASE_URL}/getMainCategories`);
 
     return new RootNode(data)
 }
