@@ -143,6 +143,7 @@ export function acceptTask(taskId, userId) {
     return axios.post(`${TASK_API_BASE_URL}/acceptTask?taskId=${taskId}&userId=${userId}`);
 }
 
-export function viewAllTasks(userId) {
-    return axios.get(`${TASK_API_BASE_URL}/viewTasks?userId=${userId}`);
+export async function viewAllTasks(userId) {
+    const {data} = await axios.get(`${TASK_API_BASE_URL}/viewTasks?userId=${userId}`);
+    return data
 }

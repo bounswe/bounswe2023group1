@@ -39,7 +39,7 @@ const customTheme = createTheme({
     },
 });
 
-export default function SignIn({ token, setToken }) {
+export default function SignIn({ token, setToken , setUid}) {
     const navigate = useNavigate();
 
     const [email, setEmail] = React.useState('');
@@ -65,6 +65,7 @@ export default function SignIn({ token, setToken }) {
 
                 if (response?.data?.jwt) {
                     setToken(response.data.jwt);
+                    setUid(response.data.id)
                     localStorage.setItem('userId', response.data.id);
                     navigate('/');
                 } else {

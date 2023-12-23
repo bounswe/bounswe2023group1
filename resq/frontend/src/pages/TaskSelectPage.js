@@ -10,7 +10,7 @@ import {AmountSelector, MultiCheckbox} from "../components/MultiCheckbox";
 import {DatePicker} from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import {useQuery} from "@tanstack/react-query";
-import {getCategoryTree, getUserInfo} from "../AppService";
+import {getAllResources, getCategoryTree, getUserInfo, viewAllTasks} from "../AppService";
 import Annotatable from "../components/Annotatable";
 import {Card, CardContent, CardHeader, Collapse} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
@@ -151,7 +151,8 @@ const TaskCard = ({
         ...action
     }))
 
-    return <Card variant="outlined" style={{backgroundColor: status === "TODO" ? "#f1f1f1" : "#FFF"}} className={"anno-root"} id={"Task"+id}>
+    return <Card variant="outlined" style={{backgroundColor: status === "TODO" ? "#f1f1f1" : "#FFF"}}
+                 className={"anno-root"} id={"Task" + id}>
         <CardHeader
             avatar={
                 <Avatar sx={{bgcolor: distinct_colors[id % 30]}} aria-label="Task">
@@ -222,21 +223,21 @@ const taskRanks = {
     DONE: 3,
 }
 
-export default function TaskSelectPage() {
-    const [allTasks, setAllTasks] = useState(mockTasks)
-    const [sortedTasks, setSortedTasks] = useState(mockTasks)
+export default function TaskSelectPage({uid}) {
+    //const [allTasks, setAllTasks] = useState(mockTasks)
+    const [sortedTasks, setSortedTasks] = useState([])
 
     const [shownMarkers, setShownMarkers] = useState([])
     const [shownPaths, setShownPaths] = useState([])
     const [selectedPoint, setSelectedPoint] = useState(null)
     const [mapCenter, setMapCenter] = useState([39, 34.5])
 
+    const allTasks = useQuery({queryKey: ['getTasks'], queryFn: () => viewAllTasks(uid)})
 
     useEffect(() => {
-        setSortedTasks(allTasks.sort((a, b) => taskRanks[a.status] - taskRanks[b.status]))
+        if (allTasks?.data)
+            setSortedTasks(allTasks.data.sort((a, b) => taskRanks[a.status] - taskRanks[b.status]))
     }, [allTasks]);
-
-    useQuery({queryKey: ['categoryTree'], queryFn: getCategoryTree});
 
     const avgCoords = (c, i) => (c[i][0] + c[i][1]) / 2
 
