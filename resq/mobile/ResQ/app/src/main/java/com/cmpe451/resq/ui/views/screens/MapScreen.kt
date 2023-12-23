@@ -1,6 +1,9 @@
 package com.cmpe451.resq.ui.views.screens
 
 import android.content.Context
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,11 +12,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -23,12 +32,19 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.cmpe451.resq.data.manager.UserSessionManager
+import com.cmpe451.resq.data.models.Need
+import com.cmpe451.resq.data.models.Resource
 import com.cmpe451.resq.ui.theme.DeepBlue
 import com.cmpe451.resq.ui.theme.RequestColor
 import com.cmpe451.resq.ui.theme.ResourceColor
@@ -47,7 +63,25 @@ fun MapScreen(navController: NavController, appContext: Context, mapViewModel: M
     val userSessionManager = UserSessionManager.getInstance(appContext)
     val userRoles = userSessionManager.getUserRoles()
 
+    // State to keep track of which list is currently selected
+    var selectedList by remember { mutableStateOf("Requests") }
 
+    var expandedNeedId by remember { mutableStateOf<Int?>(null) }
+    var expandedResourceId by remember { mutableStateOf<Int?>(null) }
+
+    // Dummy data for the lists
+    val needsList = listOf(
+        Need(1, 13, "52", "Please help!", 1, 41.08, 29.05, null, "NOT_INVOLVED", "2023-11-26T02:23:04.731365"),
+        Need(2, 13, "54", "Help me for god's sake", 1, 30.0, 40.0, null, "NOT_INVOLVED", "2023-11-26T10:57:10.71784")
+    )
+    val resourcesList = listOf(
+        Resource(1, 13, 23, "52", "MALE", 10, 42.08, 30.05, "2023-11-26T02:23:04.731365", "XL"),
+        Resource(2, 13, 23, "52", "MALE", 10, 42.08, 30.05, "2023-11-26T02:23:04.731365", "L"),
+        Resource(3, 13, 23, "52", "MALE", 10, 42.08, 30.05, "2023-11-26T02:23:04.731365", "L"),
+        Resource(4, 13, 23, "52", "MALE", 10, 42.08, 30.05, "2023-11-26T02:23:04.731365", "L"),
+        Resource(5, 13, 23, "52", "MALE", 10, 42.08, 30.05, "2023-11-26T02:23:04.731365", "L"),
+        Resource(6, 13, 23, "52", "MALE", 10, 42.08, 30.05, "2023-11-26T02:23:04.731365", "L")
+    )
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -118,6 +152,115 @@ fun MapScreen(navController: NavController, appContext: Context, mapViewModel: M
                     cameraPositionState.move(CameraUpdateFactory.newLatLngZoom(LatLng(firstNeed.latitude, firstNeed.longitude), 12f))
                 }
             }
+        }
+        // Requests list
+        if (selectedList == "Requests") {
+            LazyColumn(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .fillMaxWidth()
+                    .heightIn(max = 240.dp)
+                    .background(Color.White)
+            ) {
+                items(needsList) { need ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                            .clickable {
+                                expandedNeedId = if (need.id == expandedNeedId) null else need.id
+                            },
+                        elevation = 4.dp
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(text = "Category ID: ${need.categoryTreeId}")
+                            Text(text = "Quantity: ${need.quantity}")
+                            AnimatedVisibility(visible = need.id == expandedNeedId) {
+                                Column {
+                                    Text(text = "User ID: ${need.userId}")
+                                    Text(text = "Description: ${need.description}")
+                                    Row {
+                                        Button(
+                                            onClick = { /* TODO: Handle Button 1 action */ },
+                                            colors = ButtonDefaults.buttonColors(backgroundColor = RequestColor, contentColor = Color.White)
+                                        ) {
+                                            Text("Button 1")
+                                        }
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Button(
+                                            onClick = { /* TODO: Handle Button 2 action */ },
+                                            colors = ButtonDefaults.buttonColors(backgroundColor = RequestColor, contentColor = Color.White)
+                                        ) {
+                                            Text("Button 2")
+                                        }
+                                    }                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else { // Resources list
+            LazyColumn(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .fillMaxWidth()
+                    .heightIn(max = 240.dp)
+                    .background(Color.White)
+            ) {
+                items(resourcesList) { resource ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                            .clickable {
+                                expandedResourceId =
+                                    if (resource.id == expandedResourceId) null else resource.id
+                            },
+                        elevation = 4.dp
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(text = "Category ID: ${resource.categoryTreeId}")
+                            Text(text = "Quantity: ${resource.quantity}")
+                            AnimatedVisibility(visible = resource.id == expandedResourceId) {
+                                Column {
+                                    Text(text = "User ID: ${resource.senderId}")
+                                    Text(text = "Size: ${resource.size}")
+                                    Row {
+                                        Button(
+                                            onClick = { /* TODO: Handle Button 1 action */ },
+                                            colors = ButtonDefaults.buttonColors(backgroundColor = ResourceColor, contentColor = Color.White)
+                                        ) {
+                                            Text("Button 1")
+                                        }
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Button(
+                                            onClick = { /* TODO: Handle Button 2 action */ },
+                                            colors = ButtonDefaults.buttonColors(backgroundColor = ResourceColor, contentColor = Color.White)
+                                        ) {
+                                            Text("Button 2")
+                                        }
+                                    }                               }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        FloatingActionButton(
+            onClick = {
+                selectedList = if (selectedList == "Requests") "Resources" else "Requests"
+            },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp),
+            backgroundColor = if (selectedList == "Requests") RequestColor else ResourceColor
+        ) {
+            Text(
+                text = if (selectedList == "Requests") "Requests" else "Resources",
+                color = Color.White,
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+
+            )
         }
     }
 }
@@ -222,5 +365,53 @@ fun AddSignUpButton(onClick: () -> Unit) {
             color = Color.White,
             textAlign = TextAlign.Center
         )
+    }
+}
+
+@Composable
+fun ExpandableItemList() {
+    // Mock data similar to the JSON response you showed
+    val items = listOf(
+        Need(1, 13, "52", "Please help!", 1, 41.08, 29.05, null, "NOT_INVOLVED", "2023-11-26T02:23:04.731365"),
+        Need(2, 13, "54", "Help me for god's sake", 1, 30.0, 40.0, null, "NOT_INVOLVED", "2023-11-26T10:57:10.71784")
+    )
+
+    // State to track expanded items
+    val expandedItemId = remember { mutableStateOf(-1) }
+
+    LazyColumn {
+        items(items) { item ->
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .clickable {
+                        expandedItemId.value = if (expandedItemId.value == item.id) -1 else item.id
+                    },
+                elevation = 4.dp
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(text = "Category ID: ${item.categoryTreeId}")
+                    Text(text = "Quantity: ${item.quantity}")
+
+                    AnimatedVisibility(visible = expandedItemId.value == item.id) {
+                        Column {
+                            Text(text = "User ID: ${item.userId}")
+                            Text(text = "Description: ${item.description}")
+                            Row {
+                                Button(onClick = { /* Handle button click */ }) {
+                                    Text("Button 1")
+                                }
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Button(onClick = { /* Handle button click */ }) {
+                                    Text("Button 2")
+                                }
+                                // Add more buttons if needed
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

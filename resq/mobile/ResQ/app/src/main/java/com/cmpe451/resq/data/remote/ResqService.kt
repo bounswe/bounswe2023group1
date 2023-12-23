@@ -27,8 +27,7 @@ import java.time.format.DateTimeParseException
 interface CategoryTreeNodeService {
     @GET("categorytreenode/getMainCategories")
     suspend fun getMainCategories(
-        @Header("Authorization") jwtToken: String,
-        @Header("X-Selected-Role") role: String
+        @Header("Authorization") jwtToken: String
     ): Response<List<CategoryTreeNode>>
 }
 
@@ -36,7 +35,6 @@ interface ResourceService {
     @POST("resource/createResource")
     suspend fun createResource(
         @Header("Authorization") jwtToken: String,
-        @Header("X-Selected-Role") role: String,
         @Body requestBody: CreateResourceRequestBody
     ): Response<Int>
 }
@@ -45,7 +43,6 @@ interface NeedService {
     suspend fun createNeed(
         @Query("userId") userId: Int,
         @Header("Authorization") jwtToken: String,
-        @Header("X-Selected-Role") role: String,
         @Body requestBody: CreateNeedRequestBody
     ): Response<Int>
 
@@ -56,7 +53,6 @@ interface NeedService {
         @Query("longitude") longitude: Double,
         @Query("distance") distance: Double,
         @Header("Authorization") jwtToken: String,
-        @Header("X-Selected-Role") role: String,
     ): Response<List<Need>>
 
 }
@@ -73,16 +69,14 @@ interface ProfileService {
     @GET("profile/getProfileInfo")
     suspend fun getUserInfo(
         @Query("userId") userId: Int,
-        @Header("Authorization") jwtToken: String,
-        @Header("X-Selected-Role") role: String
+        @Header("Authorization") jwtToken: String
     ): Response<ProfileData>
 
     @POST("user/requestRole")
     suspend fun selectRole(
         @Query("userId") userId: Int,
         @Query("role") requestedRole: String,
-        @Header("Authorization") jwtToken: String,
-        @Header("X-Selected-Role") role: String
+        @Header("Authorization") jwtToken: String
     ): Response<String>
 
 
@@ -90,7 +84,6 @@ interface ProfileService {
     suspend fun updateProfile(
         @Query("userId") userId: Int,
         @Header("Authorization") jwtToken: String,
-        @Header("X-Selected-Role") role: String,
         @Body request: UserInfoRequest
     ): Response<String>
 
@@ -118,11 +111,9 @@ class ResqService(appContext: Context) {
     // Category Tree Node methods
     suspend fun getMainCategories(): Response<List<CategoryTreeNode>> {
         val token = userSessionManager.getUserToken() ?: ""
-        val selectedRole = userSessionManager.getSelectedRole() ?: ""
 
         return categoryTreeNodeService.getMainCategories(
-            jwtToken = "Bearer $token",
-            role = selectedRole
+            jwtToken = "Bearer $token"
         )
     }
 
@@ -130,13 +121,11 @@ class ResqService(appContext: Context) {
     suspend fun createResource(request: CreateResourceRequestBody): Response<Int> {
         val userId = userSessionManager.getUserId()
         val token = userSessionManager.getUserToken() ?: ""
-        // val selectedRole = userSessionManager.getSelectedRole() ?: ""
 
         request.senderId = userId
 
         return resourceService.createResource(
             jwtToken = "Bearer $token",
-            role = "RESPONDER",
             requestBody = request
         )
     }
@@ -145,12 +134,10 @@ class ResqService(appContext: Context) {
     suspend fun createNeed(request: CreateNeedRequestBody): Response<Int> {
         val userId = userSessionManager.getUserId()
         val token = userSessionManager.getUserToken() ?: ""
-        // val selectedRole = userSessionManager.getSelectedRole() ?: ""
 
         return needService.createNeed(
             userId = userId,
             jwtToken = "Bearer $token",
-            role = "ROLE_VICTIM",
             requestBody = request
         )
     }
@@ -166,7 +153,6 @@ class ResqService(appContext: Context) {
             latitude = latitude,
             longitude = longitude,
             distance = distance,
-            role = selectedRole,
             jwtToken = "Bearer $token"
         )
     }
@@ -199,13 +185,10 @@ class ResqService(appContext: Context) {
     suspend fun getUserInfo(): ProfileData {
         val token = userSessionManager.getUserToken() ?: ""
         val userId = userSessionManager.getUserId()
-        val selectedRole = userSessionManager.getSelectedRole() ?: ""
-
 
         val response = profileService.getUserInfo(
             userId = userId,
-            jwtToken = "Bearer $token",
-            role = selectedRole
+            jwtToken = "Bearer $token"
         )
 
         return ProfileData(
@@ -228,7 +211,6 @@ class ResqService(appContext: Context) {
     suspend fun updateUserData(profileData: ProfileData): Response<String> {
         val token = userSessionManager.getUserToken() ?: ""
         val userId = userSessionManager.getUserId()
-        val selectedRole = userSessionManager.getSelectedRole() ?: ""
 
         val request = UserInfoRequest(
             name = profileData.name ?: "",
@@ -248,7 +230,6 @@ class ResqService(appContext: Context) {
         return profileService.updateProfile(
             userId = userId,
             jwtToken = "Bearer $token",
-            role = selectedRole,
             request = request
         )
     }
@@ -256,13 +237,11 @@ class ResqService(appContext: Context) {
     suspend fun selectRole(requestedRole: String): Response<String> {
         val userId = userSessionManager.getUserId()
         val token = userSessionManager.getUserToken() ?: ""
-        val role = userSessionManager.getSelectedRole() ?: ""
 
         val response = profileService.selectRole(
             userId = userId,
             requestedRole = requestedRole,
-            jwtToken = "Bearer $token",
-            role = role
+            jwtToken = "Bearer $token"
         )
 
         return response

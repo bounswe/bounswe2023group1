@@ -27,18 +27,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.cmpe451.resq.ui.theme.OngoingTasksColor
+import com.cmpe451.resq.ui.theme.MyTasksColor
 import com.cmpe451.resq.viewmodels.OngoingTasksViewModel
+import com.cmpe451.resq.viewmodels.TasksViewModel
 
 @Composable
-fun OngoingTasksScreen(navController: NavController) {
-    val viewModel: OngoingTasksViewModel = viewModel()
+fun TasksScreen(navController: NavController) {
+    val viewModel: TasksViewModel = viewModel()
     val tasks by viewModel.tasks.collectAsState()
 
     Scaffold(
         topBar = {TopAppBar(
-            title = { Text(text = "Ongoing Tasks",
-                color = Color(0xFFE16834)) },
+            title = { Text(text = "Tasks",
+                color = MyTasksColor) },
             navigationIcon = {
                 IconButton(onClick = { navController.navigateUp() }) {
                     Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
@@ -58,7 +59,7 @@ fun OngoingTasksScreen(navController: NavController) {
         ) {
             Spacer(modifier = Modifier.height(16.dp))
             tasks.forEachIndexed { index, task ->
-                OngoingTaskCard(taskNumber = index + 1, taskDescription = task)
+                TaskCard(taskNumber = index + 1, taskDescription = task)
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
@@ -66,9 +67,9 @@ fun OngoingTasksScreen(navController: NavController) {
 }
 
 @Composable
-fun OngoingTaskCard(taskNumber: Int, taskDescription: String) {
+fun TaskCard(taskNumber: Int, taskDescription: String) {
     val borderColor = Color(0xFFE16834) // Color for the border and hashtag
-    val taskColor = OngoingTasksColor // Color for the task description
+    val taskColor = MyTasksColor // Color for the task description
     var isSelected by remember { mutableStateOf(false) }
 
     Card(
