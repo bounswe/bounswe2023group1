@@ -22,7 +22,7 @@ export default function DisasterMap({ onPointSelected, markers = [], mapCenter, 
             <Marker
                 width={33}
                 anchor={[marker.latitude, marker.longitude]}
-                key={marker.id}
+                key={marker.type+marker.id}
                 onClick={({ event }) => {
                     onPointSelected(marker);
                     event.preventDefault()
