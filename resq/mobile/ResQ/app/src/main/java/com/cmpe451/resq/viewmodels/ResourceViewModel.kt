@@ -89,14 +89,13 @@ class ResourceViewModel : ViewModel() {
     private suspend fun getCreateResourceResponse(quantity: String, appContext: Context): Result<Int> {
         val api = ResqService(appContext)
         val categoryId = _selectedItem.value?.id?.toString() ?: _selectedType.value?.id?.toString() ?: ""
-
         if (categoryId.isNotEmpty()) {
             val requestBody = CreateResourceRequestBody(
                 senderId = null,
                 categoryTreeId = categoryId,
                 quantity = quantity.toIntOrNull() ?: 0,
-                latitude = 0.0,
-                longitude = 0.0,
+                latitude = 41.086571,
+                longitude = 29.046109,
                 gender = "FEMALE"
             )
             val response = api.createResource(requestBody)

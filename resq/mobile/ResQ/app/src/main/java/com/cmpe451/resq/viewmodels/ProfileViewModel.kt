@@ -46,7 +46,7 @@ class ProfileViewModel() : ViewModel() {
         val api = ResqService(appContext)
         viewModelScope.launch {
             try {
-                Log.d("Update DATA", "")
+
                 val response = api.updateUserData(profileData)
 
                 if (response.isSuccessful) {
