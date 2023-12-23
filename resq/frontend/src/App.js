@@ -18,6 +18,7 @@ import ResponderMapPage from "./pages/ResponderMapPage";
 import { Badge } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Notifications from "./pages/Notifications";
+import TaskSelectPage from "./pages/TaskSelectPage";
 
 const SmallRedCircle = () =>
     <svg
@@ -66,6 +67,7 @@ function App() {
     const navLinks = [
         { path: '/victimmap', label: <strong>Victim Map</strong>, component: VictimMapPage, icon: <SmallRedCircle /> },
         { path: '/respondermap', label: <strong>Responder Map</strong>, component: ResponderMapPage, icon: <SmallRedCircle /> },
+        { path: '/mytasks', label: <strong>My Tasks</strong>, component: TaskSelectPage, icon: <SmallRedCircle /> },
         (role === "responder") && {
             path: '/responder',
             label: <strong>Responder Panel</strong>,
