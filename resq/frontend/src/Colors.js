@@ -8,7 +8,6 @@ export const distinct_colors = [
     '#00bfff',
     '#1e90ff',
     '#0000ff',
-    '#00008b',
     '#483d8b',
     '#7b68ee',
     '#8a2be2',

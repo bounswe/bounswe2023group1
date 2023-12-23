@@ -66,16 +66,19 @@ export default function DisasterMap({
                         onBoundsChanged && onBoundsChanged(bounds)
                     }}>
                     <ZoomControl/>
-                    <GeoJson
-                        svgAttributes={{
-                            fill: "#d4e6ec99",
-                            strokeWidth: "2",
-                            stroke: "purple",
-                            r: "2",
-                        }}
-                    >
+                    <GeoJson>
                         {paths
-                            .map(path=><GeoArrowFeature feature={geoJson(path.coordinates)} stroke={path.color} onClick={path.onClick}/>)}
+                            .map(path => <GeoArrowFeature feature={geoJson(path.coordinates)}
+                                                          svgAttributes={{
+                                                              fill: path.color,
+                                                              strokeWidth: "2",
+                                                              stroke: path.color,
+                                                              r: "2",
+                                                          }}
+                                                          onClick={({event}) => {
+                                                              onPointSelected(path);
+                                                              event.preventDefault()
+                                                          }}/>)}
                     </GeoJson>
                     {markers
                         .sort(({type}) => -marker_order.indexOf(type))

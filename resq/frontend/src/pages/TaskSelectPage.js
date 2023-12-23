@@ -87,7 +87,32 @@ const mockTasks = [
         "feedbacks": [],
         "urgency": "LOW",
         "status": "PENDING"
-    }
+    },
+    {
+        "id": 7,
+        "assignee": 9,
+        "assigner": 9,
+        "actions": [
+            {
+                "id": 4,
+                "taskId": 4,
+                "verifierId": 9,
+                "description": "action description",
+                "startLatitude": 35.5,
+                "startLongitude": 37,
+                "endLatitude": 39,
+                "endLongitude": 39.5,
+                "dueDate": null,
+                "createdDate": null,
+                "completed": false
+            }
+        ],
+        "description": "task desc",
+        "resources": [],
+        "feedbacks": [],
+        "urgency": "LOW",
+        "status": "TODO"
+    },
 ]
 
 const Location = ({latitude, longitude}) => {
@@ -108,9 +133,15 @@ const TaskCard = ({
                           resources,
                           urgency,
                           status
-                      }
+                      },
+                      expand
                   }) => {
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useState(expand || false);
+
+    useEffect(() => {
+        if (expand)
+            setExpanded(true)
+    }, [expand]);
 
     const assigner = useQuery({queryKey: ['user', assignerId], queryFn: () => getUserInfo(assignerId)})
 
@@ -120,10 +151,10 @@ const TaskCard = ({
         ...action
     }))
 
-    return <Card variant="outlined">
+    return <Card variant="outlined" style={{backgroundColor: status === "TODO" ? "#f1f1f1" : "#FFF"}}>
         <CardHeader
             avatar={
-                <Avatar sx={{bgcolor: distinct_colors[id % 31]}} aria-label="Task">
+                <Avatar sx={{bgcolor: distinct_colors[id % 30]}} aria-label="Task">
                     T
                 </Avatar>
             }
@@ -132,8 +163,18 @@ const TaskCard = ({
         />
         <CardContent>
             <Typography variant="body1" sx={{fontSize: '16px', fontWeight: 'bold'}}>
-                Urgency: <span style={{color: 'red', fontWeight: 'bold'}}>{urgency}</span> | Status: <span
-                style={{color: 'red', fontWeight: 'bold'}}>{status}</span>
+                Urgency: <span style={{
+                color: 'red', fontWeight: 'bold',
+                textTransform: "capitalize"
+            }}>
+                    {urgency.toLowerCase()}
+                </span> | Status: <span style={{
+                color: 'red',
+                fontWeight: 'bold',
+                textTransform: "capitalize"
+            }}>
+                    {status === "TODO" ? "Accepted" : status.toLowerCase()}
+                </span>
             </Typography>
 
             <Typography variant="body2" color="text.primary" sx={{fontSize: '12px', fontWeight: 'bold'}}>
@@ -174,40 +215,59 @@ const TaskCard = ({
     </Card>;
 }
 
+const taskRanks = {
+    IN_PROGRESS: 0,
+    TODO: 1,
+    PENDING: 2,
+    DONE: 3,
+}
 
 export default function TaskSelectPage() {
     const [allTasks, setAllTasks] = useState(mockTasks)
+    const [sortedTasks, setSortedTasks] = useState(mockTasks)
+
     const [shownMarkers, setShownMarkers] = useState([])
     const [shownPaths, setShownPaths] = useState([])
     const [selectedPoint, setSelectedPoint] = useState(null)
     const [mapCenter, setMapCenter] = useState([39, 34.5])
 
+
+    useEffect(() => {
+        setSortedTasks(allTasks.sort((a, b) => taskRanks[a.status] - taskRanks[b.status]))
+    }, [allTasks]);
+
     useQuery({queryKey: ['categoryTree'], queryFn: getCategoryTree});
+
+    const avgCoords = (c, i) => (c[i][0] + c[i][1]) / 2
 
     useEffect(() => {
         if (selectedPoint) {
-            setMapCenter([selectedPoint.latitude, selectedPoint.longitude]);
+            setMapCenter([
+                selectedPoint.latitude || avgCoords(selectedPoint.coordinates, 1),
+                selectedPoint.longitude || avgCoords(selectedPoint.coordinates, 0)
+            ]);
         }
     }, [selectedPoint]);
 
     const makePaths = task => task.actions.map(action => ({
+        task,
         coordinates: [[action.startLongitude, action.startLatitude], [action.endLongitude, action.endLatitude]],
-        color: distinct_colors[task.id % 31],
-        onClick: (e) => {
-            setSelectedPoint({task});
-        }
+        color: distinct_colors[task.id % 30]
     }))
-    const makeMarkers = task => task.resources.map(resource => ({task, color: distinct_colors[task.id % 31], ...resource}))
+    const makeMarkers = task => task.resources.map(resource => ({
+        task,
+        color: distinct_colors[task.id % 30], ...resource
+    }))
 
     useEffect(() => {
         if (selectedPoint) {
             setShownPaths(makePaths(selectedPoint.task))
             setShownMarkers(makeMarkers(selectedPoint.task))
         } else {
-            setShownPaths(allTasks.map(task => makePaths(task)).flat(1))
-            setShownMarkers(allTasks.map(task => makeMarkers(task)).flat(1))
+            setShownPaths(sortedTasks.map(task => makePaths(task)).flat(1))
+            setShownMarkers(sortedTasks.map(task => makeMarkers(task)).flat(1))
         }
-    }, [allTasks, selectedPoint]);
+    }, [sortedTasks, selectedPoint]);
 
     // noinspection JSValidateTypes
     return (
@@ -235,7 +295,8 @@ export default function TaskSelectPage() {
                                 rowGap: "16px",
                                 height: "fit-content"
                             }}>
-                                {allTasks.map((marker) => <TaskCard item={marker}/>)}
+                                {sortedTasks.map((task) => <TaskCard item={task}
+                                                                     expand={selectedPoint?.task?.id === task?.id}/>)}
                             </Box>
                         </Box>
                         <Box sx={{width: "36px"}}/>

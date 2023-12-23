@@ -44,7 +44,11 @@ export function LineString(props) {
         p += " " + x + " " + y
     }
 
-    return <path d={p} {...props.svgAttributes}/>
+    return <>
+        <path d={p} {...props.svgAttributes}/>
+        <circle cx={x1} cy={y1} {...props.svgAttributes} />
+        <circle cx={x2} cy={y2} {...props.svgAttributes} />
+    </>
 }
 
 export function MultiLineString(props) {
