@@ -557,19 +557,16 @@ fun Profile(profileData:ProfileData, navController: NavController, availableRole
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
 
-                when {
-                    UserSessionManager.getInstance(appContext).getUserRoles().contains("FACILITATOR") -> {
-                        FacilitatorProfileButtons(navController = navController)
-                    }
+                val userRoles = UserSessionManager.getInstance(appContext).getUserRoles()
 
-                    UserSessionManager.getInstance(appContext).getUserRoles().contains("RESPONDER") -> {
-                        ResponderProfileButtons(navController = navController)
-                    }
-
-                    UserSessionManager.getInstance(appContext).getUserRoles().contains("VICTIM") -> {
-                        VictimProfileButtons(navController = navController)
-                    }
+                if ("FACILITATOR" in userRoles) {
+                    FacilitatorProfileButtons(navController = navController)
+                } else if ("RESPONDER" in userRoles) {
+                    ResponderProfileButtons(navController = navController)
+                } else if ("VICTIM" in userRoles) {
+                    VictimProfileButtons(navController = navController)
                 }
+
                 Spacer(modifier = Modifier.height(20.dp))
                 Row(
                     modifier = Modifier.align(Alignment.Start)
@@ -651,7 +648,6 @@ fun Profile(profileData:ProfileData, navController: NavController, availableRole
                 .padding(16.dp)
         )
     }
-
 }
 
 @Composable
@@ -684,14 +680,14 @@ fun FacilitatorProfileButtons(navController: NavController) {
         ProfileButton(
             color = ResourceColor,
             text = "My Resources",
-            route = "",
+            route = "resource",
             navController = navController
         )
         Spacer(modifier = Modifier.width(30.dp))
         ProfileButton(
             color = MyTasksColor,
             text = "My Tasks",
-            route = "",
+            route = "task",
             navController = navController
         )
     }
@@ -703,14 +699,14 @@ fun FacilitatorProfileButtons(navController: NavController) {
         ProfileButton(
             color = RequestColor,
             text = "My Request",
-            route = "",
+            route = "request",
             navController = navController
         )
         Spacer(modifier = Modifier.width(30.dp))
         ProfileButton(
             color = OngoingTasksColor,
             text = "Ongoing Tasks",
-            route = "OngoingTasks",
+            route = "ongoingTasks",
             navController = navController
         )
     }
@@ -726,14 +722,14 @@ fun ResponderProfileButtons(navController: NavController) {
         ProfileButton(
             color = ResourceColor,
             text = "My Resources",
-            route = "",
+            route = "resource",
             navController = navController
         )
         Spacer(modifier = Modifier.width(30.dp))
         ProfileButton(
             color = MyTasksColor,
             text = "My Tasks",
-            route = "",
+            route = "task",
             navController = navController
         )
     }
@@ -745,7 +741,7 @@ fun ResponderProfileButtons(navController: NavController) {
         ProfileButton(
             color = RequestColor,
             text = "My Request",
-            route = "",
+            route = "request",
             navController = navController
         )
     }
@@ -761,7 +757,7 @@ fun VictimProfileButtons(navController: NavController) {
         ProfileButton(
             color = RequestColor,
             text = "My Request",
-            route = "",
+            route = "request",
             navController = navController
         )
     }

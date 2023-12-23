@@ -8,7 +8,7 @@ data class Need(
     val quantity: Int,
     val latitude: Double,
     val longitude: Double,
-    val requestId: Int,
+    val requestId: Int?,
     val status: String,
     val createdDate: String
 )
