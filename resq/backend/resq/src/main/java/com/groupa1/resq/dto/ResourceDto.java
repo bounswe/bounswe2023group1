@@ -1,6 +1,7 @@
 package com.groupa1.resq.dto;
 
 import com.groupa1.resq.entity.enums.EGender;
+import com.groupa1.resq.entity.enums.EResourceStatus;
 import jakarta.persistence.Access;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -21,4 +22,5 @@ public class ResourceDto {
     private BigDecimal longitude;
     private LocalDateTime createdDate;
     private String size;
+    private EResourceStatus status;
 }

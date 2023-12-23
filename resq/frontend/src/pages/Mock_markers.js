@@ -1,5 +1,6 @@
 export const mock_markers = [
     {
+        id: 1,
         type: "Annotation",
         latitude: 41.089,
         longitude: 29.053,
@@ -14,6 +15,7 @@ export const mock_markers = [
         date: "26/11/2023"
     },
     {
+        id:2,
         type: "Annotation",
         latitude: 41.085,
         longitude: 29.056,
@@ -24,6 +26,7 @@ export const mock_markers = [
         date: "27/11/2023"
     },
     {
+        id:3,
         type: "Annotation",
         latitude: 41.099,
         longitude: 29.047,
@@ -34,6 +37,7 @@ export const mock_markers = [
         date: "28/11/2023"
     },
     {
+        id:4,
         type: "Annotation",
         latitude: 40.092,
         longitude: 29.008,

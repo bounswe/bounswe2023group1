@@ -20,6 +20,8 @@ public interface NeedRepository extends JpaRepository<Need, Long> {
 
     List<Need> findAll(Specification<Need> specification);
 
+    List<Need> findAllByIsRecurrentTrue();
+
 
     //Haversine formula
     @Query(value = "SELECT * FROM NEED WHERE (6371 * acos(cos(radians(?1)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?2)) + sin(radians(?1)) * sin(radians(latitude)))) < ?3", nativeQuery = true)

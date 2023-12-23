@@ -27,7 +27,12 @@ public class ResourceConverter {
         resourceDto.setLatitude(resource.getLatitude());
         resourceDto.setLongitude(resource.getLongitude());
         resourceDto.setCreatedDate(resource.getCreatedAt());
-        resourceDto.setSize(resource.getSize().toString());
+        if(resource.getStatus() != null){
+            resourceDto.setStatus(resource.getStatus());
+        }
+
+        if (resource.getSize() != null)
+            resourceDto.setSize(resource.getSize().toString());
         return resourceDto;
 
     }
@@ -49,7 +54,8 @@ public class ResourceConverter {
         resource.setLatitude(resourceDto.getLatitude());
         resource.setLongitude(resourceDto.getLongitude());
         resource.setCreatedAt(resourceDto.getCreatedDate());
-        resource.setSize(ESize.valueOf(resourceDto.getSize()));
+        if (resourceDto.getSize() != null)
+            resource.setSize(ESize.valueOf(resourceDto.getSize()));
         return resource;
     }
 }

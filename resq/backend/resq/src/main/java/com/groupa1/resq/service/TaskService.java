@@ -3,6 +3,7 @@ package com.groupa1.resq.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groupa1.resq.converter.ActionConverter;
 import com.groupa1.resq.converter.TaskConverter;
+import com.groupa1.resq.dto.ResourceDto;
 import com.groupa1.resq.entity.Action;
 import com.groupa1.resq.entity.Resource;
 import com.groupa1.resq.entity.Task;
@@ -21,7 +22,6 @@ import com.groupa1.resq.request.CreateTaskRequest;
 import com.groupa1.resq.dto.TaskDto;
 import com.groupa1.resq.request.UpdateTaskRequest;
 import com.groupa1.resq.specification.TaskSpecifications;
-import com.groupa1.resq.util.NullAwareBeanUtilsBean;
 import com.groupa1.resq.util.NotificationMessages;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +39,7 @@ import java.util.Set;
 
 @Service
 @Slf4j
+
 public class TaskService {
 
     @Autowired
@@ -51,19 +52,11 @@ public class TaskService {
     private UserRepository userRepository;
 
     @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private NullAwareBeanUtilsBean beanUtils;
-
-    @Autowired
     private ActionRepository actionRepository;
 
     @Autowired
     NotificationService notificationService;
 
-    @Autowired
-    private ActionConverter actionConverter;
 
     @Autowired
     private TaskConverter taskConverter;
@@ -109,6 +102,7 @@ public class TaskService {
     }
 
 
+
     public ResponseEntity<String> acceptTask(Long taskId, Long userId) {
         Optional<Task> task = taskRepository.findById(taskId);
         if (task.isPresent()) {
@@ -145,6 +139,16 @@ public class TaskService {
         return ResponseEntity.ok("Task declined");
     }
 
+    public ResponseEntity<TaskDto> viewSingleTask(Long taskId) {
+        Optional<Task> task = taskRepository.findById(taskId);
+        if (task.isPresent()) {
+            TaskDto taskResponse = taskConverter.convertToDto(task.get());
+            return ResponseEntity.ok(taskResponse);
+        } else {
+            log.error("No task found with id: {}", taskId);
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
 
@@ -254,7 +258,17 @@ public class TaskService {
         Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFoundException("No task found"));
         for (Long resourceId : resources){
            Resource resource  = resourceRepository.findById(resourceId).orElseThrow(()-> new EntityNotFoundException("No resource found"));
+           User receiver = userRepository.findById(addResourceToTaskRequest.getReceiverId()).orElseThrow(()-> new EntityNotFoundException("No user found for receiver"));
+           if (resource.getStatus() != EResourceStatus.AVAILABLE){
+               log.error("Resource is not available");
+               return ResponseEntity.badRequest().body("Resource is not available");
+           }
            resource.setTask(task);
+           resource.setReceiver(receiver);
+           //notify receiver
+            String bodyMessage = String.format(NotificationMessages.RESOURCE_IS_BEING_SENT, resource.getId());
+            notificationService.sendNotification("Resource is being sent", bodyMessage, receiver.getId(), resource.getId(), ENotificationEntityType.RESOURCE);
+
            resource.setStatus(EResourceStatus.IN_TASK);
            resourceRepository.save(resource);
         }
@@ -271,7 +285,9 @@ public class TaskService {
         for (Long resourceId : resources){
             Resource resource  = resourceRepository.findById(resourceId).orElseThrow(()-> new EntityNotFoundException("No resource found"));
             resource.setTask(null);
+            resource.setReceiver(null);
             resource.setStatus(EResourceStatus.AVAILABLE);
+            // TODO: notify receiver
             resourceRepository.save(resource);
         }
         resourceRepository.findAllById(resources)
@@ -283,7 +299,7 @@ public class TaskService {
     }
 
 
-    public ResponseEntity<List<TaskDto>> viewTasksByFilter(Long assignerId, Long assigneeId, EStatus status) {
+    public ResponseEntity<List<TaskDto>> viewTasksByFilter(Long assignerId, Long assigneeId, EUrgency urgency, EStatus status) {
         Specification<Task> spec = Specification.where(null);
 
         if (assignerId != null) {
@@ -292,6 +308,9 @@ public class TaskService {
 
         if (assigneeId != null) {
             spec = spec.and(TaskSpecifications.hasAssignee(assigneeId));
+        }
+        if (urgency != null){
+            spec = spec.and(TaskSpecifications.hasUrgency(urgency));
         }
 
         if(status != null) {

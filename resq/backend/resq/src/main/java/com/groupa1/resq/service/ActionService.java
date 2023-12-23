@@ -14,10 +14,12 @@ import com.groupa1.resq.repository.TaskRepository;
 import com.groupa1.resq.repository.UserRepository;
 import com.groupa1.resq.request.CreateCommentRequest;
 import com.groupa1.resq.request.CreateActionRequest;
+import com.groupa1.resq.request.UpdateActionRequest;
 import com.groupa1.resq.dto.ActionDto;
 import com.groupa1.resq.specification.ActionSpecifications;
 import com.groupa1.resq.util.NotificationMessages;
 import jakarta.transaction.Transactional;
+import com.groupa1.resq.specification.ActionSpecifications;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -76,13 +78,26 @@ public class ActionService {
         actionEntity.setEndLatitude(endLatitude);
         actionEntity.setEndLongitude(endLongitude);
         actionEntity.setCreatedAt(LocalDateTime.now());
+
         Task task = taskRepository.findById(createActionRequest.getTaskId()).orElseThrow(()-> new EntityNotFoundException("No task found"));
         task.getActions().add(actionEntity);
+        taskRepository.save(task);
+
         actionEntity.setTask(task);
         return ResponseEntity.ok(actionRepository.save(actionEntity).getId());
 
 
     }
+
+public ResponseEntity<ActionDto> viewSingleAction(Long actionId){
+        Action action = actionRepository.findById(actionId).orElse(null);
+        if (action == null){
+            log.error("No action found with id: {}", actionId);
+            throw new EntityNotFoundException("No action found");
+        }
+        return ResponseEntity.ok(actionConverter.convertToDto(action));
+    }
+
     @Transactional
     public ResponseEntity<String> deleteAction(Long actionId){
         Action action = actionRepository.findById(actionId).orElse(null);
@@ -95,51 +110,25 @@ public class ActionService {
     }
 
     @Transactional
-    public ResponseEntity<String> updateAction(CreateActionRequest createActionRequest, Long actionId){
+    public ResponseEntity<String> updateAction(UpdateActionRequest updateActionRequest, Long actionId){
         Action action = actionRepository.findById(actionId).orElseThrow(()-> new EntityNotFoundException("No action found"));
-        User verifier = userRepository.findById(createActionRequest.getVerifierId()).orElseThrow(()-> new EntityNotFoundException("No user found"));
+        User verifier = userRepository.findById(updateActionRequest.getVerifierId()).orElseThrow(()-> new EntityNotFoundException("No user found"));
         action.setVerifier(verifier);
-        action.setDescription(createActionRequest.getDescription());
-        action.setCompleted(createActionRequest.isCompleted());
-        action.setVerified(createActionRequest.isVerified());
-        action.setStartLatitude(createActionRequest.getStartLatitude());
-        action.setStartLongitude(createActionRequest.getStartLongitude());
-        action.setEndLatitude(createActionRequest.getEndLatitude());
-        action.setEndLongitude(createActionRequest.getEndLongitude());
-        action.setDueDate(createActionRequest.getDueDate());
+        action.setDescription(updateActionRequest.getDescription());
+        action.setCompleted(updateActionRequest.isCompleted());
+        action.setVerified(updateActionRequest.isVerified());
+        action.setStartLatitude(updateActionRequest.getStartLatitude());
+        action.setStartLongitude(updateActionRequest.getStartLongitude());
+        action.setEndLatitude(updateActionRequest.getEndLatitude());
+        action.setEndLongitude(updateActionRequest.getEndLongitude());
+        action.setDueDate(updateActionRequest.getDueDate());
 
         actionRepository.save(action);
         return ResponseEntity.ok("Action updated successfully");
 
     }
 
-    public ResponseEntity<List<ActionDto>> viewActions(Long taskId){
-        Optional<Task> task = taskRepository.findById(taskId);
-        List<ActionDto> actionResponses = new ArrayList<>();
-        if (task.isPresent()) {
-            Set<Action> actions = task.get().getActions();
-            actions.forEach(action -> {
-                ActionDto actionResponse = new ActionDto();
-                actionResponse.setId(action.getId())
-                        .setTaskId(action.getTask().getId())
-                        .setVerifierId(action.getVerifier().getId())
-                        .setDescription(action.getDescription())
-                        .setCompleted(action.isCompleted())
-                        .setStartLatitude(action.getStartLatitude())
-                        .setStartLongitude(action.getStartLongitude())
-                        .setEndLatitude(action.getEndLatitude())
-                        .setEndLongitude(action.getEndLongitude())
-                        .setDueDate(action.getDueDate())
-                        .setCreatedDate(action.getCreatedAt());
-                actionResponses.add(actionResponse);
-            });
-            return ResponseEntity.ok(actionResponses);
-        } else {
-            log.error("No task found with id: {}", taskId);
-            return null;
-        }
-    }
-
+    // acted one completes the action
     @Transactional
     public ResponseEntity<String> completeAction(Long actionId, Long userId){
         Action action = actionRepository.findById(actionId).orElse(null);
@@ -225,7 +214,7 @@ public class ActionService {
 
     }
 
-    public ResponseEntity<List<ActionDto>> viewActionsByFilter(Long verifierId, Boolean isCompleted, LocalDateTime latestDueDate, LocalDateTime earliestDueDate) {
+    public ResponseEntity<List<ActionDto>> viewActionsByFilter(Long verifierId, Boolean isCompleted, LocalDateTime latestDueDate, LocalDateTime earliestDueDate, Long taskId, Boolean isVerified){
         Specification<Action> spec = Specification.where(null);
 
         if (verifierId != null) {
@@ -243,6 +232,13 @@ public class ActionService {
         if (earliestDueDate != null) {
             spec = spec.and(ActionSpecifications.hasEarliestDueDate(earliestDueDate));
         }
+        if (taskId != null) {
+            spec = spec.and(ActionSpecifications.hasTaskId(taskId));
+        }
+        if (isVerified != null){
+            spec = spec.and(ActionSpecifications.hasVerified(isVerified));
+        }
+
         return ResponseEntity.ok(actionRepository.findAll(spec).stream().map(action -> actionConverter.convertToDto(action)).toList());
 
 

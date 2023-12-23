@@ -4,6 +4,7 @@ import com.groupa1.resq.auth.UserDetailsImpl;
 import com.groupa1.resq.request.CreateCommentRequest;
 import com.groupa1.resq.request.CreateActionRequest;
 import com.groupa1.resq.dto.ActionDto;
+import com.groupa1.resq.request.UpdateActionRequest;
 import com.groupa1.resq.service.ActionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,10 +34,10 @@ public class ActionController {
         return actionService.createAction(createActionRequest);
     }
 
-    @PreAuthorize("hasRole('RESPONDER') or hasRole('COORDINATOR')")
-    @GetMapping("/viewActions")
-    public ResponseEntity<List<ActionDto>> viewActions(@RequestParam Long taskId) {
-        return actionService.viewActions( taskId);
+    @PreAuthorize("hasRole('COORDINATOR') or hasRole('RESPONDER')")
+    @GetMapping("/viewSingleAction")
+    public ResponseEntity<ActionDto> viewSingleAction(@RequestParam Long actionId) {
+        return actionService.viewSingleAction(actionId);
     }
 
     @PreAuthorize("hasRole('COORDINATOR')")
@@ -47,8 +48,9 @@ public class ActionController {
 
     @PreAuthorize("hasRole('COORDINATOR')")
     @PostMapping("/updateAction")
-    public ResponseEntity<String> updateAction(@RequestBody CreateActionRequest createActionRequest, @RequestParam Long actionId) {
-        return actionService.updateAction(createActionRequest, actionId);
+    public ResponseEntity<String> updateAction(@RequestBody
+                                               UpdateActionRequest updateActionRequest, @RequestParam Long actionId) {
+        return actionService.updateAction(updateActionRequest, actionId);
     }
 
 
@@ -80,9 +82,11 @@ public class ActionController {
     public ResponseEntity<List<ActionDto>> viewActionsByFilter(@RequestParam(required = false) Long verifierId,
                                                                @RequestParam(required = false) Boolean isCompleted,
                                                                @RequestParam(required = false) LocalDateTime latestDueDate,
-                                                               @RequestParam(required = false) LocalDateTime earliestDueDate){
+                                                               @RequestParam(required = false) LocalDateTime earliestDueDate,
+                                                               @RequestParam(required = false) Long taskId,
+                                                               @RequestParam(required = false) Boolean isVerified){
 
-        return actionService.viewActionsByFilter(verifierId, isCompleted, latestDueDate, earliestDueDate);
+        return actionService.viewActionsByFilter(verifierId, isCompleted, latestDueDate, earliestDueDate, taskId, isVerified);
     }
 
 

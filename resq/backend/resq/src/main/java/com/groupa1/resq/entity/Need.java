@@ -50,4 +50,6 @@ public class Need extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private ENeedStatus status;
 
+    private Boolean isRecurrent;
+
 }

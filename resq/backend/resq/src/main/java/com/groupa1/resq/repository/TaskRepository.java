@@ -15,5 +15,6 @@ public interface TaskRepository extends JpaRepository<Task, Long>{
     @Query("SELECT t FROM Task t WHERE t.assignee.id = ?1")
     Optional<List<Task>> findByAssignee(Long userId);
 
-    List<Task> findAll(Specification<Task> specifications);
+    List<Task> findAll(Specification<Task> specification);
+
 }

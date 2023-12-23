@@ -24,6 +24,15 @@ public class ResourceSpecifications {
         return (root, query, builder) -> builder.equal(root.get("longitude"), longitude);
     }
 
+    public static Specification<Resource> isWithinRectangleScope(BigDecimal longitude1, BigDecimal longitude2,
+                                                             BigDecimal latitude1, BigDecimal latitude2) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.and(
+                        criteriaBuilder.between(root.get("longitude"), longitude1, longitude2),
+                        criteriaBuilder.between(root.get("latitude"), latitude1, latitude2)
+                );
+    }
+
     public static Specification<Resource> hasStatus(EResourceStatus status){
         return (root, query, builder) -> builder.equal(root.get("status"), status);
     }

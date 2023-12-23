@@ -2,6 +2,7 @@ package com.groupa1.resq.specification;
 
 import com.groupa1.resq.entity.Task;
 import com.groupa1.resq.entity.enums.EStatus;
+import com.groupa1.resq.entity.enums.EUrgency;
 import org.springframework.data.jpa.domain.Specification;
 
 public class TaskSpecifications {
@@ -13,7 +14,12 @@ public class TaskSpecifications {
 
     public static Specification<Task> hasAssigner(Long assignerId) {
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("assigner").get("id"), assignerId);
+                criteriaBuilder.equal(root.get("assigner").get("id"),
+                        assignerId);
+    }
+    public static Specification<Task> hasUrgency(EUrgency urgency) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("urgency"), urgency);
     }
 
     public static Specification<Task> hasStatus(EStatus status) {

@@ -14,6 +14,7 @@ import com.cmpe451.resq.data.models.Need
 import com.cmpe451.resq.data.models.ProfileData
 import com.cmpe451.resq.data.models.RegisterRequestBody
 import com.cmpe451.resq.data.models.UserInfoRequest
+import com.google.gson.GsonBuilder
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -21,6 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
+
 
 interface CategoryTreeNodeService {
     @GET("categorytreenode/getMainCategories")
@@ -95,9 +97,14 @@ interface ProfileService {
 }
 
 class ResqService(appContext: Context) {
+
+    var gson = GsonBuilder()
+        .setLenient()
+        .create()
+
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(Constants.BACKEND_URL)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
 
     private val categoryTreeNodeService: CategoryTreeNodeService = retrofit.create(CategoryTreeNodeService::class.java)
@@ -143,7 +150,7 @@ class ResqService(appContext: Context) {
         return needService.createNeed(
             userId = userId,
             jwtToken = "Bearer $token",
-            role = "VICTIM",
+            role = "ROLE_VICTIM",
             requestBody = request
         )
     }
@@ -214,7 +221,7 @@ class ResqService(appContext: Context) {
             state = response.body()?.state,
             emailConfirmed = response.body()?.emailConfirmed,
             privacyPolicyAccepted = response.body()?.privacyPolicyAccepted,
-            birthdate = response.body()?.birthdate.toString(),
+            birth_date = response.body()?.birth_date.toString(),
         )
     }
     @RequiresApi(Build.VERSION_CODES.O)
@@ -226,15 +233,17 @@ class ResqService(appContext: Context) {
         val request = UserInfoRequest(
             name = profileData.name ?: "",
             surname = profileData.surname ?: "",
-            birthdate = null,
-            country = profileData.country ?: "",
-            city = profileData.city ?: "",
-            state = profileData.state ?: "",
+            birth_date = null,
+            Country = profileData.country ?: "",
+            City = profileData.city ?: "",
+            State = profileData.state ?: "",
             bloodType = profileData.bloodType ?: "",
             height = profileData.height,
             weight = profileData.weight,
             gender = profileData.gender ?: "",
             phoneNumber = profileData.phoneNumber ?: "",
+            isEmailConfirmed = true,
+            isPrivacyPolicyAccepted = true
         )
         return profileService.updateProfile(
             userId = userId,
@@ -253,7 +262,7 @@ class ResqService(appContext: Context) {
             userId = userId,
             requestedRole = requestedRole,
             jwtToken = "Bearer $token",
-            role = requestedRole
+            role = role
         )
 
         return response

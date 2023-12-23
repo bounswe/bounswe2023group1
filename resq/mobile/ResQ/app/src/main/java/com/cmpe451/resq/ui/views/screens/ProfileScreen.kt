@@ -271,6 +271,9 @@ fun Profile(profileData:ProfileData, navController: NavController, availableRole
     val modalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
 
 
+    LaunchedEffect(Unit) {
+        viewModel.getUserData(appContext)
+    }
     ModalBottomSheetLayout(
         sheetContent = {
             BottomSheetContent(
@@ -554,20 +557,19 @@ fun Profile(profileData:ProfileData, navController: NavController, availableRole
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
 
-                when (UserSessionManager.getInstance(appContext).getSelectedRole()) {
-                    "VICTIM" -> {
-                        VictimProfileButtons(navController = navController)
+                when {
+                    UserSessionManager.getInstance(appContext).getUserRoles().contains("FACILITATOR") -> {
+                        FacilitatorProfileButtons(navController = navController)
                     }
 
-                    "RESPONDER" -> {
+                    UserSessionManager.getInstance(appContext).getUserRoles().contains("RESPONDER") -> {
                         ResponderProfileButtons(navController = navController)
                     }
 
-                    "FACILITATOR" -> {
-                        FacilitatorProfileButtons(navController = navController)
+                    UserSessionManager.getInstance(appContext).getUserRoles().contains("VICTIM") -> {
+                        VictimProfileButtons(navController = navController)
                     }
                 }
-
                 Spacer(modifier = Modifier.height(20.dp))
                 Row(
                     modifier = Modifier.align(Alignment.Start)
@@ -595,7 +597,7 @@ fun Profile(profileData:ProfileData, navController: NavController, availableRole
                                         height = height.takeIf { it.isNotEmpty() }?.toInt(),
                                         weight = weight.takeIf { it.isNotEmpty() }?.toInt(),
                                         phoneNumber = phoneNumber,
-                                        birthdate = null
+                                        birth_date = null
                                     ))
                                     if (viewModel.updateMessage.value != null) {
                                         message = "Details saved successfully."
@@ -727,6 +729,13 @@ fun ResponderProfileButtons(navController: NavController) {
             route = "",
             navController = navController
         )
+        Spacer(modifier = Modifier.width(30.dp))
+        ProfileButton(
+            color = MyTasksColor,
+            text = "My Tasks",
+            route = "",
+            navController = navController
+        )
     }
     Row(
         modifier = Modifier
@@ -734,8 +743,8 @@ fun ResponderProfileButtons(navController: NavController) {
             .padding(4.dp)
     ) {
         ProfileButton(
-            color = MyTasksColor,
-            text = "My Tasks",
+            color = RequestColor,
+            text = "My Request",
             route = "",
             navController = navController
         )

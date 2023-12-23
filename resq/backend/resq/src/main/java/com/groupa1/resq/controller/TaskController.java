@@ -2,6 +2,7 @@ package com.groupa1.resq.controller;
 
 import com.groupa1.resq.auth.UserDetailsImpl;
 import com.groupa1.resq.entity.enums.EStatus;
+import com.groupa1.resq.entity.enums.EUrgency;
 import com.groupa1.resq.request.AddResourceToTaskRequest;
 import com.groupa1.resq.request.CreateTaskRequest;
 import com.groupa1.resq.dto.TaskDto;
@@ -13,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,6 +51,11 @@ public class TaskController {
         Long userId = userDetails.getId();
         return taskService.declineTask(taskId, userId);
     }
+    @PreAuthorize("hasRole('RESPONDER') or hasRole('COORDINATOR')")
+    @GetMapping("/viewSingleTask")
+    public ResponseEntity<TaskDto> viewSingleTask(@RequestParam Long taskId) {
+        return taskService.viewSingleTask(taskId);
+    }
 
 
 
@@ -67,7 +72,7 @@ public class TaskController {
     }
 
     @PreAuthorize("hasRole('COORDINATOR')")
-    @PatchMapping("/updateTask")
+    @PostMapping("/updateTask")
     public ResponseEntity<String> updateTask(@RequestBody
                                                  UpdateTaskRequest updateTaskRequest, @RequestParam Long taskId){
         return taskService.updateTask(updateTaskRequest, taskId);
@@ -96,23 +101,35 @@ public class TaskController {
 
     @PreAuthorize("hasRole('COORDINATOR')")
     @PostMapping("/addResources")
-    public ResponseEntity<String> addResources(@RequestBody AddResourceToTaskRequest addResourceToTaskRequest) {
+    public ResponseEntity<String> addResources(@RequestBody AddResourceToTaskRequest addResourceToTaskRequest, Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+        log.info("Adding resources to task by coordinator with id: {}", userId);
         return taskService.addResources(addResourceToTaskRequest);
     }
 
 
     @PreAuthorize("hasRole('COORDINATOR')")
     @PostMapping("/removeResources")
-    public ResponseEntity<String> removeResources(AddResourceToTaskRequest addResourceToTaskRequest) {
+    public ResponseEntity<String> removeResources(@RequestBody AddResourceToTaskRequest addResourceToTaskRequest, Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+        log.info("Adding resources to task by coordinator with id: {}", userId);
         return taskService.removeResources(addResourceToTaskRequest);
     }
 
-
-    @PreAuthorize("hasRole('COORDINATOR') or hasRole('RESPONDER')")
-    @GetMapping("/viewTaskByFilter")
-    public ResponseEntity<List<TaskDto>> viewTaskByFilter( @RequestParam(required = false) EStatus status, @RequestParam(required=false) Long assignerId,  @RequestParam(required=false) Long assigneeId) {
-        return taskService.viewTasksByFilter(assignerId,assigneeId, status);
+    @PreAuthorize("hasRole('COORDINATOR')")
+    @PostMapping("/viewTaskByFilter")
+    public ResponseEntity<List<TaskDto>> viewTaskByFilter(@RequestParam(required = false) Long assignerId, @RequestParam(required = false) Long assigneeId,
+                                                               @RequestParam(required = false) EUrgency urgency, @RequestParam(required = false) EStatus status) {
+        return taskService.viewTasksByFilter(assignerId, assigneeId, urgency, status);
     }
+
+
+
+
+
+
 
 
 
