@@ -4,6 +4,7 @@ import com.groupa1.resq.converter.ResourceConverter;
 import com.groupa1.resq.dto.ResourceDto;
 import com.groupa1.resq.entity.Resource;
 import com.groupa1.resq.entity.User;
+import com.groupa1.resq.entity.enums.EResourceStatus;
 import com.groupa1.resq.entity.enums.ESize;
 import com.groupa1.resq.exception.EntityNotFoundException;
 import com.groupa1.resq.repository.ResourceRepository;
@@ -56,6 +57,8 @@ public class ResourceService {
         resource.setQuantity(createResourceRequest.getQuantity());
         resource.setCategoryTreeId(createResourceRequest.getCategoryTreeId());
         resource.setSize(ESize.valueOf(createResourceRequest.getSize()));
+        resource.setStatus(EResourceStatus.AVAILABLE); // default
+        resource.setGender(createResourceRequest.getGender());
         Long resourceId = resourceRepository.save(resource).getId();
         return ResponseEntity.ok(resourceId);
     }
@@ -67,6 +70,7 @@ public class ResourceService {
         resource.setLongitude(createResourceRequest.getLongitude());
         resource.setCategoryTreeId(createResourceRequest.getCategoryTreeId());
         resource.setSize(ESize.valueOf(createResourceRequest.getSize()));
+        resource.setStatus(createResourceRequest.getStatus());
         resourceRepository.save(resource);
         return ResponseEntity.ok("Resource updated successfully");
     }
@@ -80,7 +84,7 @@ public class ResourceService {
         return ResponseEntity.ok("Resource deleted successfully");
     }
 
-    public ResponseEntity<List<ResourceDto>> filterResource(BigDecimal latitude, BigDecimal longitude, String categoryTreeId, Long userId){
+    public ResponseEntity<List<ResourceDto>> filterResource(BigDecimal latitude, BigDecimal longitude, String categoryTreeId, Long userId, EResourceStatus status){
         Specification<Resource> spec = Specification.where(null);
 
         if (longitude != null && latitude != null) {
@@ -94,6 +98,9 @@ public class ResourceService {
         }
         if (userId != null) {
             spec = spec.and(ResourceSpecifications.hasOwnerId(userId));
+        }
+        if (status != null){
+            spec = spec.and(ResourceSpecifications.hasStatus(status));
         }
         return ResponseEntity.ok(resourceRepository.findAll(spec).stream().map(resource -> resourceConverter.convertToDto(resource)).toList());
 

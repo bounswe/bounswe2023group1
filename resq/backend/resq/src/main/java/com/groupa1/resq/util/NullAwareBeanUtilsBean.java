@@ -15,4 +15,5 @@ public class NullAwareBeanUtilsBean extends BeanUtilsBean {
             return;
         super.copyProperty(dest, name, value);
     }
+
 }

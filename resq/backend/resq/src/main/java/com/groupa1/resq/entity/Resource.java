@@ -1,6 +1,7 @@
 package com.groupa1.resq.entity;
 
 import com.groupa1.resq.entity.enums.EGender;
+import com.groupa1.resq.entity.enums.EResourceStatus;
 import com.groupa1.resq.entity.enums.ESize;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -26,6 +27,10 @@ public class Resource extends BaseEntity {
     @JoinColumn(name = "receiver_id")
     private User receiver;
 
+    @ManyToOne
+    @JoinColumn(name = "task_id")
+    private Task task;
+
     private String categoryTreeId;
 
     private EGender gender;
@@ -38,5 +43,5 @@ public class Resource extends BaseEntity {
 
     private BigDecimal latitude;
     private BigDecimal longitude;
-
+    private EResourceStatus status;
 }
