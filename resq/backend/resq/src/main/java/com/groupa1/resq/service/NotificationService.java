@@ -1,11 +1,13 @@
 package com.groupa1.resq.service;
 
+//import com.groupa1.resq.config.firebase.PushNotificationMessage;
 import com.groupa1.resq.entity.Notification;
 import com.groupa1.resq.entity.User;
 import com.groupa1.resq.entity.enums.ENotificationEntityType;
 import com.groupa1.resq.exception.NotOwnerException;
 import com.groupa1.resq.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +21,12 @@ public class NotificationService {
     @Autowired
     private UserService userService;
 
+    //@Autowired
+    //FirebaseMessagingService firebaseMessagingService;
+
+    //@Value("${resq.app.fcm.recipientToken}")
+    //private String recipientToken;
+
     public void sendNotification(String title, String body, Long userId, Long relatedEntityId, ENotificationEntityType notificationType) {
         Notification notification = new Notification();
         notification.setTitle(title);
@@ -31,7 +39,19 @@ public class NotificationService {
         notification.setUser(user);
 
         notificationRepository.save(notification);
+        //sendPushNotification(title, body);
     }
+
+    /*
+    private void sendPushNotification(String title, String body) {
+        PushNotificationMessage pushNotificationMessage = new PushNotificationMessage();
+        pushNotificationMessage.setTitle(title);
+        pushNotificationMessage.setBody(body);
+        pushNotificationMessage.setRecipientToken(recipientToken);
+        //firebaseMessagingService.sendNotificationByToken(pushNotificationMessage);
+    }
+
+     */
 
     public List<Notification> viewAllNotifications(Long userId) {
         List<Notification> notifications = notificationRepository.findAllByUserId(userId);
