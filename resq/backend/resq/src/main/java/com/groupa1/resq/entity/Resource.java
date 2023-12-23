@@ -39,4 +39,8 @@ public class Resource extends BaseEntity {
     private BigDecimal latitude;
     private BigDecimal longitude;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "file_id", referencedColumnName = "id")
+    private File file;
+
 }

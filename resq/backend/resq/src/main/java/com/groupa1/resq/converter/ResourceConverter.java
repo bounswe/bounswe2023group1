@@ -1,8 +1,8 @@
 package com.groupa1.resq.converter;
 
+import com.groupa1.resq.dto.FileDto;
 import com.groupa1.resq.dto.ResourceDto;
 import com.groupa1.resq.entity.Resource;
-import com.groupa1.resq.entity.enums.ESize;
 import com.groupa1.resq.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,14 @@ public class ResourceConverter {
         resourceDto.setLongitude(resource.getLongitude());
         resourceDto.setCreatedDate(resource.getCreatedAt());
         if (resource.getSize() != null)
-            resourceDto.setSize(resource.getSize().toString());
+            resourceDto.setSize(resource.getSize());
+        if (resource.getFile() != null){
+            FileDto fileDto = new FileDto();
+            fileDto.setFileName(resource.getFile().getFileName());
+            fileDto.setFileUrl(resource.getFile().getFileUrl());
+            fileDto.setFileType(resource.getFile().getFileType());
+            resourceDto.setFile(fileDto);
+        }
         return resourceDto;
 
     }
@@ -51,7 +58,7 @@ public class ResourceConverter {
         resource.setLongitude(resourceDto.getLongitude());
         resource.setCreatedAt(resourceDto.getCreatedDate());
         if (resourceDto.getSize() != null)
-            resource.setSize(ESize.valueOf(resourceDto.getSize()));
+            resource.setSize(resourceDto.getSize());
         return resource;
     }
 }

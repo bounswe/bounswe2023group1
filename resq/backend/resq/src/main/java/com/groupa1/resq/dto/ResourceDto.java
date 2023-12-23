@@ -1,6 +1,7 @@
 package com.groupa1.resq.dto;
 
 import com.groupa1.resq.entity.enums.EGender;
+import com.groupa1.resq.entity.enums.ESize;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -17,5 +18,6 @@ public class ResourceDto {
     private BigDecimal latitude;
     private BigDecimal longitude;
     private LocalDateTime createdDate;
-    private String size;
+    private ESize size;
+    private FileDto file;
 }
