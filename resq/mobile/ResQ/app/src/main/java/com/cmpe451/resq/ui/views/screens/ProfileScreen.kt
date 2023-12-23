@@ -559,11 +559,11 @@ fun Profile(profileData:ProfileData, navController: NavController, availableRole
 
                 val userRoles = UserSessionManager.getInstance(appContext).getUserRoles()
 
-                if ("ROLE_FACILITATOR" in userRoles) {
+                if ("FACILITATOR" in userRoles) {
                     FacilitatorProfileButtons(navController = navController)
-                } else if ("ROLE_RESPONDER" in userRoles) {
+                } else if ("RESPONDER" in userRoles) {
                     ResponderProfileButtons(navController = navController)
-                } else if ("ROLE_VICTIM" in userRoles) {
+                } else if ("VICTIM" in userRoles) {
                     VictimProfileButtons(navController = navController)
                 }
 
@@ -648,7 +648,6 @@ fun Profile(profileData:ProfileData, navController: NavController, availableRole
                 .padding(16.dp)
         )
     }
-
 }
 
 @Composable

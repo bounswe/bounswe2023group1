@@ -69,19 +69,12 @@ fun MapScreen(navController: NavController, appContext: Context, mapViewModel: M
     var expandedNeedId by remember { mutableStateOf<Int?>(null) }
     var expandedResourceId by remember { mutableStateOf<Int?>(null) }
 
+
+    mapViewModel.getNeedsByDistance(appContext)
+    mapViewModel.getResourcesByDistance(appContext)
     // Dummy data for the lists
-    val needsList = listOf(
-        Need(1, 13, "52", "Please help!", 1, 41.08, 29.05, null, "NOT_INVOLVED", "2023-11-26T02:23:04.731365"),
-        Need(2, 13, "54", "Help me for god's sake", 1, 30.0, 40.0, null, "NOT_INVOLVED", "2023-11-26T10:57:10.71784")
-    )
-    val resourcesList = listOf(
-        Resource(1, 13, 23, "52", "MALE", 10, 42.08, 30.05, "2023-11-26T02:23:04.731365", "XL"),
-        Resource(2, 13, 23, "52", "MALE", 10, 42.08, 30.05, "2023-11-26T02:23:04.731365", "L"),
-        Resource(3, 13, 23, "52", "MALE", 10, 42.08, 30.05, "2023-11-26T02:23:04.731365", "L"),
-        Resource(4, 13, 23, "52", "MALE", 10, 42.08, 30.05, "2023-11-26T02:23:04.731365", "L"),
-        Resource(5, 13, 23, "52", "MALE", 10, 42.08, 30.05, "2023-11-26T02:23:04.731365", "L"),
-        Resource(6, 13, 23, "52", "MALE", 10, 42.08, 30.05, "2023-11-26T02:23:04.731365", "L")
-    )
+    val needsList = mapViewModel.needMarkerList.value
+    val resourcesList = mapViewModel.resourceMarkerList.value
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(

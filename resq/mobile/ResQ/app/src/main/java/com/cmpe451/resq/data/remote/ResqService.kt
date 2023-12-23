@@ -13,9 +13,12 @@ import com.cmpe451.resq.data.models.LoginResponse
 import com.cmpe451.resq.data.models.Need
 import com.cmpe451.resq.data.models.ProfileData
 import com.cmpe451.resq.data.models.RegisterRequestBody
+import com.cmpe451.resq.data.models.Resource
 import com.cmpe451.resq.data.models.UserInfoRequest
 import com.google.gson.GsonBuilder
 import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -37,6 +40,14 @@ interface ResourceService {
         @Header("Authorization") jwtToken: String,
         @Body requestBody: CreateResourceRequestBody
     ): Response<Int>
+
+    @GET("resource/filterByDistance")
+    fun filterResourceByDistance(
+        @Query("latitude") latitude: Double,
+        @Query("longitude") longitude: Double,
+        @Query("distance") distance: Double,
+        @Header("Authorization") jwtToken: String
+    ): Call<List<Resource>>
 }
 interface NeedService {
     @POST("need/createNeed")
@@ -46,14 +57,14 @@ interface NeedService {
         @Body requestBody: CreateNeedRequestBody
     ): Response<Int>
 
-
     @GET("need/filterByDistance")
     fun filterNeedByDistance(
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
         @Query("distance") distance: Double,
-        @Header("Authorization") jwtToken: String,
-    ): Response<List<Need>>
+        @Header("Authorization") jwtToken: String
+    ): Call<List<Need>>
+
 
 }
 
@@ -142,19 +153,50 @@ class ResqService(appContext: Context) {
         )
     }
 
-    suspend fun filterNeedByDistance(
+    fun filterNeedByDistance(
         latitude: Double,
         longitude: Double,
-        distance: Double
-    ): Response<List<Need>> {
-        val selectedRole = userSessionManager.getSelectedRole() ?: ""
+        distance: Double,
+        onSuccess: (List<Need>) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
         val token = userSessionManager.getUserToken() ?: ""
-        return needService.filterNeedByDistance(
-            latitude = latitude,
-            longitude = longitude,
-            distance = distance,
-            jwtToken = "Bearer $token"
-        )
+        needService.filterNeedByDistance(latitude, longitude, distance, "Bearer $token").enqueue(object :
+            Callback<List<Need>> {
+            override fun onResponse(call: Call<List<Need>>, response: Response<List<Need>>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { onSuccess(it) }
+                } else {
+                    onError(RuntimeException("Response not successful"))
+                }
+            }
+            override fun onFailure(call: Call<List<Need>>, t: Throwable) {
+                onError(t)
+            }
+        })
+    }
+
+    fun filterResourceByDistance(
+        latitude: Double,
+        longitude: Double,
+        distance: Double,
+        onSuccess: (List<Resource>) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val token = userSessionManager.getUserToken() ?: ""
+        resourceService.filterResourceByDistance(latitude, longitude, distance, "Bearer $token").enqueue(object :
+            Callback<List<Resource>> {
+            override fun onResponse(call: Call<List<Resource>>, response: Response<List<Resource>>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { onSuccess(it) }
+                } else {
+                    onError(RuntimeException("Response not successful"))
+                }
+            }
+            override fun onFailure(call: Call<List<Resource>>, t: Throwable) {
+                onError(t)
+            }
+        })
     }
 
     // Auth methods
