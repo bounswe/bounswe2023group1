@@ -35,6 +35,7 @@ import com.cmpe451.resq.ui.theme.LightGreen
 import com.cmpe451.resq.ui.theme.ResQTheme
 import com.cmpe451.resq.ui.views.screens.LoginScreen
 import com.cmpe451.resq.ui.views.screens.MapScreen
+import com.cmpe451.resq.ui.views.screens.NotificationScreen
 import com.cmpe451.resq.ui.views.screens.OngoingTasksScreen
 import com.cmpe451.resq.ui.views.screens.ProfileScreen
 import com.cmpe451.resq.ui.views.screens.RegistrationScreen
@@ -143,7 +144,7 @@ fun NavGraph(
             ProfileScreen(navController, appContext)
         }
         composable(NavigationItem.Notifications.route) {
-            //NotificationsScreen(navController)
+            NotificationScreen(navController, appContext)
         }
         composable(NavigationItem.Settings.route) {
             SettingsScreen(navController, appContext)

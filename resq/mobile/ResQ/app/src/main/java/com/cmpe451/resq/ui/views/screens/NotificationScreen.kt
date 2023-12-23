@@ -1,6 +1,7 @@
 package com.cmpe451.resq.ui.views.screens
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -28,15 +28,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.cmpe451.resq.data.models.NotificationItem
 import com.cmpe451.resq.viewmodels.NotificationViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun NotificationScreen() {
-    val viewModel = NotificationViewModel()
+fun NotificationScreen(navController: NavController, appContext: Context) {
+    val viewModel = NotificationViewModel(appContext)
     val notifications by viewModel.notificationItems
 
     Scaffold(
@@ -54,11 +54,7 @@ fun NotificationScreen() {
             )
         }
     ) {
-        NotificationList(listOf(
-            NotificationItem(1, "Request #1", "is included by Facilitator Justin Westervelt", "9:01 am", false),
-            NotificationItem(2, "Resource #345", "arrived to Facilitator Lindsey Culhane", "9:01 am", true)
-            // Add more mock notifications or fetch from a repository
-        ))
+        NotificationList(notifications)
     }
 }
 
@@ -100,7 +96,7 @@ fun NotificationItemCard(notification: NotificationItem) {
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = notification.subtitle,
+                        text = notification.createdAt,
                         style = MaterialTheme.typography.body2
                     )
                 }
@@ -111,21 +107,17 @@ fun NotificationItemCard(notification: NotificationItem) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = notification.time,
+                    text = notification.body,
                     style = MaterialTheme.typography.body2
                 )
+                /*
                 if (notification.isActionable) {
                     Button(onClick = { /* TODO: Handle View action */ }) {
                         Text("VIEW")
                     }
                 }
+                 */
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    NotificationScreen()
 }
