@@ -2,6 +2,7 @@ package com.cmpe451.resq.data.remote
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.cmpe451.resq.data.Constants
 import com.cmpe451.resq.data.manager.UserSessionManager
@@ -11,6 +12,7 @@ import com.cmpe451.resq.data.models.CreateResourceRequestBody
 import com.cmpe451.resq.data.models.LoginRequestBody
 import com.cmpe451.resq.data.models.LoginResponse
 import com.cmpe451.resq.data.models.Need
+import com.cmpe451.resq.data.models.NotificationItem
 import com.cmpe451.resq.data.models.ProfileData
 import com.cmpe451.resq.data.models.RegisterRequestBody
 import com.cmpe451.resq.data.models.UserInfoRequest
@@ -96,6 +98,14 @@ interface ProfileService {
 
 }
 
+interface NotificationService {
+    @GET("notification/viewAllNotifications")
+    suspend fun getNotifications(
+        @Query("userId") userId: Int,
+        @Header("Authorization") jwtToken: String
+    ):  Response<List<NotificationItem>>
+}
+
 class ResqService(appContext: Context) {
 
     var gson = GsonBuilder()
@@ -112,6 +122,7 @@ class ResqService(appContext: Context) {
     private val needService: NeedService = retrofit.create(NeedService::class.java)
     private val authService: AuthService = retrofit.create(AuthService::class.java)
     private val profileService: ProfileService = retrofit.create(ProfileService::class.java)
+    private val notificationService: NotificationService = retrofit.create(NotificationService::class.java)
 
     private val userSessionManager: UserSessionManager = UserSessionManager.getInstance(appContext)
 
@@ -265,6 +276,17 @@ class ResqService(appContext: Context) {
             role = role
         )
 
+        return response
+    }
+
+    suspend fun getNotifications(): Response<List<NotificationItem>> {
+        val userId = userSessionManager.getUserId()
+        val token = userSessionManager.getUserToken() ?: ""
+        val response = notificationService.getNotifications(
+            userId = userId,
+            jwtToken = "Bearer $token",
+        )
+        Log.d("AAA", "getNotifications: ${response.isSuccessful}")
         return response
     }
 }
