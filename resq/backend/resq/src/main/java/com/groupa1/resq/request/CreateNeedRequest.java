@@ -11,4 +11,6 @@ public class CreateNeedRequest {
     private BigDecimal longitude;
     private String categoryTreeId;
     private Integer quantity;
+    private String size;
+    private Boolean isRecurrent;
 }

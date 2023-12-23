@@ -11,4 +11,6 @@ public class UpdateNeedRequest {
     private BigDecimal longitude;
     private String categoryTreeId;
     private Integer quantity;
+    private String size;
+    private Boolean isRecurent;
 }

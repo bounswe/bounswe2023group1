@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public enum EUserRole {
-    COORDINATOR, FACILITATOR, RESPONDER, VICTIM;
+    COORDINATOR, FACILITATOR, RESPONDER, VICTIM, ADMIN;
 
     public static EUserRole getEnumByStr(String roleStr) {
         try {

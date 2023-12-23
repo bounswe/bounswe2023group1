@@ -5,6 +5,7 @@ import com.groupa1.resq.dto.NeedDto;
 import com.groupa1.resq.entity.Need;
 import com.groupa1.resq.entity.User;
 import com.groupa1.resq.entity.enums.ENeedStatus;
+import com.groupa1.resq.entity.enums.ESize;
 import com.groupa1.resq.exception.EntityNotFoundException;
 import com.groupa1.resq.exception.NotOwnerException;
 import com.groupa1.resq.repository.NeedRepository;
@@ -55,7 +56,9 @@ public class NeedService {
         need.setLatitude(createNeedRequest.getLatitude());
         need.setQuantity(createNeedRequest.getQuantity());
         need.setCategoryTreeId(createNeedRequest.getCategoryTreeId());
+        need.setSize(ESize.valueOf(createNeedRequest.getSize()));
         need.setStatus(ENeedStatus.NOT_INVOLVED);
+        need.setIsRecurrent(createNeedRequest.getIsRecurrent());
         return needRepository.save(need).getId();
 
     }
@@ -102,6 +105,8 @@ public class NeedService {
         need.setLatitude(updateNeedRequest.getLatitude());
         need.setQuantity(updateNeedRequest.getQuantity());
         need.setCategoryTreeId(updateNeedRequest.getCategoryTreeId());
+        need.setSize(ESize.valueOf(updateNeedRequest.getSize()));
+        need.setIsRecurrent(updateNeedRequest.getIsRecurent());
         needRepository.save(need);
         return ResponseEntity.ok("Need updated successfully");
     }

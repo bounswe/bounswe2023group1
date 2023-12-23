@@ -2,6 +2,7 @@ package com.groupa1.resq.converter;
 
 import com.groupa1.resq.dto.ResourceDto;
 import com.groupa1.resq.entity.Resource;
+import com.groupa1.resq.entity.enums.ESize;
 import com.groupa1.resq.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ public class ResourceConverter {
         resourceDto.setLatitude(resource.getLatitude());
         resourceDto.setLongitude(resource.getLongitude());
         resourceDto.setCreatedDate(resource.getCreatedAt());
+        if (resource.getSize() != null)
+            resourceDto.setSize(resource.getSize().toString());
         return resourceDto;
 
     }
@@ -47,6 +50,8 @@ public class ResourceConverter {
         resource.setLatitude(resourceDto.getLatitude());
         resource.setLongitude(resourceDto.getLongitude());
         resource.setCreatedAt(resourceDto.getCreatedDate());
+        if (resourceDto.getSize() != null)
+            resource.setSize(ESize.valueOf(resourceDto.getSize()));
         return resource;
     }
 }

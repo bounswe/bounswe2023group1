@@ -16,7 +16,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     UserService userService;
 
 
-    // Since the methods shoul override the UserDetailsService interface, method name is loadUserByUsername, but it uses email
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -26,10 +25,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return UserDetailsImpl.build(user);
     }
 
-    public UserDetails loadUserByUsername(String email, String selectedRole) {
-        User user = userService.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + email));
-
-        return UserDetailsImpl.build(user, selectedRole);
-    }
 }

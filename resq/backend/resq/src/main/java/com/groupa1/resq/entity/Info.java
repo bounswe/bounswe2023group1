@@ -21,8 +21,7 @@ public class Info extends BaseEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Lob
-    @Column(length = 3000)
+    @Column(length = 2048)
     private String description;
 
     private BigDecimal latitude;

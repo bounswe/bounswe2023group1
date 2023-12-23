@@ -109,8 +109,6 @@ export default function MapPage({allMarkers}) {
         }
     }, [selectedPoint]);
 
-    useEffect(() => setShownMarkers(allMarkers), [allMarkers])
-
     useEffect(() => setShownMarkers(
         allMarkers
             .filter(makeFilterByCategory(categoryFilter))

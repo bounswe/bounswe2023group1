@@ -17,6 +17,7 @@ import axios from 'axios';
 import {ResourceContext, ResourceProvider, useResource} from './ResourceContext';
 import ResourceDetail1 from "./ResourceDetail1";
 import ResourceDetail2 from "./ResourceDetail2";
+import ResourceDetail3 from "./ResourceDetail3";
 import ResourceAddress from "./ResourceAddress";
 import {createResource} from "../../AppService";
 
@@ -43,7 +44,7 @@ const customTheme = createTheme({
     },
 });
 
-const steps = ['Resource delivery address', 'Type of Resource', 'Resource Details'];
+const steps = ['Resource delivery address', 'Type of Resource', 'Resource Details', 'Add Image'];
 
 export default function Resource() {
     const [activeStep, setActiveStep] = React.useState(0);
@@ -60,6 +61,8 @@ export default function Resource() {
                 return <ResourceDetail1 resourceData={resourceData} setResourceData={setResourceData}/>;
             case 2:
                 return <ResourceDetail2 resourceData={resourceData} setResourceData={setResourceData}/>;
+            case 3:
+                return <ResourceDetail3 resourceData={resourceData} setResourceData={setResourceData}/>;
             default:
                 throw new Error('Unknown step');
         }
