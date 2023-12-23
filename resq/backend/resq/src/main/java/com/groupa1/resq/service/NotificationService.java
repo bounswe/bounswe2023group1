@@ -1,6 +1,6 @@
 package com.groupa1.resq.service;
 
-import com.groupa1.resq.config.firebase.PushNotificationMessage;
+//import com.groupa1.resq.config.firebase.PushNotificationMessage;
 import com.groupa1.resq.entity.Notification;
 import com.groupa1.resq.entity.User;
 import com.groupa1.resq.entity.enums.ENotificationEntityType;
@@ -24,8 +24,8 @@ public class NotificationService {
     //@Autowired
     //FirebaseMessagingService firebaseMessagingService;
 
-    @Value("${resq.app.fcm.recipientToken}")
-    private String recipientToken;
+    //@Value("${resq.app.fcm.recipientToken}")
+    //private String recipientToken;
 
     public void sendNotification(String title, String body, Long userId, Long relatedEntityId, ENotificationEntityType notificationType) {
         Notification notification = new Notification();
@@ -39,9 +39,10 @@ public class NotificationService {
         notification.setUser(user);
 
         notificationRepository.save(notification);
-        sendPushNotification(title, body);
+        //sendPushNotification(title, body);
     }
 
+    /*
     private void sendPushNotification(String title, String body) {
         PushNotificationMessage pushNotificationMessage = new PushNotificationMessage();
         pushNotificationMessage.setTitle(title);
@@ -49,6 +50,8 @@ public class NotificationService {
         pushNotificationMessage.setRecipientToken(recipientToken);
         //firebaseMessagingService.sendNotificationByToken(pushNotificationMessage);
     }
+
+     */
 
     public List<Notification> viewAllNotifications(Long userId) {
         List<Notification> notifications = notificationRepository.findAllByUserId(userId);
