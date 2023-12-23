@@ -151,7 +151,7 @@ const TaskCard = ({
         ...action
     }))
 
-    return <Card variant="outlined" style={{backgroundColor: status === "TODO" ? "#f1f1f1" : "#FFF"}}>
+    return <Card variant="outlined" style={{backgroundColor: status === "TODO" ? "#f1f1f1" : "#FFF"}} className={"anno-root"} id={"Task"+id}>
         <CardHeader
             avatar={
                 <Avatar sx={{bgcolor: distinct_colors[id % 30]}} aria-label="Task">
