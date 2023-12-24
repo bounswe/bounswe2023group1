@@ -286,28 +286,29 @@ class ResqService(appContext: Context) {
             state = response.body()?.state,
             emailConfirmed = response.body()?.emailConfirmed,
             privacyPolicyAccepted = response.body()?.privacyPolicyAccepted,
-            birth_date = response.body()?.birth_date.toString(),
+            birth_date = response.body()?.birth_date,
         )
     }
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun updateUserData(profileData: ProfileData): Response<String> {
         val token = userSessionManager.getUserToken() ?: ""
+        Log.d("AAA", "updateUserData: $profileData")
+        Log.d("AAA", "token: $token")
         val userId = userSessionManager.getUserId()
-
         val request = UserInfoRequest(
             name = profileData.name ?: "",
             surname = profileData.surname ?: "",
-            birth_date = null,
-            Country = profileData.country ?: "",
-            City = profileData.city ?: "",
-            State = profileData.state ?: "",
+            birth_date = profileData.birth_date ?: null,
+            country = profileData.country ?: "",
+            city = profileData.city ?: "",
+            state = profileData.state ?: "",
             bloodType = profileData.bloodType ?: "",
             height = profileData.height,
             weight = profileData.weight,
             gender = profileData.gender ?: "",
             phoneNumber = profileData.phoneNumber ?: "",
-            isEmailConfirmed = true,
-            isPrivacyPolicyAccepted = true
+            emailConfirmed = true,
+            privacyPolicyAccepted = true
         )
         return profileService.updateProfile(
             userId = userId,
