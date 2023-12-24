@@ -24,8 +24,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
-
-
+import retrofit2.Call
+import retrofit2.Callback
 interface CategoryTreeNodeService {
     @GET("categorytreenode/getMainCategories")
     suspend fun getMainCategories(
@@ -61,8 +61,13 @@ interface NeedService {
         @Header("X-Selected-Role") role: String,
     ): Response<List<Need>>
 
-}
+    @GET("need/viewNeedsByUserId")
+    fun viewNeedsByUserId(
+        @Query("userId") userId: Int,
+        @Header("Authorization") jwtToken: String,
+    ): Call<List<Need>>
 
+}
 interface AuthService {
     @POST("auth/signin")
     suspend fun login(@Body requestBody: LoginRequestBody):  Response<LoginResponse>
@@ -180,6 +185,27 @@ class ResqService(appContext: Context) {
             role = selectedRole,
             jwtToken = "Bearer $token"
         )
+    }
+
+    fun viewNeedsByUserId(
+        onSuccess: (List<Need>) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val token = userSessionManager.getUserToken() ?: ""
+        val userId = userSessionManager.getUserId()
+        needService.viewNeedsByUserId(userId = userId, "Bearer $token").enqueue(object :
+            Callback<List<Need>> {
+            override fun onResponse(call: Call<List<Need>>, response: Response<List<Need>>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { onSuccess(it) }
+                } else {
+                    onError(RuntimeException("Response not successful"))
+                }
+            }
+            override fun onFailure(call: Call<List<Need>>, t: Throwable) {
+                onError(t)
+            }
+        })
     }
 
     // Auth methods

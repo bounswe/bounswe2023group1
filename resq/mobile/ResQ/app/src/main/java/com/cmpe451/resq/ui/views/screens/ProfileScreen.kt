@@ -702,8 +702,8 @@ fun FacilitatorProfileButtons(navController: NavController) {
     ) {
         ProfileButton(
             color = RequestColor,
-            text = "My Request",
-            route = "",
+            text = "My Requests",
+            route = "myRequests",
             navController = navController
         )
         Spacer(modifier = Modifier.width(30.dp))

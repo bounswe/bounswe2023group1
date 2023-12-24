@@ -47,7 +47,7 @@ import com.cmpe451.resq.utils.NavigationItem
 import com.cmpe451.resq.viewmodels.MapViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-
+import com.cmpe451.resq.ui.views.screens.MyRequestsScreen
 class MainActivity : ComponentActivity() {
 
     private val requestPermissionLauncher =
@@ -148,6 +148,9 @@ fun NavGraph(
         }
         composable(NavigationItem.Settings.route) {
             SettingsScreen(navController, appContext)
+        }
+        composable(NavigationItem.MyRequestsScreen.route) {
+            MyRequestsScreen(navController, appContext)
         }
     }
 }

@@ -10,5 +10,7 @@ data class Need(
     val longitude: Double,
     val requestId: Int,
     val status: String,
-    val createdDate: String
+    val createdDate: String,
+    val size: String
 )
+
