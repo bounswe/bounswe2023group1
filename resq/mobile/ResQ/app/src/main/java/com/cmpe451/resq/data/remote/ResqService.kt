@@ -16,6 +16,7 @@ import com.cmpe451.resq.data.models.NotificationItem
 import com.cmpe451.resq.data.models.ProfileData
 import com.cmpe451.resq.data.models.RegisterRequestBody
 import com.cmpe451.resq.data.models.Resource
+import com.cmpe451.resq.data.models.UserInfo
 import com.cmpe451.resq.data.models.UserInfoRequest
 import com.google.gson.GsonBuilder
 import okhttp3.ResponseBody
@@ -65,14 +66,13 @@ interface NeedService {
         @Header("Authorization") jwtToken: String
     ): Call<List<Need>>
 
-
     @GET("need/viewNeedsByUserId")
     fun viewNeedsByUserId(
         @Query("userId") userId: Int,
         @Header("Authorization") jwtToken: String,
     ): Call<List<Need>>
-
 }
+
 interface AuthService {
     @POST("auth/signin")
     suspend fun login(@Body requestBody: LoginRequestBody):  Response<LoginResponse>
@@ -83,10 +83,17 @@ interface AuthService {
 
 interface ProfileService {
     @GET("profile/getProfileInfo")
-    suspend fun getUserInfo(
+    suspend fun getProfileInfo(
         @Query("userId") userId: Int,
         @Header("Authorization") jwtToken: String
     ): Response<ProfileData>
+
+    @POST("profile/updateProfile")
+    suspend fun updateProfile(
+        @Query("userId") userId: Int,
+        @Header("Authorization") jwtToken: String,
+        @Body request: UserInfoRequest
+    ): Response<String>
 
     @POST("user/requestRole")
     suspend fun selectRole(
@@ -95,13 +102,11 @@ interface ProfileService {
         @Header("Authorization") jwtToken: String
     ): Response<String>
 
-
-    @POST("profile/updateProfile")
-    suspend fun updateProfile(
+    @GET("user/getUserInfo")
+    fun getUserInfo(
         @Query("userId") userId: Int,
-        @Header("Authorization") jwtToken: String,
-        @Body request: UserInfoRequest
-    ): Response<String>
+        @Header("Authorization") jwtToken: String
+    ): Call<UserInfo>
 
 }
 
@@ -259,11 +264,11 @@ class ResqService(appContext: Context) {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun getUserInfo(): ProfileData {
+    suspend fun getProfileInfo(): ProfileData {
         val token = userSessionManager.getUserToken() ?: ""
         val userId = userSessionManager.getUserId()
 
-        val response = profileService.getUserInfo(
+        val response = profileService.getProfileInfo(
             userId = userId,
             jwtToken = "Bearer $token"
         )
@@ -334,4 +339,20 @@ class ResqService(appContext: Context) {
         Log.d("AAA", "getNotifications: ${response.isSuccessful}")
         return response
     }
+    fun getUserInfo(userId: Int, callback: (UserInfo?) -> Unit) {
+        val token = userSessionManager.getUserToken() ?: ""
+        profileService.getUserInfo(userId, "Bearer $token").enqueue(object : Callback<UserInfo> {
+            override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
+                if (response.isSuccessful) {
+                    callback(response.body())
+                } else {
+                    callback(null)
+                }
+            }
+            override fun onFailure(call: Call<UserInfo>, t: Throwable) {
+                callback(null)
+            }
+        })
+    }
 }
+
