@@ -5,6 +5,7 @@ package com.cmpe451.resq.ui.views.screens
 import android.content.Context
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -73,8 +74,7 @@ import com.cmpe451.resq.ui.theme.RequestColor
 import com.cmpe451.resq.ui.theme.ResourceColor
 import com.cmpe451.resq.viewmodels.ProfileViewModel
 import kotlinx.coroutines.launch
-
-@OptIn(ExperimentalMaterial3Api::class)
+import java.time.Year
 @Composable
 fun TextListSelectionWithColorChange(
     items: List<String>,
@@ -179,44 +179,32 @@ fun ProfilePhoto() {
     // TO DO: Add deletion option
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ProfileScreen(navController: NavController, appContext: Context) {
     val viewModel: ProfileViewModel = viewModel()
-
-    viewModel.getUserData(appContext)
+    val profileData by viewModel.profile
+    LaunchedEffect(profileData) {
+        viewModel.getUserData(appContext)
+    }
 
     val allRoles = listOf("VICTIM", "RESPONDER", "FACILITATOR")
     val userRoles = UserSessionManager.getInstance(appContext).getUserRoles()
     val availableRoles = allRoles.filter { !userRoles.contains(it) }
 
-    val profileData by viewModel.profile
-    when (profileData) {
-        null -> {
-            // Data is loading
-            Text("Loading...")
-        }
-        else -> {
-            val userRoles = UserSessionManager.getInstance(appContext).getUserRoles()
-            if (userRoles != null) {
-                if (userRoles.contains("VICTIM") || userRoles.contains("RESPONDER") || userRoles.contains("FACILITATOR")) {
 
-                    Profile(profileData = profileData!!, navController = navController, availableRoles, viewModel, appContext)
-                } else {
-
-                    Text("Unknown Role")
-                }
-            }
-        }
+    if (profileData != null) {
+        Profile(profileData!!, navController, availableRoles, viewModel, appContext)
+    } else {
+        Text("Loading...")
     }
 }
 private fun String.letterOrSpace() = filter { it.isLetter() || it.isWhitespace() }
 private fun String.isDigit() = filter { it.isDigit() }
 
-fun generateYears(start: Int, end: Int): List<String>{
+fun generateYears(start: Int, end: Int): List<String> {
     val years = mutableListOf<String>()
-    for (i in start..end){
+    for (i in end downTo start) {
         years.add(i.toString())
     }
     return years
@@ -248,9 +236,8 @@ fun generateDays(month: String): List<String>{
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun Profile(profileData:ProfileData, navController: NavController, availableRoles: List<String>, viewModel: ProfileViewModel, appContext: Context) {
-    val genders = listOf("Male", "Female")
+    val genders = listOf("MALE", "FEMALE")
     val bloodTypes = listOf("AB Rh+", "AB Rh-", "A Rh+", "A Rh-", "B Rh+", "B Rh-", "O Rh+", "O Rh-")
-    val userSessionManager = UserSessionManager.getInstance(appContext)
     var name by remember { mutableStateOf(profileData.name ?: "") }
     var surname by remember { mutableStateOf(profileData.surname ?: "") }
     var weight by remember { mutableStateOf(profileData.weight?.toString() ?: "") }
@@ -263,17 +250,36 @@ fun Profile(profileData:ProfileData, navController: NavController, availableRole
     var bloodType by remember { mutableStateOf(profileData.bloodType ?: "") }
     var isPhoneValid by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf("") }
+    var year by remember { mutableStateOf(profileData.birth_date?.substring(0, 4) ?: "") }
+    var month by remember { mutableStateOf(profileData.birth_date?.substring(5, 7) ?: "") }
+    var day by remember { mutableStateOf(profileData.birth_date?.substring(8, 10) ?: "") }
     val snackbarHostState = remember { SnackbarHostState() }
-
+    val userSessionManager: UserSessionManager = UserSessionManager.getInstance(appContext)
     var profileColor = Color(0xFFFFFFFF)
+    val years = generateYears(1900, Year.now().value)
+    val months = generateMonths()
+    when (userSessionManager.getSelectedRole()) {
+        null -> {
+            // Data is loading
+            Text("Loading...")
+        }
+        else -> {
+            val selectedRole = userSessionManager.getSelectedRole()
+            if (selectedRole != null) {
+                if (selectedRole == "FACILITATOR") {
+                    profileColor = RequestColor
+                } else if (selectedRole == "RESPONDER") {
+                    profileColor = ResourceColor
+                } else if (selectedRole == "VICTIM") {
+                    profileColor = MyTasksColor
+                }
+            }
+        }
+    }
 
     val coroutineScope = rememberCoroutineScope()
     val modalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
 
-
-    LaunchedEffect(Unit) {
-        viewModel.getUserData(appContext)
-    }
     ModalBottomSheetLayout(
         sheetContent = {
             BottomSheetContent(
@@ -544,6 +550,48 @@ fun Profile(profileData:ProfileData, navController: NavController, availableRole
                                 )
                             }
                         }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+
+                            ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                year.let {
+                                    TextListSelectionWithColorChange(
+                                        items = years,
+                                        selectedItem = year,
+                                        onItemSelected = { year = it },
+                                        label = "Year",
+                                        color = profileColor
+                                    )
+                                }
+                            }
+                            Column(modifier = Modifier.weight(1f)) {
+                                month.let {
+                                    TextListSelectionWithColorChange(
+                                        items = months,
+                                        selectedItem = month,
+                                        onItemSelected = { month = it },
+                                        label = "Month",
+                                        color = profileColor
+                                    )
+                                }
+                            }
+                            Column(modifier = Modifier.weight(1f)) {
+                                val days = generateDays(month)
+
+                                day.let {
+                                    TextListSelectionWithColorChange(
+                                        items = days,
+                                        selectedItem = day,
+                                        onItemSelected = { day = it },
+                                        label = "Day",
+                                        color = profileColor
+                                    )
+                                }
+                            }
+                        }
+
                     }
                 }
             }
@@ -582,7 +630,6 @@ fun Profile(profileData:ProfileData, navController: NavController, availableRole
                                     message = "Please check your phone number."
 
                                 } else {
-                                    // @TO DO Handle Save Details button click
                                     viewModel.updateProfile(appContext, ProfileData(
                                         name = name,
                                         surname = surname,
@@ -590,23 +637,16 @@ fun Profile(profileData:ProfileData, navController: NavController, availableRole
                                         country = country,
                                         city = city,
                                         state = state,
-                                        gender = gender.takeIf { it.isNotEmpty() } ,
+                                        gender = gender.takeIf { it.isNotEmpty() },
                                         height = height.takeIf { it.isNotEmpty() }?.toInt(),
                                         weight = weight.takeIf { it.isNotEmpty() }?.toInt(),
                                         phoneNumber = phoneNumber,
-                                        birth_date = null
+                                        birth_date = if (year == null || month == null || day == null) null else "$year-$month-$day"
                                     ))
                                     if (viewModel.updateMessage.value != null) {
                                         message = "Details saved successfully."
+                                        viewModel.errorMessage.value = null
                                     }
-
-                                    else if (viewModel.errorMessage.value != null) {
-                                        message = viewModel.errorMessage.value!!
-                                    }
-                                    else{
-                                        message = "Details saved successfully."
-                                    }
-
                                 }
 
                             },
@@ -741,7 +781,7 @@ fun ResponderProfileButtons(navController: NavController) {
         ProfileButton(
             color = RequestColor,
             text = "My Request",
-            route = "request",
+            route = "myRequests",
             navController = navController
         )
     }
@@ -757,7 +797,7 @@ fun VictimProfileButtons(navController: NavController) {
         ProfileButton(
             color = RequestColor,
             text = "My Request",
-            route = "request",
+            route = "myRequests",
             navController = navController
         )
     }
