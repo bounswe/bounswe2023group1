@@ -25,10 +25,10 @@ public class Task extends BaseEntity {
     @JoinColumn(name = "assigner_id")
     private User assigner;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy="task")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="task", cascade = CascadeType.ALL)
     private Set<Action> actions;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "task", cascade = CascadeType.ALL)
     private Set<Resource> resources;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy="task")

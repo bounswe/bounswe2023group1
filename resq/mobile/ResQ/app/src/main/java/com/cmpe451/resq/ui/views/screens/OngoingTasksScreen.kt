@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.cmpe451.resq.ui.theme.OngoingTasksColor
 import com.cmpe451.resq.viewmodels.OngoingTasksViewModel
 
 @Composable
@@ -57,7 +58,7 @@ fun OngoingTasksScreen(navController: NavController) {
         ) {
             Spacer(modifier = Modifier.height(16.dp))
             tasks.forEachIndexed { index, task ->
-                TaskCard(taskNumber = index + 1, taskDescription = task)
+                OngoingTaskCard(taskNumber = index + 1, taskDescription = task)
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
@@ -65,9 +66,9 @@ fun OngoingTasksScreen(navController: NavController) {
 }
 
 @Composable
-fun TaskCard(taskNumber: Int, taskDescription: String) {
+fun OngoingTaskCard(taskNumber: Int, taskDescription: String) {
     val borderColor = Color(0xFFE16834) // Color for the border and hashtag
-    val taskColor = Color(0xFF0053CE) // Color for the task description
+    val taskColor = OngoingTasksColor // Color for the task description
     var isSelected by remember { mutableStateOf(false) }
 
     Card(

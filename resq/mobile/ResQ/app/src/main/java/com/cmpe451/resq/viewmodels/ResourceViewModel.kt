@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cmpe451.resq.data.models.CategoryTreeNode
 import com.cmpe451.resq.data.models.CreateResourceRequestBody
+import com.cmpe451.resq.data.models.Resource
 import com.cmpe451.resq.data.remote.ResqService
 import kotlinx.coroutines.launch
 
@@ -31,6 +32,9 @@ class ResourceViewModel : ViewModel() {
 
     private val _createResourceResponse = mutableStateOf<String?>(null)
     val createResourceResponse: State<String?> = _createResourceResponse
+
+    private val _resourceList = mutableStateOf<List<Resource>>(emptyList())
+    val resourceList: State<List<Resource>> = _resourceList
 
     fun updateCategory(category: CategoryTreeNode) {
         _selectedCategory.value = category
@@ -107,5 +111,10 @@ class ResourceViewModel : ViewModel() {
             return Result.failure(Throwable(response.message()))
         }
         return Result.failure(Throwable(message = "No category"))
+    }
+
+    fun getResourcesBySenderId(appContext: Context) {
+        val api = ResqService(appContext)
+        /* TODO: implement */
     }
 }

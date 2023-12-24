@@ -35,18 +35,20 @@ import com.cmpe451.resq.ui.theme.LightGreen
 import com.cmpe451.resq.ui.theme.ResQTheme
 import com.cmpe451.resq.ui.views.screens.LoginScreen
 import com.cmpe451.resq.ui.views.screens.MapScreen
+import com.cmpe451.resq.ui.views.screens.NotificationScreen
 import com.cmpe451.resq.ui.views.screens.OngoingTasksScreen
 import com.cmpe451.resq.ui.views.screens.ProfileScreen
 import com.cmpe451.resq.ui.views.screens.RegistrationScreen
 import com.cmpe451.resq.ui.views.screens.RequestScreen
 import com.cmpe451.resq.ui.views.screens.ResourceScreen
 import com.cmpe451.resq.ui.views.screens.SettingsScreen
+import com.cmpe451.resq.ui.views.screens.TasksScreen
 import com.cmpe451.resq.utils.BottomNavigationItem
 import com.cmpe451.resq.utils.NavigationItem
 import com.cmpe451.resq.viewmodels.MapViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-
+import com.cmpe451.resq.ui.views.screens.MyRequestsScreen
 class MainActivity : ComponentActivity() {
 
     private val requestPermissionLauncher =
@@ -136,6 +138,9 @@ fun NavGraph(
         composable(NavigationItem.Resource.route) {
             ResourceScreen(navController, appContext)
         }
+        composable(NavigationItem.Task.route) {
+            TasksScreen(navController)
+        }
         composable(NavigationItem.OngoingTasks.route) {
             OngoingTasksScreen(navController)
         }
@@ -143,10 +148,13 @@ fun NavGraph(
             ProfileScreen(navController, appContext)
         }
         composable(NavigationItem.Notifications.route) {
-            //NotificationsScreen(navController)
+            NotificationScreen(navController, appContext)
         }
         composable(NavigationItem.Settings.route) {
             SettingsScreen(navController, appContext)
+        }
+        composable(NavigationItem.MyRequestsScreen.route) {
+            MyRequestsScreen(navController, appContext)
         }
     }
 }

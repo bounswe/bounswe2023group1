@@ -5,14 +5,14 @@ data class ProfileData(
     var surname: String?,
     var birth_date: String?,
     var gender:String?,
-    var bloodType: String?,
     var phoneNumber: String?,
-    var country: String?,
-    var city: String?,
-    var state: String?,
+    var bloodType: String?,
     var weight: Int?,
     var height: Int?,
+    var state: String?,
+    var country: String?,
     val emailConfirmed: Boolean? = false,
+    var city: String?,
     val privacyPolicyAccepted: Boolean? = false,
 )
 
@@ -22,13 +22,20 @@ data class UserInfoRequest(
     var surname: String?,
     var birth_date: String?,
     var gender:String?,
-    var bloodType: String?,
     var phoneNumber: String?,
-    var Country: String?,
-    var City: String?,
-    var State: String?,
+    var bloodType: String?,
     var weight: Int?,
     var height: Int?,
-    val isEmailConfirmed: Boolean? = false,
-    val isPrivacyPolicyAccepted: Boolean? = false,
+    var state: String?,
+    var country: String?,
+    val emailConfirmed: Boolean? = false,
+    var city: String?,
+    val privacyPolicyAccepted: Boolean? = false,
+)
+
+data class UserInfo(
+    var email: String,
+    var name: String,
+    var surname: String,
+    var roles: List<String>
 )

@@ -31,8 +31,7 @@ class ProfileViewModel() : ViewModel() {
 
         viewModelScope.launch {
             try {
-                val data = api.getUserInfo()
-                Log.d("Service", "getUserData: $data")
+                val data = api.getProfileInfo()
                 _profileData.value = data
             } catch (e: Exception) {
                 errorMessage.value = e.message
@@ -42,20 +41,18 @@ class ProfileViewModel() : ViewModel() {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun updateProfile(appContext: Context, profileData: ProfileData){
+    fun updateProfile(appContext: Context, profileData: ProfileData) {
         val api = ResqService(appContext)
         viewModelScope.launch {
             try {
-
                 val response = api.updateUserData(profileData)
-
                 if (response.isSuccessful) {
+                    // Update was successful, now fetch the latest profile data
+                    getUserData(appContext)
                     _updateMessage.value = response.body()
                     _errorMessage.value = null
-                }
-                else {
-                    _errorMessage.value = response.message()
-                        ?: "Profile update failed. Please try again."
+                } else {
+                    _errorMessage.value = response.message() ?: "Profile update failed. Please try again."
                 }
             } catch (e: Exception) {
                 _errorMessage.value = e.message ?: "Unexpected error occurred."
