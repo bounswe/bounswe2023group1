@@ -5,16 +5,13 @@ import Box from '@mui/material/Box';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import DisasterMap from "../components/DisasterMap";
-import {cards, ExpandMore, getAddress, OffsetActions} from "../components/Cards/ListCards";
-import {AmountSelector, MultiCheckbox} from "../components/MultiCheckbox";
-import {DatePicker} from "@mui/x-date-pickers";
-import dayjs from "dayjs";
-import {useQuery} from "@tanstack/react-query";
-import {getAllResources, getCategoryTree, getUserInfo, viewAllTasks} from "../AppService";
+import {ExpandMore, getAddress, OffsetActions} from "../components/Cards/ListCards";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {acceptTask, completeTask, getCategoryTree, getUserInfo, viewAllTasks} from "../AppService";
 import Annotatable from "../components/Annotatable";
-import {Card, CardContent, CardHeader, Collapse} from "@mui/material";
+import {Button, Card, CardContent, CardHeader, Collapse} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
-import {distinct_colors, type_colors} from "../Colors";
+import {distinct_colors} from "../Colors";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -37,7 +34,7 @@ const mockTasks = [
                 "taskId": 4,
                 "verifierId": 9,
                 "description": "action description",
-                "startLatitude": 40.5,
+                "startLatitude": 10.5,
                 "startLongitude": 38,
                 "endLatitude": 39,
                 "endLongitude": 39.5,
@@ -126,7 +123,7 @@ const Location = ({latitude, longitude}) => {
 const TaskCard = ({
                       item: {
                           id,
-                          assignee: assigneeId,
+                          //assignee: assigneeId,
                           assigner: assignerId,
                           actions: rawActions,
                           description,
@@ -134,7 +131,8 @@ const TaskCard = ({
                           urgency,
                           status
                       },
-                      expand
+                      expand,
+                      onClick
                   }) => {
     const [expanded, setExpanded] = useState(expand || false);
 
@@ -143,7 +141,14 @@ const TaskCard = ({
             setExpanded(true)
     }, [expand]);
 
+    const queryClient = useQueryClient()
+
     const assigner = useQuery({queryKey: ['user', assignerId], queryFn: () => getUserInfo(assignerId)})
+
+    const categoryTree = useQuery({
+        queryKey: ['categoryTree'],
+        queryFn: () => getCategoryTree()
+    })
 
     const actions = rawActions.map(action => ({
         startLocation: <Location latitude={action.startLatitude} longitude={action.startLongitude}/>,
@@ -151,8 +156,26 @@ const TaskCard = ({
         ...action
     }))
 
-    return <Card variant="outlined" style={{backgroundColor: status === "TODO" ? "#f1f1f1" : "#FFF"}}
-                 className={"anno-root"} id={"Task" + id}>
+    const handleSetTodo = async () => {
+        acceptTask(id)
+        await queryClient.invalidateQueries({queryKey: ['getTasks']})
+    }
+    const handleSetDone = async () => {
+        completeTask(id)
+        await queryClient.invalidateQueries({queryKey: ['getTasks']})
+    }
+
+    const StateButtons = (props) => ({
+        PENDING: <Button {...props} onClick={handleSetTodo}>Accept Task</Button>,
+        TODO: <Button {...props} onClick={handleSetDone}>Task Complete</Button>,
+        DONE: <></>,
+    })[status]
+
+    return <Card variant="outlined"
+                 style={{backgroundColor: status === "TODO" ? "#f1f1f1" : "#FFF"}}
+                 className={"anno-root"}
+                 id={"Task" + id}
+                 onClick={onClick}>
         <CardHeader
             avatar={
                 <Avatar sx={{bgcolor: distinct_colors[id % 30]}} aria-label="Task">
@@ -211,6 +234,16 @@ const TaskCard = ({
                         From {startLocation} to {endLocation}: {description}
                     </Typography>
                 )}
+                {resources.map(({quantity, categoryTreeId, longitude, latitude}) =>
+                    <Typography variant="body2" color="text.primary">
+                        {quantity} {categoryTree?.data?.findCategoryWithId(parseInt(categoryTreeId))?.data || categoryTreeId}
+                        at <Location latitude={latitude} longitude={longitude}/>
+                    </Typography>
+                )}
+                <Box sx={{display: "flex", flexDirection: "row"}}>
+                    <StateButtons sx={{marginLeft: "auto", marginRight: "auto", marginTop: "1rem"}}
+                                  variant="contained"/>
+                </Box>
             </CardContent>
         </Collapse>
     </Card>;
@@ -225,7 +258,7 @@ const taskRanks = {
 
 export default function TaskSelectPage({uid}) {
     //const [allTasks, setAllTasks] = useState(mockTasks)
-    const [sortedTasks, setSortedTasks] = useState([])
+    const [sortedTasks, setSortedTasks] = useState(mockTasks)
 
     const [shownMarkers, setShownMarkers] = useState([])
     const [shownPaths, setShownPaths] = useState([])
@@ -244,8 +277,8 @@ export default function TaskSelectPage({uid}) {
     useEffect(() => {
         if (selectedPoint) {
             setMapCenter([
-                selectedPoint.latitude || avgCoords(selectedPoint.coordinates, 1),
-                selectedPoint.longitude || avgCoords(selectedPoint.coordinates, 0)
+                selectedPoint.longitude || avgCoords(selectedPoint.coordinates, 0),
+                selectedPoint.latitude || avgCoords(selectedPoint.coordinates, 1)
             ]);
         }
     }, [selectedPoint]);
@@ -269,6 +302,10 @@ export default function TaskSelectPage({uid}) {
             setShownMarkers(sortedTasks.map(task => makeMarkers(task)).flat(1))
         }
     }, [sortedTasks, selectedPoint]);
+
+    const handleTaskCardClick = task => {
+        setSelectedPoint(makePaths(task)[0]);
+    }
 
     // noinspection JSValidateTypes
     return (
@@ -297,7 +334,8 @@ export default function TaskSelectPage({uid}) {
                                 height: "fit-content"
                             }}>
                                 {sortedTasks.map((task) => <TaskCard item={task}
-                                                                     expand={selectedPoint?.task?.id === task?.id}/>)}
+                                                                     expand={selectedPoint?.task?.id === task?.id}
+                                                                     onClick={() => handleTaskCardClick(task)}/>)}
                             </Box>
                         </Box>
                         <Box sx={{width: "36px"}}/>
