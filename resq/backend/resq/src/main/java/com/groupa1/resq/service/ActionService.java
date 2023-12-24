@@ -19,7 +19,7 @@ import com.groupa1.resq.dto.ActionDto;
 import com.groupa1.resq.specification.ActionSpecifications;
 import com.groupa1.resq.util.NotificationMessages;
 import jakarta.transaction.Transactional;
-import com.groupa1.resq.specification.ActionSpecifications;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -27,13 +27,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
+import java.util.Collections;
 
 @Service
 @Slf4j
+@Setter
 public class ActionService {
 
     @Autowired
@@ -50,6 +51,7 @@ public class ActionService {
 
     @Autowired
     private ActionConverter actionConverter;
+
 
 
 
@@ -186,13 +188,12 @@ public ResponseEntity<ActionDto> viewSingleAction(Long actionId){
         action.setVerified(true);
         actionRepository.save(action);
         String bodyMessage = String.format(NotificationMessages.ACTION_VERIFIED, action.getId(), action.getVerifier().getId());
-        notificationService.sendNotification("New Task Assigned", bodyMessage, user.getId(), action.getId(), ENotificationEntityType.TASK);
+        notificationService.sendNotification("Action Verified", bodyMessage, user.getId(), action.getId(), ENotificationEntityType.TASK);
         return ResponseEntity.ok("Action verified by facilitator");
     }
 
 
-    public ResponseEntity<String> commentAction(
-            CreateCommentRequest commentActionRequest) {
+    public ResponseEntity<String> commentAction(CreateCommentRequest commentActionRequest) {
     User user = userRepository.findById(commentActionRequest.getUserId()).orElse(null);
     Action action = actionRepository.findById(commentActionRequest.getActionId()).orElse(null);
     User verifier = action.getVerifier();
@@ -209,7 +210,9 @@ public ResponseEntity<ActionDto> viewSingleAction(Long actionId){
     comment.setVerifier(user);
     comment.setAction(action);
     comment.setComment(commentActionRequest.getComment());
-    action.getComments().add(comment);
+    Set<Comment> comments = new HashSet<>(action.getComments() != null ? action.getComments() : Collections.emptySet());
+    comments.add(comment);
+    action.setComments(comments);
     return ResponseEntity.ok("Comment added successfully");
 
     }
