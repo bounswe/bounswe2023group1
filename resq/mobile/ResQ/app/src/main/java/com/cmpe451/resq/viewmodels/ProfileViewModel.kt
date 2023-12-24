@@ -31,7 +31,7 @@ class ProfileViewModel() : ViewModel() {
 
         viewModelScope.launch {
             try {
-                val data = api.getUserInfo()
+                val data = api.getProfileInfo()
                 Log.d("Service", "getUserData: $data")
                 _profileData.value = data
             } catch (e: Exception) {
