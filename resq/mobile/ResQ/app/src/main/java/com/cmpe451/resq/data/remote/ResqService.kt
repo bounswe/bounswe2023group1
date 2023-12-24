@@ -28,8 +28,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
-import retrofit2.Call
-import retrofit2.Callback
 interface CategoryTreeNodeService {
     @GET("categorytreenode/getMainCategories")
     suspend fun getMainCategories(
@@ -160,29 +158,6 @@ class ResqService(appContext: Context) {
             jwtToken = "Bearer $token",
             requestBody = request
         )
-    }
-
-    fun filterResourceByDistance(
-        latitude: Double,
-        longitude: Double,
-        distance: Double,
-        onSuccess: (List<Resource>) -> Unit,
-        onError: (Throwable) -> Unit
-    ) {
-        val token = userSessionManager.getUserToken() ?: ""
-        resourceService.filterResourceByDistance(latitude, longitude, distance, "Bearer $token").enqueue(object :
-            Callback<List<Resource>> {
-            override fun onResponse(call: Call<List<Resource>>, response: Response<List<Resource>>) {
-                if (response.isSuccessful) {
-                    response.body()?.let { onSuccess(it) }
-                } else {
-                    onError(RuntimeException("Response not successful"))
-                }
-            }
-            override fun onFailure(call: Call<List<Resource>>, t: Throwable) {
-                onError(t)
-            }
-        })
     }
 
     // Need methods
@@ -364,7 +339,6 @@ class ResqService(appContext: Context) {
         Log.d("AAA", "getNotifications: ${response.isSuccessful}")
         return response
     }
-
     fun getUserInfo(userId: Int, callback: (UserInfo?) -> Unit) {
         val token = userSessionManager.getUserToken() ?: ""
         profileService.getUserInfo(userId, "Bearer $token").enqueue(object : Callback<UserInfo> {
@@ -381,3 +355,4 @@ class ResqService(appContext: Context) {
         })
     }
 }
+
