@@ -69,9 +69,10 @@ public class ResourceController {
                                                            @RequestParam(required = false) BigDecimal longitude,
                                                              @RequestParam(required = false) BigDecimal latitude,
                                                            @RequestParam(required = false) Long userId,
-                                                            @RequestParam(required = false) EResourceStatus status){
+                                                            @RequestParam(required = false) EResourceStatus status,
+                                                              @RequestParam(required = false) Long receiverId){
         log.info("Filtering resources by category");
-        return resourceService.filterResource(latitude, longitude, categoryTreeId, userId, status);
+        return resourceService.filterResource(latitude, longitude, categoryTreeId, userId, status, receiverId);
     }
 
     @PreAuthorize("hasRole('COORDINATOR') or hasRole('VICTIM') or hasRole('RESPONDER')")
@@ -81,8 +82,9 @@ public class ResourceController {
                                                              @RequestParam(required = false) BigDecimal latitude1,
                                                              @RequestParam(required = false) BigDecimal longitude2,
                                                              @RequestParam(required = false) BigDecimal latitude2,
-                                                           @RequestParam(required = false) Long userId) {
+                                                             @RequestParam(required = false) Long userId,
+                                                           @RequestParam(required = false) Long receiverId) {
         log.info("Filtering resources by category, rectangular scope");
-        return resourceService.filterResourceRectangularScope(latitude1, longitude1, latitude2, longitude2, categoryTreeId, userId);
+        return resourceService.filterResourceRectangularScope(latitude1, longitude1, latitude2, longitude2, categoryTreeId, userId, receiverId);
     }
 }

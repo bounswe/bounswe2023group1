@@ -94,7 +94,7 @@ public class ResourceService {
         return ResponseEntity.ok("Resource deleted successfully");
     }
 
-    public ResponseEntity<List<ResourceDto>> filterResource(BigDecimal latitude, BigDecimal longitude, String categoryTreeId, Long userId, EResourceStatus status){
+    public ResponseEntity<List<ResourceDto>> filterResource(BigDecimal latitude, BigDecimal longitude, String categoryTreeId, Long userId, EResourceStatus status, Long receiverId){
         Specification<Resource> spec = Specification.where(null);
 
         if (longitude != null && latitude != null) {
@@ -112,6 +112,9 @@ public class ResourceService {
         if (status != null){
             spec = spec.and(ResourceSpecifications.hasStatus(status));
         }
+        if (receiverId != null){
+            spec = spec.and(ResourceSpecifications.hasReceiverId(receiverId));
+        }
         return ResponseEntity.ok(resourceRepository.findAll(spec).stream().map(resource -> resourceConverter.convertToDto(resource)).toList());
 
     }
@@ -119,7 +122,7 @@ public class ResourceService {
         return ResponseEntity.ok(resourceRepository.filterByDistance(latitude, longitude, distance).stream().map(resource -> resourceConverter.convertToDto(resource)).toList());
     }
 
-    public ResponseEntity<List<ResourceDto>> filterResourceRectangularScope(BigDecimal latitude1, BigDecimal longitude1, BigDecimal latitude2, BigDecimal longitude2, String categoryTreeId, Long userId){
+    public ResponseEntity<List<ResourceDto>> filterResourceRectangularScope(BigDecimal latitude1, BigDecimal longitude1, BigDecimal latitude2, BigDecimal longitude2, String categoryTreeId, Long userId, Long receiverId){
         Specification<Resource> spec = Specification.where(null);
 
         if (longitude1 != null && latitude1 != null && longitude2 != null && latitude2 != null) {
@@ -132,6 +135,9 @@ public class ResourceService {
         }
         if (userId != null) {
             spec = spec.and(ResourceSpecifications.hasOwnerId(userId));
+        }
+        if (receiverId != null){
+            spec = spec.and(ResourceSpecifications.hasReceiverId(receiverId));
         }
         return ResponseEntity.ok(resourceRepository.findAll(spec).stream().map(resource -> resourceConverter.convertToDto(resource)).toList());
 

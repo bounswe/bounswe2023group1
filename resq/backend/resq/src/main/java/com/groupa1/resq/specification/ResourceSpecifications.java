@@ -37,4 +37,8 @@ public class ResourceSpecifications {
         return (root, query, builder) -> builder.equal(root.get("status"), status);
     }
 
+    public static Specification<Resource> hasReceiverId(Long receiverId){
+        return (root, query, builder) -> builder.equal(root.get("receiver").get("id"), receiverId);
+    }
+
 }
