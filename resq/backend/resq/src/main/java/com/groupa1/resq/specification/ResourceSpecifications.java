@@ -1,7 +1,7 @@
 package com.groupa1.resq.specification;
 
-import com.groupa1.resq.entity.Need;
 import com.groupa1.resq.entity.Resource;
+import com.groupa1.resq.entity.enums.EResourceStatus;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
@@ -31,6 +31,10 @@ public class ResourceSpecifications {
                         criteriaBuilder.between(root.get("longitude"), longitude1, longitude2),
                         criteriaBuilder.between(root.get("latitude"), latitude1, latitude2)
                 );
+    }
+
+    public static Specification<Resource> hasStatus(EResourceStatus status){
+        return (root, query, builder) -> builder.equal(root.get("status"), status);
     }
 
 }

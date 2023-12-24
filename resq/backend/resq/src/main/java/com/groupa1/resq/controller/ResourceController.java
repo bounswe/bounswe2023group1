@@ -2,6 +2,7 @@ package com.groupa1.resq.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groupa1.resq.dto.ResourceDto;
+import com.groupa1.resq.entity.enums.EResourceStatus;
 import com.groupa1.resq.request.CreateResourceRequest;
 import com.groupa1.resq.service.ResourceService;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +54,7 @@ public class ResourceController {
     }
 
 
+
     @PreAuthorize("hasRole('COORDINATOR') or hasRole('VICTIM') or hasRole('RESPONDER')")
     @GetMapping("/filterByDistance")
     public ResponseEntity<List<ResourceDto>> filterByDistance(@RequestParam
@@ -66,9 +68,10 @@ public class ResourceController {
     public ResponseEntity<List<ResourceDto>> filterByCategory(@RequestParam(required = false) String categoryTreeId,
                                                            @RequestParam(required = false) BigDecimal longitude,
                                                              @RequestParam(required = false) BigDecimal latitude,
-                                                           @RequestParam(required = false) Long userId) {
+                                                           @RequestParam(required = false) Long userId,
+                                                            @RequestParam(required = false) EResourceStatus status){
         log.info("Filtering resources by category");
-        return resourceService.filterResource(latitude, longitude, categoryTreeId, userId);
+        return resourceService.filterResource(latitude, longitude, categoryTreeId, userId, status);
     }
 
     @PreAuthorize("hasRole('COORDINATOR') or hasRole('VICTIM') or hasRole('RESPONDER')")

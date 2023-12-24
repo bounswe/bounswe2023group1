@@ -27,6 +27,10 @@ public class ResourceConverter {
         resourceDto.setLatitude(resource.getLatitude());
         resourceDto.setLongitude(resource.getLongitude());
         resourceDto.setCreatedDate(resource.getCreatedAt());
+        if(resource.getStatus() != null){
+            resourceDto.setStatus(resource.getStatus());
+        }
+
         if (resource.getSize() != null)
             resourceDto.setSize(resource.getSize());
         if (resource.getFile() != null){

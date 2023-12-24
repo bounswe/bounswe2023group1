@@ -6,6 +6,7 @@ import com.groupa1.resq.dto.ResourceDto;
 import com.groupa1.resq.entity.File;
 import com.groupa1.resq.entity.Resource;
 import com.groupa1.resq.entity.User;
+import com.groupa1.resq.entity.enums.EResourceStatus;
 import com.groupa1.resq.exception.EntityNotFoundException;
 import com.groupa1.resq.repository.ResourceRepository;
 import com.groupa1.resq.request.CreateResourceRequest;
@@ -66,6 +67,8 @@ public class ResourceService {
             fileEntity.setResource(resource);
             resource.setFile(fileEntity);
         }
+        resource.setStatus(EResourceStatus.AVAILABLE); // default
+        resource.setGender(createResourceRequest.getGender());
         Long resourceId = resourceRepository.save(resource).getId();
         return ResponseEntity.ok(resourceId);
     }
@@ -77,6 +80,7 @@ public class ResourceService {
         resource.setLongitude(createResourceRequest.getLongitude());
         resource.setCategoryTreeId(createResourceRequest.getCategoryTreeId());
         resource.setSize(createResourceRequest.getSize());
+        resource.setStatus(createResourceRequest.getStatus());
         resourceRepository.save(resource);
         return ResponseEntity.ok("Resource updated successfully");
     }
@@ -90,7 +94,7 @@ public class ResourceService {
         return ResponseEntity.ok("Resource deleted successfully");
     }
 
-    public ResponseEntity<List<ResourceDto>> filterResource(BigDecimal latitude, BigDecimal longitude, String categoryTreeId, Long userId){
+    public ResponseEntity<List<ResourceDto>> filterResource(BigDecimal latitude, BigDecimal longitude, String categoryTreeId, Long userId, EResourceStatus status){
         Specification<Resource> spec = Specification.where(null);
 
         if (longitude != null && latitude != null) {
@@ -104,6 +108,9 @@ public class ResourceService {
         }
         if (userId != null) {
             spec = spec.and(ResourceSpecifications.hasOwnerId(userId));
+        }
+        if (status != null){
+            spec = spec.and(ResourceSpecifications.hasStatus(status));
         }
         return ResponseEntity.ok(resourceRepository.findAll(spec).stream().map(resource -> resourceConverter.convertToDto(resource)).toList());
 

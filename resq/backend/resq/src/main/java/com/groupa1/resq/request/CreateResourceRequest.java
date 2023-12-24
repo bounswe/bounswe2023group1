@@ -3,6 +3,7 @@ package com.groupa1.resq.request;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.groupa1.resq.entity.enums.EGender;
 import com.groupa1.resq.entity.enums.ESize;
+import com.groupa1.resq.entity.enums.EResourceStatus;
 import lombok.Data;
 import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,4 +20,5 @@ public class CreateResourceRequest {
     private BigDecimal longitude;
     private EGender gender;
     private ESize size;
+    private EResourceStatus status; // This field is only for resource update, default is AVAILABLE
 }

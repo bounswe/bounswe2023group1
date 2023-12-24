@@ -14,13 +14,11 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     // Each kind of exception should be registered here in general exception handler so that Spring handles them.
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<?> entityNotFoundException(EntityNotFoundException exception) {
-        log.error(exception.getMessage());
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(NotOwnerException.class)
     public ResponseEntity<?> nowOwnerException(NotOwnerException exception) {
-        log.error(exception.getMessage());
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 

@@ -1,12 +1,15 @@
 package com.groupa1.resq.controller;
 
+import com.groupa1.resq.auth.UserDetailsImpl;
+import com.groupa1.resq.request.CreateCommentRequest;
 import com.groupa1.resq.request.CreateActionRequest;
+import com.groupa1.resq.dto.ActionDto;
 import com.groupa1.resq.request.UpdateActionRequest;
-import com.groupa1.resq.response.ActionResponse;
 import com.groupa1.resq.service.ActionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,43 +30,68 @@ public class ActionController {
 
     @PreAuthorize("hasRole('COORDINATOR')")
     @PostMapping("/createAction")
-    public ResponseEntity<String> createAction(@RequestBody CreateActionRequest createActionRequest){
+    public ResponseEntity<Object> createAction(@RequestBody CreateActionRequest createActionRequest){
         return actionService.createAction(createActionRequest);
     }
 
-    @PreAuthorize("hasRole('RESPONDER') or hasRole('COORDINATOR')")
-    @GetMapping("/viewActions")
-    public ResponseEntity<List<ActionResponse>> viewActions(@RequestParam Long taskId) {
-        return actionService.viewActions( taskId);
+    @PreAuthorize("hasRole('COORDINATOR') or hasRole('RESPONDER')")
+    @GetMapping("/viewSingleAction")
+    public ResponseEntity<ActionDto> viewSingleAction(@RequestParam Long actionId) {
+        return actionService.viewSingleAction(actionId);
     }
 
     @PreAuthorize("hasRole('COORDINATOR')")
-    @GetMapping("/updateAction")
-    public ResponseEntity<String> updateAction(@RequestBody UpdateActionRequest updateActionRequest, @RequestParam Long actionId){
-        return actionService.updateAction(actionId, updateActionRequest);
+    @PostMapping("/deleteAction")
+    public ResponseEntity<String> deleteAction(@RequestParam Long actionId) {
+        return actionService.deleteAction(actionId);
     }
 
     @PreAuthorize("hasRole('COORDINATOR')")
-    @GetMapping("/deleteAction")
-    public ResponseEntity<String> deleteAction(@RequestParam Long actionId, @RequestParam Long taskId){
-        return actionService.deleteAction(actionId, taskId);
+    @PostMapping("/updateAction")
+    public ResponseEntity<String> updateAction(@RequestBody
+                                               UpdateActionRequest updateActionRequest, @RequestParam Long actionId) {
+        return actionService.updateAction(updateActionRequest, actionId);
     }
 
-    @PreAuthorize("hasRole('COORDINATOR')")
-    @GetMapping("/viewActionByFilter")
-    public ResponseEntity<List<ActionResponse>> viewActionByFilter(@RequestParam(required = false) Long taskId,
-                                                                   @RequestParam(required = false) Long verifierId,
-                                                                   @RequestParam(required = false) Boolean isCompleted,
-                                                                   @RequestParam(required = false) Boolean isVerified,
-                                                                   @RequestParam(required = false) LocalDateTime dueDate){
-        return actionService.viewActionByFilter(taskId, verifierId, isCompleted, isVerified, dueDate);
+
+
+    @PreAuthorize("hasRole('RESPONDER')")
+    @PostMapping("/completeAction")
+    public ResponseEntity<String> completeAction(@RequestParam Long actionId, Authentication authentication){
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+        return actionService.completeAction(actionId, userId);
+    }
+    @PreAuthorize("hasRole('FACILITATOR')")
+    @PostMapping("/verifyAction")
+    public ResponseEntity<String> verifyAction(@RequestParam Long actionId, Authentication authentication){
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+        return actionService.verifyAction(actionId, userId);
     }
 
     @PreAuthorize("hasRole('FACILITATOR')")
-    @GetMapping("/verifyAction")
-    public ResponseEntity<String> verifyAction(@RequestParam Long actionId, @RequestParam Long verifierId){
-        return actionService.verifyAction(actionId, verifierId);
+    @PostMapping("/commentAction")
+    public ResponseEntity<String> verifyAction(@RequestBody
+                                               CreateCommentRequest commentActionRequest){
+        return actionService.commentAction(commentActionRequest);
     }
+
+    @PreAuthorize("hasRole('COORDINATOR') or hasRole('FACILITATOR')")
+    @GetMapping("/filterAction")
+    public ResponseEntity<List<ActionDto>> viewActionsByFilter(@RequestParam(required = false) Long verifierId,
+                                                               @RequestParam(required = false) Boolean isCompleted,
+                                                               @RequestParam(required = false) LocalDateTime latestDueDate,
+                                                               @RequestParam(required = false) LocalDateTime earliestDueDate,
+                                                               @RequestParam(required = false) Long taskId,
+                                                               @RequestParam(required = false) Boolean isVerified){
+
+        return actionService.viewActionsByFilter(verifierId, isCompleted, latestDueDate, earliestDueDate, taskId, isVerified);
+    }
+
+
+
+
 
 
 }

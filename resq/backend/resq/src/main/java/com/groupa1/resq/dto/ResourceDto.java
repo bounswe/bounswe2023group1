@@ -2,12 +2,16 @@ package com.groupa1.resq.dto;
 
 import com.groupa1.resq.entity.enums.EGender;
 import com.groupa1.resq.entity.enums.ESize;
+import com.groupa1.resq.entity.enums.EResourceStatus;
+import jakarta.persistence.Access;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
+@Accessors(chain = true)
 public class ResourceDto {
     private Long id;
     private Long senderId;
@@ -20,4 +24,5 @@ public class ResourceDto {
     private LocalDateTime createdDate;
     private ESize size;
     private FileDto file;
+    private EResourceStatus status;
 }
