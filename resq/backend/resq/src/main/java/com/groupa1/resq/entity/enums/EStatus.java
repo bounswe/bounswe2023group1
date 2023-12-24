@@ -1,8 +1,10 @@
 package com.groupa1.resq.entity.enums;
 
 public enum EStatus {
-    TODO,
+    TODO, // accepted
     IN_PROGRESS,
     DONE,
-    PENDING
+    PENDING, //responder assigned, but not yet accepted
+    DECLINED,
+    FREE // no responder assigned
 }

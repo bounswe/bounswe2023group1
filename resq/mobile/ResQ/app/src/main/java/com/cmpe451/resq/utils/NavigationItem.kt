@@ -1,7 +1,7 @@
 package com.cmpe451.resq.utils
 
 enum class NavigationItem(val route: String) {
-    Login (route = "login"),
+    Login(route = "login"),
     Register (route = "register"),
     Profile(route = "profile"),
     Map(route = "map"),

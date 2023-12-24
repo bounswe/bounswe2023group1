@@ -6,6 +6,7 @@ import android.location.Location
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.cmpe451.resq.data.models.Need
+import com.cmpe451.resq.data.models.Resource
 import com.cmpe451.resq.data.remote.ResqService
 import com.google.android.gms.location.FusedLocationProviderClient
 
@@ -13,22 +14,38 @@ class MapViewModel : ViewModel() {
     val searchQuery = mutableStateOf("")
     val lastKnownLocation = mutableStateOf<Location?>(null)
     val needMarkerList = mutableStateOf<List<Need>>(emptyList())
-    suspend fun getNeedByDistance(appContext: Context) {
+    val resourceMarkerList = mutableStateOf<List<Resource>>(emptyList())
+
+    fun getNeedsByDistance(appContext: Context) {
         val api = ResqService(appContext)
-
-        val response = api.filterNeedByDistance(
-            latitude = lastKnownLocation.value?.latitude ?: 41.086571,
-            longitude = lastKnownLocation.value?.longitude ?:29.046109,
+        api.filterNeedByDistance(
+            latitude = 41.086571,
+            longitude = 29.046109,
             distance = 1000.0,
-        )
-
-        if (response.isSuccessful) {
-            val needList = response.body()
-            needList?.let {
-                needMarkerList.value = it
+            onSuccess = { needList ->
+                needMarkerList.value = needList
+            },
+            onError = { error ->
+                // Handle error
             }
-        }
+        )
     }
+
+    fun getResourcesByDistance(appContext: Context) {
+        val api = ResqService(appContext)
+        api.filterResourceByDistance(
+            latitude = 41.086571,
+            longitude = 29.046109,
+            distance = 1000.0,
+            onSuccess = { resourceList ->
+                resourceMarkerList.value = resourceList
+            },
+            onError = { error ->
+                // Handle error
+            }
+        )
+    }
+
     @SuppressLint("MissingPermission")
     fun getDeviceLocation(
         fusedLocationProviderClient: FusedLocationProviderClient

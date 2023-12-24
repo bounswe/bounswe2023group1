@@ -1,6 +1,8 @@
 package com.groupa1.resq.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groupa1.resq.dto.ResourceDto;
+import com.groupa1.resq.entity.enums.EResourceStatus;
 import com.groupa1.resq.request.CreateResourceRequest;
 import com.groupa1.resq.service.ResourceService;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,9 +26,10 @@ public class ResourceController {
 
     @PreAuthorize("hasRole('RESPONDER')")
     @PostMapping("/createResource")
-    public ResponseEntity<Object> createResource(@RequestBody CreateResourceRequest createResourceRequest) {
+    public ResponseEntity<Object> createResource(@RequestPart(name = "createResourceRequest") CreateResourceRequest createResourceRequest,
+                                                 @RequestPart(name = "file", required = false) MultipartFile file) {
         log.info("Creating resource with request: " + createResourceRequest.toString());
-        return resourceService.createResource(createResourceRequest);
+        return resourceService.createResource(createResourceRequest, file);
     }
 
     @PreAuthorize("hasRole('RESPONDER') or hasRole('COORDINATOR') or hasRole('VICTIM')")
@@ -50,6 +54,7 @@ public class ResourceController {
     }
 
 
+
     @PreAuthorize("hasRole('COORDINATOR') or hasRole('VICTIM') or hasRole('RESPONDER')")
     @GetMapping("/filterByDistance")
     public ResponseEntity<List<ResourceDto>> filterByDistance(@RequestParam
@@ -63,9 +68,10 @@ public class ResourceController {
     public ResponseEntity<List<ResourceDto>> filterByCategory(@RequestParam(required = false) String categoryTreeId,
                                                            @RequestParam(required = false) BigDecimal longitude,
                                                              @RequestParam(required = false) BigDecimal latitude,
-                                                           @RequestParam(required = false) Long userId) {
+                                                           @RequestParam(required = false) Long userId,
+                                                            @RequestParam(required = false) EResourceStatus status){
         log.info("Filtering resources by category");
-        return resourceService.filterResource(latitude, longitude, categoryTreeId, userId);
+        return resourceService.filterResource(latitude, longitude, categoryTreeId, userId, status);
     }
 
     @PreAuthorize("hasRole('COORDINATOR') or hasRole('VICTIM') or hasRole('RESPONDER')")
