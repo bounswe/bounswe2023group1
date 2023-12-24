@@ -1,4 +1,4 @@
-package com.groupa1.resq.response;
+package com.groupa1.resq.dto;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 
 @Data
 @Accessors(chain = true)
-public class ActionResponse {
-    private long id;
-    private long taskId;
+public class ActionDto {
+    private Long id;
+    private Long taskId;
     private long verifierId;
     private String description;
     private boolean isCompleted;

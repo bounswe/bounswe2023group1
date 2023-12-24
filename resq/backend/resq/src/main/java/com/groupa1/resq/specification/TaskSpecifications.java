@@ -7,16 +7,16 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class TaskSpecifications {
 
-    public static Specification<Task> hasAssignerId(Long assignerId) {
-        return (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("assigner").get("id"), assignerId);
-    }
-
-    public static Specification<Task> hasAssigneeId(Long assigneeId) {
+    public static Specification<Task> hasAssignee(Long assigneeId) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("assignee").get("id"), assigneeId);
     }
 
+    public static Specification<Task> hasAssigner(Long assignerId) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("assigner").get("id"),
+                        assignerId);
+    }
     public static Specification<Task> hasUrgency(EUrgency urgency) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("urgency"), urgency);
@@ -26,4 +26,7 @@ public class TaskSpecifications {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("status"), status);
     }
+
+
+
 }

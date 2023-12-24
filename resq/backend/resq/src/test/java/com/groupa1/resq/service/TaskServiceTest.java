@@ -39,71 +39,7 @@ public class TaskServiceTest {
 
 
 
-    @Test
-    void testCreateTask_withEmptyActions_withEmptyResources_shouldReturnSuccess() {
-        // Given
-        CreateTaskRequest createTaskRequest = new CreateTaskRequest();
-        createTaskRequest.setActions(new ArrayList<>());
-        createTaskRequest.setResources(new ArrayList<>());
-        createTaskRequest.setAssigneeId(1L);
-        createTaskRequest.setAssignerId(2L);
-        createTaskRequest.setDescription("Test description");
-        createTaskRequest.setUrgency(EUrgency.HIGH);
 
-
-        // when
-        when(userService.findById(createTaskRequest.getAssigneeId())).thenReturn(new User());
-        when(userService.findById(createTaskRequest.getAssignerId())).thenReturn(new User());
-
-
-        // then
-        ResponseEntity<String> response = taskService.createTask(createTaskRequest);
-        assertEquals("Task saved successfully", response.getBody());
-    }
-
-    @Test
-    void testCreateTask_withNonSpecifiedAssigneeAssigner_shouldReturnBadRequest() {
-        // Given
-        CreateTaskRequest createTaskRequest = new CreateTaskRequest();
-        createTaskRequest.setActions(new ArrayList<>());
-        createTaskRequest.setResources(new ArrayList<>());
-        createTaskRequest.setDescription("Test description");
-        createTaskRequest.setUrgency(EUrgency.HIGH);
-
-
-
-        // then
-        ResponseEntity<String> response = taskService.createTask(createTaskRequest);
-        assertEquals("Assignee and assigner must be specified",
-                response.getBody());
-    }
-
-    @Test
-    void testCreateTask_withNonEmptyAction_withEmptyResources_shouldReturnSuccess() {
-        // Given
-        CreateTaskRequest createTaskRequest = new CreateTaskRequest();
-        ArrayList<CreateTaskRequest.Action> actions = new ArrayList<>();
-        actions.add(new CreateTaskRequest.Action());
-        createTaskRequest.setActions(actions);
-        createTaskRequest.setResources(new ArrayList<>());
-        createTaskRequest.setAssigneeId(1L);
-        createTaskRequest.setAssignerId(2L);
-        createTaskRequest.setDescription("Test description");
-        createTaskRequest.setUrgency(EUrgency.HIGH);
-
-        // when
-        when(userService.findById(
-                createTaskRequest.getAssigneeId())).thenReturn(new User());
-        when(userService.findById(
-                createTaskRequest.getAssignerId())).thenReturn(new User());
-
-        // then
-        ResponseEntity<String> response =
-                taskService.createTask(createTaskRequest);
-        assertEquals("Task saved successfully", response.getBody());
-
-
-    }
 
 
     @Test

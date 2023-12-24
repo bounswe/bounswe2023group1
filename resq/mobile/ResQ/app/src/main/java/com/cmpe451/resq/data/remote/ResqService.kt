@@ -28,8 +28,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
-
-
+import retrofit2.Call
+import retrofit2.Callback
 interface CategoryTreeNodeService {
     @GET("categorytreenode/getMainCategories")
     suspend fun getMainCategories(
@@ -66,6 +66,12 @@ interface NeedService {
         @Query("longitude") longitude: Double,
         @Query("distance") distance: Double,
         @Header("Authorization") jwtToken: String
+    ): Call<List<Need>>
+
+    @GET("need/viewNeedsByUserId")
+    fun viewNeedsByUserId(
+        @Query("userId") userId: Int,
+        @Header("Authorization") jwtToken: String,
     ): Call<List<Need>>
 }
 
@@ -200,6 +206,50 @@ class ResqService(appContext: Context) {
     ) {
         val token = userSessionManager.getUserToken() ?: ""
         needService.filterNeedByDistance(latitude, longitude, distance, "Bearer $token").enqueue(object :
+            Callback<List<Need>> {
+            override fun onResponse(call: Call<List<Need>>, response: Response<List<Need>>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { onSuccess(it) }
+                } else {
+                    onError(RuntimeException("Response not successful"))
+                }
+            }
+            override fun onFailure(call: Call<List<Need>>, t: Throwable) {
+                onError(t)
+            }
+        })
+    }
+
+    fun filterResourceByDistance(
+        latitude: Double,
+        longitude: Double,
+        distance: Double,
+        onSuccess: (List<Resource>) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val token = userSessionManager.getUserToken() ?: ""
+        resourceService.filterResourceByDistance(latitude, longitude, distance, "Bearer $token").enqueue(object :
+            Callback<List<Resource>> {
+            override fun onResponse(call: Call<List<Resource>>, response: Response<List<Resource>>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { onSuccess(it) }
+                } else {
+                    onError(RuntimeException("Response not successful"))
+                }
+            }
+            override fun onFailure(call: Call<List<Resource>>, t: Throwable) {
+                onError(t)
+            }
+        })
+    }
+
+    fun viewNeedsByUserId(
+        onSuccess: (List<Need>) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val token = userSessionManager.getUserToken() ?: ""
+        val userId = userSessionManager.getUserId()
+        needService.viewNeedsByUserId(userId = userId, "Bearer $token").enqueue(object :
             Callback<List<Need>> {
             override fun onResponse(call: Call<List<Need>>, response: Response<List<Need>>) {
                 if (response.isSuccessful) {

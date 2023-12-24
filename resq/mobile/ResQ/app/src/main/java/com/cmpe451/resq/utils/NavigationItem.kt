@@ -10,6 +10,7 @@ enum class NavigationItem(val route: String) {
     Request(route = "request"),
     Resource(route = "resource"),
     Task(route = "task"),
+    MyRequestsScreen(route = "myRequests"),
     OngoingTasks(route = "ongoingTasks");
 
     companion object {

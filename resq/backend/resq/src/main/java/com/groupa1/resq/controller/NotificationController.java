@@ -1,10 +1,8 @@
 package com.groupa1.resq.controller;
 
-import com.groupa1.resq.entity.Need;
-import com.groupa1.resq.entity.Notification;
-import com.groupa1.resq.entity.enums.ENotificationEntityType;
 import com.groupa1.resq.converter.NotificationConverter;
 import com.groupa1.resq.dto.NotificationDto;
+import com.groupa1.resq.entity.enums.ENotificationEntityType;
 import com.groupa1.resq.service.NotificationService;
 import com.groupa1.resq.util.NotificationMessages;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +41,8 @@ public class NotificationController {
     @PostMapping("/sendNotification")
     @PreAuthorize("hasRole('ADMIN')")
     public void sendSystemNotification(@RequestParam String title, @RequestParam Long userId,
-                                       @RequestParam Long relatedEntityId, @RequestParam ENotificationEntityType notificationType) {
+                                       @RequestParam Long relatedEntityId, @RequestParam
+                                       ENotificationEntityType notificationType) {
         String body = String.format(NotificationMessages.SYSTEM_MESSAGE, userId, relatedEntityId);
         log.info("Sending notification with title: {}, body: {}, user id: {}, related entity id: {}, notification type: {}"
                 , title, body, userId, relatedEntityId, notificationType);
