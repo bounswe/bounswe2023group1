@@ -11,6 +11,6 @@ data class Need(
     val requestId: Int?,
     val status: String,
     val createdDate: String,
-    val size: String
+    val size: String?
 )
 

@@ -32,3 +32,10 @@ data class UserInfoRequest(
     val isEmailConfirmed: Boolean? = false,
     val isPrivacyPolicyAccepted: Boolean? = false,
 )
+
+data class UserInfo(
+    var email: String,
+    var name: String,
+    var surname: String,
+    var roles: List<String>
+)
