@@ -27,8 +27,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
-import retrofit2.Call
-import retrofit2.Callback
 interface CategoryTreeNodeService {
     @GET("categorytreenode/getMainCategories")
     suspend fun getMainCategories(
