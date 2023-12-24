@@ -1,6 +1,7 @@
 package com.groupa1.resq.dto;
 
 import com.groupa1.resq.entity.enums.EGender;
+import com.groupa1.resq.entity.enums.ESize;
 import com.groupa1.resq.entity.enums.EResourceStatus;
 import jakarta.persistence.Access;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class ResourceDto {
     private BigDecimal latitude;
     private BigDecimal longitude;
     private LocalDateTime createdDate;
-    private String size;
+    private ESize size;
+    private FileDto file;
     private EResourceStatus status;
 }

@@ -1,11 +1,12 @@
 package com.groupa1.resq.service;
 
+import com.groupa1.resq.config.AmazonClient;
 import com.groupa1.resq.converter.ResourceConverter;
 import com.groupa1.resq.dto.ResourceDto;
+import com.groupa1.resq.entity.File;
 import com.groupa1.resq.entity.Resource;
 import com.groupa1.resq.entity.User;
 import com.groupa1.resq.entity.enums.EResourceStatus;
-import com.groupa1.resq.entity.enums.ESize;
 import com.groupa1.resq.exception.EntityNotFoundException;
 import com.groupa1.resq.repository.ResourceRepository;
 import com.groupa1.resq.request.CreateResourceRequest;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -35,7 +37,10 @@ public class ResourceService {
     @Autowired
     private ResourceConverter resourceConverter;
 
-    public ResponseEntity<Object> createResource(CreateResourceRequest createResourceRequest) {
+    @Autowired
+    private AmazonClient amazonClient;
+
+    public ResponseEntity<Object> createResource(CreateResourceRequest createResourceRequest, MultipartFile file) {
         if(createResourceRequest.getSenderId() == null) {
             log.error("Sender id is null");
             return ResponseEntity.badRequest().body("Sender id is null");
@@ -56,7 +61,12 @@ public class ResourceService {
         resource.setLatitude(createResourceRequest.getLatitude());
         resource.setQuantity(createResourceRequest.getQuantity());
         resource.setCategoryTreeId(createResourceRequest.getCategoryTreeId());
-        resource.setSize(ESize.valueOf(createResourceRequest.getSize()));
+        resource.setSize(createResourceRequest.getSize());
+        if (file != null && !file.isEmpty()) {
+            File fileEntity = amazonClient.uploadFile(file);
+            fileEntity.setResource(resource);
+            resource.setFile(fileEntity);
+        }
         resource.setStatus(EResourceStatus.AVAILABLE); // default
         resource.setGender(createResourceRequest.getGender());
         Long resourceId = resourceRepository.save(resource).getId();
@@ -69,7 +79,7 @@ public class ResourceService {
         resource.setLatitude(createResourceRequest.getLatitude());
         resource.setLongitude(createResourceRequest.getLongitude());
         resource.setCategoryTreeId(createResourceRequest.getCategoryTreeId());
-        resource.setSize(ESize.valueOf(createResourceRequest.getSize()));
+        resource.setSize(createResourceRequest.getSize());
         resource.setStatus(createResourceRequest.getStatus());
         resourceRepository.save(resource);
         return ResponseEntity.ok("Resource updated successfully");
