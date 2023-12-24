@@ -27,7 +27,7 @@ public class NeedController {
     private NeedService needService;
 
     @GetMapping("/viewNeedsByFilter")
-    @PreAuthorize("hasRole('FACILITATOR') or hasRole('COORDINATOR')")
+    @PreAuthorize("hasRole('VICTIM') or hasRole('FACILITATOR') or hasRole('COORDINATOR')")
     public ResponseEntity<List<NeedDto>> viewNeedsByFilter(@RequestParam(required = false) BigDecimal longitude1,
                                                            @RequestParam(required = false) BigDecimal latitude1,
                                                            @RequestParam(required = false) BigDecimal longitude2,
@@ -47,7 +47,7 @@ public class NeedController {
     }
 
     @GetMapping("/viewAllNeeds")
-    @PreAuthorize("hasRole('FACILITATOR')")
+    @PreAuthorize("hasRole('VICTIM') or hasRole('FACILITATOR')")
     public ResponseEntity<List<NeedDto>> viewAllNeeds() {
         log.info("Viewing all needs");
         return needService.viewAllNeeds();
@@ -91,7 +91,7 @@ public class NeedController {
     }
 
     @GetMapping("/filterByDistance")
-    @PreAuthorize("hasRole('FACILITATOR') or hasRole('COORDINATOR')")
+    @PreAuthorize("hasRole('VICTIM') or hasRole('FACILITATOR') or hasRole('COORDINATOR')")
     public ResponseEntity<List<NeedDto>> filterByDistance(@RequestParam BigDecimal longitude,
                                                        @RequestParam BigDecimal latitude,
                                                        @RequestParam BigDecimal distance) {
