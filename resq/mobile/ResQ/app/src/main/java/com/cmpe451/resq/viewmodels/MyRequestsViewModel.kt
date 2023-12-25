@@ -8,6 +8,8 @@ import com.cmpe451.resq.data.models.Need
 import com.cmpe451.resq.data.remote.ResqService
 import kotlinx.coroutines.launch
 import android.content.Context
+import android.util.Log
+import android.widget.Toast
 
 class MyRequestsViewModel : ViewModel() {
     val needs = mutableStateOf<List<Need>>(emptyList())
@@ -24,6 +26,19 @@ class MyRequestsViewModel : ViewModel() {
             }
         )
     }
+    fun deleteNeed(appContext: Context, needId: Int) {
+        val api = ResqService(appContext)
+        api.deleteNeed(
+            needId = needId,
+            onSuccess = { responseBodyString ->
+                Toast.makeText(appContext, responseBodyString, Toast.LENGTH_SHORT).show()
+            },
+            onError = { error ->
+                //Log.e("deleteNeed", "Error deleting need: ${error.localizedMessage}", error)
+                Toast.makeText(appContext, "Failed to delete need.", Toast.LENGTH_LONG).show()
+            }
+        )
+    }
 
     private fun fetchCategoryTree(context: Context) {
         val api = ResqService(context)
@@ -36,6 +51,8 @@ class MyRequestsViewModel : ViewModel() {
             }
         }
     }
+
+
 
     fun getCategoryName(categoryId: Int): String {
         return findCategoryName(_categoryTree.value, categoryId)

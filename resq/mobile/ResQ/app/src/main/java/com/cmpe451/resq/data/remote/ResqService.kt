@@ -99,6 +99,13 @@ interface NeedService {
     fun viewAllNeeds(
         @Header("Authorization") jwtToken: String
     ): Call<List<Need>>
+
+    @POST("need/deleteNeed")
+    fun deleteNeed(
+        @Query("userId") userId: Int,
+        @Query("needId") needId: Int,
+        @Header("Authorization") jwtToken: String
+    ): Call<ResponseBody>
 }
 
 interface AuthService {
@@ -350,6 +357,29 @@ class ResqService(appContext: Context) {
             }
         })
     }
+    fun deleteNeed(
+        needId: Int,
+        onSuccess: (String) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val token = userSessionManager.getUserToken()
+        val userId = userSessionManager.getUserId()
+        needService.deleteNeed(userId = userId, needId = needId, "Bearer $token").enqueue(object :
+            Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    val responseBodyString = response.body()?.string() ?: ""
+                    onSuccess(responseBodyString)
+                } else {
+                    val errorBodyString = response.errorBody()?.string() ?: "Error without a message"
+                    onError(RuntimeException("Response not successful: HTTP ${response.code()} - $errorBodyString"))
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                onError(t)
+            }
+        })
+    }
 
     // Auth methods
     suspend fun login(request: LoginRequestBody): Response<LoginResponse> = authService.login(request)
@@ -410,7 +440,6 @@ class ResqService(appContext: Context) {
     suspend fun selectRole(requestedRole: String): Response<String> {
         val userId = userSessionManager.getUserId()
         val token = userSessionManager.getUserToken() ?: ""
-
         val response = profileService.selectRole(
             userId = userId,
             requestedRole = requestedRole,
