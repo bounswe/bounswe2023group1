@@ -193,6 +193,7 @@ export async function getCategoryTree() {
     return new RootNode(data)
 }
 
+
 export function createTask(createTaskRequest) {
     return axios.post(`${TASK_API_BASE_URL}/createTask`, createTaskRequest);
 }
