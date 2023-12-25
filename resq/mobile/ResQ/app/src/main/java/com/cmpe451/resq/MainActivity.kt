@@ -42,7 +42,7 @@ import com.cmpe451.resq.ui.views.screens.RegistrationScreen
 import com.cmpe451.resq.ui.views.screens.RequestScreen
 import com.cmpe451.resq.ui.views.screens.ResourceScreen
 import com.cmpe451.resq.ui.views.screens.SettingsScreen
-import com.cmpe451.resq.ui.views.screens.TasksScreen
+import com.cmpe451.resq.ui.views.screens.MyTasksScreen
 import com.cmpe451.resq.utils.BottomNavigationItem
 import com.cmpe451.resq.utils.NavigationItem
 import com.cmpe451.resq.viewmodels.MapViewModel
@@ -140,9 +140,6 @@ fun NavGraph(
         composable(NavigationItem.Resource.route) {
             ResourceScreen(navController, appContext)
         }
-        composable(NavigationItem.Task.route) {
-            TasksScreen(navController)
-        }
         composable(NavigationItem.OngoingTasks.route) {
             OngoingTasksScreen(navController, appContext)
         }
@@ -157,6 +154,9 @@ fun NavGraph(
         }
         composable(NavigationItem.MyRequestsScreen.route) {
             MyRequestsScreen(navController, appContext)
+        }
+        composable(NavigationItem.MyTasks.route) {
+            MyTasksScreen(navController, appContext)
         }
     }
 }
