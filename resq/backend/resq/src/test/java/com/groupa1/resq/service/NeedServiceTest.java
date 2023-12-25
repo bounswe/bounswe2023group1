@@ -3,17 +3,10 @@ package com.groupa1.resq.service;
 import com.groupa1.resq.converter.NeedConverter;
 import com.groupa1.resq.dto.NeedDto;
 import com.groupa1.resq.entity.Need;
-import com.groupa1.resq.entity.Request;
 import com.groupa1.resq.entity.User;
-import com.groupa1.resq.entity.enums.ENeedStatus;
-import com.groupa1.resq.entity.enums.ENotificationEntityType;
-import com.groupa1.resq.entity.enums.EStatus;
-import com.groupa1.resq.entity.enums.EUrgency;
 import com.groupa1.resq.repository.NeedRepository;
-import com.groupa1.resq.repository.RequestRepository;
 import com.groupa1.resq.repository.UserRepository;
 import com.groupa1.resq.request.CreateNeedRequest;
-import com.groupa1.resq.request.CreateReqRequest;
 import com.groupa1.resq.request.UpdateNeedRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,11 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.domain.Specification;
-
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.mockito.Mockito.*;
 
