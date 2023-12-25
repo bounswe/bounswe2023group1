@@ -73,6 +73,25 @@ class MapViewModel : ViewModel() {
         )
     }
 
+    fun getAllResources(appContext: Context) {
+        val api = ResqService(appContext)
+
+        api.filterResourceByCategory(
+            categoryTreeId = null,
+            longitude = null,
+            latitude = null,
+            userId = null,
+            status = null,
+            receiverId = null,
+            onSuccess = { resourceListResponse ->
+                resourceMarkerList.value = resourceListResponse
+            },
+            onError = { error ->
+                // Handle error
+            }
+        )
+    }
+
     @SuppressLint("MissingPermission")
     fun getDeviceLocation(
         fusedLocationProviderClient: FusedLocationProviderClient

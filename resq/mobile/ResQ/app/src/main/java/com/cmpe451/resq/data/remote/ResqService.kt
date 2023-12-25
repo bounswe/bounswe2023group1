@@ -18,7 +18,12 @@ import com.cmpe451.resq.data.models.RegisterRequestBody
 import com.cmpe451.resq.data.models.Resource
 import com.cmpe451.resq.data.models.UserInfo
 import com.cmpe451.resq.data.models.UserInfoRequest
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,6 +31,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
+import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 interface CategoryTreeNodeService {
@@ -36,20 +42,34 @@ interface CategoryTreeNodeService {
 }
 
 interface ResourceService {
+    @Multipart
     @POST("resource/createResource")
     suspend fun createResource(
         @Header("Authorization") jwtToken: String,
-        @Body requestBody: CreateResourceRequestBody
+        @Part createResourceRequest: MultipartBody.Part,
+        @Part file: MultipartBody.Part?
     ): Response<Int>
 
     @GET("resource/filterByDistance")
     fun filterResourceByDistance(
+        @Header("Authorization") jwtToken: String,
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
-        @Query("distance") distance: Double,
-        @Header("Authorization") jwtToken: String
+        @Query("distance") distance: Double
+    ): Call<List<Resource>>
+
+    @GET("resource/filterByCategory")
+    fun filterResourceByCategory(
+        @Header("Authorization") jwtToken: String,
+        @Query("categoryTreeId") categoryTreeId: String?,
+        @Query("longitude") longitude: Double?,
+        @Query("latitude") latitude: Double?,
+        @Query("userId") userId: Long?,
+        @Query("status") status: String?,
+        @Query("receiverId") receiverId: Long?
     ): Call<List<Resource>>
 }
+
 interface NeedService {
     @POST("need/createNeed")
     suspend fun createNeed(
@@ -153,17 +173,31 @@ class ResqService(appContext: Context) {
     }
 
     // Resource methods
-    suspend fun createResource(request: CreateResourceRequestBody): Response<Int> {
+    suspend fun createResource(createResourceRequestBody: CreateResourceRequestBody, file: File?): Response<Int> {
         val userId = userSessionManager.getUserId()
         val token = userSessionManager.getUserToken() ?: ""
 
-        request.senderId = userId
+        // Convert CreateResourceRequestBody to JSON and then to RequestBody
+        val requestJson = Gson().toJson(createResourceRequestBody.copy(senderId = userId))
+        val requestJsonBody = RequestBody.create("application/json".toMediaTypeOrNull(), requestJson)
+        val jsonPart = MultipartBody.Part.createFormData("createResourceRequest", null, requestJsonBody)
 
+        // Handle the file part being nullable
+        val filePart = file?.let {
+            val fileRequestBody = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), it)
+            MultipartBody.Part.createFormData("file", it.name, fileRequestBody)
+        }
+
+        // Make the API call
         return resourceService.createResource(
             jwtToken = "Bearer $token",
-            requestBody = request
+            createResourceRequest = jsonPart,
+            file = filePart // This can be null
         )
     }
+
+
+
 
     // Need methods
     suspend fun createNeed(request: CreateNeedRequestBody): Response<Int> {
@@ -228,7 +262,40 @@ class ResqService(appContext: Context) {
         onError: (Throwable) -> Unit
     ) {
         val token = userSessionManager.getUserToken() ?: ""
-        resourceService.filterResourceByDistance(latitude, longitude, distance, "Bearer $token").enqueue(object :
+        resourceService.filterResourceByDistance("Bearer $token", latitude, longitude, distance).enqueue(object :
+            Callback<List<Resource>> {
+            override fun onResponse(call: Call<List<Resource>>, response: Response<List<Resource>>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { onSuccess(it) }
+                } else {
+                    onError(RuntimeException("Response not successful"))
+                }
+            }
+            override fun onFailure(call: Call<List<Resource>>, t: Throwable) {
+                onError(t)
+            }
+        })
+    }
+
+    fun filterResourceByCategory(
+        categoryTreeId: String?,
+        longitude: Double?,
+        latitude: Double?,
+        userId: Long?,
+        status: String?,
+        receiverId: Long?,
+        onSuccess: (List<Resource>) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val token = userSessionManager.getUserToken() ?: ""
+        resourceService.filterResourceByCategory(
+            "Bearer $token",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null).enqueue(object :
             Callback<List<Resource>> {
             override fun onResponse(call: Call<List<Resource>>, response: Response<List<Resource>>) {
                 if (response.isSuccessful) {

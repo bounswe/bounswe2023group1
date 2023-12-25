@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cmpe451.resq.data.manager.UserSessionManager
 import com.cmpe451.resq.data.models.CategoryTreeNode
 import com.cmpe451.resq.data.models.CreateResourceRequestBody
 import com.cmpe451.resq.data.models.Resource
@@ -94,15 +95,20 @@ class ResourceViewModel : ViewModel() {
         val api = ResqService(appContext)
         val categoryId = _selectedItem.value?.id?.toString() ?: _selectedType.value?.id?.toString() ?: ""
         if (categoryId.isNotEmpty()) {
+            val senderId = UserSessionManager.getInstance(appContext).getUserId()
+
             val requestBody = CreateResourceRequestBody(
-                senderId = null,
+                senderId = senderId,
                 categoryTreeId = categoryId,
                 quantity = quantity.toIntOrNull() ?: 0,
                 latitude = 41.086571,
                 longitude = 29.046109,
-                gender = "FEMALE"
+                gender = "FEMALE",
+                size = null,
+                status = "AVAILABLE"
             )
-            val response = api.createResource(requestBody)
+
+            val response = api.createResource(requestBody, null)
             if (response.isSuccessful) {
                 response.body()?.let {
                     return Result.success(it)
@@ -111,6 +117,25 @@ class ResourceViewModel : ViewModel() {
             return Result.failure(Throwable(response.message()))
         }
         return Result.failure(Throwable(message = "No category"))
+    }
+
+    suspend fun getMyResources(userId: Long?, appContext: Context) {
+        val api = ResqService(appContext)
+
+        api.filterResourceByCategory(
+            categoryTreeId = null,
+            longitude = null,
+            latitude = null,
+            userId = userId,
+            status = null,
+            receiverId = null,
+            onSuccess = { resourceListResponse ->
+                _resourceList.value = resourceListResponse
+            },
+            onError = { error ->
+                // Handle error
+            }
+        )
     }
 
     fun getResourcesBySenderId(appContext: Context) {
