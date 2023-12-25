@@ -74,6 +74,18 @@ function App() {
             component: <div>Responder Panel</div>,
             icon: <SmallRedCircle />
         },
+        (role === "victim") && {
+            path: '/victim',
+            label: <strong>Victim Panel</strong>,
+            component: <div>Victim Panel</div>,
+            icon: <SmallRedCircle />
+        },
+        (role === "facilitator") && {
+            path: '/facilitator',
+            label: <strong>Facilitator Panel</strong>,
+            component: <div>Facilitator Panel</div>,
+            icon: <SmallRedCircle />
+        },
     ].filter(l => !!l);
 
     const signOut = () => {
