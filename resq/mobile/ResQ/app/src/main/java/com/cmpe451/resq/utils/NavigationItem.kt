@@ -9,7 +9,7 @@ enum class NavigationItem(val route: String) {
     Notifications(route = "notifications"),
     Request(route = "request"),
     Resource(route = "resource"),
-    Task(route = "task"),
+    MyTasks(route = "myTasks"),
     MyRequestsScreen(route = "myRequests"),
     OngoingTasks(route = "ongoingTasks");
 

@@ -11,19 +11,19 @@ import {useQuery} from "@tanstack/react-query";
 import {getCategoryTree, getUserInfo} from "../../AppService";
 import AnnotationCard from "./AnnotationCard";
 
-const ExpandMore = styled(IconButton)`
+export const ExpandMore = styled(IconButton)`
   transform: ${({expand}) => !expand ? 'rotate(0deg)' : 'rotate(180deg)'};
   margin-left: auto;
   transition: transform 150ms;
 `
-const OffsetActions = styled(CardActions)`
+export const OffsetActions = styled(CardActions)`
   transform: translate(-8px, -28px);
   height: 0;
   padding: 0;
   flex-direction: row-reverse;
 `
 
-async function getAddress(latitude, longitude) {
+export async function getAddress(latitude, longitude) {
     try {
         const response = await axios.get(
             `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCehlfJwJ-V_xOWZ9JK3s0rcjkV2ga0DVg`

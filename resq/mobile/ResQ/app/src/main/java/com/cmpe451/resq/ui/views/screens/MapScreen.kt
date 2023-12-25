@@ -72,7 +72,7 @@ fun MapScreen(navController: NavController, appContext: Context, mapViewModel: M
 
 
     mapViewModel.getAllNeeds(appContext)
-    mapViewModel.getResourcesByDistance(appContext)
+    mapViewModel.getAllResources(appContext)
     // Dummy data for the lists
     val needsList = mapViewModel.needMarkerList.value
     val resourcesList = mapViewModel.resourceMarkerList.value

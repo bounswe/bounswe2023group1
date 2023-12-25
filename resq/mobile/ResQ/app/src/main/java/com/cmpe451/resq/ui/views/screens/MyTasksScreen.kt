@@ -1,5 +1,4 @@
 package com.cmpe451.resq.ui.views.screens
-
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.*
@@ -21,24 +20,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.cmpe451.resq.ui.theme.OngoingTasksColor
-import com.cmpe451.resq.ui.views.components.TaskCard
+import com.cmpe451.resq.ui.theme.MyTasksColor
 import com.cmpe451.resq.viewmodels.TasksViewModel
+import com.cmpe451.resq.ui.views.components.TaskCard
 
 
 @Composable
-fun OngoingTasksScreen(navController: NavController, appContext: Context) {
+fun MyTasksScreen(navController: NavController, appContext: Context) {
     val viewModel: TasksViewModel = viewModel()
     val tasks by viewModel.tasks
     val scrollState = rememberScrollState()
 
     LaunchedEffect(key1 = true) {
-        viewModel.getTasks(appContext)
+        viewModel.viewMyTasks(appContext)
     }
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Ongoing Tasks", color = OngoingTasksColor) },
+                title = { Text(text = "My Tasks", color = MyTasksColor) },
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
@@ -59,7 +58,7 @@ fun OngoingTasksScreen(navController: NavController, appContext: Context) {
         ) {
             Spacer(modifier = Modifier.height(16.dp))
             tasks.forEach { task ->
-                TaskCard(task = task, color = OngoingTasksColor, viewModel = viewModel, appContext = appContext)
+                TaskCard(task = task, color = MyTasksColor, viewModel = viewModel, appContext = appContext)
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }

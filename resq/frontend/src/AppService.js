@@ -169,12 +169,15 @@ export function createTask(createTaskRequest) {
     return axios.post(`${TASK_API_BASE_URL}/createTask`, createTaskRequest);
 }
 
-export function acceptTask(taskId, userId) {
-    return axios.post(`${TASK_API_BASE_URL}/acceptTask?taskId=${taskId}&userId=${userId}`);
+export function acceptTask(taskId) {
+    return axios.post(`${TASK_API_BASE_URL}/acceptTask?taskId=${taskId}`);
 }
-
-export function viewAllTasks(userId) {
-    return axios.get(`${TASK_API_BASE_URL}/viewTasks?userId=${userId}`);
+export function completeTask(taskId) {
+    return axios.post(`${TASK_API_BASE_URL}/completeTask?taskId=${taskId}`);
+}
+export async function viewAllTasks(userId) {
+    const {data} = await axios.get(`${TASK_API_BASE_URL}/viewTasks?userId=${userId}`);
+    return data
 }
 
 export function updateProfile(userId, profileData) {
