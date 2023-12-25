@@ -1,6 +1,6 @@
 package com.groupa1.resq.dto;
 
-import com.groupa1.resq.entity.enums.EStatus;
+import com.groupa1.resq.entity.enums.ERequestStatus;
 import com.groupa1.resq.entity.enums.EUrgency;
 import lombok.Data;
 
@@ -14,7 +14,7 @@ public class RequestDto {
     private Long requesterId;
     private List<Long> needIds;
     private EUrgency urgency;
-    private EStatus status;
+    private ERequestStatus status;
     private BigDecimal latitude;
     private BigDecimal longitude;
     private String description;

@@ -3,6 +3,7 @@ package com.groupa1.resq.service;
 import com.groupa1.resq.converter.NeedConverter;
 import com.groupa1.resq.dto.NeedDto;
 import com.groupa1.resq.entity.Need;
+import com.groupa1.resq.entity.Request;
 import com.groupa1.resq.entity.User;
 import com.groupa1.resq.entity.enums.ENeedStatus;
 import com.groupa1.resq.entity.enums.ESize;
@@ -12,6 +13,7 @@ import com.groupa1.resq.repository.NeedRepository;
 import com.groupa1.resq.repository.UserRepository;
 import com.groupa1.resq.request.CreateNeedRequest;
 import com.groupa1.resq.request.UpdateNeedRequest;
+import com.groupa1.resq.response.NeedStatusResponse;
 import com.groupa1.resq.specification.NeedSpecifications;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -143,4 +146,29 @@ public class NeedService {
                                                        BigDecimal distance) {
         return ResponseEntity.ok(needRepository.filterByDistance(longitude, latitude, distance).stream().map(need -> needConverter.convertToDto(need)).toList());
     }
+
+
+    public ResponseEntity<List<NeedStatusResponse>> viewMyNeedsStatus(Long userId) {
+        User victim = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        List<Need> needs = needRepository.findByRequester(victim);
+        List<NeedStatusResponse> needStatusResponses = new ArrayList<>();
+        needs.stream().forEach(need-> {
+            NeedStatusResponse needStatusResponse = new NeedStatusResponse();
+            needStatusResponse.setNeedId(need.getId());
+            needStatusResponse.setNeedStatus(need.getStatus());
+            if (need.getRequest() != null ) {
+                Request request = need.getRequest();
+                needStatusResponse.setRequestId(request.getId());
+                needStatusResponse.setRequestStatus(request.getStatus());
+                needStatusResponse.setRequestCreatorId(request.getRequester().getId());
+                needStatusResponse.setRequestLongitude(request.getLongitude());
+                needStatusResponse.setRequestLatitude(request.getLatitude());
+            }
+            needStatusResponses.add(needStatusResponse);
+        });
+        return ResponseEntity.ok(needStatusResponses);
+
+    }
 }
+
+

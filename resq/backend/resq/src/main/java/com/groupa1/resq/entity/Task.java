@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity
 @Table( name = "TASK")
 @Data
-@EqualsAndHashCode(callSuper = true, exclude = {"assignee", "assigner", "actions", "resources", "feedbacks"})
+@EqualsAndHashCode(callSuper = true, exclude = {"assignee", "assigner", "actions", "resources", "feedbacks", "requests"})
 @ToString(callSuper = true)
 public class Task extends BaseEntity {
 
@@ -42,6 +42,9 @@ public class Task extends BaseEntity {
 
     @Column(length = 2048)
     private String description;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="task", cascade = CascadeType.ALL)
+    private Set<Request> requests;
 
     public Task() {
         this.actions = new HashSet<>();
