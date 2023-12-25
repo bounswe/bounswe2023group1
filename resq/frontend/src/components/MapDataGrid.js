@@ -55,7 +55,7 @@ const rows = [
 
 export default function MapDataGrid() {
   return (
-    <Box sx={{ height: 400, width: "33%" }}>
+    <Box sx={{ height: 400, width: "100%" }}>
       <DataGrid
         rows={rows}
         columns={columns}
