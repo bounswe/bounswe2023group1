@@ -9,4 +9,7 @@ public class NotificationMessages {
     public static final String TASK_UPDATED = "Task #%s is updated by %s";
     public static final String RESOURCE_IS_BEING_SENT = "Resource #%s is being for you to receive";
     public static final String TASK_UNASSIGNED = "Task #%s is unassigned by %s";
+
+    public static final String NEED_ADDED_TO_REQUEST = "Your need #%s has been added to the request";
+    public static final String NEED_REMOVED_FROM_REQUEST = "Your need #%s removed from request";
 }

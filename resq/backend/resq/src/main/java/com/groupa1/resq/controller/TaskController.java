@@ -3,16 +3,19 @@ package com.groupa1.resq.controller;
 import com.groupa1.resq.auth.UserDetailsImpl;
 import com.groupa1.resq.entity.enums.EStatus;
 import com.groupa1.resq.entity.enums.EUrgency;
+import com.groupa1.resq.request.AddReqToTaskRequest;
 import com.groupa1.resq.request.AddResourceToTaskRequest;
 import com.groupa1.resq.request.CreateTaskRequest;
 import com.groupa1.resq.dto.TaskDto;
 import com.groupa1.resq.request.UpdateTaskRequest;
 import com.groupa1.resq.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -124,6 +127,27 @@ public class TaskController {
                                                                @RequestParam(required = false) EUrgency urgency, @RequestParam(required = false) EStatus status) {
         return taskService.viewTasksByFilter(assignerId, assigneeId, urgency, status);
     }
+
+    @PreAuthorize("hasRole('COORDINATOR')")
+    @PostMapping("/addRequestToTask")
+    public ResponseEntity<String> addRequestToTask(@RequestBody
+                                                   AddReqToTaskRequest addReqToTaskRequest, Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+        log.info("Adding resources to task by coordinator with id: {}", userId);
+        return taskService.addRequestToTask(addReqToTaskRequest);
+    }
+
+    @PreAuthorize("hasRole('COORDINATOR')")
+    @PostMapping("/removeRequestFromTask")
+    public ResponseEntity<String> removeRequestFromTask(@RequestBody
+                                                   AddReqToTaskRequest removeReqFromTask, Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+        log.info("Adding resources to task by coordinator with id: {}", userId);
+        return taskService.removeRequestFromTask(removeReqFromTask);
+    }
+
 
 
 

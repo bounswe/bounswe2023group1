@@ -1,5 +1,6 @@
 package com.groupa1.resq.controller;
 
+import com.groupa1.resq.auth.UserDetailsImpl;
 import com.groupa1.resq.config.ResqAppProperties;
 import com.groupa1.resq.dto.NeedDto;
 import com.groupa1.resq.dto.RequestDto;
@@ -7,6 +8,7 @@ import com.groupa1.resq.entity.Need;
 import com.groupa1.resq.entity.Request;
 import com.groupa1.resq.entity.enums.EStatus;
 import com.groupa1.resq.entity.enums.EUrgency;
+import com.groupa1.resq.request.AddNeedToReqRequest;
 import com.groupa1.resq.request.CreateReqRequest;
 import com.groupa1.resq.request.UpdateReqRequest;
 import com.groupa1.resq.service.RequestService;
@@ -14,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -83,6 +86,25 @@ public class RequestController {
                                                           @RequestParam BigDecimal distance) {
         log.info("Filtering requests by distance");
         return requestService.filterByDistance(longitude, latitude, distance);
+    }
+
+    @PostMapping("/addNeedToRequest")
+    @PreAuthorize("hasRole('FACILITATOR')")
+    public ResponseEntity<String> addNeedToRequest(@RequestBody
+                                                       AddNeedToReqRequest addNeedToReqRequest, Authentication authentication){
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+        log.info("Adding need to request by facilitator: {}", userId);
+        return requestService.addNeedToRequest(addNeedToReqRequest);
+    }
+
+    @PostMapping("/removeNeedFromRequest")
+    @PreAuthorize("hasRole('FACILITATOR')")
+    public ResponseEntity<String> removeNeedFromRequest(@RequestBody AddNeedToReqRequest removeNeedFromRequest, Authentication authentication){
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+        log.info("Removing need from request by facilitator: {}", userId);
+        return requestService.removeNeedFromRequest(removeNeedFromRequest);
     }
 
 

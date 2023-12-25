@@ -13,7 +13,6 @@ public class UpdateReqRequest {
     private String description;
     private BigDecimal latitude;
     private BigDecimal longitude;
-    private Set<Need> needs;
     private EStatus status;
     private EUrgency urgency;
 }

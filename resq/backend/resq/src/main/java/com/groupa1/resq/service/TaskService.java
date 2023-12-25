@@ -5,18 +5,25 @@ import com.groupa1.resq.converter.ActionConverter;
 import com.groupa1.resq.converter.TaskConverter;
 import com.groupa1.resq.dto.ResourceDto;
 import com.groupa1.resq.entity.Action;
+import com.groupa1.resq.entity.Need;
+import com.groupa1.resq.entity.Request;
 import com.groupa1.resq.entity.Resource;
 import com.groupa1.resq.entity.Task;
 import com.groupa1.resq.entity.User;
+import com.groupa1.resq.entity.enums.ENeedStatus;
 import com.groupa1.resq.entity.enums.ENotificationEntityType;
+import com.groupa1.resq.entity.enums.ERequestStatus;
 import com.groupa1.resq.entity.enums.EResourceStatus;
 import com.groupa1.resq.entity.enums.EStatus;
 import com.groupa1.resq.entity.enums.EUrgency;
 import com.groupa1.resq.exception.EntityNotFoundException;
 import com.groupa1.resq.repository.ActionRepository;
+import com.groupa1.resq.repository.NeedRepository;
+import com.groupa1.resq.repository.RequestRepository;
 import com.groupa1.resq.repository.ResourceRepository;
 import com.groupa1.resq.repository.TaskRepository;
 import com.groupa1.resq.repository.UserRepository;
+import com.groupa1.resq.request.AddReqToTaskRequest;
 import com.groupa1.resq.request.AddResourceToTaskRequest;
 import com.groupa1.resq.request.CreateTaskRequest;
 import com.groupa1.resq.dto.TaskDto;
@@ -63,6 +70,12 @@ public class TaskService {
 
     @Autowired
     private ResourceRepository resourceRepository;
+
+    @Autowired
+    private RequestRepository requestRepository;
+
+    @Autowired
+    private NeedRepository needRepository;
 
     @Transactional
     public ResponseEntity<Object> createTask(CreateTaskRequest createTaskRequest) {
@@ -243,6 +256,21 @@ public class TaskService {
                 }
         );
 
+        Set<Request> requests = task.getRequests();
+        requests.forEach(
+                request -> {
+                    request.setStatus(ERequestStatus.PROVIDED);
+                    requestRepository.save(request);
+                    Set<Need> needs = request.getNeeds();
+                    needs.forEach(
+                            need -> {
+                                need.setStatus(ENeedStatus.PROVIDED);
+                                needRepository.save(need);
+                            }
+                    );
+                }
+        );
+
 
         task.setStatus(EStatus.DONE);
         taskRepository.save(task);
@@ -320,6 +348,39 @@ public class TaskService {
         return ResponseEntity.ok(taskRepository.findAll(spec).stream().map(task -> taskConverter.convertToDto(task)).toList());
 
     }
+
+    @Transactional
+    public ResponseEntity<String> addRequestToTask(AddReqToTaskRequest addReqToTaskRequest){
+        Long taskId = addReqToTaskRequest.getTaskId();
+        List<Long> requestIds = addReqToTaskRequest.getRequestIds();
+        Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFoundException("No task found"));
+        requestIds.stream().forEach(id->{
+            task.getRequests().add(requestRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("No request found for task")));
+            Request req = requestRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("No request found for task"));
+            req.setTask(task);
+            req.setStatus(ERequestStatus.IN_TASK);
+            requestRepository.save(req);
+        });
+        taskRepository.save(task);
+        return ResponseEntity.ok("Request added successfully to Task");
+    }
+
+    @Transactional
+    public ResponseEntity<String> removeRequestFromTask(AddReqToTaskRequest removeReqFromTask){
+        Long taskId = removeReqFromTask.getTaskId();
+        List<Long> requestIds = removeReqFromTask.getRequestIds();
+        Task task = taskRepository.findById(taskId).orElseThrow(()-> new EntityNotFoundException("No task found"));
+        requestIds.stream().forEach(id->{
+            task.getRequests().remove(requestRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("No request found for task")));
+            Request req = requestRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("No request found for task"));
+            req.setTask(null);
+            req.setStatus(ERequestStatus.PENDING);
+            requestRepository.save(req);
+        });
+        taskRepository.save(task);
+        return ResponseEntity.ok("Request removed successfully from Task");
+
+}
 
 
 

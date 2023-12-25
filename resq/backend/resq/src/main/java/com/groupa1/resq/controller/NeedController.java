@@ -1,14 +1,17 @@
 package com.groupa1.resq.controller;
 
+import com.groupa1.resq.auth.UserDetailsImpl;
 import com.groupa1.resq.config.ResqAppProperties;
 import com.groupa1.resq.dto.NeedDto;
 import com.groupa1.resq.request.CreateNeedRequest;
 import com.groupa1.resq.request.UpdateNeedRequest;
+import com.groupa1.resq.response.NeedStatusResponse;
 import com.groupa1.resq.service.NeedService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -97,6 +100,16 @@ public class NeedController {
                                                        @RequestParam BigDecimal distance) {
         log.info("Filtering needs by distance");
         return needService.filterByDistance(longitude, latitude, distance);
+    }
+
+    @GetMapping("/viewMyNeedsStatus")
+    @PreAuthorize("hasRole('VICTIM')")
+    public ResponseEntity<List<NeedStatusResponse>> viewMyNeedStatus(
+            Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+        log.info("Viewing need status for user: {}", userId);
+        return needService.viewMyNeedsStatus(userId);
     }
 
 }
