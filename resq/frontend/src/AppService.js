@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {RootNode} from "./CategoryTree";
+import { RootNode } from "./CategoryTree";
 
 const API_BASE_URL = 'https://api.resq.org.tr'
 const USER_API_BASE_URL = API_BASE_URL + '/resq/api/v1/user';
@@ -21,7 +21,7 @@ export function postRequestRole(userId, role) {
 }
 
 export async function getUserInfo(userId) {
-    const {data} = await axios.get(`${USER_API_BASE_URL}/getUserInfo?userId=${userId}`);
+    const { data } = await axios.get(`${USER_API_BASE_URL}/getUserInfo?userId=${userId}`);
     return data
 }
 
@@ -130,7 +130,7 @@ export function getAllResources() {
 }
 
 export async function getCategoryTree() {
-    const {data} = await axios.get(`${CATEGORY_API_BASE_URL}/getMainCategories`);
+    const { data } = await axios.get(`${CATEGORY_API_BASE_URL}/getMainCategories`);
 
     return new RootNode(data)
 }
@@ -145,4 +145,8 @@ export function acceptTask(taskId, userId) {
 
 export function viewAllTasks(userId) {
     return axios.get(`${TASK_API_BASE_URL}/viewTasks?userId=${userId}`);
+}
+
+export function updateProfile(updateProfileRequest) {
+    return axios.post(`${USER_API_BASE_URL}/updateProfile`, updateProfileRequest);
 }
