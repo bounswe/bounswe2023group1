@@ -15,6 +15,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import axios from "axios";
 import VictimMapPage from "./pages/VictimMapPage";
 import ResponderMapPage from "./pages/ResponderMapPage";
+import FacilitatorMapPage from './pages/FacilitatorMapPage';
 import { Badge } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Notifications from "./pages/Notifications";
@@ -66,6 +67,7 @@ function App() {
     const navLinks = [
         { path: '/victimmap', label: <strong>Victim Map</strong>, component: VictimMapPage, icon: <SmallRedCircle /> },
         { path: '/respondermap', label: <strong>Responder Map</strong>, component: ResponderMapPage, icon: <SmallRedCircle /> },
+        { path: '/facilitatormap', label: <strong>Facilitator Map</strong>, component: FacilitatorMapPage, icon: <SmallRedCircle /> },
         (role === "responder") && {
             path: '/responder',
             label: <strong>Responder Panel</strong>,

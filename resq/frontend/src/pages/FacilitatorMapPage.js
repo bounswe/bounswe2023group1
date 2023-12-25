@@ -1,10 +1,11 @@
 import MapPage from "./MapPage";
 import { useQuery } from "@tanstack/react-query";
-import { getAllResources } from "../AppService";
+import { viewAllNeeds } from "../AppService";
 import { mock_markers } from "./Mock_markers";
 import { Fab } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Add } from "@mui/icons-material";
+import MapPagewDataList from "./MapPagewDataList";
 
 
 export default function FacilitatorMapPage() {
@@ -12,10 +13,10 @@ export default function FacilitatorMapPage() {
     //const queryClient = useQueryClient()
 
     const navigate = useNavigate()
-    const resources = useQuery({ queryKey: ['getAllResources'], queryFn: getAllResources })
+    const needs = useQuery({ queryKey: ['viewAllNeeds'], queryFn: viewAllNeeds })
 
-    const resourceMarkers = (resources.data?.data || []).map(a => ({ ...a, type: "Resource" }))
-    const allMarkers = [...mock_markers, ...resourceMarkers]
+    const needMarkers = (needs.data?.data || []).map(a => ({ ...a, type: "Needs" }))
+    const allMarkers = [...mock_markers, ...needMarkers]
     /*/ Mutations
     const mutation = useMutation({
         mutationFn: postTodo,
@@ -27,14 +28,14 @@ export default function FacilitatorMapPage() {
 
     return (
         <>
-            <MapPage allMarkers={allMarkers} />
-            <Fab color="primary" variant="extended" onClick={() => navigate("/requestcreation")} sx={{
+            <MapPagewDataList allMarkers={allMarkers} />
+            <Fab color="primary" variant="extended" onClick={() => navigate("/account")} sx={{
                 position: 'absolute',
                 bottom: 32,
                 right: 32,
             }}>
                 <Add sx={{ mr: 1 }} />
-                Add Need
+                Create Request
             </Fab>
         </>
 
