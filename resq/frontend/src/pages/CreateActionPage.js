@@ -98,9 +98,10 @@ const ResourcesDataGrid = ({resources, ...props}) => {
 }
 
 export default function MapPage() {
-    const [shownMarkers, setShownMarkers] = useState(allMarkers)
+    const [shownMarkers, setShownMarkers] = useState([])
     const [selectedPoint, setSelectedPoint] = useState(null)
     const [mapCenter, setMapCenter] = useState([39, 34.5])
+    const [mapBounds, setMapBounds] = useState({ne: [0, 0], sw: [0, 0]})
 
     const categoryTree = useQuery({queryKey: ['categoryTree'], queryFn: getCategoryTree})
 
