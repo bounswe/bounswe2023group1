@@ -12,7 +12,7 @@ function mapboxProvider(x, y, z, dpr) {
         }`;
 }
 
-const marker_order = ["Annotation", "Request", "Resource"]
+const marker_order = ["Facility", "Request", "Resource"]
 
 export default function DisasterMap({ onPointSelected, markers = [], mapCenter, setMapCenter, onBoundsChanged }) {
     const [zoom, setZoom] = useState(6.5);
@@ -22,13 +22,13 @@ export default function DisasterMap({ onPointSelected, markers = [], mapCenter, 
             <Marker
                 width={33}
                 anchor={[marker.latitude, marker.longitude]}
-                key={marker.type+marker.id}
+                key={marker.type + marker.id}
                 onClick={({ event }) => {
                     onPointSelected(marker);
                     event.preventDefault()
                 }}
             >
-                {marker.type === "Annotation" ? <AnnotationIcon icon={marker.category} /> :
+                {marker.type === "Facility" ? <AnnotationIcon icon={marker.category} /> :
                     <MarkerIcon color={type_colors[marker.type]} />}
             </Marker>
         );
