@@ -95,6 +95,8 @@ class MainActivity : ComponentActivity() {
 fun MainScreen(appContext: Context, mapViewModel: MapViewModel) {
     val navController = rememberNavController()
 
+    mapViewModel.saveLastKnownLocation(appContext)
+
     Scaffold(
         bottomBar = { BottomNavigationBar(navController, appContext) },
         content = { paddingValues ->

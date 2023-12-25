@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cmpe451.resq.data.manager.UserSessionManager
 import com.cmpe451.resq.data.models.CategoryTreeNode
 import com.cmpe451.resq.data.models.CreateNeedRequestBody
 import com.cmpe451.resq.data.remote.ResqService
@@ -91,10 +92,13 @@ class RequestViewModel : ViewModel() {
         val categoryId = _selectedItem.value?.id?.toString() ?: _selectedType.value?.id?.toString() ?: ""
 
         if (categoryId.isNotEmpty()) {
+            val latitude = 41.086571  // UserSessionManager.getInstance(appContext).getLocation()?.latitude
+            val longitude = 29.046109 // UserSessionManager.getInstance(appContext).getLocation()?.longitude
+
             val requestBody = CreateNeedRequestBody(
                 description = description,
-                latitude = 0.0,
-                longitude = 0.0,
+                latitude = latitude,
+                longitude =  longitude,
                 categoryTreeId = categoryId,
                 quantity = quantity.toIntOrNull() ?: 0
             )
