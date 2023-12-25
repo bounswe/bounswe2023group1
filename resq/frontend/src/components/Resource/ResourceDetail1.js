@@ -38,7 +38,7 @@ export default function ResourceDetails1({ resourceData, setResourceData }) {
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
-                Resource Type
+                Resource Quantity and Description
             </Typography>
             <Grid container spacing={3}>
                 <Grid item xs={12}>

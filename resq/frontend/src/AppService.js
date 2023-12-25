@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {RootNode} from "./CategoryTree";
+import { RootNode } from "./CategoryTree";
 
 const API_BASE_URL = 'https://api.resq.org.tr'
 const USER_API_BASE_URL = API_BASE_URL + '/resq/api/v1/user';
@@ -10,18 +10,38 @@ const NEED_API_BASE_URL = API_BASE_URL + '/resq/api/v1/need';
 const REQUEST_API_BASE_URL = API_BASE_URL + '/resq/api/v1/request';
 const RESOURCE_API_BASE_URL = API_BASE_URL + '/resq/api/v1/resource';
 const TASK_API_BASE_URL = API_BASE_URL + '/resq/api/v1/task';
+const USER_INFO_API_BASE_URL = API_BASE_URL + '/resq/api/v1/profile';
 
+export async function postRequestRole(userId, role) {
+    const queryParams = new URLSearchParams({ userId, role }).toString();
+    const url = `${USER_API_BASE_URL}/requestRole?${queryParams}`;
 
-export function postRequestRole(userId, role) {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+
+    try {
+        const response = await axios.post(url, null, config);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+/*
+export async function postRequestRole(userId, role) {
     const requestBody = {
         userId: userId,
         role: role,
     };
     return axios.post(`${USER_API_BASE_URL}/requestRole`, requestBody);
 }
+*/
 
 export async function getUserInfo(userId) {
-    const {data} = await axios.get(`${USER_API_BASE_URL}/getUserInfo?userId=${userId}`);
+    const { data } = await axios.get(`${USER_API_BASE_URL}/getUserInfo?userId=${userId}`);
     return data
 }
 
@@ -62,8 +82,18 @@ export function signin(loginUserRequest, token) {
         headers: {
             Authorization: `Bearer ${token}`,
         },
+    }).then(response => {
+        return {
+            token: response.data.jwt,
+            userId: response.data.id,
+            role: response.data.role
+        };
+    }).catch(error => {
+        console.error('Sign in failed:', error);
+        throw error;
     });
 }
+
 
 export function viewActions(taskId) {
     return axios.get(`${ACTION_API_BASE_URL}/viewActions?taskId=${taskId}`);
@@ -130,7 +160,7 @@ export function getAllResources() {
 }
 
 export async function getCategoryTree() {
-    const {data} = await axios.get(`${CATEGORY_API_BASE_URL}/getMainCategories`);
+    const { data } = await axios.get(`${CATEGORY_API_BASE_URL}/getMainCategories`);
 
     return new RootNode(data)
 }
@@ -148,4 +178,9 @@ export function completeTask(taskId) {
 export async function viewAllTasks(userId) {
     const {data} = await axios.get(`${TASK_API_BASE_URL}/viewTasks?userId=${userId}`);
     return data
+}
+
+export function updateProfile(userId, profileData) {
+    return axios.post(`${USER_INFO_API_BASE_URL}/updateProfile?userId=${userId}`, profileData
+    );
 }

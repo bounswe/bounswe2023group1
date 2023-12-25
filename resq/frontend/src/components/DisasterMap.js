@@ -13,7 +13,7 @@ function mapboxProvider(x, y, z, dpr) {
     }`;
 }
 
-const marker_order = ["Annotation", "Request", "Resource"]
+const marker_order = ["Facility", "Request", "Resource"]
 
 const geoJson = (coordinates) => ({
     type: "Feature",
@@ -36,13 +36,13 @@ export default function DisasterMap({
                 width={33}
                 anchor={[marker.latitude, marker.longitude]}
                 key={marker.type + marker.id}
-                onClick={({event}) => {
+                onClick={({ event }) => {
                     onPointSelected(marker);
                     event.preventDefault()
                 }}
             >
-                {marker.type === "Annotation" ?
-                    <AnnotationIcon icon={marker.category}/> :
+                {marker.type === "Facility" ?
+                    <AnnotationIcon icon={marker.category} /> :
                     <MarkerIcon color={marker.color || type_colors[marker.type]}/>}
             </Marker>
         );
