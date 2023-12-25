@@ -9,10 +9,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cmpe451.resq.data.manager.UserSessionManager
 import com.cmpe451.resq.data.models.CategoryTreeNode
+import com.cmpe451.resq.data.models.CreateNeedRequestBody
 import com.cmpe451.resq.data.models.Need
 import com.cmpe451.resq.data.models.Resource
 import com.cmpe451.resq.data.remote.ResqService
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
 class MapViewModel : ViewModel() {
@@ -20,6 +22,7 @@ class MapViewModel : ViewModel() {
     val lastKnownLocation = mutableStateOf<Location?>(null)
     val needMarkerList = mutableStateOf<List<Need>>(emptyList())
     val resourceMarkerList = mutableStateOf<List<Resource>>(emptyList())
+    val warningList = mutableStateOf<List<Pair<LatLng, String>>>(emptyList())
 
     // For convert category ids to names
     private val _categories = mutableStateOf<List<CategoryTreeNode>>(emptyList())
@@ -120,7 +123,6 @@ class MapViewModel : ViewModel() {
     fun fetchMainCategories(appContext: Context) {
         viewModelScope.launch {
             val api = ResqService(appContext)
-
             val response = api.getMainCategories()
             if (response.isSuccessful) {
                 _categories.value = response.body() ?: emptyList()
@@ -151,4 +153,27 @@ class MapViewModel : ViewModel() {
         }
     }
 
+    fun onMarkerCreate(description: String, appContext: Context, latitude: Double, longitude: Double) {
+        viewModelScope.launch {
+            val result = createNeedByMarker(description, appContext, latitude, longitude)
+        }
+    }
+
+    private suspend fun createNeedByMarker(description: String, appContext: Context, latitude: Double, longitude: Double): Result<Int> {
+        val api = ResqService(appContext)
+        val requestBody = CreateNeedRequestBody(
+            description = description,
+            latitude = latitude,
+            longitude =  longitude,
+            categoryTreeId = 6.toString(),
+            quantity = 0
+        )
+        val response = api.createNeed(requestBody)
+        if (response.isSuccessful) {
+            response.body()?.let {
+                return Result.success(it)
+            }
+        }
+        return Result.failure(Throwable(response.message()))
+    }
 }

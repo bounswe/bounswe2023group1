@@ -21,7 +21,6 @@ import com.cmpe451.resq.data.models.UserInfo
 import com.cmpe451.resq.data.models.UserInfoRequest
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -33,8 +32,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import java.io.File
-import java.time.LocalDate
-import java.time.format.DateTimeParseException
 
 
 interface CategoryTreeNodeService {
@@ -59,17 +56,6 @@ interface ResourceService {
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
         @Query("distance") distance: Double
-    ): Call<List<Resource>>
-
-    @GET("resource/filterByCategory")
-    fun filterResourceByCategory(
-        @Header("Authorization") jwtToken: String,
-        @Query("categoryTreeId") categoryTreeId: String?,
-        @Query("longitude") longitude: Double?,
-        @Query("latitude") latitude: Double?,
-        @Query("userId") userId: Long?,
-        @Query("status") status: String?,
-        @Query("receiverId") receiverId: Long?
     ): Call<List<Resource>>
 
     @GET("resource/filterByCategory")
