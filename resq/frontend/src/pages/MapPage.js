@@ -27,7 +27,7 @@ const getAllCategories = categoryTree => {
     if (categoryTree) {
         return item => {
             switch (item.type) {
-                case "Annotation":
+                case "Facility":
                     return [{id: item?.category, data: item?.category}]
                 default:
                     return categoryTree.findCategoryWithId(parseInt(item.categoryTreeId))?.getAllParentCategories()
@@ -41,7 +41,7 @@ const getAllCategories = categoryTree => {
 const applyFilterTo = (predicate) =>
     item => {
         switch (item.type) {
-            case "Annotation":
+            case "Facility":
                 return predicate(item)
             case "Resource":
                 return !item.resources.every(resource => !predicate(resource))
@@ -58,7 +58,7 @@ const makeFilterByCategory = categories => {
 
     return item => {
         switch (item.type) {
-            case "Annotation":
+            case "Facility":
                 return categories.map(a => a.id).indexOf(item?.category) !== -1;
             default:
                 return !categories.every(a => !a.findCategoryWithId || !(a.findCategoryWithId(parseInt(item.categoryTreeId))))
@@ -139,7 +139,7 @@ export default function MapPage({allMarkers}) {
                         justifyContent: "center"
                     }}>
                         <MultiCheckbox name={"Type"}
-                                       choices={["Annotation", "Resource", "Request"].map(i => ({id: i, data: i}))}
+                                       choices={["Facility", "Resource", "Request"].map(i => ({id: i, data: i}))}
                                        onChosenChanged={setTypeFilter}/>
                         <MultiCheckbox name={"Category"}
                                        choices={[...choices.values()]}

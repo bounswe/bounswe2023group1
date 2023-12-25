@@ -1,7 +1,7 @@
 export const mock_markers = [
     {
         id: 1,
-        type: "Annotation",
+        type: "Facility",
         latitude: 41.089,
         longitude: 29.053,
         category: "Health",
@@ -16,7 +16,7 @@ export const mock_markers = [
     },
     {
         id:2,
-        type: "Annotation",
+        type: "Facility",
         latitude: 41.085,
         longitude: 29.056,
         category: "Shelter",
@@ -27,7 +27,7 @@ export const mock_markers = [
     },
     {
         id:3,
-        type: "Annotation",
+        type: "Facility",
         latitude: 41.099,
         longitude: 29.047,
         category: "Food",
@@ -38,7 +38,7 @@ export const mock_markers = [
     },
     {
         id:4,
-        type: "Annotation",
+        type: "Facility",
         latitude: 40.092,
         longitude: 29.008,
         category: "Health",

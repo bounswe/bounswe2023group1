@@ -132,5 +132,5 @@ export const ResourceCard = ({item: {type, id, senderId, quantity, categoryTreeI
 export const cards = {
     "Resource": ResourceCard,
     "Request": RequestCard,
-    "Annotation": AnnotationCard
+    "Facility": AnnotationCard
 }
