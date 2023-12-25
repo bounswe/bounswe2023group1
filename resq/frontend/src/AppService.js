@@ -151,21 +151,22 @@ export function viewAllRequests() {
     return axios.get(`${REQUEST_API_BASE_URL}/viewAllRequests`);
 }
 
+
 export const createResource = async (resourceData) => {
     const formData = new FormData();
 
     const createResourceRequest = {};
     Object.keys(resourceData).forEach(key => {
-        if (key === 'photo') {
-            if (resourceData[key]) {
-                formData.append('file', resourceData[key]);
-            }
-        } else {
+        if (key !== 'photo') {
             createResourceRequest[key] = resourceData[key];
         }
     });
 
     formData.append('createResourceRequest', JSON.stringify(createResourceRequest));
+
+    if (resourceData.photo) {
+        formData.append('file', resourceData.photo);
+    }
 
     try {
         const response = await axios.post('/resource/createResource', formData, {
@@ -179,6 +180,7 @@ export const createResource = async (resourceData) => {
         throw error;
     }
 };
+
 
 
 export function getAllResources() {
