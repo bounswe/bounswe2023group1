@@ -14,7 +14,6 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import axios from "axios";
 import VictimMapPage from "./pages/VictimMapPage";
-import ResponderMapPage from "./pages/ResponderMapPage";
 import FacilitatorMapPage from './pages/FacilitatorMapPage';
 import { Badge } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -95,8 +94,8 @@ function App() {
     }
 
     const navLinks = [
-        { path: '/victimmap', label: <strong>Victim Map</strong>, component: VictimMapPage, icon: <SmallRedCircle />, roles: ['VICTIM', 'ADMIN', 'RESPONDER', 'FACILITATOR'] },
-        { path: '/respondermap', label: <strong>Responder Map</strong>, component: ResponderMapPage, icon: <SmallRedCircle />, roles: ['RESPONDER', 'ADMIN'] },
+        { path: '/', label: <strong>Victim Map</strong>, component: VictimMapPage, icon: <SmallRedCircle />, roles: ['VICTIM', 'ADMIN', 'RESPONDER', 'FACILITATOR'] },
+        { path: '/tasks', label: <strong>View Takss</strong>, component: TaskSelectPage, icon: <SmallRedCircle />, roles: ['RESPONDER', 'ADMIN'] },
         { path: '/facilitatormap', label: <strong>Facilitator Map</strong>, component: FacilitatorMapPage, icon: <SmallRedCircle />, roles: ['FACILITATOR', 'ADMIN'] },
     ];
 
@@ -184,7 +183,6 @@ function App() {
                                         <Route key={path} path={path}
                                             element={React.createElement(component, { token, setToken, role, setRole, uid })} />
                                     ))}
-                                    <Route path="/" element={React.createElement(VictimMapPage, {token, setToken})}/>
                                     <Route path="/rolerequest" state={{token, setToken}}
                                            element={React.createElement(RoleRequest, {token, setToken})}/>
                                     {
