@@ -71,6 +71,17 @@ interface ResourceService {
         @Query("status") status: String?,
         @Query("receiverId") receiverId: Long?
     ): Call<List<Resource>>
+
+    @GET("resource/filterByCategory")
+    fun filterResourceByCategory(
+        @Header("Authorization") jwtToken: String,
+        @Query("categoryTreeId") categoryTreeId: String?,
+        @Query("longitude") longitude: Double?,
+        @Query("latitude") latitude: Double?,
+        @Query("userId") userId: Int?,
+        @Query("status") status: String?,
+        @Query("receiverId") receiverId: Long?
+    ): Call<List<Resource>>
 }
 
 interface NeedService {
@@ -321,6 +332,34 @@ class ResqService(appContext: Context) {
             null,
             null,
             null,
+            null,
+            null).enqueue(object :
+            Callback<List<Resource>> {
+            override fun onResponse(call: Call<List<Resource>>, response: Response<List<Resource>>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { onSuccess(it) }
+                } else {
+                    onError(RuntimeException("Response not successful"))
+                }
+            }
+            override fun onFailure(call: Call<List<Resource>>, t: Throwable) {
+                onError(t)
+            }
+        })
+    }
+
+    fun filterResourceByCategory(
+        onSuccess: (List<Resource>) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val token = userSessionManager.getUserToken() ?: ""
+        val userID = userSessionManager.getUserId() ?: 0
+        resourceService.filterResourceByCategory(
+            "Bearer $token",
+            null,
+            null,
+            null,
+            userID,
             null,
             null).enqueue(object :
             Callback<List<Resource>> {

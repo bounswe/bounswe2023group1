@@ -92,9 +92,8 @@ class RequestViewModel : ViewModel() {
         val categoryId = _selectedItem.value?.id?.toString() ?: _selectedType.value?.id?.toString() ?: ""
 
         if (categoryId.isNotEmpty()) {
-            val latitude = 41.086571  // UserSessionManager.getInstance(appContext).getLocation()?.latitude
-            val longitude = 29.046109 // UserSessionManager.getInstance(appContext).getLocation()?.longitude
-
+            val latitude =  UserSessionManager.getInstance(appContext).getLocation()?.latitude?: 41.086571
+            val longitude =  UserSessionManager.getInstance(appContext).getLocation()?.longitude?: 29.046109
             val requestBody = CreateNeedRequestBody(
                 description = description,
                 latitude = latitude,

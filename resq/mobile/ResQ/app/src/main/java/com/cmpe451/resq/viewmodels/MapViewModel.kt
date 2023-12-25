@@ -28,8 +28,8 @@ class MapViewModel : ViewModel() {
     fun getNeedsByDistance(appContext: Context) {
         val api = ResqService(appContext)
 
-        val latitude = 41.086571  // UserSessionManager.getInstance(appContext).getLocation()?.latitude
-        val longitude = 29.046109 // UserSessionManager.getInstance(appContext).getLocation()?.longitude
+        val latitude = UserSessionManager.getInstance(appContext).getLocation()?.latitude?: 41.086571
+        val longitude = UserSessionManager.getInstance(appContext).getLocation()?.longitude?: 29.046109
 
         api.filterNeedByDistance(
             latitude = latitude,

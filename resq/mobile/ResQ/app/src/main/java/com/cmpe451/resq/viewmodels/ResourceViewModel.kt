@@ -93,6 +93,8 @@ class ResourceViewModel : ViewModel() {
 
     private suspend fun getCreateResourceResponse(quantity: String, appContext: Context): Result<Int> {
         val api = ResqService(appContext)
+        val latitude =  UserSessionManager.getInstance(appContext).getLocation()?.latitude?: 41.086571
+        val longitude =  UserSessionManager.getInstance(appContext).getLocation()?.longitude?: 29.046109
         val categoryId = _selectedItem.value?.id?.toString() ?: _selectedType.value?.id?.toString() ?: ""
         if (categoryId.isNotEmpty()) {
             val senderId = UserSessionManager.getInstance(appContext).getUserId()
@@ -101,8 +103,8 @@ class ResourceViewModel : ViewModel() {
                 senderId = senderId,
                 categoryTreeId = categoryId,
                 quantity = quantity.toIntOrNull() ?: 0,
-                latitude = 41.086571,
-                longitude = 29.046109,
+                latitude = latitude,
+                longitude = longitude,
                 gender = "FEMALE",
                 size = null,
                 status = "AVAILABLE"
