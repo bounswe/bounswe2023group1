@@ -12,14 +12,33 @@ const RESOURCE_API_BASE_URL = API_BASE_URL + '/resq/api/v1/resource';
 const TASK_API_BASE_URL = API_BASE_URL + '/resq/api/v1/task';
 const USER_INFO_API_BASE_URL = API_BASE_URL + '/resq/api/v1/profile';
 
+export async function postRequestRole(userId, role) {
+    const queryParams = new URLSearchParams({ userId, role }).toString();
+    const url = `${USER_API_BASE_URL}/requestRole?${queryParams}`;
 
-export function postRequestRole(userId, role) {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+
+    try {
+        const response = await axios.post(url, null, config);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+/*
+export async function postRequestRole(userId, role) {
     const requestBody = {
         userId: userId,
         role: role,
     };
     return axios.post(`${USER_API_BASE_URL}/requestRole`, requestBody);
 }
+*/
 
 export async function getUserInfo(userId) {
     const { data } = await axios.get(`${USER_API_BASE_URL}/getUserInfo?userId=${userId}`);

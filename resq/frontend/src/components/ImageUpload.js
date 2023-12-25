@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import Button from '@mui/material/Button';
 
-function ImageUploadComponent({dragging, droppedImage, handleDragOver, handleDragLeave, handleDrop, handleUploadId}) {
+function ImageUploadComponent({ dragging, droppedImage, handleDragOver, handleDragLeave, handleDrop, handleUploadId }) {
     return (
         <Box
             onDragOver={handleDragOver}
@@ -26,7 +26,7 @@ function ImageUploadComponent({dragging, droppedImage, handleDragOver, handleDra
             }}
         >
             {dragging ? (
-                <Typography variant="body1" sx={{textAlign: 'center'}}>
+                <Typography variant="body1" sx={{ textAlign: 'center' }}>
                     Drop the image here
                 </Typography>
             ) : (
@@ -35,13 +35,13 @@ function ImageUploadComponent({dragging, droppedImage, handleDragOver, handleDra
                     <img
                         src={droppedImage}
                         alt="Dropped Image"
-                        style={{maxWidth: '100%', maxHeight: '100%'}}
+                        style={{ maxWidth: '100%', maxHeight: '100%' }}
                     />
                 ) : (
                     <>
                         <div>
                             <FileDownloadIcon
-                                sx={{fontSize: 100}}
+                                sx={{ fontSize: 100 }}
                                 style={{
                                     color: 'rgba(169, 169, 169, 1)',
                                     padding: '12px',
@@ -84,7 +84,7 @@ function ImageUploadComponent({dragging, droppedImage, handleDragOver, handleDra
                 }}
             >
                 Upload a file
-                <input type="file" hidden onChange={handleUploadId}/>
+                <input type="file" hidden onChange={handleUploadId} />
             </Button>
         </Box>
     );

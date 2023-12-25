@@ -25,6 +25,7 @@ import { useNavigate } from 'react-router-dom';
 import { getUserInfo } from '../AppService';
 import { updateProfile } from '../AppService';
 import Snackbar from '@mui/material/Snackbar';
+import { useLocation } from 'react-router-dom';
 
 
 function Copyright(props) {
@@ -67,9 +68,17 @@ function SimpleDialog(props) {
 
   const handleClose = () => {
     onClose(selectedRole);
-    navigate('/rolerequest');
+    navigate('/rolerequest?selectedRole=${selectedRole');
     // navigate(`/rolerequest?selectedRole=${selectedRole}`);
   };
+
+  const handleRoleRequest = () => {
+    if (selectedRole) {
+      navigate(`/rolerequest?selectedRole=${selectedRole}`);
+    } else {
+      alert('Please select a role before requesting.');
+    }
+  }
 
   const handleListItemClick = (role) => {
     if (!requestMade) {
@@ -78,7 +87,7 @@ function SimpleDialog(props) {
   };
 
   return (
-    <Dialog onClose={handleClose} open={open}>
+    <Dialog onClose={handleRoleRequest} open={open}>
       <DialogTitle style={{ fontWeight: 'bold' }}>Choose desired role</DialogTitle>
       <List sx={{ pt: 0 }}>
         {roles.map((role) => (
@@ -101,7 +110,7 @@ function SimpleDialog(props) {
           <Button
             variant="contained"
             autoFocus
-            onClick={() => handleClose()}
+            onClick={() => handleRoleRequest()}
             endIcon={<SendIcon />}
             style={{ margin: '0 auto' }}
             disabled={requestMade}
