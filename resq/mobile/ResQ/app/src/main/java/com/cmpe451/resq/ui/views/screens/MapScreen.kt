@@ -71,7 +71,7 @@ fun MapScreen(navController: NavController, appContext: Context, mapViewModel: M
     var expandedResourceId by remember { mutableStateOf<Int?>(null) }
 
 
-    mapViewModel.getNeedsByDistance(appContext)
+    mapViewModel.getAllNeeds(appContext)
     mapViewModel.getResourcesByDistance(appContext)
     // Dummy data for the lists
     val needsList = mapViewModel.needMarkerList.value

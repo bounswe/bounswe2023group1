@@ -71,6 +71,11 @@ interface NeedService {
         @Query("userId") userId: Int,
         @Header("Authorization") jwtToken: String,
     ): Call<List<Need>>
+
+    @GET("need/viewAllNeeds")
+    fun viewAllNeeds(
+        @Header("Authorization") jwtToken: String
+    ): Call<List<Need>>
 }
 
 interface AuthService {
@@ -181,6 +186,26 @@ class ResqService(appContext: Context) {
     ) {
         val token = userSessionManager.getUserToken() ?: ""
         needService.filterNeedByDistance(latitude, longitude, distance, "Bearer $token").enqueue(object :
+            Callback<List<Need>> {
+            override fun onResponse(call: Call<List<Need>>, response: Response<List<Need>>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { onSuccess(it) }
+                } else {
+                    onError(RuntimeException("Response not successful"))
+                }
+            }
+            override fun onFailure(call: Call<List<Need>>, t: Throwable) {
+                onError(t)
+            }
+        })
+    }
+
+    fun getAllNeeds(
+        onSuccess: (List<Need>) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val token = userSessionManager.getUserToken() ?: ""
+        needService.viewAllNeeds("Bearer $token").enqueue(object :
             Callback<List<Need>> {
             override fun onResponse(call: Call<List<Need>>, response: Response<List<Need>>) {
                 if (response.isSuccessful) {

@@ -254,28 +254,9 @@ fun Profile(profileData:ProfileData, navController: NavController, availableRole
     var month by remember { mutableStateOf(profileData.birth_date?.substring(5, 7) ?: "") }
     var day by remember { mutableStateOf(profileData.birth_date?.substring(8, 10) ?: "") }
     val snackbarHostState = remember { SnackbarHostState() }
-    val userSessionManager: UserSessionManager = UserSessionManager.getInstance(appContext)
     var profileColor = Color(0xFFFFFFFF)
     val years = generateYears(1900, Year.now().value)
     val months = generateMonths()
-    when (userSessionManager.getSelectedRole()) {
-        null -> {
-            // Data is loading
-            Text("Loading...")
-        }
-        else -> {
-            val selectedRole = userSessionManager.getSelectedRole()
-            if (selectedRole != null) {
-                if (selectedRole == "FACILITATOR") {
-                    profileColor = RequestColor
-                } else if (selectedRole == "RESPONDER") {
-                    profileColor = ResourceColor
-                } else if (selectedRole == "VICTIM") {
-                    profileColor = MyTasksColor
-                }
-            }
-        }
-    }
 
     val coroutineScope = rememberCoroutineScope()
     val modalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)

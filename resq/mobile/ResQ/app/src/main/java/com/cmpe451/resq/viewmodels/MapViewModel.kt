@@ -44,6 +44,19 @@ class MapViewModel : ViewModel() {
         )
     }
 
+    fun getAllNeeds(appContext: Context) {
+        val api = ResqService(appContext)
+
+        api.getAllNeeds(
+            onSuccess = { needList ->
+                needMarkerList.value = needList
+            },
+            onError = { error ->
+                // Handle error
+            }
+        )
+    }
+
     fun getResourcesByDistance(appContext: Context) {
         val api = ResqService(appContext)
 
