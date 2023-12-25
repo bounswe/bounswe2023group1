@@ -7,6 +7,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cmpe451.resq.data.manager.UserSessionManager
 import com.cmpe451.resq.data.models.CategoryTreeNode
 import com.cmpe451.resq.data.models.Need
 import com.cmpe451.resq.data.models.Resource
@@ -26,9 +27,13 @@ class MapViewModel : ViewModel() {
 
     fun getNeedsByDistance(appContext: Context) {
         val api = ResqService(appContext)
+
+        val latitude = 41.086571  // UserSessionManager.getInstance(appContext).getLocation()?.latitude
+        val longitude = 29.046109 // UserSessionManager.getInstance(appContext).getLocation()?.longitude
+
         api.filterNeedByDistance(
-            latitude = 41.086571,
-            longitude = 29.046109,
+            latitude = latitude,
+            longitude = longitude,
             distance = 1000.0,
             onSuccess = { needList ->
                 needMarkerList.value = needList
@@ -41,6 +46,7 @@ class MapViewModel : ViewModel() {
 
     fun getResourcesByDistance(appContext: Context) {
         val api = ResqService(appContext)
+
         api.filterResourceByDistance(
             latitude = 41.086571,
             longitude = 29.046109,
@@ -72,6 +78,11 @@ class MapViewModel : ViewModel() {
         } catch (e: SecurityException) {
             // Show error or something
         }
+    }
+
+    fun saveLastKnownLocation(appContext: Context) {
+        val userSessionManager = UserSessionManager.getInstance(appContext)
+        userSessionManager.saveLocation(lastKnownLocation.value)
     }
 
     fun fetchMainCategories(appContext: Context) {

@@ -2,6 +2,7 @@ package com.cmpe451.resq.data.manager
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.location.Location
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -14,8 +15,9 @@ class UserSessionManager(appContext: Context) {
         private const val USER_SURNAME = "USER_SURNAME"
         private const val USER_EMAIL = "USER_EMAIL"
         private const val USER_ROLES = "USER_ROLES"
-        private const val SELECTED_ROLE = "SELECTED_ROLE"
         private const val KEY_IS_LOGGED_IN = "IS_LOGGED_IN"
+        private const val LATITUDE = "LATITUDE"
+        private const val LONGITUDE = "LONGITUDE"
 
         @Volatile
         private lateinit var instance: UserSessionManager
@@ -42,12 +44,26 @@ class UserSessionManager(appContext: Context) {
         editor.putString(USER_SURNAME, userSurname)
         editor.putString(USER_EMAIL, userEmail)
         editor.putString(USER_ROLES, rolesJson)
-        if (userRoles.isNotEmpty()) {
-            editor.putString(SELECTED_ROLE, userRoles.first())
-        }
         editor.putBoolean(KEY_IS_LOGGED_IN, true)
         editor.apply()
     }
+
+    fun saveLocation(location: Location?) {
+        editor.putFloat(LATITUDE, location?.latitude?.toFloat() ?: 0.0F)
+        editor.putFloat(LONGITUDE, location?.longitude?.toFloat() ?: 0.0F)
+        editor.apply()
+    }
+
+    fun getLocation(): Location? {
+        val latitude = pref.getFloat(LATITUDE, 0.0F)
+        val longitude = pref.getFloat(LONGITUDE, 0.0F)
+
+        val location = Location("")
+        location.latitude = latitude.toDouble()
+        location.longitude = longitude.toDouble()
+        return location
+    }
+
 
     fun getUserToken(): String? = pref.getString(JWT_TOKEN, null)
 
@@ -66,12 +82,6 @@ class UserSessionManager(appContext: Context) {
         return gson.fromJson(rolesJson, type)
     }
 
-    fun getSelectedRole(): String? = pref.getString(SELECTED_ROLE, null)
-
-    fun setSelectedRole(role: String) {
-        editor.putString(SELECTED_ROLE, role)
-        editor.apply()
-    }
     fun isLoggedIn(): Boolean = pref.getBoolean(KEY_IS_LOGGED_IN, false)
 
     fun logout() {
