@@ -10,7 +10,7 @@ import {AmountSelector, MultiCheckbox} from "../components/MultiCheckbox";
 import {DatePicker} from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import {useQuery} from "@tanstack/react-query";
-import {getCategoryTree} from "../AppService";
+import {getAllResources, getCategoryTree} from "../AppService";
 import Annotatable from "../components/Annotatable";
 import {DataGrid, GridToolbar} from "@mui/x-data-grid";
 import {Location} from "./Location";
@@ -103,7 +103,7 @@ export default function CreateActionPage() {
     const [mapCenter, setMapCenter] = useState([39, 34.5])
     const [mapBounds, setMapBounds] = useState({ne: [0, 0], sw: [0, 0]})
 
-    const categoryTree = useQuery({queryKey: ['categoryTree'], queryFn: getCategoryTree})
+    const resources = useQuery({queryKey: ['getAllResources'], queryFn: getAllResources})
 
     useEffect(() => {
         if (selectedPoint) {
@@ -123,25 +123,9 @@ export default function CreateActionPage() {
                     height: "100px",
                     flexGrow: 100
                 }}>
-                    <Box sx={{
-                        flexBasis: "33%",
-                        flexShrink: 0,
-                        height: "100%",
-                        overflow: "scroll"
-                    }}>
-                        <Box sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            rowGap: "16px",
-                            height: "fit-content"
-                        }}>
-                            {shownMarkers.map((marker) => {
-                                const SelectedCard = cards[marker.type]
-                                return <div onClick={() => setSelectedPoint(marker)}>< SelectedCard item={marker}/>
-                                </div>
-                            })}
-                        </Box>
-                    </Box>
+                    <ResourcesDataGrid resources={resources}/>
+
+
                     <Box sx={{width: "36px"}}/>
                     <Box sx={{flexGrow: 100}}>
                         <DisasterMap markers={shownMarkers}
