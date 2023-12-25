@@ -153,20 +153,19 @@ public class RequestService {
         Request request = requestRepository.findById(requestId).orElseThrow(() -> new EntityNotFoundException("Request not found"));
         Set<Need> needSet = new HashSet<>(needRepository.findAllById(needId));
         needSet.forEach(need -> {
-//            if (need.getRequest()!= null) {
-//                return ResponseEntity.ok("need already in request");
-//
-//            }
+            if (need.getRequest() != null) {
+                throw new IllegalArgumentException("Need already has a request");
+            }
             need.setRequest(request);
-            //request.getNeeds().add(need);
+            request.getNeeds().add(need);
             need.setStatus(ENeedStatus.INVOLVED_REQUEST);
             // notify victim that need was added to request
             String bodyMessage = String.format(NotificationMessages.NEED_ADDED_TO_REQUEST, need.getId(), request.getId());
             notificationService.sendNotification("Need Added to Request", bodyMessage, need.getRequester().getId(), request.getId() , ENotificationEntityType.REQUEST);
             needRepository.save(need);
         });
-        //needRepository.saveAll(needSet);
-        //requestRepository.save(request);
+        needRepository.saveAll(needSet);
+        requestRepository.save(request);
         return ResponseEntity.ok("Needs added to request successfully");
     }
 
