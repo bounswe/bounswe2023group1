@@ -23,6 +23,9 @@ import { grey } from '@mui/material/colors';
 import SendIcon from '@mui/icons-material/Send';
 import { useNavigate } from 'react-router-dom';
 import { getUserInfo } from '../AppService';
+import { updateProfile } from '../AppService';
+import Snackbar from '@mui/material/Snackbar';
+
 
 function Copyright(props) {
   return (
@@ -39,13 +42,6 @@ function Copyright(props) {
   );
 }
 
-SimpleDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-  selectedValue: PropTypes.string.isRequired,
-  requestMade: PropTypes.bool,
-};
-
 const customTheme = createTheme({
   palette: {
     primary: {
@@ -53,6 +49,14 @@ const customTheme = createTheme({
     },
   },
 });
+
+SimpleDialog.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  selectedValue: PropTypes.string.isRequired,
+  requestMade: PropTypes.bool,
+};
+
 
 const roles = ['Responder', 'Facilitator', 'Coordinator', 'Admin'];
 
@@ -112,11 +116,42 @@ function SimpleDialog(props) {
 
 
 function Account() {
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [userInfo, setUserInfo] = useState({});
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      getUserInfo(userId)
+        .then(data => setUserInfo(data))
+        .catch(error => console.error('Error fetching user info:', error));
+    }
+  }, []);
+
+
+  const [userProfileData, setUserProfileData] = useState({
+    name: '',
+    illness: '',
+    surname: '',
+    email: '',
+    birth_date: '',
+    gender: '',
+    phoneNumber: '',
+    bloodType: '',
+    weight: 0,
+    height: 0,
+    state: '',
+    country: '',
+    city: '',
+    emailConfirmed: true,
+    privacyPolicyAccepted: true
+  });
+
+
   const [open, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState('');
   const [requestMade, setRequestMade] = useState(false);
-  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -128,14 +163,42 @@ function Account() {
     setRequestMade(true);
   };
 
-  useEffect(() => {
+  const cleanUserProfileData = (data) => {
+    const cleanedData = {};
+    Object.keys(data).forEach(key => {
+      if (data[key] !== null && data[key] !== undefined) {
+        cleanedData[key] = data[key];
+      }
+    });
+    console.log("Cleaned UserProfileData:", cleanedData);
+
+    return cleanedData;
+  };
+
+
+  const handleSaveDetails = async () => {
     const userId = localStorage.getItem('userId');
     if (userId) {
-      getUserInfo(userId)
-        .then(data => setUserInfo(data))
-        .catch(error => console.error('Error fetching user info:', error));
+      const formattedProfileData = cleanUserProfileData(userProfileData);
+      try {
+        await updateProfile(userId, formattedProfileData);
+        setSnackbarOpen(true);
+      } catch (error) {
+        console.error("Error updating profile:", error);
+      }
+    } else {
+      console.error("User ID not found");
     }
-  }, []);
+  };
+
+
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   return (
     <ThemeProvider theme={customTheme}>
@@ -166,23 +229,33 @@ function Account() {
               justifyContent: 'center',
             }}
           >
-            <AccountProfile userInfo={userInfo} sx={{ margin: '0 10px' }} />
-            <AccountProfileDetails userInfo={userInfo} sx={{ margin: '0 10px' }} />
+            <AccountProfile
+              userInfo={userInfo}
+              userProfileData={userProfileData}
+              setUserProfileData={setUserProfileData}
+              sx={{ margin: '0 10px' }}
+            />
+            <AccountProfileDetails
+              userInfo={userInfo}
+              userProfileData={userProfileData}
+              setUserProfileData={setUserProfileData}
+              sx={{ margin: '0 10px' }}
+            />
           </Box>
           <CardActions sx={{ justifyContent: 'space-between' }}>
             <Button
               variant="contained"
-              onClick={() => {
-                navigate('/map');
-              }}
+              onClick={handleSaveDetails}
               sx={{ flex: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: '10px', width: '200px' }}
-            >Save Details
+            >
+              Save Details
             </Button>
             <Button
               variant="contained"
               onClick={handleClickOpen}
               sx={{ flex: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '10px', whiteSpace: 'nowrap', width: '200px' }}
-            >Request for a Role
+            >
+              Request for a Role
             </Button>
           </CardActions>
           <div>
@@ -194,8 +267,14 @@ function Account() {
             />
           </div>
         </Box>
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+          message="Profile Updated"
+        />
       </div>
-      <Copyright sx={{ mt: 5 }} />
+      <Copyright />
     </ThemeProvider>
   );
 }

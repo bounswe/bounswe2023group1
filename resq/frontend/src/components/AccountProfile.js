@@ -54,14 +54,6 @@ const gender = [
         value: 'Man',
         label: 'Man',
     },
-    {
-        value: 'Genderqueer/Non-Binary',
-        label: 'Genderqueer/Non-Binary',
-    },
-    {
-        value: 'Other',
-        label: 'Other',
-    },
 ];
 
 const years = Array.from({ length: 100 }, (_, i) => String(new Date().getFullYear() - i));
@@ -76,7 +68,17 @@ const styles = {
     },
 };
 
-function AccountProfile({ userInfo }) {
+const AccountProfile = ({ userInfo, userProfileData, setUserProfileData }) => {
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setValues(prevValues => ({
+            ...prevValues,
+            [name]: value,
+        }));
+    };
+
+
     const [values, setValues] = useState({
         weight: '62',
         height: '162',
@@ -86,12 +88,6 @@ function AccountProfile({ userInfo }) {
         illness: ' ',
     });
 
-    const handleChange = useCallback((event) => {
-        setValues((prevState) => ({
-            ...prevState,
-            [event.target.name]: event.target.value,
-        }));
-    }, [setValues]);
 
     return (
         <Card style={styles.card}>

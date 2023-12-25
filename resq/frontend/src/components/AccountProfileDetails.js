@@ -31,7 +31,7 @@ const customTheme = createTheme({
     },
 });
 
-function AccountProfileDetails({ userInfo }) {
+const AccountProfileDetails = ({ userInfo, userProfileData, setUserProfileData }) => {
     const [values, setValues] = useState({
         firstName: '',
         lastName: '',
@@ -47,19 +47,26 @@ function AccountProfileDetails({ userInfo }) {
                 firstName: userInfo.name || '',
                 lastName: userInfo.surname || '',
                 email: userInfo.email || '',
-                phone: '',
-                state: '',
-                country: '',
+                phone: userInfo.phone || '',
+                state: userInfo.state || '',
+                country: userInfo.country || '',
             });
         }
     }, [userInfo]);
 
-    const handleChange = useCallback((event) => {
-        setValues((prevState) => ({
-            ...prevState,
-            [event.target.name]: event.target.value,
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setValues(prevValues => ({
+            ...prevValues,
+            [name]: value
         }));
-    }, []);
+        setUserProfileData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+
 
     const handleSubmit = useCallback((event) => {
         event.preventDefault();

@@ -10,6 +10,7 @@ const NEED_API_BASE_URL = API_BASE_URL + '/resq/api/v1/need';
 const REQUEST_API_BASE_URL = API_BASE_URL + '/resq/api/v1/request';
 const RESOURCE_API_BASE_URL = API_BASE_URL + '/resq/api/v1/resource';
 const TASK_API_BASE_URL = API_BASE_URL + '/resq/api/v1/task';
+const USER_INFO_API_BASE_URL = API_BASE_URL + '/resq/api/v1/profile';
 
 
 export function postRequestRole(userId, role) {
@@ -147,6 +148,7 @@ export function viewAllTasks(userId) {
     return axios.get(`${TASK_API_BASE_URL}/viewTasks?userId=${userId}`);
 }
 
-export function updateProfile(updateProfileRequest) {
-    return axios.post(`${USER_API_BASE_URL}/updateProfile`, updateProfileRequest);
+export function updateProfile(userId, profileData) {
+    return axios.post(`${USER_INFO_API_BASE_URL}/updateProfile?userId=${userId}`, profileData
+    );
 }
