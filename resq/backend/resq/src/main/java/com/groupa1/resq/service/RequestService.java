@@ -144,7 +144,7 @@ public class RequestService {
             }
             need.setRequest(request);
             request.getNeeds().add(need);
-            need.setStatus(ENeedStatus.INVOLVED_REQUEST);
+            need.setStatus(ENeedStatus.INVOLVED);
             // notify victim that need was added to request
             String bodyMessage = String.format(NotificationMessages.NEED_ADDED_TO_REQUEST, need.getId(), request.getId());
             notificationService.sendNotification("Need Added to Request", bodyMessage, need.getRequester().getId(), request.getId() , ENotificationEntityType.REQUEST);
