@@ -97,7 +97,7 @@ const ResourcesDataGrid = ({resources, ...props}) => {
     return <MyDataGrid columns={columns} rows={rows}/>
 }
 
-export default function MapPage() {
+export default function CreateActionPage() {
     const [shownMarkers, setShownMarkers] = useState([])
     const [selectedPoint, setSelectedPoint] = useState(null)
     const [mapCenter, setMapCenter] = useState([39, 34.5])
