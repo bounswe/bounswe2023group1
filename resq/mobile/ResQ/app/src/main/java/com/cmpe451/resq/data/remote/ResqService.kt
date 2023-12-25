@@ -21,7 +21,6 @@ import com.cmpe451.resq.data.models.UserInfo
 import com.cmpe451.resq.data.models.UserInfoRequest
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -33,8 +32,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import java.io.File
-import java.time.LocalDate
-import java.time.format.DateTimeParseException
 
 
 interface CategoryTreeNodeService {
@@ -67,7 +64,7 @@ interface ResourceService {
         @Query("categoryTreeId") categoryTreeId: String?,
         @Query("longitude") longitude: Double?,
         @Query("latitude") latitude: Double?,
-        @Query("userId") userId: Long?,
+        @Query("userId") userId: Int?,
         @Query("status") status: String?,
         @Query("receiverId") receiverId: Long?
     ): Call<List<Resource>>
@@ -321,6 +318,34 @@ class ResqService(appContext: Context) {
             null,
             null,
             null,
+            null,
+            null).enqueue(object :
+            Callback<List<Resource>> {
+            override fun onResponse(call: Call<List<Resource>>, response: Response<List<Resource>>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { onSuccess(it) }
+                } else {
+                    onError(RuntimeException("Response not successful"))
+                }
+            }
+            override fun onFailure(call: Call<List<Resource>>, t: Throwable) {
+                onError(t)
+            }
+        })
+    }
+
+    fun filterResourceByCategory(
+        onSuccess: (List<Resource>) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val token = userSessionManager.getUserToken() ?: ""
+        val userID = userSessionManager.getUserId() ?: 0
+        resourceService.filterResourceByCategory(
+            "Bearer $token",
+            null,
+            null,
+            null,
+            userID,
             null,
             null).enqueue(object :
             Callback<List<Resource>> {

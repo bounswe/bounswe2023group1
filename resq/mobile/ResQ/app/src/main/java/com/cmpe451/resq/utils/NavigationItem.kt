@@ -11,6 +11,7 @@ enum class NavigationItem(val route: String) {
     Resource(route = "resource"),
     MyTasks(route = "myTasks"),
     MyRequestsScreen(route = "myRequests"),
+    MyResourcesScreen(route = "myResources"),
     OngoingTasks(route = "ongoingTasks");
 
     companion object {
