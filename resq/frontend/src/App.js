@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route, useNavigate} from "react-router-dom";
 import {Navbar, Container, Nav} from 'react-bootstrap';
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
@@ -14,7 +14,6 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import axios from "axios";
 import VictimMapPage from "./pages/VictimMapPage";
-import ResponderMapPage from "./pages/ResponderMapPage";
 import {Badge} from "@mui/material";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import Notifications from "./pages/Notifications";
@@ -32,11 +31,25 @@ const SmallRedCircle = () =>
 
 const queryClient = new QueryClient()
 
+function SignOut({setToken}) {
+    const navigate = useNavigate();
+    const signOut = () => {
+        setToken(null);
+        navigate('/');
+    }
+
+    return <Nav.Link key={"signout"} href={"#"} onClick={signOut}
+                     style={{"marginLeft": "auto"}}>
+        <LogoutIcon/>
+    </Nav.Link>
+}
+
 function App() {
     const [token, _setToken] = useState(localStorage.getItem("token"))
     const [uid, _setUid] = useState(parseInt(localStorage.getItem("uid")) || -1)
     const [role, setRole] = useState("")
     const [height, setHeight] = useState(window.innerHeight);
+
     const updateDimensions = () => {
         setHeight(window.innerHeight);
     }
@@ -70,13 +83,6 @@ function App() {
     }
 
     const navLinks = [
-        {path: '/victimmap', label: <strong>Victim Map</strong>, component: VictimMapPage, icon: <SmallRedCircle/>},
-        {
-            path: '/respondermap',
-            label: <strong>Responder Map</strong>,
-            component: ResponderMapPage,
-            icon: <SmallRedCircle/>
-        },
         {path: '/mytasks', label: <strong>My Tasks</strong>, component: TaskSelectPage, icon: <SmallRedCircle/>},
         (role === "responder") && {
             path: '/responder',
@@ -85,10 +91,6 @@ function App() {
             icon: <SmallRedCircle/>
         },
     ].filter(l => !!l);
-
-    const signOut = () => {
-        setToken(null)
-    }
 
     const ref = useRef(null)
 
@@ -150,10 +152,7 @@ function App() {
                                                             <NotificationsIcon/>
                                                         </Badge>
                                                     </Nav.Link>
-                                                    <Nav.Link key={"signout"} href={"#"} onClick={signOut}
-                                                              style={{"marginLeft": "auto"}}>
-                                                        <LogoutIcon/>
-                                                    </Nav.Link>
+                                                    <SignOut setToken={setToken}/>
                                                 </> :
                                                 <>
                                                     <Nav.Link key={'/signin'} href={'/signin'}
@@ -183,7 +182,7 @@ function App() {
                                                    uid
                                                })}/>
                                     ))}
-                                    <Route path="/" element={<Navigate to="/map"/>}/>
+                                    <Route path="/" element={React.createElement(VictimMapPage, {token, setToken})}/>
                                     <Route path="/rolerequest" state={{token, setToken}}
                                            element={React.createElement(RoleRequest, {token, setToken})}/>
                                     {

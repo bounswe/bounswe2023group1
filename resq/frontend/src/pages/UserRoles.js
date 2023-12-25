@@ -50,7 +50,7 @@ export default function UserRoles({setRole}) {
     const navigate = useNavigate();
     const handleSubmit = (event) => {
         setRole(selectedRole)
-        navigate('/map');
+        navigate('/');
         event.preventDefault();
         // const data = new FormData(event.currentTarget);
     };
