@@ -67,15 +67,20 @@ export default function Resource() {
                 throw new Error('Unknown step');
         }
     }
-
     const handleNext = async () => {
         if (activeStep === steps.length - 1) {
-            await createResource(resourceData);
-            alert('Resource created successfully!');
+            try {
+                await createResource(resourceData);
+                alert('Resource created successfully!');
+            } catch (error) {
+                console.error('Error while creating resource:', error);
+                alert('Failed to create resource.');
+            }
         } else {
             setActiveStep(activeStep + 1);
         }
     };
+
 
 
     const handleBack = () => {

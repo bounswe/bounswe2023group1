@@ -151,16 +151,19 @@ export function viewAllRequests() {
     return axios.get(`${REQUEST_API_BASE_URL}/viewAllRequests`);
 }
 
-
 export const createResource = async (resourceData) => {
     const formData = new FormData();
 
-    const createResourceRequest = {};
-    Object.keys(resourceData).forEach(key => {
-        if (key !== 'photo') {
-            createResourceRequest[key] = resourceData[key];
-        }
-    });
+    const createResourceRequest = {
+        senderId: resourceData.senderId,
+        categoryTreeId: resourceData.categoryTreeId,
+        quantity: parseInt(resourceData.quantity, 10),
+        latitude: parseFloat(resourceData.latitude),
+        longitude: parseFloat(resourceData.longitude),
+        gender: resourceData.gender,
+        size: resourceData.size,
+        status: resourceData.status
+    };
 
     formData.append('createResourceRequest', JSON.stringify(createResourceRequest));
 
@@ -169,7 +172,7 @@ export const createResource = async (resourceData) => {
     }
 
     try {
-        const response = await axios.post('/resource/createResource', formData, {
+        const response = await axios.post(`${RESOURCE_API_BASE_URL}/createResource`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -180,6 +183,7 @@ export const createResource = async (resourceData) => {
         throw error;
     }
 };
+
 
 
 
