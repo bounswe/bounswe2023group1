@@ -151,9 +151,35 @@ export function viewAllRequests() {
     return axios.get(`${REQUEST_API_BASE_URL}/viewAllRequests`);
 }
 
-export function createResource(createResourceRequest) {
-    return axios.post(`${RESOURCE_API_BASE_URL}/createResource`, createResourceRequest);
-}
+export const createResource = async (resourceData) => {
+    const formData = new FormData();
+
+    const createResourceRequest = {};
+    Object.keys(resourceData).forEach(key => {
+        if (key === 'photo') {
+            if (resourceData[key]) {
+                formData.append('file', resourceData[key]);
+            }
+        } else {
+            createResourceRequest[key] = resourceData[key];
+        }
+    });
+
+    formData.append('createResourceRequest', JSON.stringify(createResourceRequest));
+
+    try {
+        const response = await axios.post('/resource/createResource', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error creating resource:', error);
+        throw error;
+    }
+};
+
 
 export function getAllResources() {
     return axios.get(`${RESOURCE_API_BASE_URL}/filterByDistance?latitude=39.5&longitude=34.5&distance=10000`);
@@ -179,7 +205,7 @@ export function completeAction(actionId) {
     return axios.post(`${ACTION_API_BASE_URL}/completeAction?actionId=${actionId}`);
 }
 export async function viewAllTasks(userId) {
-    const {data} = await axios.get(`${TASK_API_BASE_URL}/viewTasks?userId=${userId}`);
+    const { data } = await axios.get(`${TASK_API_BASE_URL}/viewTasks?userId=${userId}`);
     return data
 }
 

@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import {Typography, Grid, TextField} from '@mui/material';
-import {ResourceContext} from './ResourceContext';
-import {useContext} from 'react';
+import React, { useState, useEffect } from 'react';
+import { Typography, Grid, TextField } from '@mui/material';
+import { ResourceContext } from './ResourceContext';
+import { useContext } from 'react';
 
-export default function ResourceDetail2({resourceData, setResourceData}) {
+export default function ResourceDetail2({ resourceData, setResourceData }) {
 
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
@@ -19,7 +19,7 @@ export default function ResourceDetail2({resourceData, setResourceData}) {
     const [materialDescription, setMaterialDescription] = useState('');
 
     useEffect(() => {
-        setResourceData({...resourceData, quantity: materialQuantity});
+        setResourceData({ ...resourceData, quantity: materialQuantity });
     }, [materialQuantity, resourceData, setResourceData]);
 
     return (<React.Fragment>
