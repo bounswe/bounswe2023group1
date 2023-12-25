@@ -95,7 +95,7 @@ function App() {
 
     const navLinks = [
         { path: '/', label: <strong>Victim Map</strong>, component: VictimMapPage, icon: <SmallRedCircle />, roles: ['VICTIM', 'ADMIN', 'RESPONDER', 'FACILITATOR'] },
-        { path: '/tasks', label: <strong>View Takss</strong>, component: TaskSelectPage, icon: <SmallRedCircle />, roles: ['RESPONDER', 'ADMIN'] },
+        { path: '/tasks', label: <strong>View Tasks</strong>, component: TaskSelectPage, icon: <SmallRedCircle />, roles: ['RESPONDER', 'ADMIN'] },
         { path: '/facilitatormap', label: <strong>Facilitator Map</strong>, component: FacilitatorMapPage, icon: <SmallRedCircle />, roles: ['FACILITATOR', 'ADMIN'] },
     ];
 
