@@ -105,8 +105,8 @@ public class TaskService {
         task.setResources(new HashSet<>(resourceEntities));
         task.setCreatedAt(LocalDateTime.now());
         task.setModifiedAt(LocalDateTime.now());
-       actionRepository.saveAll(actionEntities);
-       Task savedTask = taskRepository.save(task);
+        actionRepository.saveAll(actionEntities);
+        Task savedTask = taskRepository.save(task);
 
         String bodyMessage = String.format(NotificationMessages.TASK_ASSIGNED, assigner.getId(), task.getId());
         notificationService.sendNotification("New Task Assigned", bodyMessage, assignee.getId(), task.getId(), ENotificationEntityType.TASK);
@@ -242,8 +242,7 @@ public class TaskService {
             return ResponseEntity.badRequest().body("Task is not in progress");
         }
         Set<Action> actions = task.getActions();
-        actions.stream().filter(action -> !action.isCompleted());
-        if (actions.size() > 0){
+        if (actions.stream().anyMatch(action -> !action.isCompleted())){
             log.error("Task is not completed, there are actions not completed");
             return ResponseEntity.badRequest().body("Actions are not done");
         }

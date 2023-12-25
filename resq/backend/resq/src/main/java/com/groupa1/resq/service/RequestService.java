@@ -21,6 +21,7 @@ import com.groupa1.resq.request.UpdateReqRequest;
 import com.groupa1.resq.specification.RequestSpecifications;
 import com.groupa1.resq.util.NotificationMessages;
 import jakarta.transaction.Transactional;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -34,6 +35,7 @@ import java.util.Set;
 
 @Service
 @Slf4j
+@Setter
 public class RequestService {
 
     @Autowired
@@ -50,22 +52,6 @@ public class RequestService {
 
     @Autowired
     RequestConverter requestConverter;
-
-    public void setNeedRepository(NeedRepository needRepository) {
-        this.needRepository = needRepository;
-    }
-
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    public void setRequestRepository(RequestRepository requestRepository) {
-        this.requestRepository = requestRepository;
-    }
-
-    public void setNotificationService(NotificationService notificationService) {
-        this.notificationService = notificationService;
-    }
 
     public Long save(Long userId, CreateReqRequest createReqRequest) {
         User requester = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));

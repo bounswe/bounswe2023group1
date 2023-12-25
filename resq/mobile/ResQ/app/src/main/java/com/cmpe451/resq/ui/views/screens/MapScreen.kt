@@ -39,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -70,11 +71,17 @@ fun MapScreen(navController: NavController, appContext: Context, mapViewModel: M
     var expandedResourceId by remember { mutableStateOf<Int?>(null) }
 
 
-    mapViewModel.getNeedsByDistance(appContext)
-    mapViewModel.getResourcesByDistance(appContext)
+    mapViewModel.getAllNeeds(appContext)
+    mapViewModel.getAllResources(appContext)
     // Dummy data for the lists
     val needsList = mapViewModel.needMarkerList.value
     val resourcesList = mapViewModel.resourceMarkerList.value
+
+    LaunchedEffect(key1 = true) {
+        mapViewModel.fetchMainCategories(appContext)
+    }
+
+    val categories = mapViewModel.categories.value
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -166,33 +173,28 @@ fun MapScreen(navController: NavController, appContext: Context, mapViewModel: M
                         elevation = 4.dp
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
-                            Text(text = "Category ID: ${need.categoryTreeId}")
+                            Text(
+                                text = "${mapViewModel.findNodeById(categories, need.categoryTreeId.toInt())?.data}",
+                                fontWeight = FontWeight.Bold
+                            )
                             Text(text = "Quantity: ${need.quantity}")
                             AnimatedVisibility(visible = need.id == expandedNeedId) {
                                 Column {
-                                    Text(text = "User ID: ${need.userId}")
+                                    UsernameDisplay(mapViewModel, appContext, need.userId)
                                     Text(text = "Description: ${need.description}")
-                                    Row {
-                                        Button(
-                                            onClick = { /* TODO: Handle Button 1 action */ },
-                                            colors = ButtonDefaults.buttonColors(backgroundColor = RequestColor, contentColor = Color.White)
-                                        ) {
-                                            Text("Button 1")
-                                        }
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                        Button(
-                                            onClick = { /* TODO: Handle Button 2 action */ },
-                                            colors = ButtonDefaults.buttonColors(backgroundColor = RequestColor, contentColor = Color.White)
-                                        ) {
-                                            Text("Button 2")
-                                        }
-                                    }                                }
+                                    if (need.size != null) {
+                                        Text(text = "Size: ${need.size}")
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-        } else { // Resources list
+        }
+
+        // Resources list
+        else {
             LazyColumn(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
@@ -212,27 +214,18 @@ fun MapScreen(navController: NavController, appContext: Context, mapViewModel: M
                         elevation = 4.dp
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
-                            Text(text = "Category ID: ${resource.categoryTreeId}")
+                            Text(
+                                text = "${mapViewModel.findNodeById(categories, resource.categoryTreeId.toInt())?.data}",
+                                fontWeight = FontWeight.Bold
+                            )
                             Text(text = "Quantity: ${resource.quantity}")
                             AnimatedVisibility(visible = resource.id == expandedResourceId) {
                                 Column {
-                                    Text(text = "User ID: ${resource.senderId}")
-                                    Text(text = "Size: ${resource.size}")
-                                    Row {
-                                        Button(
-                                            onClick = { /* TODO: Handle Button 1 action */ },
-                                            colors = ButtonDefaults.buttonColors(backgroundColor = ResourceColor, contentColor = Color.White)
-                                        ) {
-                                            Text("Button 1")
-                                        }
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                        Button(
-                                            onClick = { /* TODO: Handle Button 2 action */ },
-                                            colors = ButtonDefaults.buttonColors(backgroundColor = ResourceColor, contentColor = Color.White)
-                                        ) {
-                                            Text("Button 2")
-                                        }
-                                    }                               }
+                                    UsernameDisplay(mapViewModel, appContext, resource.senderId)
+                                    if (resource.size != null) {
+                                        Text(text = "Size: ${resource.size}")
+                                    }
+                                }
                             }
                         }
                     }
@@ -362,49 +355,13 @@ fun AddSignUpButton(onClick: () -> Unit) {
 }
 
 @Composable
-fun ExpandableItemList() {
-    // Mock data similar to the JSON response you showed
-    val items = listOf(
-        Need(1, 13, "52", "Please help!", 1, 41.08, 29.05, null, "NOT_INVOLVED", "2023-11-26T02:23:04.731365"),
-        Need(2, 13, "54", "Help me for god's sake", 1, 30.0, 40.0, null, "NOT_INVOLVED", "2023-11-26T10:57:10.71784")
-    )
-
-    // State to track expanded items
-    val expandedItemId = remember { mutableStateOf(-1) }
-
-    LazyColumn {
-        items(items) { item ->
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-                    .clickable {
-                        expandedItemId.value = if (expandedItemId.value == item.id) -1 else item.id
-                    },
-                elevation = 4.dp
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(text = "Category ID: ${item.categoryTreeId}")
-                    Text(text = "Quantity: ${item.quantity}")
-
-                    AnimatedVisibility(visible = expandedItemId.value == item.id) {
-                        Column {
-                            Text(text = "User ID: ${item.userId}")
-                            Text(text = "Description: ${item.description}")
-                            Row {
-                                Button(onClick = { /* Handle button click */ }) {
-                                    Text("Button 1")
-                                }
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Button(onClick = { /* Handle button click */ }) {
-                                    Text("Button 2")
-                                }
-                                // Add more buttons if needed
-                            }
-                        }
-                    }
-                }
-            }
+fun UsernameDisplay(mapViewModel: MapViewModel, appContext: Context, userId: Int) {
+    val userInfo = remember { mutableStateOf("Loading...") }
+    LaunchedEffect(userId) {
+        mapViewModel.getUserInfoById(appContext, userId) { result ->
+            userInfo.value = result
         }
     }
+    Text(text = "User: ${userInfo.value}")
 }
+
