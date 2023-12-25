@@ -144,7 +144,7 @@ fun NavGraph(
             TasksScreen(navController)
         }
         composable(NavigationItem.OngoingTasks.route) {
-            OngoingTasksScreen(navController)
+            OngoingTasksScreen(navController, appContext)
         }
         composable(NavigationItem.Profile.route) {
             ProfileScreen(navController, appContext)

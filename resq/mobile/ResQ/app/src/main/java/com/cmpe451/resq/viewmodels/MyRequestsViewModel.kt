@@ -12,7 +12,7 @@ import android.content.Context
 class MyRequestsViewModel : ViewModel() {
     val needs = mutableStateOf<List<Need>>(emptyList())
     private val _categoryTree = mutableStateOf<List<CategoryTreeNode>>(emptyList())
-    suspend fun getNeeds(appContext: Context) {
+    fun getNeeds(appContext: Context) {
         val api = ResqService(appContext)
         api.viewNeedsByUserId(
             onSuccess = { needList ->
@@ -28,7 +28,7 @@ class MyRequestsViewModel : ViewModel() {
     private fun fetchCategoryTree(context: Context) {
         val api = ResqService(context)
         viewModelScope.launch {
-            val response = api.getMainCategories() // Assuming this method exists and fetches the entire category tree
+            val response = api.getMainCategories()
             if (response.isSuccessful) {
                 _categoryTree.value = response.body() ?: emptyList()
             } else {

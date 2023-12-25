@@ -59,7 +59,7 @@ public class TaskController {
 
 
 
-    @PreAuthorize("hasRole('RESPONDER') or hasRole('COORDINATOR')")
+    @PreAuthorize("hasRole('RESPONDER') or hasRole('COORDINATOR') or hasRole('FACILITATOR')")
     @GetMapping("/viewTasks")
     public ResponseEntity<List<TaskDto>> viewTasks(@RequestParam Long userId) {
         return taskService.viewTasks(userId);
@@ -71,7 +71,7 @@ public class TaskController {
         return taskService.deleteTask(taskId);
     }
 
-    @PreAuthorize("hasRole('COORDINATOR')")
+    @PreAuthorize("hasRole('COORDINATOR') or hasRole('FACILITATOR')")
     @PostMapping("/updateTask")
     public ResponseEntity<String> updateTask(@RequestBody
                                                  UpdateTaskRequest updateTaskRequest, @RequestParam Long taskId){
@@ -118,7 +118,7 @@ public class TaskController {
         return taskService.removeResources(addResourceToTaskRequest);
     }
 
-    @PreAuthorize("hasRole('COORDINATOR')")
+    @PreAuthorize("hasRole('COORDINATOR') or hasRole('FACILITATOR') ")
     @PostMapping("/viewTaskByFilter")
     public ResponseEntity<List<TaskDto>> viewTaskByFilter(@RequestParam(required = false) Long assignerId, @RequestParam(required = false) Long assigneeId,
                                                                @RequestParam(required = false) EUrgency urgency, @RequestParam(required = false) EStatus status) {

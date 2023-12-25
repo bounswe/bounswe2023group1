@@ -16,6 +16,7 @@ import com.cmpe451.resq.data.models.NotificationItem
 import com.cmpe451.resq.data.models.ProfileData
 import com.cmpe451.resq.data.models.RegisterRequestBody
 import com.cmpe451.resq.data.models.Resource
+import com.cmpe451.resq.data.models.Task
 import com.cmpe451.resq.data.models.UserInfo
 import com.cmpe451.resq.data.models.UserInfoRequest
 import com.google.gson.Gson
@@ -34,6 +35,8 @@ import retrofit2.http.*
 import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
+
+
 interface CategoryTreeNodeService {
     @GET("categorytreenode/getMainCategories")
     suspend fun getMainCategories(
@@ -143,6 +146,23 @@ interface NotificationService {
     ):  Response<List<NotificationItem>>
 }
 
+interface TaskService {
+    @GET("task/viewTasks")
+     fun viewTasks(
+        @Query("userId") userId: Int,
+        @Header("Authorization") jwtToken: String
+    ):  Call<List<Task>>
+
+    @POST("task/viewTaskByFilter")
+    fun viewTasksByFilter(
+        @Query("assignerId") assignerId: Int?,
+        @Query("assigneeId") assigneeId: Int?,
+        @Query("urgency") urgency: String?,
+        @Query("status") status: String?,
+        @Header("Authorization") jwtToken: String
+    ):  Call<List<Task>>
+}
+
 class ResqService(appContext: Context) {
 
     var gson = GsonBuilder()
@@ -160,7 +180,7 @@ class ResqService(appContext: Context) {
     private val authService: AuthService = retrofit.create(AuthService::class.java)
     private val profileService: ProfileService = retrofit.create(ProfileService::class.java)
     private val notificationService: NotificationService = retrofit.create(NotificationService::class.java)
-
+    private val taskService: TaskService = retrofit.create(TaskService::class.java)
     private val userSessionManager: UserSessionManager = UserSessionManager.getInstance(appContext)
 
     // Category Tree Node methods
@@ -335,26 +355,6 @@ class ResqService(appContext: Context) {
     suspend fun login(request: LoginRequestBody): Response<LoginResponse> = authService.login(request)
     suspend fun register(request: RegisterRequestBody): Response<ResponseBody> = authService.register(request)
 
-    // Profile methods
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun parseBirthDate(birthDate: String?): Triple<String, String, String>? {
-        if (birthDate.isNullOrBlank()) {
-            return null
-        }
-
-        return try {
-            val date = LocalDate.parse(birthDate)
-            val year = date.year.toString()
-            val month = date.monthValue.toString()
-            val day = date.dayOfMonth.toString()
-
-            return Triple(year, month, day)
-        } catch (e: DateTimeParseException) {
-            //TO DO Handle parsing error if needed
-           null
-        }
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getProfileInfo(): ProfileData {
         val token = userSessionManager.getUserToken() ?: ""
@@ -384,8 +384,6 @@ class ResqService(appContext: Context) {
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun updateUserData(profileData: ProfileData): Response<String> {
         val token = userSessionManager.getUserToken() ?: ""
-        Log.d("AAA", "updateUserData: $profileData")
-        Log.d("AAA", "token: $token")
         val userId = userSessionManager.getUserId()
         val request = UserInfoRequest(
             name = profileData.name ?: "",
@@ -444,6 +442,57 @@ class ResqService(appContext: Context) {
             }
             override fun onFailure(call: Call<UserInfo>, t: Throwable) {
                 callback(null)
+            }
+        })
+    }
+    fun viewMyTasks(
+        onSuccess: (List<Task>) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val token = userSessionManager.getUserToken() ?: ""
+        val userId = userSessionManager.getUserId()
+
+        taskService.viewTasks(userId = userId, jwtToken = "Bearer $token").enqueue(object :
+            Callback<List<Task>> {
+            override fun onResponse(call: Call<List<Task>>, response: Response<List<Task>>) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        onSuccess(it)
+                    }
+                } else {
+                    val error = RuntimeException("Response not successful: ${response.errorBody()?.string()}")
+                    onError(error)
+                }
+            }
+
+            override fun onFailure(call: Call<List<Task>>, t: Throwable) {
+                onError(t)
+            }
+        })
+    }
+
+
+    fun getTasks(
+        onSuccess: (List<Task>) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val token = userSessionManager.getUserToken() ?: ""
+
+        taskService.viewTasksByFilter(assigneeId = null, assignerId = null, urgency = "", status = "", jwtToken = "Bearer $token").enqueue(object :
+            Callback<List<Task>> {
+            override fun onResponse(call: Call<List<Task>>, response: Response<List<Task>>) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        onSuccess(it)
+                    }
+                } else {
+                    val error = RuntimeException("Response not successful: ${response.errorBody()?.string()}")
+                    onError(error)
+                }
+            }
+
+            override fun onFailure(call: Call<List<Task>>, t: Throwable) {
+                onError(t)
             }
         })
     }
