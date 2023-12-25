@@ -708,7 +708,7 @@ fun FacilitatorProfileButtons(navController: NavController) {
         ProfileButton(
             color = MyTasksColor,
             text = "My Tasks",
-            route = "task",
+            route = "myTasks",
             navController = navController
         )
     }
@@ -750,7 +750,7 @@ fun ResponderProfileButtons(navController: NavController) {
         ProfileButton(
             color = MyTasksColor,
             text = "My Tasks",
-            route = "task",
+            route = "myTasks",
             navController = navController
         )
     }
