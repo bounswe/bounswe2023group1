@@ -1,6 +1,9 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { useEffect, useState } from 'react';
+import { viewAllNeeds } from '../AppService';
+
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 2, flex: 0.5 },
@@ -34,29 +37,38 @@ const columns = [
   },
 ];
 
-const rows = [
-  { id: 1, Name: 'Baby Food', Type: ['Baby', 'Food'], Quantity: '30 pck', Location: 'Bebek' },
-  { id: 2, Name: 'Baby Food', Type: ['Baby', 'Food'], Quantity: '160 jar', Location: 'Sariyer' },
-  { id: 3, Name: 'Bottled Water', Type: 'Water', Quantity: '200 bttl', Location: 'Etiler' },
-  { id: 4, Name: 'Bread', Type: 'Food', Quantity: '90 pcs', Location: 'Etiler' },
-  { id: 5, Name: 'Canned Food', Type: 'Food', Quantity: '130 can', Location: 'Sisli' },
-  { id: 6, Name: 'Canned Food', Type: 'Food', Quantity: '70 can', Location: 'Levent' },
-  { id: 7, Name: 'Child Clothing', Type: 'Cloth', Quantity: '40 item', Location: 'Sariyer' },
-  { id: 8, Name: 'Diapers', Type: 'Baby', Quantity: '450 pieces', Location: 'Gayrettepe' },
-  { id: 9, Name: 'Doctor', Type: 'Health', Quantity: '8 person', Location: 'Taksim' },
-  { id: 10, Name: 'Heater', Type: 'Heath', Quantity: '20 big', Location: 'Kadiköy' },
-  { id: 11, Name: 'Heater', Type: 'Heath', Quantity: '32 small', Location: 'Besiktas' },
-  { id: 12, Name: 'Medicine', Type: 'Health', Quantity: '60 pck', Location: 'Kadikoy' },
-  { id: 13, Name: 'Medicine', Type: 'Health', Quantity: '100 serum', Location: 'Osmanbey' },
-  { id: 14, Name: 'Translator', Type: 'Lang', Quantity: '12 person', Location: 'Karakoy' },
-];
-
 
 export default function MapDataGrid() {
+
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await viewAllNeeds();
+        setData(response.data.map(need => ({
+          id: need.id,
+          Name: need.name,
+          Type: need.type,
+          Quantity: need.quantity,
+          Location: need.location,
+        })));
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
-    <Box sx={{ height: 400, width: "33%" }}>
+    <Box sx={{ height: 400, width: "100%" }}>
       <DataGrid
-        rows={rows}
+        rows={data}
         columns={columns}
         components={{ Toolbar: GridToolbar }}
         sx={{
@@ -71,6 +83,7 @@ export default function MapDataGrid() {
             paginationModel: { page: 0, pageSize: 10 },
           },
         }}
+        loading={loading}
         pageSizeOptions={[5, 10, 15, 20, 25]}
         autoHeight
         checkboxSelection

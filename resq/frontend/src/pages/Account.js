@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState} from 'react';
+import { useState, useEffect } from 'react';
 import AccountProfileDetails from '../components/AccountProfileDetails';
 import AccountProfile from '../components/AccountProfile';
 import { Button, CardActions } from '@mui/material';
@@ -22,6 +22,11 @@ import PersonIcon from '@mui/icons-material/Person';
 import { grey } from '@mui/material/colors';
 import SendIcon from '@mui/icons-material/Send';
 import { useNavigate } from 'react-router-dom';
+import { getUserInfo } from '../AppService';
+import { updateProfile } from '../AppService';
+import Snackbar from '@mui/material/Snackbar';
+import { useLocation } from 'react-router-dom';
+
 
 function Copyright(props) {
   return (
@@ -38,13 +43,6 @@ function Copyright(props) {
   );
 }
 
-SimpleDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-  selectedValue: PropTypes.string.isRequired,
-  requestMade: PropTypes.bool, 
-};
-
 const customTheme = createTheme({
   palette: {
     primary: {
@@ -52,6 +50,14 @@ const customTheme = createTheme({
     },
   },
 });
+
+SimpleDialog.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  selectedValue: PropTypes.string.isRequired,
+  requestMade: PropTypes.bool,
+};
+
 
 const roles = ['Responder', 'Facilitator', 'Coordinator', 'Admin'];
 
@@ -62,9 +68,17 @@ function SimpleDialog(props) {
 
   const handleClose = () => {
     onClose(selectedRole);
-    navigate('/rolerequest');
+    navigate('/rolerequest?selectedRole=${selectedRole');
     // navigate(`/rolerequest?selectedRole=${selectedRole}`);
   };
+
+  const handleRoleRequest = () => {
+    if (selectedRole) {
+      navigate(`/rolerequest?selectedRole=${selectedRole}`);
+    } else {
+      alert('Please select a role before requesting.');
+    }
+  }
 
   const handleListItemClick = (role) => {
     if (!requestMade) {
@@ -73,15 +87,15 @@ function SimpleDialog(props) {
   };
 
   return (
-    <Dialog onClose={handleClose} open={open}>
+    <Dialog onClose={handleRoleRequest} open={open}>
       <DialogTitle style={{ fontWeight: 'bold' }}>Choose desired role</DialogTitle>
       <List sx={{ pt: 0 }}>
         {roles.map((role) => (
           <ListItem disableGutters key={role}>
-            <ListItemButton 
+            <ListItemButton
               onClick={() => handleListItemClick(role)}
               selected={role === selectedRole}
-              disabled={requestMade} 
+              disabled={requestMade}
             >
               <ListItemAvatar>
                 <Avatar sx={{ bgcolor: grey[100], color: grey[600] }}>
@@ -93,15 +107,15 @@ function SimpleDialog(props) {
           </ListItem>
         ))}
         <ListItem disableGutters>
-          <Button 
-            variant="contained" 
+          <Button
+            variant="contained"
             autoFocus
-            onClick={() => handleClose()}
+            onClick={() => handleRoleRequest()}
             endIcon={<SendIcon />}
             style={{ margin: '0 auto' }}
             disabled={requestMade}
           >
-          <ListItemText primary="Request" />
+            <ListItemText primary="Request" />
           </Button>
         </ListItem>
       </List>
@@ -111,10 +125,42 @@ function SimpleDialog(props) {
 
 
 function Account() {
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      getUserInfo(userId)
+        .then(data => setUserInfo(data))
+        .catch(error => console.error('Error fetching user info:', error));
+    }
+  }, []);
+
+
+  const [userProfileData, setUserProfileData] = useState({
+    name: '',
+    illness: '',
+    surname: '',
+    email: '',
+    birth_date: '',
+    gender: '',
+    phoneNumber: '',
+    bloodType: '',
+    weight: 0,
+    height: 0,
+    state: '',
+    country: '',
+    city: '',
+    emailConfirmed: true,
+    privacyPolicyAccepted: true
+  });
+
+
   const [open, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState('');
   const [requestMade, setRequestMade] = useState(false);
-  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -126,6 +172,43 @@ function Account() {
     setRequestMade(true);
   };
 
+  const cleanUserProfileData = (data) => {
+    const cleanedData = {};
+    Object.keys(data).forEach(key => {
+      if (data[key] !== null && data[key] !== undefined) {
+        cleanedData[key] = data[key];
+      }
+    });
+    console.log("Cleaned UserProfileData:", cleanedData);
+
+    return cleanedData;
+  };
+
+
+  const handleSaveDetails = async () => {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      const formattedProfileData = cleanUserProfileData(userProfileData);
+      try {
+        await updateProfile(userId, formattedProfileData);
+        setSnackbarOpen(true);
+      } catch (error) {
+        console.error("Error updating profile:", error);
+      }
+    } else {
+      console.error("User ID not found");
+    }
+  };
+
+
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
   return (
     <ThemeProvider theme={customTheme}>
       <div style={{ height: '100vh', overflow: 'hidden' }}>
@@ -135,7 +218,7 @@ function Account() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            padding: '20px', 
+            padding: '20px',
           }}
         >
           <Avatar sx={{ width: 80, height: 80, marginBottom: '10px' }}>
@@ -155,24 +238,34 @@ function Account() {
               justifyContent: 'center',
             }}
           >
-            <AccountProfile sx={{ margin: '0 10px' }} />
-            <AccountProfileDetails sx={{ margin: '0 10px' }} />
+            <AccountProfile
+              userInfo={userInfo}
+              userProfileData={userProfileData}
+              setUserProfileData={setUserProfileData}
+              sx={{ margin: '0 10px' }}
+            />
+            <AccountProfileDetails
+              userInfo={userInfo}
+              userProfileData={userProfileData}
+              setUserProfileData={setUserProfileData}
+              sx={{ margin: '0 10px' }}
+            />
           </Box>
           <CardActions sx={{ justifyContent: 'space-between' }}>
-              <Button
-                variant="contained"
-                onClick={() => {
-                navigate('/map');
-              }}
-                sx={{ flex: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: '10px', width: '200px' }}
-              >Save Details
-              </Button>
-              <Button 
-                variant="contained" 
-                onClick={handleClickOpen}
-                sx={{ flex: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '10px', whiteSpace: 'nowrap' , width: '200px' }}
-                >Request for a Role
-              </Button>
+            <Button
+              variant="contained"
+              onClick={handleSaveDetails}
+              sx={{ flex: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: '10px', width: '200px' }}
+            >
+              Save Details
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleClickOpen}
+              sx={{ flex: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '10px', whiteSpace: 'nowrap', width: '200px' }}
+            >
+              Request for a Role
+            </Button>
           </CardActions>
           <div>
             <SimpleDialog
@@ -183,24 +276,16 @@ function Account() {
             />
           </div>
         </Box>
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+          message="Profile Updated"
+        />
       </div>
-      <Copyright sx={{ mt: 5 }} />
+      <Copyright />
     </ThemeProvider>
   );
 }
 
 export default Account;
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -111,7 +111,7 @@ fun MainScreen(appContext: Context, mapViewModel: MapViewModel) {
                     mapViewModel = mapViewModel
                 )
             }
-        },)
+        })
 }
 
 @RequiresApi(Build.VERSION_CODES.O)

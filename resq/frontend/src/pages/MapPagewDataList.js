@@ -1,19 +1,19 @@
-// noinspection JSUnusedLocalSymbols
-
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import DisasterMap from "../components/DisasterMap";
-import {cards} from "../components/Cards/ListCards";
-import {AmountSelector, MultiCheckbox} from "../components/MultiCheckbox";
-import {DatePicker} from "@mui/x-date-pickers";
+import { cards } from "../components/Cards/ListCards";
+import { AmountSelector, MultiCheckbox } from "../components/MultiCheckbox";
+import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import {useQuery} from "@tanstack/react-query";
-import {getCategoryTree} from "../AppService";
+import { useQuery } from "@tanstack/react-query";
+import { getCategoryTree } from "../AppService";
 import Annotatable from "../components/Annotatable";
+import MapDataGrid from "../components/MapDataGrid";
+
 
 const customTheme = createTheme({
     palette: {
@@ -28,7 +28,7 @@ const getAllCategories = categoryTree => {
         return item => {
             switch (item.type) {
                 case "Facility":
-                    return [{id: item?.category, data: item?.category}]
+                    return [{ id: item?.category, data: item?.category }]
                 default:
                     return categoryTree.findCategoryWithId(parseInt(item.categoryTreeId))?.getAllParentCategories()
             }
@@ -80,7 +80,7 @@ const makeFilterByAmount = ([amount]) => {
 const makeFilterByDateFrom = (dateFrom) => item => dateFrom === null || !dateFrom.isValid() || !(dateFrom > dayjs(item.date))
 const makeFilterByDateTo = (dateTo) => item => dateTo === null || !dateTo.isValid() || !(dateTo < dayjs(item.date))
 
-const makeFilterByBounds = ({ne: [ne_lat, ne_lng], sw: [sw_lat, sw_lng]}) =>
+const makeFilterByBounds = ({ ne: [ne_lat, ne_lng], sw: [sw_lat, sw_lng] }) =>
     function (item) {
         return item.latitude <= ne_lat &&
             item.longitude <= ne_lng &&
@@ -89,7 +89,7 @@ const makeFilterByBounds = ({ne: [ne_lat, ne_lng], sw: [sw_lat, sw_lng]}) =>
     }
 
 
-export default function MapPage({allMarkers}) {
+export default function MapPage({ allMarkers }) {
     const [shownMarkers, setShownMarkers] = useState(allMarkers)
     const [selectedPoint, setSelectedPoint] = useState(null)
     const [mapCenter, setMapCenter] = useState([39, 34.5])
@@ -99,9 +99,9 @@ export default function MapPage({allMarkers}) {
     const [dateToFilter, setDateToFilter] = useState(null)
     const [amountFilter, setAmountFilter] = useState([])
     const [categoryFilter, setCategoryFilter] = useState([])
-    const [mapBounds, setMapBounds] = useState({ne: [0, 0], sw: [0, 0]})
+    const [mapBounds, setMapBounds] = useState({ ne: [0, 0], sw: [0, 0] })
 
-    const categoryTree = useQuery({queryKey: ['categoryTree'], queryFn: getCategoryTree})
+    const categoryTree = useQuery({ queryKey: ['categoryTree'], queryFn: getCategoryTree })
 
     useEffect(() => {
         if (selectedPoint) {
@@ -130,31 +130,31 @@ export default function MapPage({allMarkers}) {
         .map(a => [a?.id, a]))
     // noinspection JSValidateTypes
     return (
-        <Annotatable style={{width: "100%", height: "100%"}}>
+        <Annotatable style={{ width: "100%", height: "100%" }}>
             <ThemeProvider theme={customTheme}>
-                <Container maxWidth="100%" style={{height: "100%", display: "flex", flexDirection: "column"}}>
-                    <CssBaseline/>
+                <Container maxWidth="100%" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+                    <CssBaseline />
                     <Box sx={{
                         display: "flex", flexDirection: "row", flexWrap: 'nowrap', margin: "12px", width: "100%",
                         justifyContent: "center"
                     }}>
                         <MultiCheckbox name={"Type"}
-                                       choices={["Facility", "Resource", "Request"].map(i => ({id: i, data: i}))}
-                                       onChosenChanged={setTypeFilter}/>
+                            choices={["Facility", "Resource", "Request"].map(i => ({ id: i, data: i }))}
+                            onChosenChanged={setTypeFilter} />
                         <MultiCheckbox name={"Category"}
-                                       choices={[...choices.values()]}
-                                       onChosenChanged={setCategoryFilter}/>
+                            choices={[...choices.values()]}
+                            onChosenChanged={setCategoryFilter} />
                         <AmountSelector name={"Amount"}
-                                        onChosenChanged={setAmountFilter}/>
+                            onChosenChanged={setAmountFilter} />
                         <DatePicker
-                            sx={{m: 1}}
+                            sx={{ m: 1 }}
                             label="From"
                             format="DD/MM/YYYY"
                             value={dateFromFilter}
                             onChange={e => setDateFromFilter(e)}
                         />
                         <DatePicker
-                            sx={{m: 1}}
+                            sx={{ m: 1 }}
                             label="To"
                             format="DD/MM/YYYY"
                             value={dateToFilter}
@@ -169,38 +169,22 @@ export default function MapPage({allMarkers}) {
                         height: "100px",
                         flexGrow: 100
                     }}>
-                        <Box sx={{
-                            flexBasis: "33%",
-                            flexShrink: 0,
-                            height: "100%",
-                            overflow: "scroll"
-                        }}>
-                            <Box sx={{
-                                display: "flex",
-                                flexDirection: "column",
-                                rowGap: "16px",
-                                height: "fit-content"
-                            }}>
-                                {shownMarkers.map((marker) => {
-                                    const SelectedCard = cards[marker.type]
-                                    return <div onClick={() => setSelectedPoint(marker)}>< SelectedCard item={marker}/>
-                                    </div>
-                                })}
-                            </Box>
+                        <Box sx={{ flexBasis: "33%", flexShrink: 0, height: "100%", overflow: "scroll" }}>
+                            <MapDataGrid />
                         </Box>
-                        <Box sx={{width: "36px"}}/>
-                        <Box sx={{flexGrow: 100}}>
+                        <Box sx={{ width: "36px" }} />
+                        <Box sx={{ flexGrow: 100 }}>
                             <DisasterMap markers={shownMarkers}
-                                         mapCenter={mapCenter}
-                                         setMapCenter={setMapCenter}
-                                         onPointSelected={setSelectedPoint}
-                                         onBoundsChanged={setMapBounds}
+                                mapCenter={mapCenter}
+                                setMapCenter={setMapCenter}
+                                onPointSelected={setSelectedPoint}
+                                onBoundsChanged={setMapBounds}
                             />
                         </Box>
                     </Box>
                 </Container>
             </ThemeProvider>
-        </Annotatable>
+        </Annotatable >
     );
 }
 

@@ -24,7 +24,7 @@ const mock_annots = [{
         "source": "http://example.org/page1.html",
         "selector": {
             "type": "XPathSelector",
-            "value": "//div[@id=\"Annotation1\"]",
+            "value": "//div[@id=\"Facility1\"]",
             "refinedBy": {
                 "type": "RangeSelector",
                 "startSelector": {"type": "XPathSelector", "value": "/p[1]"},
@@ -43,7 +43,7 @@ const mock_annots = [{
             "source": "http://example.org/page1.html",
             "selector": {
                 "type": "XPathSelector",
-                "value": "//div[@id=\"Annotation2\"]",
+                "value": "//div[@id=\"Facility2\"]",
                 "refinedBy": {
                     "type": "RangeSelector",
                     "startSelector": {"type": "XPathSelector", "value": "/p[1]"},

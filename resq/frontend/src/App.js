@@ -14,9 +14,11 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import axios from "axios";
 import VictimMapPage from "./pages/VictimMapPage";
-import {Badge} from "@mui/material";
-import {createTheme, ThemeProvider} from "@mui/material/styles";
+import FacilitatorMapPage from './pages/FacilitatorMapPage';
+import { Badge } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Notifications from "./pages/Notifications";
+import { getUserInfo } from './AppService';
 import TaskSelectPage from "./pages/TaskSelectPage";
 
 const SmallRedCircle = () =>
@@ -31,10 +33,11 @@ const SmallRedCircle = () =>
 
 const queryClient = new QueryClient()
 
-function SignOut({setToken}) {
+function SignOut({setToken, setRole}) {
     const navigate = useNavigate();
     const signOut = () => {
-        setToken(null);
+        setToken(null)
+        setRole("");
         navigate('/');
     }
 
@@ -59,8 +62,16 @@ function App() {
     }, []);
 
     useEffect(() => {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    }, [token])
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        if (token) {
+            const userId = localStorage.getItem("userId");
+            getUserInfo(userId).then(userInfo => {
+                setRole(userInfo.roles[0]);
+            }).catch(error => console.error('Error fetching user info:', error));
+        }
+    }, [token]);
+
+
 
     const [notifications, setNotifications] = useState([
         {
@@ -83,14 +94,13 @@ function App() {
     }
 
     const navLinks = [
-        {path: '/mytasks', label: <strong>My Tasks</strong>, component: TaskSelectPage, icon: <SmallRedCircle/>},
-        (role === "responder") && {
-            path: '/responder',
-            label: <strong>Responder Panel</strong>,
-            component: <div>Responder Panel</div>,
-            icon: <SmallRedCircle/>
-        },
-    ].filter(l => !!l);
+        { path: '/', label: <strong>Victim Map</strong>, component: VictimMapPage, icon: <SmallRedCircle />, roles: ['VICTIM', 'ADMIN', 'RESPONDER', 'FACILITATOR'] },
+        { path: '/tasks', label: <strong>View Tasks</strong>, component: TaskSelectPage, icon: <SmallRedCircle />, roles: ['RESPONDER', 'ADMIN'] },
+        { path: '/facilitatormap', label: <strong>Facilitator Map</strong>, component: FacilitatorMapPage, icon: <SmallRedCircle />, roles: ['FACILITATOR', 'ADMIN'] },
+    ];
+
+    const filteredNavLinks = navLinks.filter(link => link.roles.includes(role));
+
 
     const ref = useRef(null)
 
@@ -120,11 +130,8 @@ function App() {
                                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                                     <Navbar.Collapse id="basic-navbar-nav">
                                         <Nav className="me-auto">
-                                            {navLinks.map(({path, label, icon}) => (
-                                                <Nav.Link key={path} href={path}>
-                                                    {icon}
-                                                    {label}
-                                                </Nav.Link>
+                                            {filteredNavLinks.map(({ path, label, icon }) => (
+                                                <Nav.Link key={path} href={path}>{icon}{label}</Nav.Link>
                                             ))}
                                         </Nav>
                                         <Nav className="ml-auto">
@@ -152,7 +159,7 @@ function App() {
                                                             <NotificationsIcon/>
                                                         </Badge>
                                                     </Nav.Link>
-                                                    <SignOut setToken={setToken}/>
+                                                    <SignOut setToken={setToken} setRole={setRole}/>
                                                 </> :
                                                 <>
                                                     <Nav.Link key={'/signin'} href={'/signin'}
@@ -172,17 +179,10 @@ function App() {
 
                             <main style={{height: `${height - 57}px`}}>
                                 <Routes>
-                                    {navLinks.map(({path, component}) => (
+                                    {filteredNavLinks.map(({ path, component }) => (
                                         <Route key={path} path={path}
-                                               element={React.createElement(component, {
-                                                   token,
-                                                   setToken,
-                                                   role,
-                                                   setRole,
-                                                   uid
-                                               })}/>
+                                            element={React.createElement(component, { token, setToken, role, setRole, uid })} />
                                     ))}
-                                    <Route path="/" element={React.createElement(VictimMapPage, {token, setToken})}/>
                                     <Route path="/rolerequest" state={{token, setToken}}
                                            element={React.createElement(RoleRequest, {token, setToken})}/>
                                     {

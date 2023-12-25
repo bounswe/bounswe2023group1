@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Box, Card, CardContent, CardHeader, Divider, TextField } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import UnstyledSelectRichOptions from './Countries';
@@ -31,22 +31,42 @@ const customTheme = createTheme({
     },
 });
 
-function AccountProfileDetails() {
+const AccountProfileDetails = ({ userInfo, userProfileData, setUserProfileData }) => {
     const [values, setValues] = useState({
-        firstName: 'Melek Nur',
-        lastName: 'Türkoğlu',
-        email: 'meleknurturkoglu@gmail.com',
-        phone: '05324054856',
-        state: 'Izmir',
-        country: 'TR',
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        state: '',
+        country: '',
     });
 
-    const handleChange = useCallback((event) => {
-        setValues((prevState) => ({
-            ...prevState,
-            [event.target.name]: event.target.value,
+    useEffect(() => {
+        if (userInfo) {
+            setValues({
+                firstName: userInfo.name || '',
+                lastName: userInfo.surname || '',
+                email: userInfo.email || '',
+                phone: userInfo.phone || '',
+                state: userInfo.state || '',
+                country: userInfo.country || '',
+            });
+        }
+    }, [userInfo]);
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setValues(prevValues => ({
+            ...prevValues,
+            [name]: value
         }));
-    }, []);
+        setUserProfileData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+
 
     const handleSubmit = useCallback((event) => {
         event.preventDefault();
