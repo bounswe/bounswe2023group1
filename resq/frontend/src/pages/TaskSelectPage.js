@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import DisasterMap from "../components/DisasterMap";
-import {ExpandMore, getAddress, OffsetActions} from "../components/Cards/ListCards";
+import {ExpandMore, OffsetActions} from "../components/Cards/ListCards";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {acceptTask, completeTask, getCategoryTree, getUserInfo, viewAllTasks} from "../AppService";
 import Annotatable from "../components/Annotatable";
@@ -14,6 +14,7 @@ import Avatar from "@mui/material/Avatar";
 import {distinct_colors} from "../Colors";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {Location} from "./Location";
 
 const customTheme = createTheme({
     palette: {
@@ -23,20 +24,12 @@ const customTheme = createTheme({
     },
 });
 
-const Location = ({latitude, longitude}) => {
-    const location = useQuery({
-        queryKey: ['location', latitude, longitude],
-        queryFn: () => getAddress(latitude, longitude)
-    })
-    return <>{location?.data || "Loading"}</>
-}
-
 const TaskCard = ({
                       item: {
                           id,
                           //assignee: assigneeId,
                           assigner: assignerId,
-                          actions: rawActions,
+                          actions,
                           description,
                           resources,
                           urgency,
@@ -60,12 +53,6 @@ const TaskCard = ({
         queryKey: ['categoryTree'],
         queryFn: () => getCategoryTree()
     })
-
-    const actions = rawActions.map(action => ({
-        startLocation: <Location latitude={action.startLatitude} longitude={action.startLongitude}/>,
-        endLocation: <Location latitude={action.endLatitude} longitude={action.endLongitude}/>,
-        ...action
-    }))
 
     const handleSetTodo = async () => {
         acceptTask(id)
@@ -116,10 +103,12 @@ const TaskCard = ({
                 Assigned by: {assigner?.data?.name} {assigner?.data?.surname}
             </Typography>
             <Typography variant="body2" color="text.primary" sx={{fontSize: '12px', fontWeight: 'bold'}}>
-                Locations: {actions.map(({
-                                             startLocation,
-                                             endLocation
-                                         }) => ([startLocation, <>, </>, endLocation, <>, </>])).flat()}
+                Locations:
+                {actions.map(({endLatitude, endLongitude, startLatitude, startLongitude}) =>
+                    <>
+                        <Location latitude={startLatitude} longitude={startLongitude}/>,
+                        <Location latitude={endLatitude} longitude={endLongitude}/>,
+                    </>)}
             </Typography>
         </CardContent>
         <OffsetActions disableSpacing>
@@ -140,9 +129,9 @@ const TaskCard = ({
         </OffsetActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
-                {actions.map(({description, startLocation, endLocation}) =>
+                {actions.map(({description, endLatitude, endLongitude, startLatitude, startLongitude}) =>
                     <Typography variant="body2" color="text.primary">
-                        From {startLocation} to {endLocation}: {description}
+                        From <Location latitude={startLatitude} longitude={startLongitude}/> to <Location latitude={endLatitude} longitude={endLongitude}/>: {description}
                     </Typography>
                 )}
                 {resources.map(({quantity, categoryTreeId, longitude, latitude}) =>
