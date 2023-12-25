@@ -51,7 +51,7 @@ function SignOut({setToken, setRole}) {
 function App() {
     const [token, _setToken] = useState(localStorage.getItem("token"))
     const [uid, _setUid] = useState(parseInt(localStorage.getItem("uid")) || -1)
-    const [role, setRole] = useState("")
+    const [roles, setRoles] = useState([])
     const [height, setHeight] = useState(window.innerHeight);
 
     const updateDimensions = () => {
@@ -67,7 +67,7 @@ function App() {
         if (token) {
             const userId = localStorage.getItem("userId");
             getUserInfo(userId).then(userInfo => {
-                setRole(userInfo.roles[0]);
+                setRoles(userInfo.roles);
             }).catch(error => console.error('Error fetching user info:', error));
         }
     }, [token]);
@@ -101,7 +101,7 @@ function App() {
         { path: '/facilitatormap', label: <strong>Facilitator Map</strong>, component: FacilitatorMapPage, icon: <SmallRedCircle />, roles: ['FACILITATOR', 'ADMIN'] },
     ];
 
-    const filteredNavLinks = navLinks.filter(link => link.roles.includes(role));
+    const filteredNavLinks = navLinks.filter(link => !roles.every(role=>!link.roles.includes(role)));
 
 
     const ref = useRef(null)
@@ -161,7 +161,7 @@ function App() {
                                                             <NotificationsIcon/>
                                                         </Badge>
                                                     </Nav.Link>
-                                                    <SignOut setToken={setToken} setRole={setRole}/>
+                                                    <SignOut setToken={setToken} setRole={setRoles}/>
                                                 </> :
                                                 <>
                                                     <Nav.Link key={'/signin'} href={'/signin'}
@@ -183,7 +183,7 @@ function App() {
                                 <Routes>
                                     {filteredNavLinks.map(({ path, component }) => (
                                         <Route key={path} path={path}
-                                            element={React.createElement(component, { token, setToken, role, setRole, uid })} />
+                                            element={React.createElement(component, { token, setToken, role: roles, setRole: setRoles, uid })} />
                                     ))}
                                     <Route path="/rolerequest" state={{token, setToken}}
                                            element={React.createElement(RoleRequest, {token, setToken})}/>

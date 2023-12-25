@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import DisasterMap from "../components/DisasterMap";
-import {cards} from "../components/Cards/ListCards";
+import {cards, getAddress} from "../components/Cards/ListCards";
 import {AmountSelector, MultiCheckbox} from "../components/MultiCheckbox";
 import {DatePicker} from "@mui/x-date-pickers";
 import dayjs from "dayjs";
@@ -51,13 +51,13 @@ const MyDataGrid = ({rows, columns, onSelectedChanged}) => {
             autoHeight
             checkboxSelection
             disableRowSelectionOnClick
-            onRowSelectionModelChange={onSelectedChanged}
+            onRowSelectionModelChange={(selected) => onSelectedChanged(selected.map(row => rows[row - 1]))}
         />
     </Box>
 }
 
 const ResourcesDataGrid = ({resources, ...props}) => {
-
+    const [rows, setRows] = useState([])
 
     const categoryTree = useQuery({
         queryKey: ['categoryTree'],
@@ -77,40 +77,54 @@ const ResourcesDataGrid = ({resources, ...props}) => {
             headerName: <strong>{'Quantity'}</strong>,
             type: 'number',
             width: 80,
-            align: 'left',
+            align: 'right',
             flex: 0.5,
         },
         {
             field: 'Location',
             headerName: <strong>{'Location'}</strong>,
-            align: 'left',
+            align: 'right',
             flex: 0.5,
         },
     ];
 
-    const rows = resources.map(({quantity, categoryTreeId, longitude, latitude}) => ({
-        "Type": categoryTree?.data?.findCategoryWithId(parseInt(categoryTreeId))?.data || categoryTreeId,
-        "Quantity": quantity,
-        "Location": <Location latitude={latitude} longitude={longitude}/>
-    }))
+    useEffect(() => {
+        (async () => setRows(
+            await Promise.all(
+                resources.map(async ({id, quantity, categoryTreeId, longitude, latitude}) =>
+                    ({
+                        "id": id,
+                        "Type": categoryTree?.data?.findCategoryWithId(parseInt(categoryTreeId))?.data || categoryTreeId,
+                        "Quantity": quantity,
+                        "Location": await getAddress(latitude, longitude)
+                    })))))();
+    }, [categoryTree?.data, resources])
 
-    return <MyDataGrid columns={columns} rows={rows}/>
+    return <MyDataGrid columns={columns} rows={rows} {...props}/>
 }
 
 export default function CreateActionPage() {
     const [shownMarkers, setShownMarkers] = useState([])
-    const [selectedPoint, setSelectedPoint] = useState(null)
+    const [selectedResources, setSelectedResources] = useState([])
     const [mapCenter, setMapCenter] = useState([39, 34.5])
     const [mapBounds, setMapBounds] = useState({ne: [0, 0], sw: [0, 0]})
 
     const resources = useQuery({queryKey: ['getAllResources'], queryFn: getAllResources})
 
-    useEffect(() => {
-        if (selectedPoint) {
-            setMapCenter([selectedPoint.latitude, selectedPoint.longitude]);
-        }
-    }, [selectedPoint]);
+    /*
+        useEffect(() => {
+            if (selectedPoint) {
+                setMapCenter([selectedPoint.latitude, selectedPoint.longitude]);
+            }
+        }, [selectedResources]);
+    */
 
+    let handleSelectedResourcesChanged = selected => {
+        setSelectedResources(selected
+            .map(({id: s_id}) => resources.data?.data?.filter(({id: r_id}) => s_id === r_id)[0])
+            .map(res=>({...res, type: "Resource"}))
+        )
+    }
     return (
         <ThemeProvider theme={customTheme}>
             <Container maxWidth="100%" style={{height: "100%", display: "flex", flexDirection: "column"}}>
@@ -123,15 +137,15 @@ export default function CreateActionPage() {
                     height: "100px",
                     flexGrow: 100
                 }}>
-                    <ResourcesDataGrid resources={resources}/>
+                    <ResourcesDataGrid resources={resources.data?.data || []}
+                                       onSelectedChanged={handleSelectedResourcesChanged}/>
 
 
                     <Box sx={{width: "36px"}}/>
                     <Box sx={{flexGrow: 100}}>
-                        <DisasterMap markers={shownMarkers}
+                        <DisasterMap markers={selectedResources}
                                      mapCenter={mapCenter}
                                      setMapCenter={setMapCenter}
-                                     onPointSelected={setSelectedPoint}
                                      onBoundsChanged={setMapBounds}
                         />
                     </Box>
