@@ -23,95 +23,6 @@ const customTheme = createTheme({
     },
 });
 
-const mockTasks = [
-    {
-        "id": 4,
-        "assignee": 9,
-        "assigner": 9,
-        "actions": [
-            {
-                "id": 4,
-                "taskId": 4,
-                "verifierId": 9,
-                "description": "action description",
-                "startLatitude": 10.5,
-                "startLongitude": 38,
-                "endLatitude": 39,
-                "endLongitude": 39.5,
-                "dueDate": null,
-                "createdDate": null,
-                "completed": false
-            }
-        ],
-        "description": "task desc",
-        "resources": [],
-        "feedbacks": [],
-        "urgency": "LOW",
-        "status": "TODO"
-    },
-    {
-        "id": 5,
-        "assignee": 9,
-        "assigner": 9,
-        "actions": [
-            {
-                "id": 5,
-                "taskId": 5,
-                "verifierId": 9,
-                "description": "action description",
-                "startLatitude": 40,
-                "startLongitude": 38,
-                "endLatitude": 40.5,
-                "endLongitude": 38.5,
-                "dueDate": null,
-                "createdDate": null,
-                "completed": false
-            }
-        ],
-        "description": "task desc",
-        "resources": [{
-            "id": 22,
-            "senderId": 9,
-            "receiverId": null,
-            "categoryTreeId": "71",
-            "gender": null,
-            "quantity": 1300,
-            "latitude": 40,
-            "longitude": 38,
-            "createdDate": "2023-11-28T12:58:51.181743",
-            "size": null
-        }],
-        "feedbacks": [],
-        "urgency": "LOW",
-        "status": "PENDING"
-    },
-    {
-        "id": 7,
-        "assignee": 9,
-        "assigner": 9,
-        "actions": [
-            {
-                "id": 4,
-                "taskId": 4,
-                "verifierId": 9,
-                "description": "action description",
-                "startLatitude": 35.5,
-                "startLongitude": 37,
-                "endLatitude": 39,
-                "endLongitude": 39.5,
-                "dueDate": null,
-                "createdDate": null,
-                "completed": false
-            }
-        ],
-        "description": "task desc",
-        "resources": [],
-        "feedbacks": [],
-        "urgency": "LOW",
-        "status": "TODO"
-    },
-]
-
 const Location = ({latitude, longitude}) => {
     const location = useQuery({
         queryKey: ['location', latitude, longitude],
@@ -258,7 +169,7 @@ const taskRanks = {
 
 export default function TaskSelectPage({uid}) {
     //const [allTasks, setAllTasks] = useState(mockTasks)
-    const [sortedTasks, setSortedTasks] = useState(mockTasks)
+    const [sortedTasks, setSortedTasks] = useState([])
 
     const [shownMarkers, setShownMarkers] = useState([])
     const [shownPaths, setShownPaths] = useState([])
