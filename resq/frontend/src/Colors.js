@@ -1,4 +1,37 @@
 export const type_colors = {
     "Resource": "#93C0D0",
-    "Request": "#AA0000"
+    "Request": "#AA0000",
 }
+
+export const distinct_colors = [
+    '#add8e6',
+    '#00bfff',
+    '#1e90ff',
+    '#0000ff',
+    '#483d8b',
+    '#7b68ee',
+    '#8a2be2',
+    '#800080',
+    '#da70d6',
+    '#ff00ff',
+    '#ff1493',
+    '#b03060',
+    '#dc143c',
+    '#f08080',
+    '#ff4500',
+    '#ffa500',
+    '#f4a460',
+    '#f0e68c',
+    '#808000',
+    '#8b4513',
+    '#ffff00',
+    '#9acd32',
+    '#7cfc00',
+    '#90ee90',
+    '#8fbc8f',
+    '#228b22',
+    '#00ff7f',
+    '#00ffff',
+    '#008b8b',
+    '#808080'
+]

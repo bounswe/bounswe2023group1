@@ -173,6 +173,16 @@ export default function Annotatable(props) {
             return selection.getRangeAt(0).getBoundingClientRect();
         };
 
+        if (selection.rangeCount === 0)
+            return
+        const range = selection.getRangeAt(0)
+        let ancestor = range.commonAncestorContainer
+        if (range.commonAncestorContainer.nodeName === "#text")
+            ancestor = ancestor.parentElement
+        let content = ancestor.closest(".anno-root")
+        if (content === null)
+            return;
+
         setOpen(true);
 
         setAnchorEl({getBoundingClientRect, nodeType: 1});
@@ -187,6 +197,10 @@ export default function Annotatable(props) {
         if (range.commonAncestorContainer.nodeName === "#text")
             ancestor = ancestor.parentElement
         let content = ancestor.closest(".anno-root")
+        if (content === null) {
+            handleClose()
+            return;
+        }
         let xpath = fromRange(range, content)
 
         const rangeSelector = getXpathParameters(xpath)
