@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Box, Card, CardContent, CardHeader, Divider, TextField } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import UnstyledSelectRichOptions from './Countries';
@@ -31,15 +31,28 @@ const customTheme = createTheme({
     },
 });
 
-function AccountProfileDetails() {
+function AccountProfileDetails({ userInfo }) {
     const [values, setValues] = useState({
-        firstName: 'Melek Nur',
-        lastName: 'Türkoğlu',
-        email: 'meleknurturkoglu@gmail.com',
-        phone: '05324054856',
-        state: 'Izmir',
-        country: 'TR',
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        state: '',
+        country: '',
     });
+
+    useEffect(() => {
+        if (userInfo) {
+            setValues({
+                firstName: userInfo.name || '',
+                lastName: userInfo.surname || '',
+                email: userInfo.email || '',
+                phone: '',
+                state: '',
+                country: '',
+            });
+        }
+    }, [userInfo]);
 
     const handleChange = useCallback((event) => {
         setValues((prevState) => ({

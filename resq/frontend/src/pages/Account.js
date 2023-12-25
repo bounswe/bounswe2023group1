@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState} from 'react';
+import { useState, useEffect } from 'react';
 import AccountProfileDetails from '../components/AccountProfileDetails';
 import AccountProfile from '../components/AccountProfile';
 import { Button, CardActions } from '@mui/material';
@@ -22,6 +22,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { grey } from '@mui/material/colors';
 import SendIcon from '@mui/icons-material/Send';
 import { useNavigate } from 'react-router-dom';
+import { getUserInfo } from '../AppService';
 
 function Copyright(props) {
   return (
@@ -42,7 +43,7 @@ SimpleDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   selectedValue: PropTypes.string.isRequired,
-  requestMade: PropTypes.bool, 
+  requestMade: PropTypes.bool,
 };
 
 const customTheme = createTheme({
@@ -78,10 +79,10 @@ function SimpleDialog(props) {
       <List sx={{ pt: 0 }}>
         {roles.map((role) => (
           <ListItem disableGutters key={role}>
-            <ListItemButton 
+            <ListItemButton
               onClick={() => handleListItemClick(role)}
               selected={role === selectedRole}
-              disabled={requestMade} 
+              disabled={requestMade}
             >
               <ListItemAvatar>
                 <Avatar sx={{ bgcolor: grey[100], color: grey[600] }}>
@@ -93,15 +94,15 @@ function SimpleDialog(props) {
           </ListItem>
         ))}
         <ListItem disableGutters>
-          <Button 
-            variant="contained" 
+          <Button
+            variant="contained"
             autoFocus
             onClick={() => handleClose()}
             endIcon={<SendIcon />}
             style={{ margin: '0 auto' }}
             disabled={requestMade}
           >
-          <ListItemText primary="Request" />
+            <ListItemText primary="Request" />
           </Button>
         </ListItem>
       </List>
@@ -111,6 +112,7 @@ function SimpleDialog(props) {
 
 
 function Account() {
+  const [userInfo, setUserInfo] = useState({});
   const [open, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState('');
   const [requestMade, setRequestMade] = useState(false);
@@ -126,6 +128,15 @@ function Account() {
     setRequestMade(true);
   };
 
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      getUserInfo(userId)
+        .then(data => setUserInfo(data))
+        .catch(error => console.error('Error fetching user info:', error));
+    }
+  }, []);
+
   return (
     <ThemeProvider theme={customTheme}>
       <div style={{ height: '100vh', overflow: 'hidden' }}>
@@ -135,7 +146,7 @@ function Account() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            padding: '20px', 
+            padding: '20px',
           }}
         >
           <Avatar sx={{ width: 80, height: 80, marginBottom: '10px' }}>
@@ -155,24 +166,24 @@ function Account() {
               justifyContent: 'center',
             }}
           >
-            <AccountProfile sx={{ margin: '0 10px' }} />
-            <AccountProfileDetails sx={{ margin: '0 10px' }} />
+            <AccountProfile userInfo={userInfo} sx={{ margin: '0 10px' }} />
+            <AccountProfileDetails userInfo={userInfo} sx={{ margin: '0 10px' }} />
           </Box>
           <CardActions sx={{ justifyContent: 'space-between' }}>
-              <Button
-                variant="contained"
-                onClick={() => {
+            <Button
+              variant="contained"
+              onClick={() => {
                 navigate('/map');
               }}
-                sx={{ flex: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: '10px', width: '200px' }}
-              >Save Details
-              </Button>
-              <Button 
-                variant="contained" 
-                onClick={handleClickOpen}
-                sx={{ flex: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '10px', whiteSpace: 'nowrap' , width: '200px' }}
-                >Request for a Role
-              </Button>
+              sx={{ flex: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', marginRight: '10px', width: '200px' }}
+            >Save Details
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleClickOpen}
+              sx={{ flex: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '10px', whiteSpace: 'nowrap', width: '200px' }}
+            >Request for a Role
+            </Button>
           </CardActions>
           <div>
             <SimpleDialog

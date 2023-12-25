@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import {
     Avatar,
     Box,
@@ -11,18 +11,11 @@ import {
     Grid,
 } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
+import { getUserInfo } from '../AppService';
 
 
 const user = {
     avatar: 'avatar.png',
-    city: 'Izmir',
-    country: 'Turkey',
-    role: 'victim',
-    name: 'Melek Nur Türkoğlu',
-    bloodType: '0 RH -',
-    gender: 'Woman',
-    weight: '62',
-    height: '162'
 };
 
 const bloodTypes = [
@@ -71,26 +64,26 @@ const gender = [
     },
 ];
 
-const years = Array.from({length: 100}, (_, i) => String(new Date().getFullYear() - i));
-const weight = Array.from({length: 200}, (_, i) => String(i + 1));
-const height = Array.from({length: 200}, (_, i) => String(i + 1));
+const years = Array.from({ length: 100 }, (_, i) => String(new Date().getFullYear() - i));
+const weight = Array.from({ length: 200 }, (_, i) => String(i + 1));
+const height = Array.from({ length: 200 }, (_, i) => String(i + 1));
 
 
 const styles = {
     card: {
-      width: '28.5%',
-      height: '100%',
+        width: '28.5%',
+        height: '100%',
     },
-  };
+};
 
-function AccountProfile() {
+function AccountProfile({ userInfo }) {
     const [values, setValues] = useState({
         weight: '62',
         height: '162',
         bloodType: '0 RH +',
         gender: 'Woman',
         year: '1993',
-        illness:' ',
+        illness: ' ',
     });
 
     const handleChange = useCallback((event) => {
@@ -103,14 +96,14 @@ function AccountProfile() {
     return (
         <Card style={styles.card}>
             <CardContent>
-                <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                    <Avatar src={user.avatar} sx={{width: 100, height: 100, mb: 2}}/>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Avatar src={user.avatar} sx={{ width: 100, height: 100, mb: 2 }} />
                     <Typography gutterBottom variant="h5">
-                        {user.name}
+                        {userInfo.name + ' ' + userInfo.surname || 'Default Name'}
                     </Typography>
                 </Box>
             </CardContent>
-            <Divider/>
+            <Divider />
             <CardActions>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
@@ -122,7 +115,7 @@ function AccountProfile() {
                             onChange={handleChange}
                             required
                             select
-                            SelectProps={{native: true}}
+                            SelectProps={{ native: true }}
                             value={values.bloodType}
                         >
                             {bloodTypes.map((option) => (
@@ -135,7 +128,7 @@ function AccountProfile() {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            sx={{marginBottom: 2}}
+                            sx={{ marginBottom: 2 }}
                             label="Any Ilness"
                             name="illness"
                             onChange={handleChange}
@@ -149,34 +142,34 @@ function AccountProfile() {
             <CardActions>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                            <TextField
-                                fullWidth
-                                sx={{marginBottom: 2}}
-                                label="Year"
-                                name="year"
-                                onChange={handleChange}
-                                required
-                                select
-                                SelectProps={{native: true}}
-                                value={values.year}
-                            >
-                                {years.map((option) => (
-                                    <option key={option} value={option}>
-                                        {option}
-                                    </option>
-                                ))}
-                            </TextField>
-                        </Grid>
+                        <TextField
+                            fullWidth
+                            sx={{ marginBottom: 2 }}
+                            label="Year"
+                            name="year"
+                            onChange={handleChange}
+                            required
+                            select
+                            SelectProps={{ native: true }}
+                            value={values.year}
+                        >
+                            {years.map((option) => (
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </TextField>
+                    </Grid>
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            sx={{marginBottom: 2}}
+                            sx={{ marginBottom: 2 }}
                             label="Select Gender"
                             name="gender"
                             onChange={handleChange}
                             required
                             select
-                            SelectProps={{native: true}}
+                            SelectProps={{ native: true }}
                             value={values.gender}
                         >
                             {gender.map((option) => (
@@ -221,7 +214,7 @@ function AccountProfile() {
                             onChange={handleChange}
                             required
                             select
-                            SelectProps={{native: true}}
+                            SelectProps={{ native: true }}
                             value={values.height}
                             InputProps={{
                                 endAdornment: <InputAdornment position="end" style={{ marginLeft: '-80px' }}>cm</InputAdornment>,
