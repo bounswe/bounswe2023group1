@@ -175,6 +175,9 @@ export function acceptTask(taskId) {
 export function completeTask(taskId) {
     return axios.post(`${TASK_API_BASE_URL}/completeTask?taskId=${taskId}`);
 }
+export function completeAction(actionId) {
+    return axios.post(`${ACTION_API_BASE_URL}/completeAction?actionId=${actionId}`);
+}
 export async function viewAllTasks(userId) {
     const {data} = await axios.get(`${TASK_API_BASE_URL}/viewTasks?userId=${userId}`);
     return data
