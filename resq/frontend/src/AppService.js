@@ -82,8 +82,18 @@ export function signin(loginUserRequest, token) {
         headers: {
             Authorization: `Bearer ${token}`,
         },
+    }).then(response => {
+        return {
+            token: response.data.jwt,
+            userId: response.data.id,
+            role: response.data.role
+        };
+    }).catch(error => {
+        console.error('Sign in failed:', error);
+        throw error;
     });
 }
+
 
 export function viewActions(taskId) {
     return axios.get(`${ACTION_API_BASE_URL}/viewActions?taskId=${taskId}`);

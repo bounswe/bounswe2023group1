@@ -26,13 +26,19 @@ export default function ResponderMapPage() {
 
     console.log('Tasks data:', data);
 
-    const taskMarkers = data?.map(task => ({
-        lat: task.startLatitude,
-        lng: task.startLongitude,
-        title: task.description,
-        dueDate: task.dueDate,
-        isCompleted: task.completed,
-    }));
+    let taskMarkers = [];
+
+    if (Array.isArray(data)) {
+        taskMarkers = data.map(task => ({
+            lat: task.startLatitude,
+            lng: task.startLongitude,
+            title: task.description,
+            dueDate: task.dueDate,
+            isCompleted: task.completed,
+        }));
+    } else {
+        console.error('Expected data to be an array, received:', data);
+    }
 
     return (
         <>

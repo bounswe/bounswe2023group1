@@ -56,6 +56,7 @@ function App() {
     }, [token]);
 
 
+
     const [notifications, setNotifications] = useState([
         {
             title: "Ongoing fire on Cami Sk.",
@@ -72,47 +73,23 @@ function App() {
         _setToken(t)
     }
 
-    const roleAccess = {
-        'VICTIM': ['/victimmap'],
-        'RESPONDER': ['/victimmap', '/respondermap'],
-        'FACILITATOR': ['/victimmap', '/respondermap', '/facilitatormap'],
-        'COORDINATOR': ['/victimmap', '/respondermap', '/facilitatormap', '/coordinatormap'],
-        'ADMIN': ['/victimmap', '/respondermap', '/facilitatormap', '/coordinatormap', '/adminmap']
-    };
 
-    const hasAccess = (path) => {
-        return roleAccess[role]?.includes(path);
-    };
-
-    const allNavLinks = [
+    const navLinks = [
         { path: '/victimmap', label: <strong>Victim Map</strong>, component: VictimMapPage, icon: <SmallRedCircle />, roles: ['VICTIM', 'ADMIN', 'RESPONDER', 'FACILITATOR'] },
         { path: '/respondermap', label: <strong>Responder Map</strong>, component: ResponderMapPage, icon: <SmallRedCircle />, roles: ['RESPONDER', 'ADMIN'] },
         { path: '/facilitatormap', label: <strong>Facilitator Map</strong>, component: FacilitatorMapPage, icon: <SmallRedCircle />, roles: ['FACILITATOR', 'ADMIN'] },
-        (role === "RESPONDER") && {
-            path: '/respondermap',
-            label: <strong>Responder Map</strong>,
-            component: <div>Responder Map</div>,
-            icon: <SmallRedCircle />
-        },
-        (role === "FACILITATOR") && {
-            path: '/facilitatormap',
-            label: <strong>Facilitator Map</strong>,
-            component: <div>Facilitator Map</div>,
-            icon: <SmallRedCircle />
-        },
-        (role === "COORDINATOR") && {
-            path: '/coordinatormap',
-            label: <strong>Coordinator Map</strong>,
-            component: <div>Coordinator Map</div>,
-            icon: <SmallRedCircle />
-        },
-    ].filter(Boolean);
+    ];
 
-    const navLinks = allNavLinks.filter(({ path, roles }) => hasAccess(path));
+    const filteredNavLinks = navLinks.filter(link => link.roles.includes(role));
+
+    console.log(filteredNavLinks);
 
     const signOut = () => {
-        setToken(null)
-    }
+        localStorage.clear();
+        setToken(null);
+        setRole("");
+    };
+
 
     const ref = useRef(null)
 
@@ -142,11 +119,8 @@ function App() {
                                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                                     <Navbar.Collapse id="basic-navbar-nav">
                                         <Nav className="me-auto">
-                                            {navLinks.map(({ path, label, icon }) => (
-                                                <Nav.Link key={path} href={path}>
-                                                    {icon}
-                                                    {label}
-                                                </Nav.Link>
+                                            {filteredNavLinks.map(({ path, label, icon }) => (
+                                                <Nav.Link key={path} href={path}>{icon}{label}</Nav.Link>
                                             ))}
                                         </Nav>
                                         <Nav className="ml-auto">
@@ -197,15 +171,10 @@ function App() {
 
                             <main style={{ height: `${height - 57}px` }}>
                                 <Routes>
-                                    {navLinks.map(({ path, component }) => (
-                                        <Route key={path} path={path} element={React.createElement(component, {
-                                            token,
-                                            setToken,
-                                            role,
-                                            setRole
-                                        })} />
+                                    {filteredNavLinks.map(({ path, component }) => (
+                                        <Route key={path} path={path}
+                                            element={React.createElement(component, { token, setToken, role, setRole })} />
                                     ))}
-                                    <Route path="/" element={<Navigate to={navLinks[0]?.path || '/default'} />} />
                                     <Route path="/" element={<Navigate to="/map" />} />
                                     <Route path="/rolerequest" state={{ token, setToken }}
                                         element={React.createElement(RoleRequest, { token, setToken })} />

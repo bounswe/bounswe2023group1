@@ -54,29 +54,40 @@ export default function SignIn({ token, setToken }) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
         if (signInClicked) {
             const loginUserRequest = { email, password };
-
             try {
-                console.log('Sending sign-in request:', loginUserRequest);
                 const response = await signin(loginUserRequest, token);
-                console.log('Sign-in response:', response);
+                if (response?.token) {
+                    setToken(response.token);
+                    localStorage.setItem('userId', response.userId);
+                    localStorage.setItem('userRole', response.role);
+                    localStorage.setItem('userData', JSON.stringify(response.userData));
+                    //localStorage.setItem("token", response.token);
 
-                if (response?.data?.jwt) {
-                    setToken(response.data.jwt);
-                    localStorage.setItem('userId', response.data.id);
-                    navigate('/');
+                    switch (response.role) {
+                        case 'VICTIM':
+                            navigate('/victimmap');
+                            break;
+                        case 'RESPONDER':
+                            navigate('/respondermap');
+                            break;
+                        case 'FACILITATOR':
+                            navigate('/facilitatormap');
+                            break;
+                        default:
+                            navigate('/');
+                            break;
+                    }
                 } else {
                     alert('Signin failed. Please check your credentials.');
                 }
             } catch (error) {
-                const errorMessage = error.response?.data?.message || 'Signin failed. Please check your credentials.';
-                alert(errorMessage);
+                alert('Signin failed. Please check your credentials.');
             }
         }
-
     };
+
 
 
     return (
