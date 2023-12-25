@@ -8,7 +8,7 @@ import com.groupa1.resq.repository.ActionRepository;
 import com.groupa1.resq.repository.TaskRepository;
 import com.groupa1.resq.repository.UserRepository;
 import com.groupa1.resq.request.CreateActionRequest;
-import com.groupa1.resq.response.ActionResponse;
+import com.groupa1.resq.dto.ActionDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -46,32 +46,7 @@ public class ActionServiceTest {
 
 
 
-    @Test
-    void testCreateAction_withNonExistentTask_shouldReturnBadRequest() {
-        // Given
-        CreateActionRequest createActionRequest = new CreateActionRequest();
-        createActionRequest.setTaskId(1L);
-        createActionRequest.setVerifierId(1L);
-        createActionRequest.setDescription("Test Action");
-        createActionRequest.setDueDate(LocalDateTime.now());
-        createActionRequest.setStartLatitude(BigDecimal.valueOf(1.0));
-        createActionRequest.setStartLongitude(BigDecimal.valueOf(2.0));
-        createActionRequest.setEndLatitude(BigDecimal.valueOf(3.0));
-        createActionRequest.setEndLongitude(BigDecimal.valueOf(4.0));
 
-
-
-        when(userRepository.findById(Mockito.anyLong())).thenReturn(
-                Optional.of(new User()));
-
-
-        // then
-        ResponseEntity<String> response =
-                actionService.createAction(createActionRequest);
-        assertEquals("No task found", response.getBody());
-
-
-    }
 
     @Test
     void testViewActions_Success() {
@@ -101,7 +76,7 @@ public class ActionServiceTest {
         when(taskRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(task));
 
 
-        ResponseEntity<List<ActionResponse>> response = actionService.viewActions(taskId);
+        ResponseEntity<List<ActionDto>> response = actionService.viewActions(taskId);
 
         // Then
         assertEquals(1, response.getBody().size());

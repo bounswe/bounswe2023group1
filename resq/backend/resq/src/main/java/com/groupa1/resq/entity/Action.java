@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @NoArgsConstructor
 @Entity
@@ -37,6 +38,9 @@ public class Action extends BaseEntity {
 
     private BigDecimal endLatitude;
     private BigDecimal endLongitude;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="action")
+    private Set<Comment> comments;
 
 }
 

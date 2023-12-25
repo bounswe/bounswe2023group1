@@ -9,4 +9,5 @@ import java.util.List;
 public interface ActionRepository extends JpaRepository<Action, Long> {
 
     List<Action> findAll(Specification<Action> specification);
+
 }

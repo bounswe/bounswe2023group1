@@ -28,8 +28,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
-
-
 interface CategoryTreeNodeService {
     @GET("categorytreenode/getMainCategories")
     suspend fun getMainCategories(
@@ -66,6 +64,12 @@ interface NeedService {
         @Query("longitude") longitude: Double,
         @Query("distance") distance: Double,
         @Header("Authorization") jwtToken: String
+    ): Call<List<Need>>
+
+    @GET("need/viewNeedsByUserId")
+    fun viewNeedsByUserId(
+        @Query("userId") userId: Int,
+        @Header("Authorization") jwtToken: String,
     ): Call<List<Need>>
 }
 
@@ -156,6 +160,41 @@ class ResqService(appContext: Context) {
         )
     }
 
+    // Need methods
+    suspend fun createNeed(request: CreateNeedRequestBody): Response<Int> {
+        val userId = userSessionManager.getUserId()
+        val token = userSessionManager.getUserToken() ?: ""
+
+        return needService.createNeed(
+            userId = userId,
+            jwtToken = "Bearer $token",
+            requestBody = request
+        )
+    }
+
+    fun filterNeedByDistance(
+        latitude: Double,
+        longitude: Double,
+        distance: Double,
+        onSuccess: (List<Need>) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val token = userSessionManager.getUserToken() ?: ""
+        needService.filterNeedByDistance(latitude, longitude, distance, "Bearer $token").enqueue(object :
+            Callback<List<Need>> {
+            override fun onResponse(call: Call<List<Need>>, response: Response<List<Need>>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { onSuccess(it) }
+                } else {
+                    onError(RuntimeException("Response not successful"))
+                }
+            }
+            override fun onFailure(call: Call<List<Need>>, t: Throwable) {
+                onError(t)
+            }
+        })
+    }
+
     fun filterResourceByDistance(
         latitude: Double,
         longitude: Double,
@@ -179,27 +218,13 @@ class ResqService(appContext: Context) {
         })
     }
 
-    // Need methods
-    suspend fun createNeed(request: CreateNeedRequestBody): Response<Int> {
-        val userId = userSessionManager.getUserId()
-        val token = userSessionManager.getUserToken() ?: ""
-
-        return needService.createNeed(
-            userId = userId,
-            jwtToken = "Bearer $token",
-            requestBody = request
-        )
-    }
-
-    fun filterNeedByDistance(
-        latitude: Double,
-        longitude: Double,
-        distance: Double,
+    fun viewNeedsByUserId(
         onSuccess: (List<Need>) -> Unit,
         onError: (Throwable) -> Unit
     ) {
         val token = userSessionManager.getUserToken() ?: ""
-        needService.filterNeedByDistance(latitude, longitude, distance, "Bearer $token").enqueue(object :
+        val userId = userSessionManager.getUserId()
+        needService.viewNeedsByUserId(userId = userId, "Bearer $token").enqueue(object :
             Callback<List<Need>> {
             override fun onResponse(call: Call<List<Need>>, response: Response<List<Need>>) {
                 if (response.isSuccessful) {
@@ -261,28 +286,29 @@ class ResqService(appContext: Context) {
             state = response.body()?.state,
             emailConfirmed = response.body()?.emailConfirmed,
             privacyPolicyAccepted = response.body()?.privacyPolicyAccepted,
-            birth_date = response.body()?.birth_date.toString(),
+            birth_date = response.body()?.birth_date,
         )
     }
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun updateUserData(profileData: ProfileData): Response<String> {
         val token = userSessionManager.getUserToken() ?: ""
+        Log.d("AAA", "updateUserData: $profileData")
+        Log.d("AAA", "token: $token")
         val userId = userSessionManager.getUserId()
-
         val request = UserInfoRequest(
             name = profileData.name ?: "",
             surname = profileData.surname ?: "",
-            birth_date = null,
-            Country = profileData.country ?: "",
-            City = profileData.city ?: "",
-            State = profileData.state ?: "",
+            birth_date = profileData.birth_date ?: null,
+            country = profileData.country ?: "",
+            city = profileData.city ?: "",
+            state = profileData.state ?: "",
             bloodType = profileData.bloodType ?: "",
             height = profileData.height,
             weight = profileData.weight,
             gender = profileData.gender ?: "",
             phoneNumber = profileData.phoneNumber ?: "",
-            isEmailConfirmed = true,
-            isPrivacyPolicyAccepted = true
+            emailConfirmed = true,
+            privacyPolicyAccepted = true
         )
         return profileService.updateProfile(
             userId = userId,
@@ -314,7 +340,6 @@ class ResqService(appContext: Context) {
         Log.d("AAA", "getNotifications: ${response.isSuccessful}")
         return response
     }
-
     fun getUserInfo(userId: Int, callback: (UserInfo?) -> Unit) {
         val token = userSessionManager.getUserToken() ?: ""
         profileService.getUserInfo(userId, "Bearer $token").enqueue(object : Callback<UserInfo> {
@@ -331,3 +356,4 @@ class ResqService(appContext: Context) {
         })
     }
 }
+

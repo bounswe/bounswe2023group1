@@ -1,5 +1,6 @@
 package com.groupa1.resq.request;
 
+import com.groupa1.resq.entity.enums.ESize;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -11,6 +12,6 @@ public class CreateNeedRequest {
     private BigDecimal longitude;
     private String categoryTreeId;
     private Integer quantity;
-    private String size;
+    private ESize size;
     private Boolean isRecurrent;
 }
