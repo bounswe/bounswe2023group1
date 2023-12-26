@@ -101,6 +101,24 @@ export default function Request() {
                     await createNeed(localStorage.getItem('userId'), foodRequestData);
                 }
 
+                Object.entries(needData.clothingQuantities || {}).forEach(async ([category, quantity]) => {
+                    if (quantity > 0) {
+                        const clothingRequestData = {
+                            ...commonData,
+                            description: "clothing",
+                            categoryTreeId: 39, // Assuming 39 is the category ID for clothing
+                            quantity: parseInt(quantity, 10), // Convert string to integer
+                            size: category,
+                            isRecurrent: false
+                        };
+                        try {
+                            await createNeed(localStorage.getItem('userId'), clothingRequestData);
+                        } catch (error) {
+                            console.error(`Error creating request for ${category}:`, error);
+                        }
+                    }
+                });
+
                 console.log("Requests created successfully!");
                 alert('Requests created successfully!');
             } catch (error) {
