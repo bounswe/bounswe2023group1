@@ -7,6 +7,9 @@ import { Typography, Grid, FormControlLabel, Checkbox, TextField, Chip, Box, For
 import { useTheme } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { FormHelperText } from '@mui/material';
+import { NeedContext } from './NeedContext';
+import { useContext } from 'react';
+
 
 const illnesses = [
     'Diabetes',
@@ -14,7 +17,6 @@ const illnesses = [
     'Lactose Intolerance',
     'Nut Allergy',
     'Vegan',
-    // Add more as needed
 ];
 
 const customTheme = createTheme({
@@ -25,7 +27,6 @@ const customTheme = createTheme({
     },
 });
 
-// Function to get styles for menu items (from your MultipleSelectChip component)
 function getStyles(name, selectedNames, customTheme) {
     return {
         fontWeight:
@@ -126,30 +127,36 @@ function CustomizedSelects() {
     );
 }
 
-export default function RequestDetails() {
+export default function RequestDetails({ setNeedData }) {
 
     const [otherRestrictions, setOtherRestrictions] = useState('');
     const [isWaterChecked, setIsWaterChecked] = useState(true);
     const [isFoodChecked, setIsFoodChecked] = useState(true);
     const [selectedIllnesses, setSelectedIllnesses] = useState([]);
 
+    const { updateState } = useContext(NeedContext)
+
+    const handleWaterCheck = (event) => {
+        setIsWaterChecked(event.target.checked);
+        updateState({ water: event.target.checked });
+    };
+
+    const handleFoodCheck = (event) => {
+        setIsFoodChecked(event.target.checked);
+        updateState({ food: event.target.checked });
+    };
+
+    const handleIllnessChange = (event) => {
+        const illnesses = event.target.value;
+        setSelectedIllnesses(illnesses);
+        updateState({ illnesses: illnesses });
+    };
+
+
     const handleOtherRestrictionsChange = (event) => {
         setOtherRestrictions(event.target.value);
     };
 
-    const handleIllnessSelection = (illness) => {
-        // Toggle illness in the selected illnesses array
-        if (selectedIllnesses.includes(illness)) {
-            setSelectedIllnesses(selectedIllnesses.filter(item => item !== illness));
-        } else {
-            setSelectedIllnesses([...selectedIllnesses, illness]);
-        }
-    };
-
-    // Handle change in selected illnesses
-    const handleIllnessChange = (event) => {
-        setSelectedIllnesses(event.target.value);
-    };
 
     // Menu properties
     const ITEM_HEIGHT = 48;
@@ -177,14 +184,14 @@ export default function RequestDetails() {
             <Grid container spacing={3}>
                 <Grid item xs={12} >
                     <FormControlLabel
-                        control={<Checkbox color="primary" name="water" value="yes" checked={isWaterChecked} onChange={(e) => setIsWaterChecked(e.target.checked)} />}
+                        control={<Checkbox checked={isWaterChecked} onChange={handleWaterCheck} color="primary" />}
                         label="Water"
                     />
                 </Grid>
                 {/* Food Checkbox and Chip */}
                 <Grid item xs={12}>
                     <FormControlLabel
-                        control={<Checkbox color="primary" name="food" value="yes" checked={isFoodChecked} onChange={(e) => setIsFoodChecked(e.target.checked)} />}
+                        control={<Checkbox checked={isFoodChecked} onChange={handleFoodCheck} color="primary" />}
                         label="Food"
                     />
                     {isFoodChecked && (
@@ -210,6 +217,7 @@ export default function RequestDetails() {
                                     <MenuItem
                                         key={illness}
                                         value={illness}
+
                                         style={getStyles(illness, selectedIllnesses, customTheme)}
                                     >
                                         {illness}

@@ -111,9 +111,26 @@ export function viewNeedsByFilter(filterParams) {
     return axios.get(`${NEED_API_BASE_URL}/viewNeedsByFilter`, {params: filterParams});
 }
 
+
 export function createNeed(userId, createNeedRequest) {
-    return axios.post(`${NEED_API_BASE_URL}/createNeed?userId=${userId}`, createNeedRequest);
+    console.log("Creating need with userId:", userId, "and data:", createNeedRequest);
+
+    return axios.post(`${NEED_API_BASE_URL}/createNeed?userId=${userId}`, createNeedRequest)
+        .then(response => {
+            console.log("Response from createNeed API:", response);
+            return response;
+        })
+        .catch(error => {
+            console.error("Error in createNeed API:", error);
+            throw error;
+        });
 }
+
+
+
+//export function createNeed(userId, createNeedRequest) {
+//return axios.post(`${NEED_API_BASE_URL}/createNeed?userId=${userId}`, createNeedRequest);
+//}
 
 export function viewAllNeeds() {
     return axios.get(`${NEED_API_BASE_URL}/viewAllNeeds`);

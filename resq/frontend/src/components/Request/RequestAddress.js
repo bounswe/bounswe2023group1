@@ -19,7 +19,7 @@ const customTheme = createTheme({
     },
 });
 
-export default function CreateRequestForm({requestData, setRequestData}) {
+export default function CreateRequestForm({ needData, setNeedData }) {
     const [address1, setAddress1] = useState("")
     const [address2, setAddress2] = useState("")
     const [city, setCity] = useState("")
@@ -49,8 +49,8 @@ export default function CreateRequestForm({requestData, setRequestData}) {
                 const data = response?.data;
                 if (data.results && data.results.length > 0) {
                     const location = data.results[0].geometry.location;
-                    setRequestData(
-                        {...requestData, latitude: location.lat, longitude: location.lng}
+                    setNeedData(
+                        {...needData, latitude: location.lat, longitude: location.lng}
                     )
                 } else {
                     console.error('Geocoding failed: No results found');
@@ -60,7 +60,7 @@ export default function CreateRequestForm({requestData, setRequestData}) {
             }
         };
         handleGeocode();
-    }, [address1, address2, city, state, country, zip, fname, lname, setRequestData, requestData]);
+    }, [address1, address2, city, state, country, zip, fname, lname, needData, setNeedData]);
 
     return (
         <ThemeProvider theme={customTheme}>
