@@ -24,14 +24,14 @@ public class AnnotationController {
         return annotationService.getAnnotation(id);
     }
 
-    @PostMapping("/{id}")
-    public String createAnnotation(@PathVariable String id, @RequestBody String value) {
-        return annotationService.createAnnotation(id, value);
+    @PostMapping("/")
+    public String createAnnotation(@RequestBody String value) {
+        return "anno create";
     }
 
     @PutMapping("/{id}")
     public String updateAnnotation(@PathVariable String id, @RequestBody String value) {
-        return annotationService.updateAnnotation(id, value);
+        return annotationService.createAnnotation(id, value);
     }
 
     @DeleteMapping("/{id}")
