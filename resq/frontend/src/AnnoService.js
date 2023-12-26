@@ -16,7 +16,7 @@ export async function editAnno(annotation) {
 
 export async function getAllAnnos() {
     const {data} = await axios.get(`${ANNO_BASE_URL}/`);
-    return data.map(({value})=>JSON.parse(value))
+    return data
 }
 
 export async function deleteAnno(annotation) {

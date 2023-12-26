@@ -17,47 +17,6 @@ import {Add, Delete, Edit} from "@mui/icons-material";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {ANNO_BASE_URL, deleteAnno, editAnno, getAllAnnos} from "../AnnoService";
 
-const mock_annots = [{
-    "@context": "http://www.w3.org/ns/anno.jsonld",
-    "id": `${ANNO_BASE_URL}/anno1`,
-    "type": "Annotation",
-    "bodyValue": "This is no longer true, as we have recently discovered.",
-    "target": {
-        "source": `${ANNO_BASE_URL}/page1.html`,
-        "selector": {
-            "type": "XPathSelector",
-            "value": "//div[@id=\"Facility1\"]",
-            "refinedBy": {
-                "type": "RangeSelector",
-                "startSelector": {"type": "XPathSelector", "value": "/p[1]"},
-                "endSelector": {"type": "XPathSelector", "value": "/p[1]"},
-                "refinedBy": {"type": "TextPositionSelector", "start": 1, "end": 29}
-            }
-        }
-    }
-},
-    {
-        "@context": "http://www.w3.org/ns/anno.jsonld",
-        "id": `${ANNO_BASE_URL}/anno2`,
-        "type": "Annotation",
-        "bodyValue": "Test test1 test2",
-        "target": {
-            "source": `${ANNO_BASE_URL}/page1.html`,
-            "selector": {
-                "type": "XPathSelector",
-                "value": "//div[@id=\"Facility2\"]",
-                "refinedBy": {
-                    "type": "RangeSelector",
-                    "startSelector": {"type": "XPathSelector", "value": "/p[1]"},
-                    "endSelector": {"type": "XPathSelector", "value": "/p[2]"},
-                    "refinedBy": {"type": "TextPositionSelector", "start": 4, "end": 2}
-                }
-            }
-        }
-    }
-
-]
-
 const getXpathParameters = (xpath) => {
     const startOffset = xpath.startOffset
     const endOffset = xpath.endOffset
