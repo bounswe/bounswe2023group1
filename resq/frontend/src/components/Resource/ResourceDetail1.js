@@ -67,8 +67,9 @@ export default function ResourceDetails1({resourceData, setResourceData}) {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    {(isMaterialResourceChecked || isHumanResourceChecked) && (
-                        <FormControl sx={{m: 1, width: 300, mt: 3}}>
+                    {isLoading && <Typography>Loading categories...</Typography>}
+                    {!isLoading && (isMaterialResourceChecked || isHumanResourceChecked) && (
+                        <FormControl fullWidth sx={{ m: 1, mt: 3 }}>
                             <Autocomplete
                                 disablePortal
                                 id="resource-category-combo-box"
