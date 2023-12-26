@@ -4,6 +4,8 @@ import { Typography, Grid, FormControlLabel, Checkbox, TextField, Chip, Box, For
 import { createTheme } from '@mui/material/styles';
 import { FormHelperText } from '@mui/material';
 import { InputAdornment } from '@mui/material';
+import { NeedContext } from './NeedContext';
+import { useContext } from 'react';
 
 
 const customTheme = createTheme({
@@ -14,7 +16,8 @@ const customTheme = createTheme({
     },
 });
 
-export default function RequestDetails2({ setNeedData }) {
+export default function RequestDetails2() {
+    const { updateState } = useContext(NeedContext);
     const [isClothingChecked, setIsClothingChecked] = useState(false);
 
     const [clothingQuantities, setClothingQuantities] = useState({});
@@ -27,20 +30,21 @@ export default function RequestDetails2({ setNeedData }) {
         'Baby-0/2', 'Baby-2/4'
     ];
 
-    useEffect(() => {
-        setNeedData(prevData => ({
-            ...prevData,
-            clothingQuantities: clothingQuantities
-        }));
-    }, [clothingQuantities, setNeedData]);
 
     const handleClothingQuantityChange = (category, event) => {
-        const value = event.target.value.replace(/^0+/, '') || '0';
+        const quantity = event.target.value.replace(/^0+/, '') || '0';
         setClothingQuantities(prevQuantities => ({
             ...prevQuantities,
-            [category]: value
+            [category]: quantity
         }));
+        updateState({ clothingQuantities: { ...clothingQuantities, [category]: quantity } });
     };
+
+    useEffect(() => {
+        if (isClothingChecked) {
+            updateState({ clothingQuantities });
+        }
+    }, [clothingQuantities, isClothingChecked, updateState]);
 
 
 

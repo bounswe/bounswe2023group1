@@ -7,6 +7,8 @@ import RequestDetails3 from './RequestDetails3';
 import RequestReview from './RequestReview';
 import { NeedProvider } from './NeedContext';
 import { createNeed } from '../../AppService';
+import { NeedContext } from './NeedContext';
+import { useContext } from 'react';
 
 function Copyright(props) {
     return (
@@ -26,15 +28,16 @@ const customTheme = createTheme({
 
 export default function Request() {
     const [activeStep, setActiveStep] = useState(0);
+    const { needs, resetNeeds } = useContext(NeedContext);
     const [needData, setNeedData] = useState({ senderId: parseInt(localStorage.getItem('userId')), gender: "MALE" });
     const steps = ['Request address', 'Recurrent Needs', 'Clothing Needs', 'Further Needs'];
 
     function getStepContent(step) {
         switch (step) {
-            case 0: return <RequestAddress needData={needData} setNeedData={setNeedData} />;
-            case 1: return <RequestDetails1 needData={needData} setNeedData={setNeedData} />;
-            case 2: return <RequestDetails2 needData={needData} setNeedData={setNeedData} />;
-            case 3: return <RequestDetails3 needData={needData} setNeedData={setNeedData} />;
+            case 0: return <RequestAddress />;
+            case 1: return <RequestDetails1 />;
+            case 2: return <RequestDetails2 />;
+            case 3: return <RequestDetails3 />;
             default: throw new Error('Unknown step');
         }
     }
@@ -99,9 +102,12 @@ export default function Request() {
                     }
 
                 });
-
+                for (const need of needs) {
+                    await createNeed(localStorage.getItem('userId'), need);
+                }
                 console.log("All requests have been created");
                 alert('Requests created successfully!');
+                resetNeeds();
             } catch (error) {
                 console.error('Error while creating requests:', error);
                 alert('Failed to create requests.');

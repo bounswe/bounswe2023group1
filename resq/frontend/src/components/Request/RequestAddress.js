@@ -10,6 +10,8 @@ import disasterImage from '../../disaster.png';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
+import { NeedContext } from './NeedContext';
+import { useContext } from 'react';
 
 
 const customTheme = createTheme({
@@ -29,6 +31,7 @@ export default function CreateRequestForm({ needData, setNeedData }) {
     const [zip, setZip] = useState("")
     const [fname, setFname] = useState("")
     const [lname, setLname] = useState("")
+    const { addNeed } = useContext(NeedContext);
 
     const handleGeocode = async () => {
         const address = `${address1}, ${address2}, ${city}, ${state}, ${country}`;
@@ -37,15 +40,16 @@ export default function CreateRequestForm({ needData, setNeedData }) {
         try {
             const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`);
             const data = await response.json();
+
+
             if (data.results && data.results.length > 0) {
                 const location = data.results[0].geometry.location;
-                setNeedData({ ...needData, latitude: location.lat, longitude: location.lng });
+                addNeed({ latitude: location.lat, longitude: location.lng });
             } else {
-                setNeedData({ ...needData, latitude: 0, longitude: 0 });
+                console.error('Geocoding failed: No results found.');
             }
         } catch (error) {
             console.error('Geocoding error:', error);
-            setNeedData({ ...needData, latitude: 0, longitude: 0 });
         }
     };
 

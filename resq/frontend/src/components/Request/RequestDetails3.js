@@ -51,6 +51,8 @@ export default function RequestDetails3() {
     const [isShelterChecked, setIsShelterChecked] = useState(false);
     const [isHeaterChecked, setIsHeaterChecked] = useState(false);
     const [isMedicineChecked, setIsMedicineChecked] = useState(false);
+    const { needs, updateState } = useContext(NeedContext);
+    const indexToUpdate = 0;
 
 
     const handleIllnessChange = (event) => {
@@ -81,8 +83,7 @@ export default function RequestDetails3() {
     };
 
     useEffect(() => {
-        updateNeedData({
-            ...needData,
+        updateState(indexToUpdate, {
             shelterChecked: isShelterChecked,
             heaterChecked: isHeaterChecked,
             medicineChecked: isMedicineChecked,
