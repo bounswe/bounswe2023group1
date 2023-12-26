@@ -34,11 +34,11 @@ const SmallRedCircle = () =>
 
 const queryClient = new QueryClient()
 
-function SignOut({setToken, setRole}) {
+function SignOut({setToken, setRoles}) {
     const navigate = useNavigate();
     const signOut = () => {
         setToken(null)
-        setRole("");
+        setRoles([]);
         navigate('/');
     }
 
@@ -161,7 +161,7 @@ function App() {
                                                             <NotificationsIcon/>
                                                         </Badge>
                                                     </Nav.Link>
-                                                    <SignOut setToken={setToken} setRole={setRoles}/>
+                                                    <SignOut setToken={setToken} setRoles={setRoles}/>
                                                 </> :
                                                 <>
                                                     <Nav.Link key={'/signin'} href={'/signin'}
@@ -183,7 +183,7 @@ function App() {
                                 <Routes>
                                     {filteredNavLinks.map(({ path, component }) => (
                                         <Route key={path} path={path}
-                                            element={React.createElement(component, { token, setToken, role: roles, setRole: setRoles, uid })} />
+                                            element={React.createElement(component, { token, setToken, role: roles, setRoles: setRoles, uid })} />
                                     ))}
                                     <Route path="/rolerequest" state={{token, setToken}}
                                            element={React.createElement(RoleRequest, {token, setToken})}/>

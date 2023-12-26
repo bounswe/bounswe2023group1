@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { RootNode } from "./CategoryTree";
+import {RootNode} from "./CategoryTree";
 
-const API_BASE_URL = 'https://api.resq.org.tr'
+const API_BASE_URL = 'https://16.170.231.99'
 const USER_API_BASE_URL = API_BASE_URL + '/resq/api/v1/user';
 const AUTH_API_BASE_URL = API_BASE_URL + '/resq/api/v1/auth';
 const ACTION_API_BASE_URL = API_BASE_URL + '/resq/api/v1/action';
@@ -13,7 +13,7 @@ const TASK_API_BASE_URL = API_BASE_URL + '/resq/api/v1/task';
 const USER_INFO_API_BASE_URL = API_BASE_URL + '/resq/api/v1/profile';
 
 export async function postRequestRole(userId, role) {
-    const queryParams = new URLSearchParams({ userId, role }).toString();
+    const queryParams = new URLSearchParams({userId, role}).toString();
     const url = `${USER_API_BASE_URL}/requestRole?${queryParams}`;
 
     const config = {
@@ -41,8 +41,8 @@ export async function postRequestRole(userId, role) {
 */
 
 export async function getUserInfo(userId) {
-    const { data } = await axios.get(`${USER_API_BASE_URL}/getUserInfo?userId=${userId}`);
-    return data
+    const {data} = await axios.get(`${USER_API_BASE_URL}/getUserInfo?userId=${userId}`);
+    return {id: userId, ...data}
 }
 
 export function getAllAccess() {
@@ -108,7 +108,7 @@ export function getSubCategoryByName(name) {
 }
 
 export function viewNeedsByFilter(filterParams) {
-    return axios.get(`${NEED_API_BASE_URL}/viewNeedsByFilter`, { params: filterParams });
+    return axios.get(`${NEED_API_BASE_URL}/viewNeedsByFilter`, {params: filterParams});
 }
 
 export function createNeed(userId, createNeedRequest) {
@@ -160,7 +160,7 @@ export function getAllResources() {
 }
 
 export async function getCategoryTree() {
-    const { data } = await axios.get(`${CATEGORY_API_BASE_URL}/getMainCategories`);
+    const {data} = await axios.get(`${CATEGORY_API_BASE_URL}/getMainCategories`);
 
     return new RootNode(data)
 }
@@ -172,12 +172,36 @@ export function createTask(createTaskRequest) {
 export function acceptTask(taskId) {
     return axios.post(`${TASK_API_BASE_URL}/acceptTask?taskId=${taskId}`);
 }
+
 export function completeTask(taskId) {
     return axios.post(`${TASK_API_BASE_URL}/completeTask?taskId=${taskId}`);
 }
+
 export function completeAction(actionId) {
     return axios.post(`${ACTION_API_BASE_URL}/completeAction?actionId=${actionId}`);
 }
+
+export function createAction(action) {
+    return axios.post(`${ACTION_API_BASE_URL}/createAction`, action);
+}
+
+export function addResources(body) {
+    return axios.post(`${TASK_API_BASE_URL}/addResources`, body);
+}
+
+export function addRequests(body) {
+    return axios.post(`${TASK_API_BASE_URL}/addRequestToTask`, body);
+}
+
+export function getAllUsers() {
+    return Promise.all([...Array(40).keys()]
+        .map(function (i) {
+            return getUserInfo(i).catch(() => null);
+        }))
+        .then(results => results.filter(a => a))
+}
+
+
 export async function viewAllTasks(userId) {
     const {data} = await axios.get(`${TASK_API_BASE_URL}/viewTasks?userId=${userId}`);
     return data
