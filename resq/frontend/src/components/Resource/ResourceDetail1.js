@@ -23,8 +23,8 @@ export default function ResourceDetails1({resourceData, setResourceData}) {
 
     useEffect(() => {
         const description = {
-            resourceType: isMaterialResourceChecked ? 'material' : 'human',
-            resourceId: selectedResource?.id || ''
+            //resourceType: isMaterialResourceChecked ? 'material' : 'human',
+            categoryTreeId: selectedResource?.id || ''
         };
         setResourceData({...resourceData, ...description});
     }, [isMaterialResourceChecked, isHumanResourceChecked, selectedResource, setResourceData, resourceData]);

@@ -48,6 +48,7 @@ const steps = ['Resource delivery address', 'Type of Resource', 'Resource Detail
 
 export default function Resource() {
     const [activeStep, setActiveStep] = React.useState(0);
+    const [image, setImage] = useState(null)
     const [resourceData, setResourceData] = useState({
         senderId: parseInt(localStorage.getItem('userId')),
         gender: "MALE"
@@ -62,7 +63,7 @@ export default function Resource() {
             case 2:
                 return <ResourceDetail2 resourceData={resourceData} setResourceData={setResourceData}/>;
             case 3:
-                return <ResourceDetail3 resourceData={resourceData} setResourceData={setResourceData}/>;
+                return <ResourceDetail3 setImage={setImage}/>;
             default:
                 throw new Error('Unknown step');
         }
@@ -70,7 +71,7 @@ export default function Resource() {
 
     const handleNext = async () => {
         if (activeStep === steps.length - 1) {
-            await createResource(resourceData)
+            await createResource(resourceData, image)
             alert('Resource created successfully!');
         } else {
             setActiveStep(activeStep + 1);
