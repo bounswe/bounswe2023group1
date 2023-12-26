@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { RootNode } from "./CategoryTree";
+import {RootNode} from "./CategoryTree";
 
-const API_BASE_URL = 'https://api.resq.org.tr'
+const API_BASE_URL = 'https://51.20.190.55'
 const USER_API_BASE_URL = API_BASE_URL + '/resq/api/v1/user';
 const AUTH_API_BASE_URL = API_BASE_URL + '/resq/api/v1/auth';
 const ACTION_API_BASE_URL = API_BASE_URL + '/resq/api/v1/action';
@@ -13,7 +13,7 @@ const TASK_API_BASE_URL = API_BASE_URL + '/resq/api/v1/task';
 const USER_INFO_API_BASE_URL = API_BASE_URL + '/resq/api/v1/profile';
 
 export async function postRequestRole(userId, role) {
-    const queryParams = new URLSearchParams({ userId, role }).toString();
+    const queryParams = new URLSearchParams({userId, role}).toString();
     const url = `${USER_API_BASE_URL}/requestRole?${queryParams}`;
 
     const config = {
@@ -41,7 +41,7 @@ export async function postRequestRole(userId, role) {
 */
 
 export async function getUserInfo(userId) {
-    const { data } = await axios.get(`${USER_API_BASE_URL}/getUserInfo?userId=${userId}`);
+    const {data} = await axios.get(`${USER_API_BASE_URL}/getUserInfo?userId=${userId}`);
     return data
 }
 
@@ -108,7 +108,7 @@ export function getSubCategoryByName(name) {
 }
 
 export function viewNeedsByFilter(filterParams) {
-    return axios.get(`${NEED_API_BASE_URL}/viewNeedsByFilter`, { params: filterParams });
+    return axios.get(`${NEED_API_BASE_URL}/viewNeedsByFilter`, {params: filterParams});
 }
 
 export function createNeed(userId, createNeedRequest) {
@@ -151,8 +151,11 @@ export function viewAllRequests() {
     return axios.get(`${REQUEST_API_BASE_URL}/viewAllRequests`);
 }
 
-export function createResource(createResourceRequest) {
-    return axios.post(`${RESOURCE_API_BASE_URL}/createResource`, createResourceRequest);
+export function createResource(createResourceRequest, file) {
+    const form = new FormData();
+    form.append("createResourceRequest", new Blob([JSON.stringify(createResourceRequest)], { type : 'application/json' }))
+    form.append("file", file)
+    return axios.post(`${RESOURCE_API_BASE_URL}/createResource`, form);
 }
 
 export function getAllResources() {
@@ -160,7 +163,7 @@ export function getAllResources() {
 }
 
 export async function getCategoryTree() {
-    const { data } = await axios.get(`${CATEGORY_API_BASE_URL}/getMainCategories`);
+    const {data} = await axios.get(`${CATEGORY_API_BASE_URL}/getMainCategories`);
 
     return new RootNode(data)
 }
@@ -172,12 +175,15 @@ export function createTask(createTaskRequest) {
 export function acceptTask(taskId) {
     return axios.post(`${TASK_API_BASE_URL}/acceptTask?taskId=${taskId}`);
 }
+
 export function completeTask(taskId) {
     return axios.post(`${TASK_API_BASE_URL}/completeTask?taskId=${taskId}`);
 }
+
 export function completeAction(actionId) {
     return axios.post(`${ACTION_API_BASE_URL}/completeAction?actionId=${actionId}`);
 }
+
 export async function viewAllTasks(userId) {
     const {data} = await axios.get(`${TASK_API_BASE_URL}/viewTasks?userId=${userId}`);
     return data
