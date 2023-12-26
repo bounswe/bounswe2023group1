@@ -72,24 +72,40 @@ export default function Request() {
     const handleNext = async () => {
         if (activeStep === steps.length - 1) {
             try {
-                const formattedData = {
-                    description: needData.description,
+                const commonData = {
                     latitude: needData.latitude,
                     longitude: needData.longitude,
-                    categoryTreeId: needData.categoryTreeId,
-                    quantity: needData.quantity,
-                    size: needData.size,
-                    isRecurrent: needData.isRecurrent
                 };
 
-                console.log("Submitting need data:", formattedData);
+                if (needData.water) {
+                    const waterRequestData = {
+                        ...commonData,
+                        description: "water",
+                        categoryTreeId: needData.waterCategoryTreeId,
+                        quantity: needData.totalPeople,
+                        size: needData.totalPeople.toString(),
+                        isRecurrent: true
+                    };
+                    await createNeed(localStorage.getItem('userId'), waterRequestData);
+                }
 
-                await createNeed(localStorage.getItem('userId'), formattedData);
-                console.log("Need created successfully!");
-                alert('Resource created successfully!');
+                if (needData.food) {
+                    const foodRequestData = {
+                        ...commonData,
+                        description: "food",
+                        categoryTreeId: needData.foodCategoryTreeId,
+                        quantity: needData.totalPeople,
+                        size: needData.totalPeople.toString(),
+                        isRecurrent: true
+                    };
+                    await createNeed(localStorage.getItem('userId'), foodRequestData);
+                }
+
+                console.log("Requests created successfully!");
+                alert('Requests created successfully!');
             } catch (error) {
-                console.error('Error while creating resource:', error);
-                alert('Failed to create resource.');
+                console.error('Error while creating requests:', error);
+                alert('Failed to create requests.');
             }
         } else {
             setActiveStep(activeStep + 1);
