@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/annotation")
+@RequestMapping("/annotations")
 public class AnnotationController {
 
     @Autowired
     private AnnotationService annotationService;
 
-    @GetMapping("/getAllAnnotations")
+    @GetMapping("/")
     public List<Annotation> getAllAnnotations() {
         return annotationService.getAllAnnotations();
     }
@@ -24,18 +24,18 @@ public class AnnotationController {
         return annotationService.getAnnotation(id);
     }
 
-    @PostMapping("/createAnnotation")
-    public String createAnnotation(@RequestParam String id, @RequestParam String value) {
+    @PostMapping("/{id}")
+    public String createAnnotation(@PathVariable String id, @RequestBody String value) {
         return annotationService.createAnnotation(id, value);
     }
 
-    @PutMapping("/updateAnnotation")
-    public String updateAnnotation(@RequestParam String id, @RequestParam String value) {
+    @PutMapping("/{id}")
+    public String updateAnnotation(@PathVariable String id, @RequestBody String value) {
         return annotationService.updateAnnotation(id, value);
     }
 
-    @DeleteMapping("/deleteAnnotation")
-    public String deleteAnnotation(@RequestParam String id) {
+    @DeleteMapping("/{id}")
+    public String deleteAnnotation(@PathVariable String id) {
         return annotationService.deleteAnnotation(id);
     }
 
