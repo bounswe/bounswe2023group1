@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class AnnotationService {
@@ -13,8 +15,19 @@ public class AnnotationService {
     @Autowired
     private AnnotationRepository annotationRepository;
 
-    public List<Annotation> getAllAnnotations() {
-        return annotationRepository.findAll();
+    public String getAllAnnotations() {
+        return "[" + annotationRepository
+                .findAll()
+                .stream()
+                .map(Annotation::getValue)
+                .collect(Collectors.joining(", ")) + "]";
+    }
+
+    public String createAnnotation(String value) {
+        String id = UUID.randomUUID().toString();
+        String toAdd = "\\\"id\\\":\\\"https://annotation.resq.org.tr/annotations/" + id + "\\\",";
+        String v2 = "\"{\\" + toAdd + value.substring(3);
+        return createAnnotation(id, v2);
     }
 
     public String createAnnotation(String id, String value) {
@@ -28,11 +41,12 @@ public class AnnotationService {
     public String updateAnnotation(String id, String value) {
         Annotation annotation = annotationRepository.findById(id).orElse(null);
         if (annotation == null) {
-            return "Annotation not found";
+            return createAnnotation(id, value);
+        } else {
+            annotation.setValue(value);
+            annotationRepository.save(annotation);
+            return "Annotation updated";
         }
-        annotation.setValue(value);
-        annotationRepository.save(annotation);
-        return "Annotation updated";
     }
 
     public String deleteAnnotation(String id) {
