@@ -6,16 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.regex.Pattern;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/annotation")
+@RequestMapping("/annotations")
 public class AnnotationController {
 
     @Autowired
     private AnnotationService annotationService;
 
-    @GetMapping("/getAllAnnotations")
-    public List<Annotation> getAllAnnotations() {
+    @GetMapping("/")
+    public String getAllAnnotations() {
         return annotationService.getAllAnnotations();
     }
 
@@ -24,18 +27,18 @@ public class AnnotationController {
         return annotationService.getAnnotation(id);
     }
 
-    @PostMapping("/createAnnotation")
-    public String createAnnotation(@RequestParam String id, @RequestParam String value) {
-        return annotationService.createAnnotation(id, value);
+    @PostMapping("/")
+    public String createAnnotation(@RequestBody String value) {
+        return annotationService.createAnnotation(value);
     }
 
-    @PutMapping("/updateAnnotation")
-    public String updateAnnotation(@RequestParam String id, @RequestParam String value) {
+    @PutMapping("/{id}")
+    public String updateAnnotation(@PathVariable String id, @RequestBody String value) {
         return annotationService.updateAnnotation(id, value);
     }
 
-    @DeleteMapping("/deleteAnnotation")
-    public String deleteAnnotation(@RequestParam String id) {
+    @DeleteMapping("/{id}")
+    public String deleteAnnotation(@PathVariable String id) {
         return annotationService.deleteAnnotation(id);
     }
 

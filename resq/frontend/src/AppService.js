@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { RootNode } from "./CategoryTree";
+import {RootNode} from "./CategoryTree";
 
-const API_BASE_URL = 'https://api.resq.org.tr'
+const API_BASE_URL = 'https://51.20.190.55'
 const USER_API_BASE_URL = API_BASE_URL + '/resq/api/v1/user';
 const AUTH_API_BASE_URL = API_BASE_URL + '/resq/api/v1/auth';
 const ACTION_API_BASE_URL = API_BASE_URL + '/resq/api/v1/action';
@@ -13,7 +13,7 @@ const TASK_API_BASE_URL = API_BASE_URL + '/resq/api/v1/task';
 const USER_INFO_API_BASE_URL = API_BASE_URL + '/resq/api/v1/profile';
 
 export async function postRequestRole(userId, role) {
-    const queryParams = new URLSearchParams({ userId, role }).toString();
+    const queryParams = new URLSearchParams({userId, role}).toString();
     const url = `${USER_API_BASE_URL}/requestRole?${queryParams}`;
 
     const config = {
@@ -41,8 +41,8 @@ export async function postRequestRole(userId, role) {
 */
 
 export async function getUserInfo(userId) {
-    const { data } = await axios.get(`${USER_API_BASE_URL}/getUserInfo?userId=${userId}`);
-    return data
+    const {data} = await axios.get(`${USER_API_BASE_URL}/getUserInfo?userId=${userId}`);
+    return {id: userId, ...data}
 }
 
 export function getAllAccess() {
@@ -108,7 +108,7 @@ export function getSubCategoryByName(name) {
 }
 
 export function viewNeedsByFilter(filterParams) {
-    return axios.get(`${NEED_API_BASE_URL}/viewNeedsByFilter`, { params: filterParams });
+    return axios.get(`${NEED_API_BASE_URL}/viewNeedsByFilter`, {params: filterParams});
 }
 
 
@@ -168,52 +168,22 @@ export function viewAllRequests() {
     return axios.get(`${REQUEST_API_BASE_URL}/viewAllRequests`);
 }
 
-export const createResource = async (resourceData) => {
-    const formData = new FormData();
-
-    const createResourceRequest = {
-        senderId: resourceData.senderId,
-        categoryTreeId: resourceData.categoryTreeId,
-        quantity: parseInt(resourceData.quantity, 10),
-        latitude: parseFloat(resourceData.latitude),
-        longitude: parseFloat(resourceData.longitude),
-        gender: resourceData.gender,
-        size: resourceData.size,
-        status: resourceData.status
-    };
-
-    formData.append('createResourceRequest', JSON.stringify(createResourceRequest));
-
-    if (resourceData.photo) {
-        formData.append('file', resourceData.photo);
-    }
-
-    try {
-        const response = await axios.post(`${RESOURCE_API_BASE_URL}/createResource`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Error creating resource:', error);
-        throw error;
-    }
-};
-
-
-
+export function createResource(createResourceRequest, file) {
+    const form = new FormData();
+    form.append("createResourceRequest", new Blob([JSON.stringify(createResourceRequest)], { type : 'application/json' }))
+    form.append("file", file)
+    return axios.post(`${RESOURCE_API_BASE_URL}/createResource`, form);
+}
 
 export function getAllResources() {
     return axios.get(`${RESOURCE_API_BASE_URL}/filterByDistance?latitude=39.5&longitude=34.5&distance=10000`);
 }
 
 export async function getCategoryTree() {
-    const { data } = await axios.get(`${CATEGORY_API_BASE_URL}/getMainCategories`);
+    const {data} = await axios.get(`${CATEGORY_API_BASE_URL}/getMainCategories`);
 
     return new RootNode(data)
 }
-
 
 export function createTask(createTaskRequest) {
     return axios.post(`${TASK_API_BASE_URL}/createTask`, createTaskRequest);
@@ -222,14 +192,37 @@ export function createTask(createTaskRequest) {
 export function acceptTask(taskId) {
     return axios.post(`${TASK_API_BASE_URL}/acceptTask?taskId=${taskId}`);
 }
+
 export function completeTask(taskId) {
     return axios.post(`${TASK_API_BASE_URL}/completeTask?taskId=${taskId}`);
 }
+
 export function completeAction(actionId) {
     return axios.post(`${ACTION_API_BASE_URL}/completeAction?actionId=${actionId}`);
 }
+
+export function createAction(action) {
+    return axios.post(`${ACTION_API_BASE_URL}/createAction`, action);
+}
+
+export function addResources(body) {
+    return axios.post(`${TASK_API_BASE_URL}/addResources`, body);
+}
+
+export function addRequests(body) {
+    return axios.post(`${TASK_API_BASE_URL}/addRequestToTask`, body);
+}
+
+export function getAllUsers() {
+    return Promise.all([...Array(40).keys()]
+        .map(function (i) {
+            return getUserInfo(i).catch(() => null);
+        }))
+        .then(results => results.filter(a => a))
+}
+
 export async function viewAllTasks(userId) {
-    const { data } = await axios.get(`${TASK_API_BASE_URL}/viewTasks?userId=${userId}`);
+    const {data} = await axios.get(`${TASK_API_BASE_URL}/viewTasks?userId=${userId}`);
     return data
 }
 

@@ -1,6 +1,7 @@
 package com.cmpe451.resq.ui.views.screens
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,15 +18,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
-import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
@@ -43,15 +47,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.cmpe451.resq.R
 import com.cmpe451.resq.data.manager.UserSessionManager
-import com.cmpe451.resq.data.models.Need
-import com.cmpe451.resq.data.models.Resource
 import com.cmpe451.resq.ui.theme.DeepBlue
 import com.cmpe451.resq.ui.theme.RequestColor
 import com.cmpe451.resq.ui.theme.ResourceColor
 import com.cmpe451.resq.utils.NavigationItem
 import com.cmpe451.resq.viewmodels.MapViewModel
-import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -70,6 +73,8 @@ fun MapScreen(navController: NavController, appContext: Context, mapViewModel: M
     var expandedNeedId by remember { mutableStateOf<Int?>(null) }
     var expandedResourceId by remember { mutableStateOf<Int?>(null) }
 
+    var currentClickedLocation by remember { mutableStateOf<LatLng?>(null) }
+    var isFormVisible by remember { mutableStateOf(false) }
 
     mapViewModel.getAllNeeds(appContext)
     mapViewModel.getAllResources(appContext)
@@ -88,6 +93,7 @@ fun MapScreen(navController: NavController, appContext: Context, mapViewModel: M
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -117,113 +123,127 @@ fun MapScreen(navController: NavController, appContext: Context, mapViewModel: M
 
             Spacer(modifier = Modifier.height(16.dp))
             SearchBar(mapViewModel)
-            val singapore = LatLng(41.086571, 29.046109)
-            val cameraPositionState = rememberCameraPositionState {
-                position = CameraPosition.fromLatLngZoom(mapViewModel.lastKnownLocation.value?.let {
-                    LatLng(it.latitude, it.longitude)
-                } ?: singapore, 12f)
-            }
-            LaunchedEffect(Unit) {
-              //  mapViewModel.getNeedByDistance(appContext)
-            }
-            GoogleMap(
-                modifier = Modifier.fillMaxSize(),
-                cameraPositionState = cameraPositionState
-            ) {
-                mapViewModel.lastKnownLocation.value?.let {
-                    val latLng = LatLng(it.latitude, it.longitude)
-                    cameraPositionState.position = CameraPosition.fromLatLngZoom(latLng, 12f)
+            Log.d("MapScreen", "MapScreen: ${mapViewModel.lastKnownLocation.value?.latitude} ${mapViewModel.lastKnownLocation.value?.longitude}")
+            Box(modifier = Modifier.height(500.dp)){
+                val lastKnownLocation by mapViewModel.lastKnownLocation
+                val singapore = LatLng(41.086571, 29.046109)
+                val cameraPositionState = rememberCameraPositionState {
+                    position = CameraPosition.fromLatLngZoom(singapore, 12f)
                 }
-                mapViewModel.needMarkerList.value.forEach { need ->
-                    Marker(
-                        state = MarkerState(position = LatLng(need.latitude, need.longitude)),
-                        title = need.description,
-                        snippet = "Quantity: ${need.quantity}"
-                    )
-                }
-                Marker(
-                    state = MarkerState(position = LatLng(41.086571, 29.046109)),
-                )
-            }
-            LaunchedEffect(mapViewModel.needMarkerList.value) {
-                if (mapViewModel.needMarkerList.value.isNotEmpty()) {
-                    // Move camera to the first marker or any specific logic you want
-                    val firstNeed = mapViewModel.needMarkerList.value.first()
-                    cameraPositionState.move(CameraUpdateFactory.newLatLngZoom(LatLng(firstNeed.latitude, firstNeed.longitude), 12f))
-                }
-            }
-        }
-        // Requests list
-        if (selectedList == "Requests") {
-            LazyColumn(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .fillMaxWidth()
-                    .heightIn(max = 240.dp)
-                    .background(Color.White)
-            ) {
-                items(needsList) { need ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .clickable {
-                                expandedNeedId = if (need.id == expandedNeedId) null else need.id
-                            },
-                        elevation = 4.dp
-                    ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Text(
-                                text = "${mapViewModel.findNodeById(categories, need.categoryTreeId.toInt())?.data}",
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(text = "Quantity: ${need.quantity}")
-                            AnimatedVisibility(visible = need.id == expandedNeedId) {
-                                Column {
-                                    UsernameDisplay(mapViewModel, appContext, need.userId)
-                                    Text(text = "Description: ${need.description}")
-                                    if (need.size != null) {
-                                        Text(text = "Size: ${need.size}")
-                                    }
-                                }
-                            }
-                        }
+                LaunchedEffect(lastKnownLocation) {
+                    lastKnownLocation?.let { location ->
+                        cameraPositionState.position = CameraPosition.fromLatLngZoom(
+                            LatLng(location.latitude, location.longitude), 12f
+                        )
                     }
                 }
-            }
-        }
+                GoogleMap(
+                    modifier = Modifier.fillMaxSize(),
+                    cameraPositionState = cameraPositionState,
+                    onMapClick = { latLng ->
+                        isFormVisible = true
+                        currentClickedLocation = latLng
+                    }
+                ){
+                    mapViewModel.needMarkerList.value.forEach { need ->
+                        if(need.categoryTreeId == "6"){
+                            Marker(
+                                state = MarkerState(position = LatLng(need.latitude, need.longitude)),
+                                title = "Warning",
+                                snippet = "Description: ${need.description}",
+                                icon = BitmapDescriptorFactory.fromResource(R.drawable.warning_24)
+                            )
+                        }else{
+                            Marker(
+                                state = MarkerState(position = LatLng(need.latitude, need.longitude)),
+                                title = need.description,
+                                snippet = "Quantity: ${need.quantity}"
 
-        // Resources list
-        else {
-            LazyColumn(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .fillMaxWidth()
-                    .heightIn(max = 240.dp)
-                    .background(Color.White)
-            ) {
-                items(resourcesList) { resource ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .clickable {
-                                expandedResourceId =
-                                    if (resource.id == expandedResourceId) null else resource.id
-                            },
-                        elevation = 4.dp
-                    ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Text(
-                                text = "${mapViewModel.findNodeById(categories, resource.categoryTreeId.toInt())?.data}",
-                                fontWeight = FontWeight.Bold
                             )
-                            Text(text = "Quantity: ${resource.quantity}")
-                            AnimatedVisibility(visible = resource.id == expandedResourceId) {
-                                Column {
-                                    UsernameDisplay(mapViewModel, appContext, resource.senderId)
-                                    if (resource.size != null) {
-                                        Text(text = "Size: ${resource.size}")
+                        }
+                    }
+                    mapViewModel.resourceMarkerList.value.forEach { resource ->
+                        Marker(
+                            state = MarkerState(position = LatLng(resource.latitude, resource.longitude)),
+                            title = mapViewModel.findNodeById(categories,resource.categoryTreeId.toInt())?.data,
+                            snippet = "Quantity: ${resource.quantity}"
+                        )
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            // Requests list
+            if (selectedList == "Requests") {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 240.dp)
+                        .background(Color.White)
+                ) {
+                    items(needsList) { need ->
+                        if(need.categoryTreeId != "6"){
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp)
+                                    .clickable {
+                                        expandedNeedId =
+                                            if (need.id == expandedNeedId) null else need.id
+                                    },
+                                elevation = 4.dp
+                            ) {
+                                Column(modifier = Modifier.padding(16.dp)) {
+                                    Text(
+                                        text = "${mapViewModel.findNodeById(categories, need.categoryTreeId.toInt())?.data}",
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Text(text = "Quantity: ${need.quantity}")
+                                    AnimatedVisibility(visible = need.id == expandedNeedId) {
+                                        Column {
+                                            UsernameDisplay(mapViewModel, appContext, need.userId)
+                                            Text(text = "Description: ${need.description}")
+                                            if (need.size != null) {
+                                                Text(text = "Size: ${need.size}")
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            // Resources list
+            else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 240.dp)
+                        .background(Color.White)
+                ) {
+                    items(resourcesList) { resource ->
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                                .clickable {
+                                    expandedResourceId =
+                                        if (resource.id == expandedResourceId) null else resource.id
+                                },
+                            elevation = 4.dp
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text(
+                                    text = "${mapViewModel.findNodeById(categories, resource.categoryTreeId.toInt())?.data}",
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(text = "Quantity: ${resource.quantity}")
+                                AnimatedVisibility(visible = resource.id == expandedResourceId) {
+                                    Column {
+                                        UsernameDisplay(mapViewModel, appContext, resource.senderId)
+                                        if (resource.size != null) {
+                                            Text(text = "Size: ${resource.size}")
+                                        }
                                     }
                                 }
                             }
@@ -232,6 +252,7 @@ fun MapScreen(navController: NavController, appContext: Context, mapViewModel: M
                 }
             }
         }
+        Spacer(modifier = Modifier.height(16.dp))
         FloatingActionButton(
             onClick = {
                 selectedList = if (selectedList == "Requests") "Resources" else "Requests"
@@ -249,8 +270,58 @@ fun MapScreen(navController: NavController, appContext: Context, mapViewModel: M
             )
         }
     }
+    if (isFormVisible) {
+        MarkerFormDialog(
+            mapViewModel,
+            appContext,
+            onSave = { comment ->
+                currentClickedLocation?.let { loc ->
+                    mapViewModel.onMarkerCreate(comment, appContext, loc.latitude, loc.longitude)
+                }
+                isFormVisible = false
+            },
+            onDismiss = {
+                isFormVisible = false
+            },
+            latitute = currentClickedLocation?.latitude ?: 0.0,
+            longitude = currentClickedLocation?.longitude ?: 0.0
+        )
+    }
 }
+@Composable
+fun MarkerFormDialog(mapViewModel: MapViewModel,
+                     appContext: Context,
+                     onSave: (String) -> Unit,
+                     onDismiss: () -> Unit,
+                     latitute: Double,
+                     longitude: Double) {
+    var comment by remember { mutableStateOf("") }
 
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Add Warning") },
+        text = {
+            TextField(
+                value = comment,
+                onValueChange = { comment = it },
+                label = { Text("Comment") }
+            )
+        },
+        confirmButton = {
+            Button(
+                onClick = { onSave(comment)
+                }
+            )     {
+                Text("Save")
+            }
+        },
+        dismissButton = {
+            Button(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
+}
 @Composable
 fun SearchBar(viewModel: MapViewModel) {
     OutlinedTextField(

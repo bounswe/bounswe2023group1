@@ -26,7 +26,12 @@ export const OffsetActions = styled(CardActions)`
 export async function getAddress(latitude, longitude) {
     try {
         const response = await axios.get(
-            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCehlfJwJ-V_xOWZ9JK3s0rcjkV2ga0DVg`
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAQxkir-6QWOzrdH3MflAd8h_q3G8v2Uqs`,
+            {
+                headers: {
+                    Authorization: null,
+                },
+            }
         );
 
         return response.data.results[0]?.formatted_address || 'Unknown';

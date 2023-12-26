@@ -20,6 +20,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Notifications from "./pages/Notifications";
 import { getUserInfo } from './AppService';
 import TaskSelectPage from "./pages/TaskSelectPage";
+import CreateActionPage from "./pages/CreateActionPage";
 
 const SmallRedCircle = () =>
     <svg
@@ -33,11 +34,11 @@ const SmallRedCircle = () =>
 
 const queryClient = new QueryClient()
 
-function SignOut({setToken, setRole}) {
+function SignOut({setToken, setRoles}) {
     const navigate = useNavigate();
     const signOut = () => {
         setToken(null)
-        setRole("");
+        setRoles([]);
         navigate('/');
     }
 
@@ -50,7 +51,7 @@ function SignOut({setToken, setRole}) {
 function App() {
     const [token, _setToken] = useState(localStorage.getItem("token"))
     const [uid, _setUid] = useState(parseInt(localStorage.getItem("uid")) || -1)
-    const [role, setRole] = useState("")
+    const [roles, setRoles] = useState([])
     const [height, setHeight] = useState(window.innerHeight);
 
     const updateDimensions = () => {
@@ -66,7 +67,7 @@ function App() {
         if (token) {
             const userId = localStorage.getItem("userId");
             getUserInfo(userId).then(userInfo => {
-                setRole(userInfo.roles[0]);
+                setRoles(userInfo.roles);
             }).catch(error => console.error('Error fetching user info:', error));
         }
     }, [token]);
@@ -96,10 +97,11 @@ function App() {
     const navLinks = [
         { path: '/', label: <strong>Victim Map</strong>, component: VictimMapPage, icon: <SmallRedCircle />, roles: ['VICTIM', 'ADMIN', 'RESPONDER', 'FACILITATOR'] },
         { path: '/tasks', label: <strong>View Tasks</strong>, component: TaskSelectPage, icon: <SmallRedCircle />, roles: ['RESPONDER', 'ADMIN'] },
+        { path: '/createtasks', label: <strong>Create Tasks</strong>, component: CreateActionPage, icon: <SmallRedCircle />, roles: ['COORDINATOR', 'ADMIN'] },
         { path: '/facilitatormap', label: <strong>Facilitator Map</strong>, component: FacilitatorMapPage, icon: <SmallRedCircle />, roles: ['FACILITATOR', 'ADMIN'] },
     ];
 
-    const filteredNavLinks = navLinks.filter(link => link.roles.includes(role));
+    const filteredNavLinks = navLinks.filter(link => !roles.every(role=>!link.roles.includes(role)));
 
 
     const ref = useRef(null)
@@ -159,7 +161,7 @@ function App() {
                                                             <NotificationsIcon/>
                                                         </Badge>
                                                     </Nav.Link>
-                                                    <SignOut setToken={setToken} setRole={setRole}/>
+                                                    <SignOut setToken={setToken} setRoles={setRoles}/>
                                                 </> :
                                                 <>
                                                     <Nav.Link key={'/signin'} href={'/signin'}
@@ -181,7 +183,7 @@ function App() {
                                 <Routes>
                                     {filteredNavLinks.map(({ path, component }) => (
                                         <Route key={path} path={path}
-                                            element={React.createElement(component, { token, setToken, role, setRole, uid })} />
+                                            element={React.createElement(component, { token, setToken, role: roles, setRoles: setRoles, uid })} />
                                     ))}
                                     <Route path="/rolerequest" state={{token, setToken}}
                                            element={React.createElement(RoleRequest, {token, setToken})}/>

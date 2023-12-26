@@ -10,51 +10,12 @@ import {
     TextField
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
-import {useRef, useState} from "react";
+import {useState} from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import {Add, Delete, Edit} from "@mui/icons-material";
-
-const mock_annots = [{
-    "@context": "http://www.w3.org/ns/anno.jsonld",
-    "id": "http://example.org/anno1",
-    "type": "Annotation",
-    "bodyValue": "This is no longer true, as we have recently discovered.",
-    "target": {
-        "source": "http://example.org/page1.html",
-        "selector": {
-            "type": "XPathSelector",
-            "value": "//div[@id=\"Facility1\"]",
-            "refinedBy": {
-                "type": "RangeSelector",
-                "startSelector": {"type": "XPathSelector", "value": "/p[1]"},
-                "endSelector": {"type": "XPathSelector", "value": "/p[1]"},
-                "refinedBy": {"type": "TextPositionSelector", "start": 1, "end": 29}
-            }
-        }
-    }
-},
-    {
-        "@context": "http://www.w3.org/ns/anno.jsonld",
-        "id": "http://example.org/anno2",
-        "type": "Annotation",
-        "bodyValue": "Test test1 test2",
-        "target": {
-            "source": "http://example.org/page1.html",
-            "selector": {
-                "type": "XPathSelector",
-                "value": "//div[@id=\"Facility2\"]",
-                "refinedBy": {
-                    "type": "RangeSelector",
-                    "startSelector": {"type": "XPathSelector", "value": "/p[1]"},
-                    "endSelector": {"type": "XPathSelector", "value": "/p[2]"},
-                    "refinedBy": {"type": "TextPositionSelector", "start": 4, "end": 2}
-                }
-            }
-        }
-    }
-
-]
+import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {ANNO_BASE_URL, deleteAnno, editAnno, getAllAnnos} from "../AnnoService";
 
 const getXpathParameters = (xpath) => {
     const startOffset = xpath.startOffset
@@ -150,10 +111,15 @@ export default function Annotatable(props) {
     const [open, setOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [annotation, setAnnotation] = useState(null)
-    const annotations = useRef(mock_annots)
+    //const annotations = useRef(mock_annots)
     const [editAnnotationValue, setEditAnnotationValue] = useState("")
     const [openDialog, setOpenDialog] = React.useState(false);
     const [editAnnotationTarget, setEditAnnotationTarget] = React.useState(null);
+
+    const annotations = useQuery({queryKey: ['annos'], queryFn: getAllAnnos})
+    const queryClient = useQueryClient()
+
+    const invalidate = () => queryClient.invalidateQueries({queryKey: ['annos']})
 
     const handleClose = () => {
         setOpen(false);
@@ -211,11 +177,11 @@ export default function Annotatable(props) {
         }
         const anno = {
             "@context": "http://www.w3.org/ns/anno.jsonld",
-            "id": `http://example.org/${crypto.randomUUID()}`,
+            "id": `${ANNO_BASE_URL}/${crypto.randomUUID()}`,
             "type": "Annotation",
             //"bodyValue": "Test test1 test2",
             "target": {
-                "source": "http://example.org/page1.html",
+                "source": "https://resq.org.tr",
                 "selector": xPathSelector
             }
         }
@@ -232,8 +198,9 @@ export default function Annotatable(props) {
         handleClose()
     }
 
-    const handleDeleteAnnotation = () => {
-        annotations.current = annotations.current.filter(a => a !== annotation)
+    const handleDeleteAnnotation = async () => {
+        await deleteAnno(annotation)
+        await invalidate()
         handleClose()
     }
 
@@ -242,13 +209,12 @@ export default function Annotatable(props) {
         handleClose()
     }
 
-    const handleSaveAnnotation = () => {
-        annotations.current = annotations.current
-            .filter(a => a.id !== editAnnotationTarget.id)
-            .concat([{
-                ...editAnnotationTarget,
-                bodyValue: editAnnotationValue
-            }])
+    const handleSaveAnnotation = async () => {
+        await editAnno({
+            ...editAnnotationTarget,
+            bodyValue: editAnnotationValue
+        })
+        await invalidate()
         handleCloseDialog()
         handleClose()
     }
@@ -256,11 +222,11 @@ export default function Annotatable(props) {
     function doAnnotRender() {
         for (let mark of document.querySelectorAll("mark")) {
             const mark_annot_id = mark.getAttribute("annot_id")
-            if (annotations.current.every(({id}) => id !== mark_annot_id)) {
+            if (annotations?.data?.every(({id}) => id !== mark_annot_id)) {
                 mark.replaceWith(document.createTextNode(mark.innerText))
             }
         }
-        for (const annotation of annotations.current) {
+        for (const annotation of annotations?.data || []) {
             try {
                 const {
                     id,
@@ -283,7 +249,7 @@ export default function Annotatable(props) {
                 const onMarkClick = () => {
                     setOpen(true);
                     setAnchorEl({getBoundingClientRect: () => range.getBoundingClientRect(), nodeType: 1});
-                    setAnnotation(annotations.current.filter(anno => id === anno.id)[0])
+                    setAnnotation(annotations?.data?.filter(anno => id === anno.id)[0])
                 }
 
                 const safe_ranges = getSafeRanges(range)
@@ -313,7 +279,7 @@ export default function Annotatable(props) {
 
     setTimeout(() => doAnnotRender(), 100)
 
-    return <div onMouseUp={handleMouseUp} key={annotations.current} {...props}>
+    return <div onMouseUp={handleMouseUp} key={annotations?.data} {...props}>
         <Dialog open={openDialog} onClose={handleCloseDialog}>
             <DialogTitle>Edit Annotation</DialogTitle>
             <DialogContent>
