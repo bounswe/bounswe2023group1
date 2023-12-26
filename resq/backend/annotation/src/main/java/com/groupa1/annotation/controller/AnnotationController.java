@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.regex.Pattern;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -16,7 +18,7 @@ public class AnnotationController {
     private AnnotationService annotationService;
 
     @GetMapping("/")
-    public List<Annotation> getAllAnnotations() {
+    public String getAllAnnotations() {
         return annotationService.getAllAnnotations();
     }
 
@@ -27,12 +29,12 @@ public class AnnotationController {
 
     @PostMapping("/")
     public String createAnnotation(@RequestBody String value) {
-        return "anno create";
+        return annotationService.createAnnotation(value);
     }
 
     @PutMapping("/{id}")
     public String updateAnnotation(@PathVariable String id, @RequestBody String value) {
-        return annotationService.createAnnotation(id, value);
+        return annotationService.updateAnnotation(id, value);
     }
 
     @DeleteMapping("/{id}")
