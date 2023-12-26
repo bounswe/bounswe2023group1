@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material';
 import '@fontsource/inter';
 import Grid from '@mui/material/Grid';
@@ -20,7 +20,7 @@ const customTheme = createTheme({
     },
 });
 
-export default function CreateRequestForm({requestData, setRequestData}) {
+export default function CreateRequestForm({ requestData, setRequestData }) {
     const [address1, setAddress1] = useState("")
     const [address2, setAddress2] = useState("")
     const [city, setCity] = useState("")
@@ -35,33 +35,24 @@ export default function CreateRequestForm({requestData, setRequestData}) {
         const apiKey = 'AIzaSyCehlfJwJ-V_xOWZ9JK3s0rcjkV2ga0DVg';
 
         try {
-            const response = await fetch(
-                `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-                    address
-                )}&key=${apiKey}`
-            );
-
-            if (response.ok) {
-                const data = await response.json();
-                if (data.results && data.results.length > 0) {
-                    const location = data.results[0].geometry.location;
-                    setRequestData(
-                        {...requestData, latitude: location.lat, longitude: location.lng}
-                    )
-                } else {
-                    console.error('Geocoding failed: No results found');
-                }
+            const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`);
+            const data = await response.json();
+            if (data.results && data.results.length > 0) {
+                const location = data.results[0].geometry.location;
+                setRequestData({ ...requestData, latitude: location.lat, longitude: location.lng });
             } else {
-                console.error('Geocoding request failed');
+                setRequestData({ ...requestData, latitude: 0, longitude: 0 });
             }
         } catch (error) {
             console.error('Geocoding error:', error);
+            setRequestData({ ...requestData, latitude: 0, longitude: 0 });
         }
     };
 
     useEffect(() => {
         handleGeocode();
     }, [address1, address2, city, state, country, zip, fname, lname]);
+
 
     return (
         <ThemeProvider theme={customTheme}>

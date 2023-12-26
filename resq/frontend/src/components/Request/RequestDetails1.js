@@ -126,29 +126,39 @@ function CustomizedSelects() {
     );
 }
 
-export default function RequestDetails() {
+export default function RequestDetails({ setNeedData }) {
 
     const [otherRestrictions, setOtherRestrictions] = useState('');
     const [isWaterChecked, setIsWaterChecked] = useState(true);
     const [isFoodChecked, setIsFoodChecked] = useState(true);
     const [selectedIllnesses, setSelectedIllnesses] = useState([]);
 
+    const handleWaterCheck = (event) => {
+        setIsWaterChecked(event.target.checked);
+        setNeedData(prevData => ({
+            ...prevData,
+            water: event.target.checked
+        }));
+    };
+
+    const handleFoodCheck = (event) => {
+        setIsFoodChecked(event.target.checked);
+        setNeedData(prevData => ({
+            ...prevData,
+            food: event.target.checked
+        }));
+    };
+
     const handleOtherRestrictionsChange = (event) => {
         setOtherRestrictions(event.target.value);
     };
 
-    const handleIllnessSelection = (illness) => {
-        // Toggle illness in the selected illnesses array
-        if (selectedIllnesses.includes(illness)) {
-            setSelectedIllnesses(selectedIllnesses.filter(item => item !== illness));
-        } else {
-            setSelectedIllnesses([...selectedIllnesses, illness]);
-        }
-    };
-
-    // Handle change in selected illnesses
     const handleIllnessChange = (event) => {
         setSelectedIllnesses(event.target.value);
+        setNeedData(prevData => ({
+            ...prevData,
+            illnesses: event.target.value
+        }));
     };
 
     // Menu properties

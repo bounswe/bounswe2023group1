@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Typography, Grid, FormControlLabel, Checkbox, TextField, Chip, Box, FormControl, InputLabel, Select, MenuItem, OutlinedInput, FormHelperText } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
+import { NeedContext } from './NeedContext';
+import { useContext } from 'react';
 
 const illnesses = [
     'Diabetes',
@@ -24,7 +26,6 @@ const illnesses = [
     'Neurological Disorders',
 ];
 
-
 const customTheme = createTheme({
     palette: {
         primary: {
@@ -42,32 +43,42 @@ function getStyles(name, selectedNames, customTheme) {
     };
 }
 
+
 export default function RequestDetails() {
+    const { needData, updateNeedData } = useContext(NeedContext);
     const [selectedIllnesses, setSelectedIllnesses] = useState([]);
     const [illnessCounts, setIllnessCounts] = useState({});
     const [isShelterChecked, setIsShelterChecked] = useState(false);
     const [isHeaterChecked, setIsHeaterChecked] = useState(false);
     const [isMedicineChecked, setIsMedicineChecked] = useState(false);
 
+
     const handleIllnessChange = (event) => {
         const newSelectedIllnesses = event.target.value;
         setSelectedIllnesses(newSelectedIllnesses);
-
-        // Initialize counts for new illnesses
-        const updatedIllnessCounts = { ...illnessCounts };
-        newSelectedIllnesses.forEach(illness => {
-            if (!updatedIllnessCounts[illness]) {
-                updatedIllnessCounts[illness] = 0;
-            }
-        });
-        setIllnessCounts(updatedIllnessCounts);
+        updateNeedData({ ...needData, illnesses: newSelectedIllnesses });
     };
 
-    // Function to handle changes in illness counts
     const handleIllnessCountChange = (illness, count) => {
-        setIllnessCounts({ ...illnessCounts, [illness]: count });
+        const newIllnessCounts = { ...illnessCounts, [illness]: count };
+        setIllnessCounts(newIllnessCounts);
+        updateNeedData({ ...needData, illnessCounts: newIllnessCounts });
     };
 
+    const handleShelterChange = (event) => {
+        setIsShelterChecked(event.target.checked);
+        updateNeedData({ ...needData, shelter: event.target.checked });
+    };
+
+    const handleHeaterChange = (event) => {
+        setIsHeaterChecked(event.target.checked);
+        updateNeedData({ ...needData, heater: event.target.checked });
+    };
+
+    const handleMedicineChange = (event) => {
+        setIsMedicineChecked(event.target.checked);
+        updateNeedData({ ...needData, medicine: event.target.checked });
+    };
 
     return (
         <React.Fragment>
@@ -78,21 +89,21 @@ export default function RequestDetails() {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <FormControlLabel
-                        control={<Checkbox checked={isShelterChecked} onChange={(e) => setIsShelterChecked(e.target.checked)} color="primary" />}
+                        control={<Checkbox checked={isShelterChecked} onChange={handleShelterChange} color="primary" />}
                         label="Shelter"
                     />
                 </Grid>
 
                 <Grid item xs={12}>
                     <FormControlLabel
-                        control={<Checkbox checked={isHeaterChecked} onChange={(e) => setIsHeaterChecked(e.target.checked)} color="primary" />}
+                        control={<Checkbox checked={isHeaterChecked} onChange={handleHeaterChange} color="primary" />}
                         label="Heater"
                     />
                 </Grid>
 
                 <Grid item xs={12}>
                     <FormControlLabel
-                        control={<Checkbox checked={isMedicineChecked} onChange={(e) => setIsMedicineChecked(e.target.checked)} color="primary" />}
+                        control={<Checkbox checked={isMedicineChecked} onChange={handleMedicineChange} color="primary" />}
                         label="Medicine"
                     />
                     {isMedicineChecked && (
@@ -141,3 +152,18 @@ export default function RequestDetails() {
         </React.Fragment >
     );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
