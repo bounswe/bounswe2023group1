@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material';
+import React, {useState, useEffect} from 'react';
+import {TextField, Box} from '@mui/material';
 import '@fontsource/inter';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
-import { ResourceContext } from './ResourceContext';
-import { useContext } from 'react';
+import axios from "axios";
 
 const customTheme = createTheme({
     palette: {
@@ -19,7 +18,7 @@ const customTheme = createTheme({
     },
 });
 
-export default function ResourceAddress({ resourceData, setResourceData }) {
+export default function ResourceAddress({resourceData, setResourceData}) {
     const [address1, setAddress1] = useState("")
     const [address2, setAddress2] = useState("")
     const [city, setCity] = useState("")
@@ -27,44 +26,44 @@ export default function ResourceAddress({ resourceData, setResourceData }) {
     const [country, setCountry] = useState("")
     const [nop, setNop] = useState("")
 
+    useEffect(() => {
+        const handleGeocode = async () => {
+            const address = `${address1}, ${address2}, ${city}, ${state}, ${country}`;
+            const apiKey = 'AIzaSyAQxkir-6QWOzrdH3MflAd8h_q3G8v2Uqs';
 
-    const handleGeocode = async () => {
-        const address = `${address1}, ${address2}, ${city}, ${state}, ${country}`;
-        const apiKey = 'AIzaSyCehlfJwJ-V_xOWZ9JK3s0rcjkV2ga0DVg';
+            try {
+                const response = await axios.get(
+                    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+                        address
+                    )}&key=${apiKey}`,
+                    {
+                        headers: {
+                            Authorization: null,
+                        },
+                    }
+                );
 
-        try {
-            const response = await fetch(
-                `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-                    address
-                )}&key=${apiKey}`
-            );
-
-            if (response.ok) {
-                const data = await response.json();
+                const data = response?.data;
                 if (data.results && data.results.length > 0) {
                     const location = data.results[0].geometry.location;
                     setResourceData(
-                        { ...resourceData, latitude: location.lat, longitude: location.lng }
+                        {...resourceData, latitude: location.lat, longitude: location.lng}
                     )
                 } else {
                     console.error('Geocoding failed: No results found');
                 }
-            } else {
-                console.error('Geocoding request failed');
+            } catch (error) {
+                console.error('Geocoding error:', error);
             }
-        } catch (error) {
-            console.error('Geocoding error:', error);
-        }
-    };
+        };
 
-    useEffect(() => {
         handleGeocode();
-    }, [address1, address2, city, state, country, nop]);
+    }, [address1, address2, city, state, country, nop, setResourceData, resourceData]);
 
     return (
         <ThemeProvider theme={customTheme}>
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
+                <CssBaseline/>
                 <Box
                     sx={{
                         marginTop: 1,
@@ -76,7 +75,7 @@ export default function ResourceAddress({ resourceData, setResourceData }) {
                     <Typography
                         component="h1"
                         variant="h5"
-                        sx={{ color: 'red', fontWeight: 'bold', margin: '0' }}
+                        sx={{color: 'red', fontWeight: 'bold', margin: '0'}}
                     >
                         Resource Delivery Address
                     </Typography>

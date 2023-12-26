@@ -1,7 +1,7 @@
 // geocode.js
 import axios from 'axios';
 
-const GOOGLE_API_KEY = "AIzaSyCehlfJwJ-V_xOWZ9JK3s0rcjkV2ga0DVg";
+const GOOGLE_API_KEY = "AIzaSyAQxkir-6QWOzrdH3MflAd8h_q3G8v2Uqs";
 
 // Function to perform reverse geocoding
 const reverseGeocode = async (latitude, longitude) => {
