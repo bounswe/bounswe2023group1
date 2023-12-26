@@ -5,7 +5,6 @@ package com.cmpe451.resq.ui.views.screens
 import android.content.Context
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -701,7 +700,7 @@ fun FacilitatorProfileButtons(navController: NavController) {
         ProfileButton(
             color = ResourceColor,
             text = "My Resources",
-            route = "resource",
+            route = "myResources",
             navController = navController
         )
         Spacer(modifier = Modifier.width(30.dp))
@@ -743,7 +742,7 @@ fun ResponderProfileButtons(navController: NavController) {
         ProfileButton(
             color = ResourceColor,
             text = "My Resources",
-            route = "resource",
+            route = "myResources",
             navController = navController
         )
         Spacer(modifier = Modifier.width(30.dp))

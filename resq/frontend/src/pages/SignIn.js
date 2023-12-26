@@ -65,7 +65,7 @@ export default function SignIn({token, setToken, setUid}) {
                     localStorage.setItem('userData', JSON.stringify(response.userData));
                     //localStorage.setItem("token", response.token);
 
-                    setUid(response.data.id)
+                    setUid(response?.userId)
 
                     switch (response.role) {
                         case 'VICTIM':

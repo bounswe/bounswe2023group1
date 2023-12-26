@@ -37,7 +37,7 @@ export default function DisasterMap({
                 anchor={[marker.latitude, marker.longitude]}
                 key={marker.type + marker.id}
                 onClick={({ event }) => {
-                    onPointSelected(marker);
+                    onPointSelected && onPointSelected(marker);
                     event.preventDefault()
                 }}
             >
@@ -57,7 +57,7 @@ export default function DisasterMap({
                     center={mapCenter}
                     zoom={zoom}
                     onClick={({event}) => {
-                        onPointSelected(null);
+                        onPointSelected && onPointSelected(null);
                         event.preventDefault()
                     }}
                     onBoundsChanged={({center, zoom, bounds}) => {
@@ -76,7 +76,7 @@ export default function DisasterMap({
                                                               r: "2",
                                                           }}
                                                           onClick={({event}) => {
-                                                              onPointSelected(path);
+                                                              onPointSelected && onPointSelected(path);
                                                               event.preventDefault()
                                                           }}/>)}
                     </GeoJson>

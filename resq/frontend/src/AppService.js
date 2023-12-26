@@ -42,7 +42,7 @@ export async function postRequestRole(userId, role) {
 
 export async function getUserInfo(userId) {
     const {data} = await axios.get(`${USER_API_BASE_URL}/getUserInfo?userId=${userId}`);
-    return data
+    return {id: userId, ...data}
 }
 
 export function getAllAccess() {
@@ -182,6 +182,26 @@ export function completeTask(taskId) {
 
 export function completeAction(actionId) {
     return axios.post(`${ACTION_API_BASE_URL}/completeAction?actionId=${actionId}`);
+}
+
+export function createAction(action) {
+    return axios.post(`${ACTION_API_BASE_URL}/createAction`, action);
+}
+
+export function addResources(body) {
+    return axios.post(`${TASK_API_BASE_URL}/addResources`, body);
+}
+
+export function addRequests(body) {
+    return axios.post(`${TASK_API_BASE_URL}/addRequestToTask`, body);
+}
+
+export function getAllUsers() {
+    return Promise.all([...Array(40).keys()]
+        .map(function (i) {
+            return getUserInfo(i).catch(() => null);
+        }))
+        .then(results => results.filter(a => a))
 }
 
 export async function viewAllTasks(userId) {

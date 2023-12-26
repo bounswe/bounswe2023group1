@@ -35,6 +35,8 @@ import com.cmpe451.resq.ui.theme.LightGreen
 import com.cmpe451.resq.ui.theme.ResQTheme
 import com.cmpe451.resq.ui.views.screens.LoginScreen
 import com.cmpe451.resq.ui.views.screens.MapScreen
+import com.cmpe451.resq.ui.views.screens.MyRequestsScreen
+import com.cmpe451.resq.ui.views.screens.MyResourcesScreen
 import com.cmpe451.resq.ui.views.screens.NotificationScreen
 import com.cmpe451.resq.ui.views.screens.OngoingTasksScreen
 import com.cmpe451.resq.ui.views.screens.ProfileScreen
@@ -48,7 +50,7 @@ import com.cmpe451.resq.utils.NavigationItem
 import com.cmpe451.resq.viewmodels.MapViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.cmpe451.resq.ui.views.screens.MyRequestsScreen
+
 class MainActivity : ComponentActivity() {
 
     private val requestPermissionLauncher =
@@ -157,6 +159,9 @@ fun NavGraph(
         }
         composable(NavigationItem.MyTasks.route) {
             MyTasksScreen(navController, appContext)
+        }
+        composable(NavigationItem.MyResourcesScreen.route) {
+            MyResourcesScreen(navController, appContext)
         }
     }
 }
