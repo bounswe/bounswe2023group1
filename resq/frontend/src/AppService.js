@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {RootNode} from "./CategoryTree";
 
-const API_BASE_URL = 'https://16.170.231.99'
+const API_BASE_URL = 'https://51.20.190.55'
 const USER_API_BASE_URL = API_BASE_URL + '/resq/api/v1/user';
 const AUTH_API_BASE_URL = API_BASE_URL + '/resq/api/v1/auth';
 const ACTION_API_BASE_URL = API_BASE_URL + '/resq/api/v1/action';
@@ -151,8 +151,11 @@ export function viewAllRequests() {
     return axios.get(`${REQUEST_API_BASE_URL}/viewAllRequests`);
 }
 
-export function createResource(createResourceRequest) {
-    return axios.post(`${RESOURCE_API_BASE_URL}/createResource`, createResourceRequest);
+export function createResource(createResourceRequest, file) {
+    const form = new FormData();
+    form.append("createResourceRequest", new Blob([JSON.stringify(createResourceRequest)], { type : 'application/json' }))
+    form.append("file", file)
+    return axios.post(`${RESOURCE_API_BASE_URL}/createResource`, form);
 }
 
 export function getAllResources() {
@@ -200,7 +203,6 @@ export function getAllUsers() {
         }))
         .then(results => results.filter(a => a))
 }
-
 
 export async function viewAllTasks(userId) {
     const {data} = await axios.get(`${TASK_API_BASE_URL}/viewTasks?userId=${userId}`);

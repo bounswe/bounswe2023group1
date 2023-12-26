@@ -1,15 +1,12 @@
 // ResourceDetail3.jsx
 import React from 'react';
 
-const ResourceDetail3 = ({ resourceData, setResourceData }) => {
+const ResourceDetail3 = ({ setImage }) => {
   const handlePhotoChange = (event) => {
     const file = event.target.files[0];
 
     if (file) {
-      setResourceData((prevData) => ({
-        ...prevData,
-        photo: file,
-      }));
+      setImage(file)
     }
   };
 

@@ -1,15 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import { TextField, Button, FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material';
+import {TextField, Button, FormControl, InputLabel, Select, MenuItem, Box} from '@mui/material';
 import '@fontsource/inter';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 import disasterImage from '../../disaster.png';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
+import axios from "axios";
 
 
 const customTheme = createTheme({
@@ -35,24 +36,25 @@ export default function CreateRequestForm({requestData, setRequestData}) {
         const apiKey = 'AIzaSyCehlfJwJ-V_xOWZ9JK3s0rcjkV2ga0DVg';
 
         try {
-            const response = await fetch(
+            const response = await axios.get(
                 `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
                     address
-                )}&key=${apiKey}`
+                )}&key=${apiKey}`,
+                {
+                    headers: {
+                        Authorization: null,
+                    },
+                }
             );
 
-            if (response.ok) {
-                const data = await response.json();
-                if (data.results && data.results.length > 0) {
-                    const location = data.results[0].geometry.location;
-                    setRequestData(
-                        {...requestData, latitude: location.lat, longitude: location.lng}
-                    )
-                } else {
-                    console.error('Geocoding failed: No results found');
-                }
+            const data = response?.data;
+            if (data.results && data.results.length > 0) {
+                const location = data.results[0].geometry.location;
+                setRequestData(
+                    {...requestData, latitude: location.lat, longitude: location.lng}
+                )
             } else {
-                console.error('Geocoding request failed');
+                console.error('Geocoding failed: No results found');
             }
         } catch (error) {
             console.error('Geocoding error:', error);
@@ -66,7 +68,7 @@ export default function CreateRequestForm({requestData, setRequestData}) {
     return (
         <ThemeProvider theme={customTheme}>
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
+                <CssBaseline/>
                 <Box
                     sx={{
                         marginTop: 1,
@@ -76,7 +78,7 @@ export default function CreateRequestForm({requestData, setRequestData}) {
                     }}
                 >
 
-                    <Typography component="h1" variant="h5" sx={{ color: 'red', fontWeight: 'bold', margin: '0' }}>
+                    <Typography component="h1" variant="h5" sx={{color: 'red', fontWeight: 'bold', margin: '0'}}>
                         Create Request
                     </Typography>
                     <React.Fragment>
@@ -185,7 +187,7 @@ export default function CreateRequestForm({requestData, setRequestData}) {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <FormControlLabel
-                                        control={<Checkbox color="error" name="saveAddress" value="yes" />}
+                                        control={<Checkbox color="error" name="saveAddress" value="yes"/>}
                                         label="Use this address for my request"
                                     />
                                 </Grid>
