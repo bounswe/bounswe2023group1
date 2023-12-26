@@ -77,6 +77,7 @@ export default function Request() {
                     longitude: needData.longitude,
                 };
 
+                // Handling water request
                 if (needData.water) {
                     const waterRequestData = {
                         ...commonData,
@@ -86,9 +87,12 @@ export default function Request() {
                         size: needData.totalPeople.toString(),
                         isRecurrent: true
                     };
+                    console.log("Sending water request:", waterRequestData);
                     await createNeed(localStorage.getItem('userId'), waterRequestData);
+
                 }
 
+                // Handling food request
                 if (needData.food) {
                     const foodRequestData = {
                         ...commonData,
@@ -98,11 +102,13 @@ export default function Request() {
                         size: needData.totalPeople.toString(),
                         isRecurrent: true
                     };
+                    console.log("Sending food request:", foodRequestData);
                     await createNeed(localStorage.getItem('userId'), foodRequestData);
                 }
 
-                Object.entries(needData.clothingQuantities || {}).forEach(async ([category, quantity]) => {
-                    if (quantity > 0) {
+                // Handling clothing requests
+                for (const [category, quantity] of Object.entries(needData.clothingQuantities || {})) {
+                    if (parseInt(quantity, 10) > 0) {
                         const clothingRequestData = {
                             ...commonData,
                             description: "clothing",
@@ -111,15 +117,59 @@ export default function Request() {
                             size: category,
                             isRecurrent: false
                         };
-                        try {
-                            await createNeed(localStorage.getItem('userId'), clothingRequestData);
-                        } catch (error) {
-                            console.error(`Error creating request for ${category}:`, error);
-                        }
+                        console.log(`Sending clothing request for ${category}:`, clothingRequestData);
+                        await createNeed(localStorage.getItem('userId'), clothingRequestData);
                     }
-                });
+                }
 
-                console.log("Requests created successfully!");
+                // Handling Shelter request
+                if (needData.shelterChecked) {
+                    const shelterRequestData = {
+                        ...commonData,
+                        description: "shelter",
+                        categoryTreeId: needData.shelterCategoryTreeId,
+                        quantity: 1,
+                        size: "M",
+                        isRecurrent: false
+                    };
+                    console.log("Sending shelter request:", shelterRequestData);
+                    await createNeed(localStorage.getItem('userId'), shelterRequestData);
+                }
+
+                // Handling Heater request
+                if (needData.heaterChecked) {
+                    const heaterRequestData = {
+                        ...commonData,
+                        description: "heater",
+                        categoryTreeId: needData.heaterCategoryTreeId,
+                        quantity: 1,
+                        size: "M",
+                        isRecurrent: false
+                    };
+                    console.log("Sending heater request:", heaterRequestData);
+                    await createNeed(localStorage.getItem('userId'), heaterRequestData);
+                }
+
+                // Handling Medicine requests
+                if (needData.medicineChecked) {
+                    needData.selectedIllnesses.forEach(async (illness) => {
+                        const quantity = needData.illnessCounts[illness] || 0;
+                        if (quantity > 0) {
+                            const medicineRequestData = {
+                                ...commonData,
+                                description: "medicine",
+                                categoryTreeId: needData.medicineCategoryTreeId,
+                                quantity: parseInt(quantity, 10),
+                                size: illness,
+                                isRecurrent: true
+                            };
+                            console.log(`Sending medicine request for ${illness}:`, medicineRequestData);
+                            await createNeed(localStorage.getItem('userId'), medicineRequestData);
+                        }
+                    });
+                }
+
+                console.log("All createNeed requests have been sent");
                 alert('Requests created successfully!');
             } catch (error) {
                 console.error('Error while creating requests:', error);
@@ -129,6 +179,7 @@ export default function Request() {
             setActiveStep(activeStep + 1);
         }
     };
+
 
 
 

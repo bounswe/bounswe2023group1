@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography, Grid, FormControlLabel, Checkbox, TextField, Chip, Box, FormControl, InputLabel, Select, MenuItem, OutlinedInput, FormHelperText } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { NeedContext } from './NeedContext';
@@ -44,7 +44,7 @@ function getStyles(name, selectedNames, customTheme) {
 }
 
 
-export default function RequestDetails() {
+export default function RequestDetails3() {
     const { needData, updateNeedData } = useContext(NeedContext);
     const [selectedIllnesses, setSelectedIllnesses] = useState([]);
     const [illnessCounts, setIllnessCounts] = useState({});
@@ -79,6 +79,18 @@ export default function RequestDetails() {
         setIsMedicineChecked(event.target.checked);
         updateNeedData({ ...needData, medicine: event.target.checked });
     };
+
+    useEffect(() => {
+        updateNeedData({
+            ...needData,
+            shelterChecked: isShelterChecked,
+            heaterChecked: isHeaterChecked,
+            medicineChecked: isMedicineChecked,
+            shelterCategoryTreeId: 44, // ID for shelter
+            heaterCategoryTreeId: 46, // ID for heater
+            medicineCategoryTreeId: 79 // ID for medicine
+        });
+    }, [isShelterChecked, isHeaterChecked, isMedicineChecked]);
 
     return (
         <React.Fragment>

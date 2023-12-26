@@ -111,6 +111,7 @@ export function viewNeedsByFilter(filterParams) {
     return axios.get(`${NEED_API_BASE_URL}/viewNeedsByFilter`, { params: filterParams });
 }
 
+
 export function createNeed(userId, createNeedRequest) {
     console.log("Creating need with userId:", userId, "and data:", createNeedRequest);
 
@@ -124,6 +125,7 @@ export function createNeed(userId, createNeedRequest) {
             throw error;
         });
 }
+
 
 
 //export function createNeed(userId, createNeedRequest) {
