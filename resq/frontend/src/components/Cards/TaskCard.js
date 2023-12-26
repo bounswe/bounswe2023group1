@@ -20,14 +20,25 @@ const Location = ({latitude, longitude}) => {
     return <>{location?.data || "Loading"}</>
 }
 
-const Action = ({action: {id, description, startLocation, endLocation, completed}}) => {
+const Action = ({
+                    action: {
+                        id,
+                        description,
+                        completed,
+                        endLongitude,
+                        endLatitude,
+                        startLongitude,
+                        startLatitude
+                    }
+                }) => {
     const [checked, setChecked] = useState(completed)
     const queryClient = useQueryClient()
 
     const handleChange = async (event) => {
         if (!checked) {
             setChecked(event.target.checked);
-            completeAction(id).catch(()=>{})
+            completeAction(id).catch(() => {
+            })
             await queryClient.invalidateQueries({queryKey: ['getTasks']})
         }
     };
@@ -35,7 +46,8 @@ const Action = ({action: {id, description, startLocation, endLocation, completed
     return <FormControlLabel
         control={<Checkbox checked={checked}
                            onChange={handleChange}/>}
-        label={<>From {startLocation} to {endLocation}: {description}</>}/>
+        label={<>From <Location latitude={startLatitude} longitude={startLongitude}/> to <Location
+            latitude={endLatitude} longitude={endLongitude}/>: {description}</>}/>
 }
 
 export const TaskCard = ({
@@ -43,7 +55,7 @@ export const TaskCard = ({
                                  id,
                                  //assignee: assigneeId,
                                  assigner: assignerId,
-                                 actions: rawActions,
+                                 actions,
                                  description,
                                  resources,
                                  urgency,
@@ -68,24 +80,21 @@ export const TaskCard = ({
         queryFn: () => getCategoryTree()
     })
 
-    const actions = rawActions.map(action => ({
-        startLocation: <Location latitude={action.startLatitude} longitude={action.startLongitude}/>,
-        endLocation: <Location latitude={action.endLatitude} longitude={action.endLongitude}/>,
-        ...action
-    }))
-
     const handleSetTodo = async () => {
-        acceptTask(id).catch(()=>{})
+        acceptTask(id).catch(() => {
+        })
         await queryClient.invalidateQueries({queryKey: ['getTasks']})
     }
     const handleSetDone = async () => {
-        completeTask(id).catch(()=>{})
+        completeTask(id).catch(() => {
+        })
         await queryClient.invalidateQueries({queryKey: ['getTasks']})
     }
 
     const StateButtons = (props) => ({
         PENDING: <Button {...props} onClick={handleSetTodo}>Accept Task</Button>,
-        TODO: actions.every(({completed})=>completed) && <Button {...props} onClick={handleSetDone}>Task Complete</Button>,
+        TODO: actions.every(({completed}) => completed) &&
+            <Button {...props} onClick={handleSetDone}>Task Complete</Button>,
         DONE: <></>,
     })[status]
 
@@ -129,10 +138,12 @@ export const TaskCard = ({
                 Assigned by: {assigner?.data?.name} {assigner?.data?.surname}
             </Typography>
             <Typography variant="body2" color="text.primary" sx={{fontSize: '12px', fontWeight: 'bold'}}>
-                Locations: {actions.map(({
-                                             startLocation,
-                                             endLocation
-                                         }) => ([startLocation, <>, </>, endLocation, <>, </>])).flat()}
+                Locations:
+                {actions.map(({endLatitude, endLongitude, startLatitude, startLongitude}) =>
+                    <>
+                        <Location latitude={startLatitude} longitude={startLongitude}/>,
+                        <Location latitude={endLatitude} longitude={endLongitude}/>,
+                    </>)}
             </Typography>
         </CardContent>
         <OffsetActions disableSpacing>
