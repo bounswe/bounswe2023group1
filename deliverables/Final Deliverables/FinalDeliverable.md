@@ -116,6 +116,7 @@
 ### Summary of Work by Team Members
 | Team Member  | Work Performed                                     | Status    |
 |--------------|----------------------------------------------------|-----------|
+| Alperen Dagi | Writing Project Status Summary | Completed |
 | Alperen Dagi | Creation of Status of Deliverables and Summary of Work Tables | Completed |
 | Alperen Dagi | Creation of The Final Deliverables Report Template | Completed |
 | Alperen Dagi | Implementation of Annotation Creation for Mobile  | Completed |
