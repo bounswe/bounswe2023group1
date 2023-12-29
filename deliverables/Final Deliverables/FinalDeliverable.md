@@ -104,12 +104,26 @@
 ## Final Release Notes
 
 ## Management
-- **Changes Implemented:** Description of changes executed based on previous milestones.
-- **Impact of Changes:** Specific impacts of these changes.
+
+### Changes Implemented and Their Impact
+
+- **Enhanced Communication:** Led to a cohesive team environment and faster problem resolution.
+- **Code Review Process:** Significantly reduced bugs and improved code quality.
+- **Proactive Risk Management:** Avoided potential delays and ensured smoother project progress.
 
 ### Reflections on Final Milestone Demo
-- **Lessons Learned:** [Details]
-- **Improvements:** What could have been done differently in earlier stages for a better outcome. Reasons for these views.
+
+#### Lessons Learned
+
+1. **Early and Continuous Testing:** Key to identifying and fixing issues efficiently.
+2. **Clear Communication:** Essential for aligning goals and addressing issues.
+3. **Adaptability:** Crucial for success in a dynamic project environment.
+
+#### Areas for Improvement
+
+1. **Requirement Analysis:** More initial focus could have prevented mid-project course corrections.
+2. **Time Management:** Better estimation needed for efficient project progression.
+3. **Stakeholder Engagement:** More frequent engagement could have aligned the project closer to user needs.
 
 ## Progress Based on Teamwork
 
