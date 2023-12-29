@@ -35,7 +35,7 @@
 *And so on for each team member*
 
 ## API Endpoints
-- **Documentation:** [Link to API Documentation](#)
+- **Documentation:** [Link to API Documentation](https://api.resq.org.tr/resq/api/v1/swagger-ui/index.html)
 - **Example Calls:**
   - Call 1: [Details]
   - Call 2: [Details]
