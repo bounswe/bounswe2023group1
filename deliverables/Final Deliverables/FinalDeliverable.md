@@ -310,16 +310,17 @@ A few hours later, Ahmet got a notification. Someone nearby saw his request and 
 const API_BASE_URL = 'http://localhost:8081'
 
 ### Software Requirements Specification (SRS)
-- **Link:** [SRS Document](#)
+- **Link:** [SRS Document](https://github.com/bounswe/bounswe2023group1/wiki/Requirements)
 
 ### Software Design Documents
 - **UML Diagrams:** [Link to UML Diagrams](#)
 
 ### User Scenarios and Mockups
-- **Link:** [Scenarios and Mockups](#)
+- **Link:** [Web Scenarios and Mockups](https://www.figma.com/file/LmUQJGetWO7oD8qCHAwtbl/ResQ?type=design&node-id=542-696&mode=design&t=JWeKr1kNmiTeMGDo-0)
+- **Link:** [Mobile Scenarios and Mockups](https://www.figma.com/file/LmUQJGetWO7oD8qCHAwtbl/ResQ?type=design&node-id=597-4381&mode=design&t=yhSbiuwVEz51OnH2-0)
 
 ## Research
-- **Project Plan:** [Link to Project Plan](#)
+- **Project Plan:** [Link to Project Plan](https://github.com/bounswe/bounswe2023group1/wiki/Project-Plan-v2.0)
 
 ### Unit Tests Reports
 - **Link:** [Unit Tests](#)
