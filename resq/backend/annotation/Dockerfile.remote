@@ -1,0 +1,17 @@
+FROM maven:3.6.3-openjdk-17 as stage1
+WORKDIR /anno
+COPY ./pom.xml .
+# go-offline using the pom.xml
+RUN mvn dependency:go-offline
+# copy your other files
+COPY ./src ./src
+# compile the source code and package it in a jar file
+RUN mvn clean install -Dmaven.test.skip=true
+
+FROM openjdk:17-jdk
+WORKDIR /anno
+ARG JAR_FILE=./anno/target/annotation-0.0.1-SNAPSHOT.jar
+COPY --from=stage1 ${JAR_FILE} ./anno/app.jar
+COPY ./anno_env_prod /anno/config
+ENV anno.appdir=/anno/config
+ENTRYPOINT ["java","-jar","./anno/app.jar"]

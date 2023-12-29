@@ -1,0 +1,82 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: SSH into AWS EC2
+        env:
+          AWS_PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
+        run: |
+          echo "$AWS_PRIVATE_KEY" > aws-key.pem
+          chmod 600 aws-key.pem
+          ssh -o StrictHostKeyChecking=no -i ./aws-key.pem ec2-user@16.16.63.194
+          ls
+
+      - name: Update and Install libssl-dev
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libssl-dev
+
+      - name: Print libcrypto Version
+        run: |
+          openssl version
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "$PRIVATE_REPO_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+        env:
+          PRIVATE_REPO_SSH_KEY: ${{ secrets.PRIVATE_REPO_SSH_KEY }}
+
+      - name: Clone Private Repository
+        run: |
+          cd ..
+          ls
+          git clone git@github.com:alitpc25/cmpe451group1configrepo.git
+          cp -r cmpe451group1configrepo/project_env_prod ./resq/backend/resq/project_env_prod
+
+#      - name: Decrypt and Extract project_env_prod
+#        env:
+#          RESQ_PASSPHRASE: ${{ secrets.RESQ_PASSPHRASE }}
+#        run: |
+#          cd ./resq/backend/resq/
+#         gpg --quiet --batch --yes --verbose --decrypt --passphrase="$RESQ_PASSPHRASE" --output  project_env_prod.tar.gz project_env_prod.tar.gz.gpg
+#          tar xzvf project_env_prod.tar.gz
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v3.0.0
+        with:
+          dockerfile: Dockerfile.remote
+
+      - name: Build and Push Docker Image
+        run: |
+          ls
+          cd ./resq/backend/resq/
+          docker build -t alitpc2525/resq:latest -f Dockerfile.remote .
+          docker login -u alitpc2525 -p ${{ secrets.DOCKER_PASSWORD }}
+          docker tag alitpc2525/resq:latest alitpc2525/resq:latest
+          docker push alitpc2525/resq:latest
+
+      - name: SSH into AWS EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.AWS_EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.AWS_PRIVATE_KEY }}
+          script: |
+            sudo service docker start
+            sudo docker rm -f $(sudo docker ps -q)
+            sudo docker pull alitpc2525/resq:latest
+            sudo docker run -d -p 443:8081 -v /home/ec2-user/certbot/keystore.p12:/app/keystore.p12 -v $(pwd)/project_env_prod:/app/project_env_prod alitpc2525/resq:latest
+            sudo docker ps

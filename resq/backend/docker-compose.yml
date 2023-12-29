@@ -1,0 +1,74 @@
+version: '3.1'
+services:
+  backend:
+    container_name: backend
+    image: backend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile-resq.local
+    ports:
+      - "8081:8081"
+    expose:
+      - "8081"
+    depends_on:
+      - db
+    environment:
+      - RESQ_APPDIR=/app/config
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
+      - SPRING_DATASOURCE_USERNAME=compose-postgres
+      - SPRING_DATASOURCE_PASSWORD=compose-postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    networks:
+      - app_network
+      
+  db:
+    image: 'postgres:13.1'
+    container_name: db
+    environment:
+      - POSTGRES_USER=compose-postgres
+      - POSTGRES_PASSWORD=compose-postgres
+    networks:
+      - app_network
+
+  anno:
+    container_name: anno
+    image: anno:latest
+    build:
+      context: .
+      dockerfile: Dockerfile-anno.local
+    ports:
+      - "8083:8083"
+    expose:
+      - "8083"
+    depends_on:
+      - db_anno
+    environment:
+      - ANNO_APPDIR=/anno/config
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db_anno:5432/compose-postgres
+      - SPRING_DATASOURCE_USERNAME=compose-postgres
+      - SPRING_DATASOURCE_PASSWORD=compose-postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    networks:
+      - app_network
+      
+  db_anno:
+    image: 'postgres:13.1'
+    container_name: db_anno
+    environment:
+      - POSTGRES_USER=compose-postgres
+      - POSTGRES_PASSWORD=compose-postgres
+    networks:
+      - app_network
+    
+  frontend:
+    container_name: frontend
+    image: frontend:latest
+    build:
+      context: ../frontend
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+      
+networks:
+  app_network:
