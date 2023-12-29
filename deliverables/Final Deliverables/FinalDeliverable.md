@@ -69,11 +69,37 @@
   - Measures for Data Security: `[IN PROGRESS]`
 
 ### Status of Deliverables
-| Deliverable             | Status    |
-|-------------------------|-----------|
-| [Deliverable Name]      | [Status]  |
-| [Another Deliverable]   | [Status]  |
-*And so on for each deliverable*
+
+| Deliverable                                               | Status          |
+|-----------------------------------------------------------|-----------------|
+| Group Milestone Report                                    | [Status]        |
+| Video Demonstration of System                             | [Status]        |
+| Executive Summary                                         | [Status]        |
+| Summary of Project Status in Terms of Requirements        | `Completed`        |
+| Final Release Notes                                       | [Status]        |
+| Management Changes Description                            | [Status]        |
+| Reflections on Final Milestone Demo                       | [Status]        |
+| Progress Based on Teamwork                                | [Status]        |
+| Summary of Work by Each Team Member (Tabular Format)      | [Status]        |
+| API Endpoints Documentation and Examples                  | `Completed`        |
+| User Interface / User Experience Design & Screenshots     | [Status]        |
+| Annotations Status Description                            | [Status]        |
+| Comprehensive Scenario Showcasing Core Functionalities    | [Status]        |
+| Use and Maintenance Checks                                | [Status]        |
+| User Manual                                               | [Status]        |
+| System Manual                                             | [Status]        |
+| Software Requirements Specification (SRS)                 | `Completed`        |
+| Software Design Documents (UML)                           | [Status]        |
+| User Scenarios and Mockups                                | `Completed`        |
+| Project Plan                                              | `Completed`        |
+| Unit Tests Reports                                        | [Status]        |
+| Software Dockerization and Deployment                     | [Status]        |
+| Hostname/IPs for Web Application, API, and Annotation     | [Status]        |
+| Final Software Release (Version 0.9.0)                    | [Status]        |
+| Data for at Least 100 Realistic Posts (Database Dump)     | [Status]        |
+| Individual Milestone Report                               | [Status]        |
+
+
 
 ## Final Release Notes
 
