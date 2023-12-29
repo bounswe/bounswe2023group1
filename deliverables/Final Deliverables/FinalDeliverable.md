@@ -346,9 +346,27 @@
     ```
 ## User Interface / User Experience
 - **Source Code Links:** [Link to Repository](#)
-- **Screenshots:**
-  - Web UI: ![Web UI Screenshot](#)
-  - Mobile UI: ![Mobile UI Screenshot](#)
+### Screenshots
+#### Web UI
+<img width="1670" alt="image" src="https://github.com/bounswe/bounswe2023group1/assets/7621539/d6d73386-a49f-41ac-9cc1-2cfa206a1b95">
+Main victim screen with available resources and possible warnings visible. The filtering option for categoties is also open.
+
+<img width="1680" alt="image" src="https://github.com/bounswe/bounswe2023group1/assets/7621539/070fc327-18e9-427b-81d2-8b848226c551">
+Task screen for Responders. Unfortunately, due to a lack of budget, we had to disable the reverse geocoding feature that replaced the Unknown text with the actual locations.
+
+<img width="1680" alt="image" src="https://github.com/bounswe/bounswe2023group1/assets/7621539/460c2f3a-1370-468c-a573-84bb268e3cbc">
+Task creation screen for coordinators, with several resources and a request selected. The route a responder would take to fulfill the task is visible on the map.
+
+<img width="1680" alt="image" src="https://github.com/bounswe/bounswe2023group1/assets/7621539/69b0ec85-fc7c-46f3-b240-ce152e687ebe">
+Request creation screen for facilitators. Several needs submitted by victims are selected and are visible on the map.
+
+<img width="1680" alt="image" src="https://github.com/bounswe/bounswe2023group1/assets/7621539/42e5f039-7ba9-4f86-bed6-f1aa8a37a4ce">
+Resource creation screen for responders, with several of the different types of resources able to be created.
+
+<img width="1676" alt="image" src="https://github.com/bounswe/bounswe2023group1/assets/7621539/24fff7c8-550d-46c1-beba-e61a490b6ce9">
+The profile details of a real user are displayed.
+
+#### Mobile UI
 
 ## Annotations
 The ResQ app allows users to annotate request, resource and action cards, as well as the explanation texts of warnings added to the map. The annotation content is text that can be edited from the application. An annotation server complaint with the Web Annotation Protocol was implemented to support the accessing, creation, editing, and deletion of Annotations.
