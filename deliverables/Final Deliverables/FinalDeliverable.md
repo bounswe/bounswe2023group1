@@ -102,7 +102,7 @@ As the project nears completion, the focus is on refining functionalities, fulfi
 |-----------------------------------------------------------|-----------------|
 | Group Milestone Report                                    | `Completed`        |
 | Video Demonstration of System                             | `Completed`        |
-| Executive Summary                                         | [Status]        |
+| Executive Summary                                         | `Completed`       |
 | Summary of Project Status in Terms of Requirements        | `Completed`        |
 | Final Release Notes                                       | `Completed`        |
 | Management Changes Description                            | `Completed`        |
