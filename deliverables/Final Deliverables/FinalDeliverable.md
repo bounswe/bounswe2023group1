@@ -157,6 +157,7 @@
 | Alperen Dagi | Researching MVVM Architecture for Mobile           | Completed |
 | Alperen Dagi | Developing Project Timeline for Mobile             | Completed |
 | Alperen Dagi | Researching Tech Stack for Mobile                  | Completed |
+| Harun Reşid Ergen | My contributions extended to implementing various functionalities and enhancing user interaction through the addition of essential buttons and features. This diverse involvement allowed me to shape the app's user interface and overall experience significantly.Beyond the initial design and planning stages, where I played a key role in using Figma and outlining the project timeline, my responsibilities included the effective management of data storage and usage. I developed features that streamlined data management within the app, an essential aspect for its smooth operation. Moreover, my work was crucial in establishing robust backend communication. I implemented various service usages, ensuring a seamless flow of data exchange and processing. This not only enhanced the app's functionality but also contributed to its overall performance and reliability. | |
 
 *And so on for each team member*
 
