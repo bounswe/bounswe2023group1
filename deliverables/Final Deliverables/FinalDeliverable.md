@@ -351,8 +351,10 @@
   - Mobile UI: ![Mobile UI Screenshot](#)
 
 ## Annotations
-- **Status:** Description of the status of annotations in the project.
-- **Standards Used:** Details of the standards implemented.
+The ResQ app allows users to annotate request, resource and action cards, as well as the explanation texts of warnings added to the map. The annotation content is text that can be edited from the application. An annotation server complaint with the Web Annotation Protocol was implemented to support the accessing, creation, editing, and deletion of Annotations.
+
+The annotations have all of the mandatory fields outlined by Section 3.1 of the W3 Web Annotation Model standard. The text body of the annotations are stored in the bodyValue field, as described by Section 3.2.5. The annotation also makes use of Selectors, as specified in 4.2. Of these, 4.2.3 XPath Selector, 4.2.8 Range Selector and 4.2.5 Text Position Selector are used in conjunction, as outlined by 4.2.9 Refinement of Selection. The annotation server described in the previous paragraph implements sections 3, 4.1 and 5 of the Web Annotation Protocol specification.
+
 
 ## Scenarios
 
