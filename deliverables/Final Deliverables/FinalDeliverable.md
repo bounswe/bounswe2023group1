@@ -61,15 +61,15 @@
 2. Cem has previously logged into the application. Now, he finds himself on the main map page, where he sees different resources and disaster response centers which are defined with annotations such as category, short description, long description, date and location as longitude and latitude. There will be also metadata for annotation implementation of those centers. He then filters resources and annotations by type and opens the details of one of them. He then decides to create a request for some food for his family of four. Using the screens, he declares his family’s needs. He adds to the request that he has gluten intolerance and his wife has diabetes. Afterwards, he navigates to the own requests page in his profile to view his latest request and ensure he has written everything correctly. After a while, he refreshes to see a notification on the top that says a new sooıup kitchen near them.
 
 - **Feature Completion:**
-Victim:
-Viewing resources on the map
-Creating request
-Viewing own requests
-Responder:
-Viewing assigned tasks on map and in list, accept or deny
-Creating resource
-Viewing own resources
-Notification page
+- **Victim:**
+- Viewing resources on the map
+- Creating request
+- Viewing own requests
+- **Responder:**
+- Viewing assigned tasks on map and in list, accept or deny
+- Creating resource
+- Viewing own resources
+- Notification page
 
 - **Extensive Scenario:** Mobile
 - Ahmet learned about the "ResQ" app from a friend and thought it could be helpful, especially since he lives in an earthquake-prone area. So, he downloaded the app on his phone.
@@ -81,13 +81,13 @@ Now, Ahmet waited, hopeful that someone would respond to his request. He knew th
 A few hours later, Ahmet got a notification. Someone nearby saw his request and was bringing him food. Feeling grateful, he was glad he used the "ResQ" app.
 
 - **Feature Completion:**
-Settings page
-Notification page
-Victim:
-Viewing resources on the map
-Creating request
-Viewing own requests
-Resource creation for 
+- Settings page
+- Notification page
+- **Victim:**
+- Viewing resources on the map
+- Creating request
+- Viewing own requests
+- Resource creation for 
 
 
 ## Use and Maintenance
