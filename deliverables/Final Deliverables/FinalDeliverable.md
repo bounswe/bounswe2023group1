@@ -408,6 +408,54 @@ A few hours later, Ahmet got a notification. Someone nearby saw his request and 
 - User can login with his/her credentials to the system.
 - The user can access services for which he has the required role.
 ### System Manual  
+
+
+### Prerequisites
+
+- JDK 17.0.2
+- Maven 3.8.6
+- Intellij or Eclipse IDE
+
+### Config Directory Structure - Resq
+
+Application gets the actual path from `resq.appdir` property and checks for **resq** directory under that path.
+
+Under main directory structure is:
+- **conf**
+     - **appparam.txt**: application configuration items are located under this file (web service url, username and pass etc.)
+     - **logConf.xml**: log configuration file.
+- **log**: Application writes all logs under this directory
+
+### Config Directory Structure - Annotation
+
+Application gets the actual path from `anno.appdir` property and checks for **anno** directory under that path.
+
+Under main directory structure is:
+- **conf**
+     - **appparam.txt**: application configuration items are located under this file (web service url, username and pass etc.)
+     - **logConf.xml**: log configuration file.
+- **log**: Application writes all logs under this directory
+
+### Database Connections
+
+| Database Type | Production       | Test |
+|:-------------:|------------------| --- |
+|  PostgreSQL   | _schema_: resqdb | _schema_: resqdb |
+|  PostgreSQL   | _schema_: annotationdb | _schema_: annotationdb |
+
+### Project Specific Information 
+
+Application context root is /resq/api/v1/. You can reach the application via  
+https://localhost:8081/resq/api/v1/.
+To reach the API documentation:  
+https://localhost:8081/resq/api/v1/swagger-ui.html
+
+
+Production API Documentation:  
+https://api.resq.org.tr/resq/api/v1/swagger-ui/index.html
+
+Production URL: https://api.resq.org.tr/resq/api/v1
+
 #### To deploy the backend of the application to the EC2 server, follow the instructions below
 - First, clone the repository with command "git clone https://github.com/bounswe/bounswe2023group1"
 - Place the config folders to the relevant places given below:
