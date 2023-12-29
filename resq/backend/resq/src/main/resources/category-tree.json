@@ -1,0 +1,188 @@
+{
+  "data": "Category",
+  "children": [
+    {
+      "data": "Human Resource",
+      "children": [
+        { "data": "Doctor" },
+        { "data": "Nurse" },
+        { "data": "Search and Rescue Personnel" },
+        { "data": "Driver",
+          "children": [
+            {"data": "B License"},
+            {"data": "C License"},
+            {"data": "G License"}
+          ]
+        },
+        { "data": "Psychiatrist" },
+        { "data": "Trained First Aid Provider" },
+        { "data": "Translator" },
+        { "data": "Support Staff" }
+      ]
+    },
+    {
+      "data": "Clothing",
+      "children": [
+        {
+          "data": "General Clothing",
+          "children": [
+            {"data" : "T-shirt"},
+            {"data" : "Long-sleeve t-shirt"},
+            {"data" : "Pants"},
+            {"data" : "Jeans"},
+            {"data" : "Sweater"},
+            {"data" : "Sweatshirt"},
+            {"data" : "Jacket"},
+            {"data" : "Coat"},
+            {"data" : "Pajamas"},
+            {"data" : "Scarf"},
+            {"data" : "Hat"}
+          ]
+        },
+        {
+          "data": "Weather-Specific Clothing",
+          "children": [
+            {"data": "Overcoat"},
+            {"data": "Raincoat"},
+            {"data": "Insulated Jacket"},
+            {"data": "Thermal Underwear"}
+          ]
+        },
+        {
+          "data": "Protective Gear",
+          "children": [
+            {"data" :  "Helmet"},
+            {"data" :  "Work Gloves"},
+            {"data" :  "Safety Goggles"},
+            {"data" :  "Dust Mask"},
+            {"data" :  "Reflective Vest"}
+          ]
+        },
+        { "data": "Footwear",
+          "children": [
+            {"data" :  "Boots"},
+            {"data" :  "Sneakers"}
+          ]
+        }
+      ]
+    },
+    {
+      "data": "Shelter & Sleeping",
+      "children": [
+        {
+          "data": "Sleep Accessories",
+          "children": [
+            {"data": "Sleeping Bag"},
+            {"data": "Sleeping Pad"},
+            {"data": "Blanket"}
+          ]
+        },
+        {
+          "data": "Shelter Accessories",
+          "children": [
+            {"data": "Tent"},
+            {"data": "Tarp"},
+            {"data": "Heater"}
+          ]
+        }
+      ]
+    },
+    {
+      "data": "Tools & Equipment",
+      "children": [
+        {
+          "data": "Search and Rescue Tools",
+          "children": [
+            {"data": "Flashlights"},
+            {"data": "Batteries"},
+            {"data": "Shovels"}
+          ]
+        },
+        {
+          "data": "Communication Equipment",
+          "children": [
+            {"data": "Two-way radios"},
+            {"data": "Megaphones"},
+            {"data": "Whistles"},
+            {"data": "GPS Devices"},
+            {"data": "Maps"}
+          ]
+        }
+      ]
+    },
+    {
+      "data": "Food & Water",
+      "children": [
+        {
+          "data": "Non-perishable Food",
+          "children": [
+            {"data": "Canned Food"},
+            {"data": "Energy Bars"},
+            {"data": "Dried Fruits"},
+            {"data": "Baby Food"}
+          ]
+        },
+        { "data": "Water Supply",
+          "children": [
+            {"data": "Bottled Water"}
+          ] }
+      ]
+    },
+    {
+      "data": "Medical Supplies & Special Needs",
+      "children": [
+        {
+          "data": "First Aid Kit",
+          "children": [
+            {"data":  "Bandages"},
+            {"data":  "Antiseptic Wipes"},
+            {"data":  "Pain Relievers"}
+          ]
+        },
+        {
+          "data": "Baby Supplies",
+          "children": [
+            {"data": "Diapers"},
+            {"data": "Formula"},
+            {"data": "Baby Wipes"}
+          ]
+        },
+        {
+          "data": "Prescription Medications",
+          "children": [
+            {"data":  "Chronic Medications"},
+            {"data":  "Allergy Medications"}
+          ]
+        }
+      ]
+    },
+    {
+      "data": "Transportation",
+      "children": [
+        {
+          "data": "Emergency Vehicles",
+          "children": [
+            {"data": "Ambulance"},
+            {"data": "Rescue Vehicle"},
+            {"data": "Fire Truck"}
+          ]
+        },
+        {
+          "data": "Evacuation & Delivery Vehicles",
+          "children": [
+            {"data": "Bus"},
+            {"data": "Van"},
+            {"data": "Truck"}
+          ]
+        },
+        {
+          "data": "Fuel Supply",
+          "children": [
+            {"data": "Fuel Reserves"},
+            {"data": "Fuel Containers"}
+          ]
+        }
+      ]
+    }
+  ]
+}
