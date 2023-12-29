@@ -445,6 +445,7 @@ Under main directory structure is:
 
 ### Project Specific Information 
 
+#### Resq
 Application context root is /resq/api/v1/. You can reach the application via  
 https://localhost:8081/resq/api/v1/.
 To reach the API documentation:  
@@ -455,6 +456,16 @@ Production API Documentation:
 https://api.resq.org.tr/resq/api/v1/swagger-ui/index.html
 
 Production URL: https://api.resq.org.tr/resq/api/v1
+
+#### Annotation
+Application context root is /. You can reach the application via  
+https://localhost:8083/.
+To reach the API documentation:  
+https://localhost:8083/swagger-ui.html
+
+
+Production API Documentation:  
+https://annotation.resq.org.tr/swagger-ui/index.html
 
 #### To deploy the backend of the application to the EC2 server, follow the instructions below
 - First, clone the repository with command "git clone https://github.com/bounswe/bounswe2023group1"
