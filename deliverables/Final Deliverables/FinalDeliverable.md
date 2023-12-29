@@ -52,8 +52,43 @@
 - **Standards Used:** Details of the standards implemented.
 
 ## Scenarios
-- **Extensive Scenario:** [Detailed Description]
-- **Feature Completion:** Details of the work completed related to this scenario.
+
+- **Extensive Scenario:** Frontend
+- The demonstration will follow the user story of Ahmet, a victim, and Ayşe, a responder offering some resources.
+
+1. Ayşe is logging into the application to deliver her shopping for the victims at the disaster area. She brought 100 baby foods (resource- material resources) and wants to bring them to the resource gathering center so they can be delivered by a truck driver (another resource - human resource). She will start the demonstration in a logged-in state. She first navigates to the create resource page to create the resources she have in detail and she fills the resource address step with the information of the gathering center that she delivered the resources. Then, she chooses type of need which in this case is material resource and she types a part of what she is looking for (food) and it was recommended to her as baby food. So she founds the exact resource she was looking for. Then, she was able to add the quantity and the description of the resource she have. Afterwards, she navigates to the main page.And she can see her resource at list and map. 
+
+2. Cem has previously logged into the application. Now, he finds himself on the main map page, where he sees different resources and disaster response centers which are defined with annotations such as category, short description, long description, date and location as longitude and latitude. There will be also metadata for annotation implementation of those centers. He then filters resources and annotations by type and opens the details of one of them. He then decides to create a request for some food for his family of four. Using the screens, he declares his family’s needs. He adds to the request that he has gluten intolerance and his wife has diabetes. Afterwards, he navigates to the own requests page in his profile to view his latest request and ensure he has written everything correctly. After a while, he refreshes to see a notification on the top that says a new sooıup kitchen near them.
+
+- **Feature Completion:**
+Victim:
+Viewing resources on the map
+Creating request
+Viewing own requests
+Responder:
+Viewing assigned tasks on map and in list, accept or deny
+Creating resource
+Viewing own resources
+Notification page
+
+- **Extensive Scenario:** Mobile
+- Ahmet learned about the "ResQ" app from a friend and thought it could be helpful, especially since he lives in an earthquake-prone area. So, he downloaded the app on his phone.
+When he opened the app, he had two choices on the login screen. Since he didn't have an account, he picked 'Create an account' and filled in his details, like email and password.
+Ahmet didn't actively use the app since there wasn't any emergency, until one night an earthquake happened. Ahmet immediately opened the app. Once he signed in, he saw a map with pins showing where people needed help. Since Ahmet's building got damaged and it was dangerous to go inside, Ahmet needed food. He decided to add his own request for food.
+Clicking on "Add Request" led him to a new screen. There, he chose 'Food' from a list and set his request priority to 'High' because he really needed help.
+After making his request, Ahmet wanted to check his profile. On his "Victim User Profile," he found his name, birth date, and role as 'Victim.' There was also a list called 'My Requests' where he could see the request he just made.
+Now, Ahmet waited, hopeful that someone would respond to his request. He knew there were kind people on the app always ready to help.
+A few hours later, Ahmet got a notification. Someone nearby saw his request and was bringing him food. Feeling grateful, he was glad he used the "ResQ" app.
+
+- **Feature Completion:**
+Settings page
+Notification page
+Victim:
+Viewing resources on the map
+Creating request
+Viewing own requests
+Resource creation for 
+
 
 ## Use and Maintenance
 - **Verification:** Steps taken to assure manuals are correct.
