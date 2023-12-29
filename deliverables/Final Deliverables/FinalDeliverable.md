@@ -35,12 +35,190 @@
 *And so on for each team member*
 
 ## API Endpoints
-- **Documentation:** [Link to API Documentation](https://api.resq.org.tr/resq/api/v1/swagger-ui/index.html)
+- **Documentation:** [Link to API Documentation](https://api.resq.org.tr/resq/api/v1/swagger-ui/index.html#/action-controller/createAction)
 - **Example Calls:**
-  - Call 1: [Details]
-  - Call 2: [Details]
-  - Call 3: [Details]
+  - Example 1: The most significant functionality of assigning tasks to the responders. It requires a sequence of calls to API. Creating task, adding resources to the task, adding actions to task by creating them, and adding requests to the task are crucial steps. By that way, matching requests and resources with actions become completed. There is an example flow of it.
+  ```json
+  task/createTask
+  {
+    "assignerId": 10,
+    "assigneeId": 13, 
+    "description": "Get resources from ankara to bursa ", 
+    "urgency": "HIGH" 
+  }
+  ```
 
+  ```json
+  task/addRequestToTask
+  {
+    "taskId": 12,
+    "requestIds": [
+      2, 4
+    ]
+  }
+  ```
+  
+  ```json
+  task/createAction
+  {
+  "taskId": 12,
+  "receiverId": 11,
+  "resourceIds": [
+    27, 28, 29
+  ]
+  }
+  ```
+  ```json
+  action/createAction
+  {
+  "taskId": 12,
+  "verifierId": 11,
+  "description": "get resources from location X ",
+  "startLatitude": 39.0,
+  "startLongitude": 36.0,
+  "endLatitude": 39.1,
+  "endLongitude": 39.2,
+  "dueDate": "2024-01-29T12:35:07.048Z",
+  "completed": false,
+  "verified": false
+  }
+  ```
+
+  ```json
+  task/viewSingleTask
+  {
+  "id": 12,
+  "assignee": 13,
+  "assigner": 10,
+  "actions": [
+    {
+      "id": 25,
+      "taskId": 12,
+      "verifierId": 11,
+      "description": "get resources from location X ",
+      "startLatitude": 39,
+      "startLongitude": 36,
+      "endLatitude": 39.1,
+      "endLongitude": 39.2,
+      "dueDate": "2024-01-29T12:35:07.048",
+      "createdDate": "2023-12-29T12:55:34.907508",
+      "completed": false
+    }
+  ],
+  "description": "Get resources from Ankara to Bursa",
+  "resources": [
+    {
+      "id": 29,
+      "senderId": 24,
+      "receiverId": 11,
+      "categoryTreeId": "84",
+      "gender": "MALE",
+      "quantity": 2,
+      "latitude": 39.67,
+      "longitude": 30.67,
+      "createdDate": "2023-12-26T11:32:30.85713",
+      "size": "XL",
+      "file": null,
+      "status": "IN_TASK"
+    },
+    {
+      "id": 28,
+      "senderId": 24,
+      "receiverId": 11,
+      "categoryTreeId": "64",
+      "gender": "MALE",
+      "quantity": 200,
+      "latitude": 39.65,
+      "longitude": 30.65,
+      "createdDate": "2023-12-26T11:31:14.447966",
+      "size": "XL",
+      "file": null,
+      "status": "IN_TASK"
+    },
+    {
+      "id": 27,
+      "senderId": 24,
+      "receiverId": 11,
+      "categoryTreeId": "70",
+      "gender": "MALE",
+      "quantity": 100,
+      "latitude": 39.75,
+      "longitude": 30.55,
+      "createdDate": "2023-12-26T11:30:32.803294",
+      "size": "XL",
+      "file": null,
+      "status": "IN_TASK"
+    }
+  ],
+  "feedbacks": [],
+  "urgency": "HIGH",
+  "status": "PENDING",
+  "createdDate": "2023-12-29T12:32:07.365487"
+  }
+  ```
+   
+  
+    
+  - Example 2: Another essential functionality is the need creation by the victims, those are the main focus of the application. Whole process aims to deliver their needs, according to specification they made. Response of the need creation call is the id of the created object.
+    ```json
+    need/createNeed
+    {
+    "description": "I've managed to send messages on social media, but I need a charging station for my phone. Any help available, perhaps with powerbanks or batteries?",
+    "latitude": 40.43,
+    "longitude": 29.2,
+    "categoryTreeId": "50",
+    "quantity": 2
+    }
+    ```
+    ```json
+    need/viewNeed
+    {
+    "id": 36,
+    "userId": 12,
+    "categoryTreeId": "50",
+    "description": "I've managed to send messages on social media, but I need a charging station for my phone. Any help available, perhaps with powerbanks or batteries?",
+    "quantity": 2,
+    "latitude": 40.43,
+    "longitude": 29.2,
+    "requestId": null,
+    "status": "NOT_INVOLVED",
+    "createdDate": "2023-12-25T22:23:57.534262",
+    "size": null
+    }
+    
+    ```
+  - Example 3: The application allows responders to create resources that they have. This request needs form-data type for file upload if user wants to upload an image of the resource. Response would be the id of the created need object
+    ```json
+    resource/creteResource
+    {
+    "senderId": 24,
+    "categoryTreeId": "66",
+    "quantity": 300,
+    "latitude": 39.672,
+     "longitude":   30.675, 
+    "gender": "MALE",
+    "size": null,
+    "status": null
+  
+    }
+    ```
+    ```json
+    created resource object
+    {
+    "id": 19,
+    "senderId": 24,
+    "receiverId": null,
+    "categoryTreeId": "66",
+    "gender": "MALE",
+    "quantity": 300,
+    "latitude": 39.672,
+    "longitude": 20.675,
+    "createdDate": "2023-12-29T13:42:03.374Z",
+    "size": null,
+    "file": null
+    "status": "AVAILABLE"
+    }
+    ```
 ## User Interface / User Experience
 - **Source Code Links:** [Link to Repository](#)
 - **Screenshots:**
