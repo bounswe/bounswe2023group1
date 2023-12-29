@@ -4,7 +4,7 @@
 
 ### Video Demonstration
 - **Description:** Maximum of 5 minutes video showcasing the system with both web and mobile UIs.
-- **Link:** [Video URL](#)
+- **Link:** [Video URL](https://youtu.be/reww2Fkcc0c)
 
 ## Executive Summary
 - **Project Status:** Summary of the project status in terms of requirements.
