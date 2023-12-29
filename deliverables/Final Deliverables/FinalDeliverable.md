@@ -467,3 +467,4 @@ const API_BASE_URL = 'http://localhost:8081'
 - [Harun Reşid Ergen](https://github.com/bounswe/bounswe2023group1/wiki/Harun-Re%C5%9Fid-Ergen-Final-Individual-Contribution-Report)
 - [Çağrı Gülbeycan](https://github.com/bounswe/bounswe2023group1/wiki/%C3%87a%C4%9Fr%C4%B1-G%C3%BClbeycan-CMPE-451-Final-Deliverables-Individual-Contribution-Report)
 - [Furkan Bülbül](https://github.com/bounswe/bounswe2023group1/wiki/Furkan-Bülbül-CMPE-451-Milestone-3-Individual-Contribution-Report)
+- [Volkan Öztürk](https://github.com/bounswe/bounswe2023group1/wiki/Volkan-%C3%96zt%C3%BCrk-CMPE-451-Milestone-3-Individual-Contribution-Report)
