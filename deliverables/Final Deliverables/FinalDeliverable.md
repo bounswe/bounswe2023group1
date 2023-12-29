@@ -464,3 +464,4 @@ const API_BASE_URL = 'http://localhost:8081'
 ### Individual Milestone Reports
 - [Alperen Dağı](https://github.com/bounswe/bounswe2023group1/wiki/Alperen-Da%C4%9F%C4%B1-CMPE-451-Milestone-3-Individual-Contribution-Report)
 - [Muhammet Ali Topcu](https://github.com/bounswe/bounswe2023group1/wiki/Muhammet-Ali-Topcu-CMPE-451-Final-Milestone-Individual-Contribution-Report)
+- [Harun Reşid Ergen](https://github.com/bounswe/bounswe2023group1/wiki/Harun-Re%C5%9Fid-Ergen-Final-Individual-Contribution-Report)
