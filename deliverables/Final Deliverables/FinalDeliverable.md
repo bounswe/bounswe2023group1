@@ -9,6 +9,65 @@
 ## Executive Summary
 - **Project Status:** Summary of the project status in terms of requirements.
 
+## Project Status Summary
+
+### Functional Requirements
+
+#### 1.1 User Requirements
+
+- **1.1.1 User Registration**
+  - 1.1.1.1 User Account Creation: `[COMPLETED]`
+  - 1.1.1.2 Registration Confirmation and Login: `[COMPLETED]`
+  - 1.1.1.3 Convenient Sign-In: `[NOT_STARTED]`
+  - 1.1.1.4 Role Request and Emergent Functionalities: `[COMPLETED]`
+  - 1.1.1.5 Emergent Roles: `[COMPLETED]`
+
+- **1.1.2 User Roles**
+  - Victim: `[COMPLETED]` (Except 1.1.2.1.8 `[IN PROGRESS]`)
+  - Responder: Mostly `[COMPLETED]`, Some `[IN PROGRESS]`, 1.1.2.2.6 `[NOT STARTED]`
+  - Facilitator: Mostly `[COMPLETED]`, Some `[IN PROGRESS]`, 1.1.2.3.8 & 1.1.2.3.9 `[NOT STARTED]`
+  - Coordinator: Mostly `[COMPLETED]`, Some `[NOT STARTED]`
+  - Administrator: `[NOT STARTED]`
+
+- **1.1.3 Location Services**
+  - Map and Location Sharing: `[COMPLETED]`
+
+- **1.1.4 Information Filtering**
+  - Filtering Information: `[COMPLETED]`
+
+- **1.1.5 Disaster Reporting**
+  - Reporting Disasters: `[COMPLETED]`
+
+#### 1.2 System Requirements
+
+- **1.2.1 Multi-hazard support**
+  - Support for Various Disasters: `[NOT_STARTED]`
+
+- **1.2.2 Multilingual Support**
+  - Support for Multiple Languages: `[NOT STARTED]`
+
+- **1.2.3 Resource Management**
+  - Various sub-requirements: Mostly `[COMPLETED]`, Some `[IN PROGRESS]`
+
+- **1.2.4 Actions**
+  - Various sub-requirements: Mostly `[COMPLETED]`, 1.2.4.3.1 `[IN PROGRESS]`
+
+- **1.2.5 Reporting**
+  - Various reporting requirements: `[COMPLETED]`
+
+- **1.2.7 Map-based operations**
+  - Map Interface and Filtering: `[COMPLETED]`
+
+### 2. Non-Functional Requirements
+
+#### 2.1 Security and Privacy
+
+- **2.1.1 Data Protection Regulations**
+  - Compliance with Data Regulations: `[IN PROGRESS]`
+
+- **2.1.2 Personal Information Protection**
+  - Measures for Data Security: `[IN PROGRESS]`
+
 ### Status of Deliverables
 | Deliverable             | Status    |
 |-------------------------|-----------|
