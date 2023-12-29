@@ -118,7 +118,7 @@ As the project nears completion, the focus is on refining functionalities, fulfi
 | User Manual                                               | `Completed`        |
 | System Manual                                             | `Completed`        |
 | Software Requirements Specification (SRS)                 | `Completed`        |
-| Software Design Documents (UML)                           | [Status]        |
+| Software Design Documents (UML)                           | `Completed`       |
 | User Scenarios and Mockups                                | `Completed`        |
 | Project Plan                                              | `Completed`        |
 | Unit Tests Reports                                        | `Completed`       |
@@ -532,7 +532,10 @@ const API_BASE_URL = 'http://localhost:8081'
 - **Link:** [SRS Document](https://github.com/bounswe/bounswe2023group1/wiki/Requirements)
 
 ### Software Design Documents
-- **UML Diagrams:** [Link to UML Diagrams](#)
+- **UML Diagrams:**
+- [Link to Revised Use Case Diagrams](https://github.com/bounswe/bounswe2023group1/wiki/Use-Case-Diagrams)
+- [Link to Revised Class Diagrams](https://github.com/bounswe/bounswe2023group1/wiki/Class-Diagrams)
+- [Link to Revised Sequence Diagrams](https://github.com/bounswe/bounswe2023group1/wiki/Class-Diagrams)
 
 ### User Scenarios and Mockups
 - **Link:** [Web Scenarios and Mockups](https://www.figma.com/file/LmUQJGetWO7oD8qCHAwtbl/ResQ?type=design&node-id=542-696&mode=design&t=JWeKr1kNmiTeMGDo-0)
