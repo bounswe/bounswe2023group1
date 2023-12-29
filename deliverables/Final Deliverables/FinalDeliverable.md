@@ -10,7 +10,8 @@
 ## Executive Summary
 - **Project Status:** Summary of the project status in terms of requirements.
 
-- Overview
+-
+ Overview
 The CMPE451 2023 project presents an advanced system designed for disaster response and resource management, accessible via web and mobile interfaces. This project stands out for its comprehensive approach to managing various aspects of disaster response, emphasizing user interaction, system functionality, and real-time applicability.
 
 - Key Achievements
@@ -375,6 +376,12 @@ Resource creation screen for responders, with several of the different types of 
 The profile details of a real user are displayed.
 
 #### Mobile UI
+![image](https://github.com/bounswe/bounswe2023group1/assets/83069560/418e295e-a01c-427e-9e6d-092f7ba81468)
+![image](https://github.com/bounswe/bounswe2023group1/assets/83069560/b4e267e4-0f66-4405-bb15-122a588c86d5)
+![image](https://github.com/bounswe/bounswe2023group1/assets/83069560/76f0fb9b-8b46-4f32-b81e-d1a30916c3f0)
+![image](https://github.com/bounswe/bounswe2023group1/assets/83069560/3ecd15b1-54ce-4ed1-9de7-1cd4b369dd82)
+![image](https://github.com/bounswe/bounswe2023group1/assets/83069560/13e867e1-4f45-4291-a986-6c227fad57bf)
+![image](https://github.com/bounswe/bounswe2023group1/assets/83069560/b42de709-6ea2-4136-bd89-b7230752aaf4)
 
 ## Annotations
 The ResQ app allows users to annotate request, resource and action cards, as well as the explanation texts of warnings added to the map. The annotation content is text that can be edited from the application. An annotation server complaint with the Web Annotation Protocol was implemented to support the accessing, creation, editing, and deletion of Annotations.
