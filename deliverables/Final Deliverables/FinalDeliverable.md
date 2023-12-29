@@ -158,32 +158,7 @@ As the project nears completion, the focus is on refining functionalities, fulfi
 ### Summary of Work by Team Members
 | Team Member  | Work Performed                                     | Status    |
 |--------------|----------------------------------------------------|-----------|
-| Alperen Dagi | Writing Project Status Summary | Completed |
-| Alperen Dagi | Creation of Status of Deliverables and Summary of Work Tables | Completed |
-| Alperen Dagi | Creation of The Final Deliverables Report Template | Completed |
-| Alperen Dagi | Implementation of Annotation Creation for Mobile  | Completed |
-| Alperen Dagi | Implementation of Annotation Rendering for Mobile | Completed |
-| Alperen Dagi | Implementing My Resources for Mobile               | Completed |
-| Alperen Dagi | Milestone 2 Manual Testing Process for Mobile      | Completed |
-| Alperen Dagi | Editing RAM Type and Documentation                 | Completed |
-| Alperen Dagi | Debugging User Profile on Mobile                   | Completed |
-| Alperen Dagi | Writing Test Plan for ML2 Report                   | Completed |
-| Alperen Dagi | Implementing User Role Request for Mobile          | Completed |
-| Alperen Dagi | Map-Based Resource and Requests Implementation     | Completed |
-| Alperen Dagi | Logout Feature Implementation                      | Completed |
-| Alperen Dagi | Debugging UserSessionManager for Mobile            | Completed |
-| Alperen Dagi | Creation of Notification Screen for Mobile         | Completed |
-| Alperen Dagi | Creating Guest View Map with Sign In/Up Options    | Completed |
-| Alperen Dagi | Map Screen Implementation for Mobile               | Completed |
-| Alperen Dagi | Developing User Case Scenario for Mobile App       | Completed |
-| Alperen Dagi | Implementing Disaster Reporting for Mobile         | Completed |
-| Alperen Dagi | Developing Main Page and Bottom Navigation Bar     | Completed |
-| Alperen Dagi | Mobile Page Design                                 | Completed |
-| Alperen Dagi | Reviewing Mockups for Mobile                       | Completed |
-| Alperen Dagi | Learning Jetpack Compose for Mobile                | Completed |
-| Alperen Dagi | Researching MVVM Architecture for Mobile           | Completed |
-| Alperen Dagi | Developing Project Timeline for Mobile             | Completed |
-| Alperen Dagi | Researching Tech Stack for Mobile                  | Completed |
+| Alperen Dagi | I, Alperen Dagi, have successfully completed a broad spectrum of tasks. My contributions commenced with the creation of the Final Deliverables Report Template, setting a strong foundation for project documentation. I implemented annotation creation and rendering for mobile, which were key features, and developed the 'My Resources' feature, enhancing the app's functionality. My involvement in the Milestone 2 manual testing process was crucial to ensure the mobile application's performance and stability. I undertook technical responsibilities like editing RAM type and documentation, and I was instrumental in debugging the user profile and implementing a comprehensive user role request system for mobile. In addition to these technical tasks, I also significantly improved the mobile app's user interface by creating a notification screen, developing a guest view map with sign-in/up options, and implementing a map screen. My work in developing user case scenarios and the disaster reporting feature contributed to the app’s overall effectiveness. I also focused on enhancing the app's user experience, developing the main page and bottom navigation bar. My contributions were not limited to development alone; I also engaged in the design aspect, reviewing mobile mockups and learning Jetpack Compose. My research on MVVM architecture and mobile tech stack, along with developing a project timeline for mobile, showcased my comprehensive approach to both technical development and project management.| |
 | Harun Reşid Ergen | My contributions extended to implementing various functionalities and enhancing user interaction through the addition of essential buttons and features. This diverse involvement allowed me to shape the app's user interface and overall experience significantly.Beyond the initial design and planning stages, where I played a key role in using Figma and outlining the project timeline, my responsibilities included the effective management of data storage and usage. I developed features that streamlined data management within the app, an essential aspect for its smooth operation. Moreover, my work was crucial in establishing robust backend communication. I implemented various service usages, ensuring a seamless flow of data exchange and processing. This not only enhanced the app's functionality but also contributed to its overall performance and reliability. | |
 | Volkan Öztürk | Throughout the project, I had various roles, starting with contributions to the decision-making process for our backend technologies. Research led us to choose the Spring Framework, and I revisited and enhanced my knowledge from the previous semester's practice app. I also participated database design discussions. Customer meetings were also an important aspect of my involvement, particularly post-1st Milestone demo, where resource allocation and expectations for the coordinator role were discussed. Active participation in backend team discussions also included exploring potential uses of annotations for our project. In terms of development, I implemented various controller endpoints covering functionalities for different user roles, from Victim to Admin. I also proposed and implemented the use of Specification classes for better-structured queries. I also involved in testing by writing unit tests, not only for my own services but also for functions lacking tests, discovering some bugs in the process. | |
 | Çağrı Gülbeycan | I was a member of the mobile team throughout the semester. I took an active role in the decisions made by the mobile team. In addition, I attended all the labs and became a note taker in one of the labs. I took part in Milestone presentations. I helped my team with milestone documentation. I also wrote user profiles in the implementation section. I wrote my requests, my tasks, and the ongoing tasks sections. I also reviewed my teammates' codes. | |
