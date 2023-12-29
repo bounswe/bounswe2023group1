@@ -114,9 +114,34 @@
 ## Progress Based on Teamwork
 
 ### Summary of Work by Team Members
-| Team Member | Work Performed            | Status   |
-|-------------|----------------------------|----------|
-| [Name]      | [Work Summary]             | [Status] |
+| Team Member  | Work Performed                                     | Status    |
+|--------------|----------------------------------------------------|-----------|
+| Alperen Dagi | Creation of Status of Deliverables and Summary of Work Tables | Completed |
+| Alperen Dagi | Creation of The Final Deliverables Report Template | Completed |
+| Alperen Dagi | Implementation of Annotation Creation for Mobile  | Completed |
+| Alperen Dagi | Implementation of Annotation Rendering for Mobile | Completed |
+| Alperen Dagi | Implementing My Resources for Mobile               | Completed |
+| Alperen Dagi | Milestone 2 Manual Testing Process for Mobile      | Completed |
+| Alperen Dagi | Editing RAM Type and Documentation                 | Completed |
+| Alperen Dagi | Debugging User Profile on Mobile                   | Completed |
+| Alperen Dagi | Writing Test Plan for ML2 Report                   | Completed |
+| Alperen Dagi | Implementing User Role Request for Mobile          | Completed |
+| Alperen Dagi | Map-Based Resource and Requests Implementation     | Completed |
+| Alperen Dagi | Logout Feature Implementation                      | Completed |
+| Alperen Dagi | Debugging UserSessionManager for Mobile            | Completed |
+| Alperen Dagi | Creation of Notification Screen for Mobile         | Postponed |
+| Alperen Dagi | Creating Guest View Map with Sign In/Up Options    | Completed |
+| Alperen Dagi | Map Screen Implementation for Mobile               | Completed |
+| Alperen Dagi | Developing User Case Scenario for Mobile App       | Completed |
+| Alperen Dagi | Implementing Disaster Reporting for Mobile         | Completed |
+| Alperen Dagi | Developing Main Page and Bottom Navigation Bar     | Completed |
+| Alperen Dagi | Mobile Page Design                                 | Completed |
+| Alperen Dagi | Reviewing Mockups for Mobile                       | Completed |
+| Alperen Dagi | Learning Jetpack Compose for Mobile                | Completed |
+| Alperen Dagi | Researching MVVM Architecture for Mobile           | Completed |
+| Alperen Dagi | Developing Project Timeline for Mobile             | Completed |
+| Alperen Dagi | Researching Tech Stack for Mobile                  | Completed |
+
 *And so on for each team member*
 
 ## API Endpoints
