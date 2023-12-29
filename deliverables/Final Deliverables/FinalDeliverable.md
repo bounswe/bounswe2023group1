@@ -8,10 +8,8 @@
 - **Link:** [Video URL](https://www.youtube.com/watch?v=eFtCZWiBk0Y)
 
 ## Executive Summary
-- **Project Status:** Summary of the project status in terms of requirements.
 
--
- Overview
+- Overview
 The CMPE451 2023 project presents an advanced system designed for disaster response and resource management, accessible via web and mobile interfaces. This project stands out for its comprehensive approach to managing various aspects of disaster response, emphasizing user interaction, system functionality, and real-time applicability.
 
 - Key Achievements
