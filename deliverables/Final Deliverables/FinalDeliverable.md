@@ -92,7 +92,7 @@
 | Software Design Documents (UML)                           | [Status]        |
 | User Scenarios and Mockups                                | `Completed`        |
 | Project Plan                                              | `Completed`        |
-| Unit Tests Reports                                        | [Status]        |
+| Unit Tests Reports                                        | `Completed`       |
 | Software Dockerization and Deployment                     | [Status]        |
 | Hostname/IPs for Web Application, API, and Annotation     | [Status]        |
 | Final Software Release (Version 0.9.0)                    | [Status]        |
