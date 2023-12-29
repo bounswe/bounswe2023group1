@@ -460,3 +460,6 @@ const API_BASE_URL = 'http://localhost:8081'
 
 ### Data for Testing
 - **Database Dump/Script:** [Link or Details](#)
+
+### Individual Milestone Reports
+- [Alperen Dağı](https://github.com/bounswe/bounswe2023group1/wiki/Alperen-Da%C4%9F%C4%B1-CMPE-451-Milestone-3-Individual-Contribution-Report)
