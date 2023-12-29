@@ -86,8 +86,8 @@
 | Annotations Status Description                            | [Status]        |
 | Comprehensive Scenario Showcasing Core Functionalities    | [Status]        |
 | Use and Maintenance Checks                                | [Status]        |
-| User Manual                                               | [Status]        |
-| System Manual                                             | [Status]        |
+| User Manual                                               | `Completed`        |
+| System Manual                                             | `Completed`        |
 | Software Requirements Specification (SRS)                 | `Completed`        |
 | Software Design Documents (UML)                           | [Status]        |
 | User Scenarios and Mockups                                | `Completed`        |
