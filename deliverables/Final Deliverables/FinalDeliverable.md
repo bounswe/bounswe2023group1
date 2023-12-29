@@ -129,7 +129,7 @@
 | Alperen Dagi | Map-Based Resource and Requests Implementation     | Completed |
 | Alperen Dagi | Logout Feature Implementation                      | Completed |
 | Alperen Dagi | Debugging UserSessionManager for Mobile            | Completed |
-| Alperen Dagi | Creation of Notification Screen for Mobile         | Postponed |
+| Alperen Dagi | Creation of Notification Screen for Mobile         | Completed |
 | Alperen Dagi | Creating Guest View Map with Sign In/Up Options    | Completed |
 | Alperen Dagi | Map Screen Implementation for Mobile               | Completed |
 | Alperen Dagi | Developing User Case Scenario for Mobile App       | Completed |
