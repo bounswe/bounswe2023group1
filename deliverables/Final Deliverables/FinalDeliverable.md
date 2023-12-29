@@ -100,20 +100,20 @@ As the project nears completion, the focus is on refining functionalities, fulfi
 
 | Deliverable                                               | Status          |
 |-----------------------------------------------------------|-----------------|
-| Group Milestone Report                                    | [Status]        |
-| Video Demonstration of System                             | [Status]        |
+| Group Milestone Report                                    | `Completed`        |
+| Video Demonstration of System                             | `Completed`        |
 | Executive Summary                                         | [Status]        |
 | Summary of Project Status in Terms of Requirements        | `Completed`        |
-| Final Release Notes                                       | [Status]        |
-| Management Changes Description                            | [Status]        |
-| Reflections on Final Milestone Demo                       | [Status]        |
-| Progress Based on Teamwork                                | [Status]        |
-| Summary of Work by Each Team Member (Tabular Format)      | [Status]        |
+| Final Release Notes                                       | `Completed`        |
+| Management Changes Description                            | `Completed`        |
+| Reflections on Final Milestone Demo                       | `Completed`      |
+| Progress Based on Teamwork                                | `Completed`      |
+| Summary of Work by Each Team Member (Tabular Format)      | `Completed`       |
 | API Endpoints Documentation and Examples                  | `Completed`        |
-| User Interface / User Experience Design & Screenshots     | [Status]        |
-| Annotations Status Description                            | [Status]        |
-| Comprehensive Scenario Showcasing Core Functionalities    | [Status]        |
-| Use and Maintenance Checks                                | [Status]        |
+| User Interface / User Experience Design & Screenshots     | `Completed`        |
+| Annotations Status Description                            | `Completed`       |
+| Comprehensive Scenario Showcasing Core Functionalities    | `Completed`       |
+| Use and Maintenance Checks                                | `Completed`        |
 | User Manual                                               | `Completed`        |
 | System Manual                                             | `Completed`        |
 | Software Requirements Specification (SRS)                 | `Completed`        |
@@ -121,11 +121,11 @@ As the project nears completion, the focus is on refining functionalities, fulfi
 | User Scenarios and Mockups                                | `Completed`        |
 | Project Plan                                              | `Completed`        |
 | Unit Tests Reports                                        | `Completed`       |
-| Software Dockerization and Deployment                     | [Status]        |
-| Hostname/IPs for Web Application, API, and Annotation     | [Status]        |
-| Final Software Release (Version 0.9.0)                    | [Status]        |
-| Data for at Least 100 Realistic Posts (Database Dump)     | [Status]        |
-| Individual Milestone Report                               | [Status]        |
+| Software Dockerization and Deployment                     | `Completed`        |
+| Hostname/IPs for Web Application, API, and Annotation     | `Completed`       |
+| Final Software Release (Version 0.9.0)                    | `Completed`        |
+| Data for at Least 100 Realistic Posts (Database Dump)     | `Completed`       |
+| Individual Milestone Report                               | `Completed`       |
 
 
 
