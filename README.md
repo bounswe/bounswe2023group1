@@ -1,12 +1,13 @@
 <div align="center"><img src="https://user-images.githubusercontent.com/83069560/230832649-1788da25-6212-40a5-8eff-40955922ab59.png" alt="" width="150px" height="150px"><h1> CMPE352/451 Group 1 <br/> Disaster Response Platform </h1></div>
 
 ## Software
-You can find the alpha version of our software in the `resq` subdirectory
+You can find the final version of our software in the `resq` subdirectory.  
+We encourage you to visit our [Wiki](https://github.com/bounswe/bounswe2023group1/wiki) for all the documentation including our designs, manuals, and much more!
 
 ***
 
 ## ⛑ About Us 
-Welcome to the Wiki for the Software Development of our Disaster Response Platform! Our team is composed of passionate students with a common goal of making a positive impact in disaster response efforts. We see the critical role that technology can play in mitigating the effects of disasters and are dedicated to creating a software platform that can aid responders in a variety of ways.
+Welcome to the repository for the Software Development of our ResQ application! It is a Disaster Response Platform. Our team is composed of passionate students with a common goal of making a positive impact in disaster response efforts. We see the critical role that technology can play in mitigating the effects of disasters and are dedicated to creating a software platform that can aid responders in a variety of ways.
 
 Disasters can strike anywhere, at any time, and the impact can be devastating. Whether it's a forest fire or an earthquake, having the right tools and technology can make all the difference in saving lives and minimizing damage. Our commitment to creating a reliable, user-friendly, and effective software solution is driven by our desire to help those in need during times of crisis. Our platform will be designed with the needs of responders and disaster-affected communities in mind, and we are committed to engaging with these stakeholders throughout the development process to ensure that we are creating a tool that truly meets their needs. Ultimately, our goal is to empower responders with the information and tools they need to help those affected by disasters quickly and effectively. 
 
